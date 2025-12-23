@@ -19,7 +19,7 @@ extends Control
 var was_pressed = false
 
 func _ready() -> void:
-	connect_btn.disabled = true
+	#connect_btn.disabled = true
 	connect_btn.pressed.connect(func():
 		message_label.text = "Connecting..."
 		connect_btn.disabled = true
