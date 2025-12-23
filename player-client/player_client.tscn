@@ -1,9 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://4i16up43fabf"]
+[gd_scene load_steps=5 format=3 uid="uid://4i16up43fabf"]
 
 [ext_resource type="Script" uid="uid://dlnglygg4py7r" path="res://player-client/player_client.gd" id="1_3p43d"]
 [ext_resource type="Script" uid="uid://bhp8gqdpxhk7g" path="res://player-client/lobby_client.gd" id="2_3p43d"]
+[ext_resource type="Script" uid="uid://brblo0j3sv1io" path="res://player-client/game_client.gd" id="3_6rdav"]
+[ext_resource type="Script" uid="uid://j28kk0fox2dr" path="res://player-client/input_button.gd" id="4_o1fml"]
 
-[node name="PlayerClient" type="Control" node_paths=PackedStringArray("connection_ui", "lobby_ui", "connect_btn", "name_line")]
+[node name="PlayerClient" type="Control" node_paths=PackedStringArray("connection_ui", "lobby_ui", "message_label", "connect_btn", "name_line")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,12 +15,17 @@ grow_vertical = 2
 script = ExtResource("1_3p43d")
 connection_ui = NodePath("CenterContainer/Connection")
 lobby_ui = NodePath("CenterContainer/Lobby")
+message_label = NodePath("MarginContainer/Label")
 connect_btn = NodePath("CenterContainer/Connection/Connect")
 name_line = NodePath("CenterContainer/Connection/LineEdit")
 
 [node name="Client" type="Node" parent="."]
 script = ExtResource("2_3p43d")
 metadata/_custom_type_script = "uid://bhp8gqdpxhk7g"
+
+[node name="GameClient" type="Node" parent="."]
+script = ExtResource("3_6rdav")
+metadata/_custom_type_script = "uid://brblo0j3sv1io"
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 1
@@ -43,6 +50,47 @@ text = "Connect"
 [node name="Lobby" type="MarginContainer" parent="CenterContainer"]
 layout_mode = 2
 
-[node name="Wait" type="Label" parent="CenterContainer/Lobby"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/Lobby"]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "Waiting for game to start"
+
+[node name="Up" type="Button" parent="CenterContainer/Lobby/VBoxContainer" node_paths=PackedStringArray("game_client")]
+layout_mode = 2
+text = "Up"
+script = ExtResource("4_o1fml")
+game_client = NodePath("../../../../GameClient")
+input_name = "move_up"
+
+[node name="Down" type="Button" parent="CenterContainer/Lobby/VBoxContainer" node_paths=PackedStringArray("game_client")]
+layout_mode = 2
+text = "Down"
+script = ExtResource("4_o1fml")
+game_client = NodePath("../../../../GameClient")
+input_name = "move_down"
+
+[node name="Left" type="Button" parent="CenterContainer/Lobby/VBoxContainer" node_paths=PackedStringArray("game_client")]
+layout_mode = 2
+text = "Left"
+script = ExtResource("4_o1fml")
+game_client = NodePath("../../../../GameClient")
+input_name = "move_left"
+
+[node name="Right" type="Button" parent="CenterContainer/Lobby/VBoxContainer" node_paths=PackedStringArray("game_client")]
+layout_mode = 2
+text = "Right"
+script = ExtResource("4_o1fml")
+game_client = NodePath("../../../../GameClient")
+input_name = "move_right"
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+offset_right = 1.0
+grow_vertical = 0
+
+[node name="Label" type="Label" parent="MarginContainer"]
+layout_mode = 2
+text = "Some messages"

@@ -2,6 +2,8 @@ class_name LobbyClient
 extends Node
 
 signal connected_to_server()
+signal received_candidate(mid: String, index: int, sdp: String)
+signal received_session(type: String, sdp: String)
 
 var socket = WebSocketMultiplayerPeer.new()
 var logger = KumaLog.new("WebRtcClient")
@@ -22,13 +24,17 @@ func _process(_delta):
 
 func _on_message_received(data: Dictionary):
 	if data.has("msg"):
-		if data.msg == LobbyServer.Message.Id:
-			_on_id_message(data)
+		match int(data.msg):
+			LobbyServer.Message.Id:
+				_on_id_message(data)
+			LobbyServer.Message.GameClientSession:
+				received_session.emit(data.type, data.sdp)
+			LobbyServer.Message.GameClientIceCandidate:
+				received_candidate.emit(data.mid, int(data.index), data.sdp)
 
 func _on_id_message(data: Dictionary):
 	peer_id = data.id
 	connected_to_server.emit()
-	logger.info("Received assigned ID from server: %d" % peer_id)
 
 #region actions
 func join_server(ip = "127.0.0.1"):
@@ -42,6 +48,8 @@ func join_server(ip = "127.0.0.1"):
 	else:
 		logger.error("Failed to connect to signaling server: %s" % err)
 
+	return err
+
 func send_user_data(data: Dictionary):
 	if not is_socket_connected():
 		logger.warn("Cannot send user data, not connected to server.")
@@ -50,8 +58,23 @@ func send_user_data(data: Dictionary):
 	data["msg"] = LobbyServer.Message.Id
 	_send_to_server(data)
 
+func send_game_client_session(type: String, sdp: String):
+	_send_to_server({
+		"msg": LobbyServer.Message.GameClientSession,
+		"type": type,
+		"sdp": sdp,
+	})
+
+func send_game_client_ice_candidate(mid: String, index: int, sdp: String):
+	_send_to_server({
+		"msg": LobbyServer.Message.GameClientIceCandidate,
+		"mid": mid,
+		"index": index,
+		"sdp": sdp,
+	})
+
 func _send_to_server(data: Dictionary):
 	data["peer_id"] = peer_id
 	socket.get_peer(1).put_packet(JSON.stringify(data).to_utf8_buffer())
-	logger.debug("Sent user data to server: %s" % data)
+	logger.info("Sent to server: %s" % data)
 #endregion

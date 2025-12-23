@@ -11,13 +11,9 @@ config_version=5
 [application]
 
 config/name="home-party"
-run/main_scene="uid://dfokhnxe3wv3r"
+run/main_scene="res://player-client/player_client.tscn"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
-
-[autoload]
-
-LobbyServer="*res://servers/lobby_server.gd"
 
 [display]
 
@@ -28,3 +24,22 @@ window/stretch/mode="canvas_items"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/qr_code/plugin.cfg")
+
+[input]
+
+move_up={
+"deadzone": 0.2,
+"events": []
+}
+move_down={
+"deadzone": 0.2,
+"events": []
+}
+move_left={
+"deadzone": 0.2,
+"events": []
+}
+move_right={
+"deadzone": 0.2,
+"events": []
+}

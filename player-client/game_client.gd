@@ -1,15 +1,52 @@
 class_name GameClient
 extends Node
 
+signal send_candidate(mid: String, index: int, sdp: String)
+signal send_session(type: int, sdp: String)
+signal input_received(input: String, pressed: bool)
+
 var peer = WebRTCPeerConnection.new()
 var channel = peer.create_data_channel("inputs", {"negotiated": true, "id": 1})
-var logger = KumaLog.new("WebRtcClient")
+var logger = KumaLog.new("GameClient")
 
-#func _process(_delta):
-	#peer.poll()
-	#if channel.get_ready_state() == WebRTCDataChannel.STATE_OPEN:
-		#while channel.get_available_packet_count() > 0:
-			#print(String(get_path()), " received: ", channel.get_packet().get_string_from_utf8())
+func _ready():
+	peer.ice_candidate_created.connect(self._on_ice_candidate)
+	peer.session_description_created.connect(self._on_session)
 
-func send_message(message):
-	channel.put_packet(message.to_utf8_buffer())
+func _on_ice_candidate(mid, index, sdp):
+	send_candidate.emit(mid, index, sdp)
+	logger.info("Created ICE candidate: mid=%s, index=%d" % [mid, index])
+
+func _on_session(type, sdp):
+	send_session.emit(type, sdp)
+	peer.set_local_description(type, sdp)
+	logger.info("Created session description of type %s" % type)
+
+func _process(_delta):
+	peer.poll()
+	if channel.get_ready_state() == WebRTCDataChannel.STATE_OPEN:
+		while channel.get_available_packet_count() > 0:
+			var data = channel.get_packet().get_string_from_utf8()
+			logger.info("Received input: %s" % data)
+
+			var parts = data.split(";")
+			if parts.size() == 2:
+				var input = parts[0]
+				var pressed = parts[1].to_float() == 1.0
+				input_received.emit(input, pressed)
+
+func add_ice_candidate(mid: String, index: int, sdp: String):
+	peer.add_ice_candidate(mid, index, sdp)
+	logger.info("Added ICE candidate: mid=%s, index=%d" % [mid, index])
+
+func set_session(type: String, sdp: String):
+	peer.set_remote_description(type, sdp)
+	logger.info("Set remote session description of type %s" % type)
+
+func send_input(input: String, pressed: bool):
+	var data = "%s;%.0f" % [input, 1 if pressed else 0]
+	channel.put_packet(data.to_utf8_buffer())
+
+func create_offer():
+	peer.create_offer()
+	logger.info("Creating WebRTC offer...")
