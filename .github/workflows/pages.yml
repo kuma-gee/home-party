@@ -1,0 +1,34 @@
+name: Publish Web
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  publish-web:
+    name: Publish Web
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.5
+    steps:
+      - uses: actions/checkout@v6
+      - run: |
+          TARGET=~/.local/share/godot/export_templates/${VERSION}.stable
+
+          if [ -f "$TARGET" ]; then
+              echo "Templates already installed"
+              exit
+          fi
+
+          mkdir -v -p ~/.local/share/godot/export_templates
+          mv /root/.local/share/godot/export_templates/${VERSION}.stable $TARGET
+        env:
+          VERSION: "4.5"
+      - run: |
+          mkdir -v -p ../build/web
+          sed -i 's|^run/main_scene=".*"|run/main_scene="res://player-client/player_client.tscn"|' project.godot
+          godot --export-release --headless web
+      - run: apt-get update && apt-get install -y rsync
+      - uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          BRANCH: gh-pages
+          FOLDER: build/web

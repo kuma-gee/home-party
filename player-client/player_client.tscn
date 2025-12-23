@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=3 uid="uid://4i16up43fabf"]
+
+[ext_resource type="Script" uid="uid://dlnglygg4py7r" path="res://player-client/player_client.gd" id="1_3p43d"]
+[ext_resource type="Script" path="res://servers/lobby_client.gd" id="2_3p43d"]
+
+[node name="PlayerClient" type="Control" node_paths=PackedStringArray("connection_ui", "lobby_ui", "connect_btn", "name_line")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3p43d")
+connection_ui = NodePath("CenterContainer/Connection")
+lobby_ui = NodePath("CenterContainer/Label")
+connect_btn = NodePath("CenterContainer/Connection/Connect")
+name_line = NodePath("CenterContainer/Connection/LineEdit")
+
+[node name="Client" type="Node" parent="."]
+script = ExtResource("2_3p43d")
+metadata/_custom_type_script = "uid://bhp8gqdpxhk7g"
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Connection" type="HBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="CenterContainer/Connection"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+placeholder_text = "Name"
+
+[node name="Connect" type="Button" parent="CenterContainer/Connection"]
+layout_mode = 2
+text = "Connect"
+
+[node name="Label" type="Label" parent="CenterContainer"]
+layout_mode = 2
+text = "Waiting for game to start"
