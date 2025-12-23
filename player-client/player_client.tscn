@@ -12,7 +12,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_3p43d")
 connection_ui = NodePath("CenterContainer/Connection")
-lobby_ui = NodePath("CenterContainer/Label")
+lobby_ui = NodePath("CenterContainer/Lobby")
 connect_btn = NodePath("CenterContainer/Connection/Connect")
 name_line = NodePath("CenterContainer/Connection/LineEdit")
 
@@ -40,6 +40,9 @@ placeholder_text = "Name"
 layout_mode = 2
 text = "Connect"
 
-[node name="Label" type="Label" parent="CenterContainer"]
+[node name="Lobby" type="MarginContainer" parent="CenterContainer"]
+layout_mode = 2
+
+[node name="Wait" type="Label" parent="CenterContainer/Lobby"]
 layout_mode = 2
 text = "Waiting for game to start"

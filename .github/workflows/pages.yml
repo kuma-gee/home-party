@@ -26,9 +26,9 @@ jobs:
           mv /root/.local/share/godot/export_templates/${VERSION}.stable $TARGET
       - name: Build Web
         run: |
-          mkdir -v -p ../build/web
+          mkdir -v -p ./build/web
           sed -i 's|^run/main_scene=".*"|run/main_scene="res://player-client/player_client.tscn"|' project.godot
-          godot --export-release --headless web
+          godot --export-release --headless web ./build/web/index.html
       - run: apt-get update && apt-get install -y rsync
       - uses: JamesIves/github-pages-deploy-action@v4
         with:

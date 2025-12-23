@@ -36,8 +36,11 @@ func join_server(ip = "127.0.0.1"):
 		logger.warn("Already connected to server.")
 		return
 	
-	socket.create_client("ws://%s:%s" % [ip, LobbyServer.PORT])
-	logger.info("Connecting to signaling server at %s:%d" % [ip, LobbyServer.PORT])
+	var err = socket.create_client("ws://%s:%s" % [ip, LobbyServer.PORT])
+	if err == OK:
+		logger.info("Connected to signaling server at %s:%d" % [ip, LobbyServer.PORT])
+	else:
+		logger.error("Failed to connect to signaling server: %s" % err)
 
 func send_user_data(data: Dictionary):
 	if not is_socket_connected():
