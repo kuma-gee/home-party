@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://4i16up43fabf"]
 
 [ext_resource type="Script" uid="uid://dlnglygg4py7r" path="res://player-client/player_client.gd" id="1_3p43d"]
-[ext_resource type="Script" path="res://servers/lobby_client.gd" id="2_3p43d"]
+[ext_resource type="Script" uid="uid://bhp8gqdpxhk7g" path="res://player-client/lobby_client.gd" id="2_3p43d"]
 
 [node name="PlayerClient" type="Control" node_paths=PackedStringArray("connection_ui", "lobby_ui", "connect_btn", "name_line")]
 layout_mode = 3
