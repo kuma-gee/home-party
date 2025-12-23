@@ -1,5 +1,7 @@
 extends Control
 
+@export var joystick: VirtualJoystick
+
 @export_category("UI Nodes")
 @export var connection_ui: Control
 @export var lobby_ui: Control
@@ -12,6 +14,8 @@ extends Control
 @onready var client: LobbyClient = $Client
 @onready var game_client: GameClient = $GameClient
 @onready var menus = [connection_ui, lobby_ui]
+
+var was_pressed = false
 
 func _ready() -> void:
 	connect_btn.disabled = true
@@ -39,6 +43,21 @@ func _ready() -> void:
 	)
 
 	_change_menu(connection_ui)
+
+func _update_move_state(input: String, current: bool, new: bool) -> bool:
+	if current == new:
+		return current
+	
+	game_client.send_input(input, new)
+	return new
+
+func _process(_delta: float) -> void:
+	if joystick.is_pressed:
+		game_client.send_move("move", joystick.output)
+	elif was_pressed:
+		game_client.send_move("move", Vector2.ZERO)
+
+	was_pressed = joystick.is_pressed
 
 func _change_menu(target_menu: Control) -> void:
 	for menu in menus:

@@ -3,7 +3,7 @@ extends Node
 
 signal send_candidate(mid: String, index: int, sdp: String)
 signal send_session(type: int, sdp: String)
-signal input_received(input: String, pressed: bool)
+signal input_received(input: String, value)
 
 var peer = WebRTCPeerConnection.new()
 var channel = peer.create_data_channel("inputs", {"negotiated": true, "id": 1})
@@ -34,6 +34,10 @@ func _process(_delta):
 				var input = parts[0]
 				var pressed = parts[1].to_float() == 1.0
 				input_received.emit(input, pressed)
+			elif parts.size() == 3:
+				var input = parts[0]
+				var v = Vector2(parts[1].to_float(), parts[2].to_float())
+				input_received.emit(input, v)
 
 func add_ice_candidate(mid: String, index: int, sdp: String):
 	peer.add_ice_candidate(mid, index, sdp)
@@ -45,6 +49,10 @@ func set_session(type: String, sdp: String):
 
 func send_input(input: String, pressed: bool):
 	var data = "%s;%.0f" % [input, 1 if pressed else 0]
+	channel.put_packet(data.to_utf8_buffer())
+
+func send_move(input: String, v: Vector2):
+	var data = "%s;%.2f;%.2f" % [input, v.x, v.y]
 	channel.put_packet(data.to_utf8_buffer())
 
 func create_offer():

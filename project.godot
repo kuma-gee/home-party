@@ -23,15 +23,15 @@ window/stretch/mode="canvas_items"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/qr_code/plugin.cfg")
+enabled=PackedStringArray("res://addons/qr_code/plugin.cfg", "res://addons/virtual_joystick/plugin.cfg")
 
 [input]
 
-move_up={
+move_down={
 "deadzone": 0.2,
 "events": []
 }
-move_down={
+move_up={
 "deadzone": 0.2,
 "events": []
 }
@@ -43,3 +43,8 @@ move_right={
 "deadzone": 0.2,
 "events": []
 }
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
+pointing/emulate_mouse_from_touch=false

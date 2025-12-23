@@ -15,7 +15,7 @@ var inputs = {}
 
 func _ready() -> void:
 	name_label.text = "%s" % data.get("name", "Player")
-	game_client.input_received.connect(_on_input_received)
+	game_client.input_received.connect(func(input: String, v): inputs[input] = v)
 	game_client.send_candidate.connect(func(mid: String, index: int, sdp: String):
 		send_candidate.emit(mid, index, sdp)
 	)
@@ -23,26 +23,11 @@ func _ready() -> void:
 		send_session.emit(type, sdp)
 	)
 
-func _on_input_received(input: String, pressed: bool) -> void:
-	inputs[input] = pressed
-
-func _get_motion() -> Vector2:
-	var motion = Vector2.ZERO
-	if inputs.get("move_up", false):
-		motion.y -= 1
-	if inputs.get("move_down", false):
-		motion.y += 1
-	if inputs.get("move_left", false):
-		motion.x -= 1
-	if inputs.get("move_right", false):
-		motion.x += 1
-	return motion
-
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 	
-	var motion = _get_motion()
+	var motion = inputs["move"] if inputs.has("move") else Vector2.ZERO
 	var direction = (transform.basis * Vector3(motion.x, 0, motion.y)).normalized()
 	if direction:
 		velocity.x = direction.x * speed
