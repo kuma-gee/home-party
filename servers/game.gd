@@ -13,7 +13,7 @@ func _ready() -> void:
 	
 	var code = QRCodeRect.QRCode.new()
 	code.put_byte(url.to_utf8_buffer())
-	qr_code.texture = ImageTexture.create_from_image(code.generate_image())
+	qr_code.texture = ImageTexture.create_from_image(code.generate_image(4, Color.WHITE, Color.BLACK, 1))
 	
 func _on_start_game():
 	pass

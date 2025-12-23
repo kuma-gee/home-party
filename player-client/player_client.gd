@@ -54,7 +54,8 @@ func _parse_ip_from_query_param():
 	if OS.has_feature('web'):
 		var map_data = JavaScriptBridge.eval('''
 			let params = new URL(document.location).searchParams;
-			return params.get("ip");
+			let ip = params.get("ip");
+			ip;
 		''')
 		if map_data:
 			return map_data
