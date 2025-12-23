@@ -1,9 +1,29 @@
 extends Node3D
 
+const URL = "https://kuma-gee.com/home-party"
+
 @export var start_game_btn: Button
+@export var qr_code: TextureRect
+@export var url_label: Label
 
 func _ready() -> void:
 	start_game_btn.pressed.connect(_on_start_game)
+	var url = "%s?ip=%s" % [URL, get_ip_address()]
+	url_label.text = url
+	
+	var code = QRCodeRect.QRCode.new()
+	code.put_byte(url.to_utf8_buffer())
+	qr_code.texture = ImageTexture.create_from_image(code.generate_image())
 	
 func _on_start_game():
 	pass
+
+func get_ip_address():
+	for ip in IP.get_local_addresses():
+		if ip.contains(":"): continue
+		if ip.begins_with("127"): continue
+		if ip.begins_with("172"): continue
+		
+		return ip
+	
+	return "127.0.0.1"

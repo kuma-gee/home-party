@@ -10,6 +10,7 @@ extends Control
 @export_category("Connection UI")
 @export var connect_btn: Button
 @export var name_line: LineEdit
+@export var server_line: LineEdit
 
 @onready var client: LobbyClient = $Client
 @onready var game_client: GameClient = $GameClient
@@ -23,10 +24,11 @@ func _ready() -> void:
 		message_label.text = "Connecting..."
 		connect_btn.disabled = true
 		
-		var err = client.join_server()
+		var err = client.join_server(server_line.text)
 		message_label.text = "Status: %s" % err
 		connect_btn.disabled = false
 	)
+	server_line.text_changed.connect(func(x): connect_btn.disabled = x == "")
 	name_line.text_changed.connect(func(x): connect_btn.disabled = x == "")
 	client.connected_to_server.connect(_on_connected_to_server)
 	client.received_candidate.connect(func(mid: String, index: int, sdp: String):
@@ -42,7 +44,22 @@ func _ready() -> void:
 		client.send_game_client_session(type, sdp)
 	)
 
+	var ip = _parse_ip_from_query_param()
+	if ip != "":
+		server_line.text = ip
+
 	_change_menu(connection_ui)
+
+func _parse_ip_from_query_param():
+	if OS.has_feature('web'):
+		var map_data = JavaScriptBridge.eval('''
+			let params = new URL(document.location).searchParams;
+			return params.get("ip");
+		''')
+		if map_data:
+			return map_data
+
+	return ""	
 
 func _update_move_state(input: String, current: bool, new: bool) -> bool:
 	if current == new:
