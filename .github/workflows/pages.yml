@@ -11,7 +11,10 @@ jobs:
       image: barichello/godot-ci:4.5
     steps:
       - uses: actions/checkout@v6
-      - run: |
+      - name: Setup template
+        env:
+          VERSION: "4.5"
+        run: |
           TARGET=~/.local/share/godot/export_templates/${VERSION}.stable
 
           if [ -f "$TARGET" ]; then
@@ -21,9 +24,8 @@ jobs:
 
           mkdir -v -p ~/.local/share/godot/export_templates
           mv /root/.local/share/godot/export_templates/${VERSION}.stable $TARGET
-        env:
-          VERSION: "4.5"
-      - run: |
+      - name: Build Web
+        run: |
           mkdir -v -p ../build/web
           sed -i 's|^run/main_scene=".*"|run/main_scene="res://player-client/player_client.tscn"|' project.godot
           godot --export-release --headless web
