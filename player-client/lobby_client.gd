@@ -42,7 +42,7 @@ func join_server(ip = "127.0.0.1"):
 		logger.warn("Already connected to server.")
 		return
 	
-	var err = socket.create_client("ws://%s:%s" % [ip, LobbyServer.PORT])
+	var err = socket.create_client("ws://%s:%s" % [ip, LobbyServer.PORT], TLSOptions.client(Certificate.get_certificate()))
 	if err == OK:
 		logger.info("Connected to signaling server at %s:%d" % [ip, LobbyServer.PORT])
 	else:

@@ -5,10 +5,14 @@ const URL = "https://kuma-gee.com/home-party"
 @export var start_game_btn: Button
 @export var qr_code: TextureRect
 @export var url_label: Label
+@onready var lobby_server: LobbyServer = $LobbyServer
 
 func _ready() -> void:
 	start_game_btn.pressed.connect(_on_start_game)
-	var url = "%s?ip=%s" % [URL, get_ip_address()]
+	var ip = get_ip_address()
+	lobby_server.create_server(ip)
+	
+	var url = "%s?ip=%s" % [URL, ip]
 	url_label.text = url
 	
 	var code = QRCodeRect.QRCode.new()

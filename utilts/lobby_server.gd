@@ -21,10 +21,13 @@ var socket = WebSocketMultiplayerPeer.new()
 var logger = KumaLog.new("LobbyServer")
 
 func _ready() -> void:
-	socket.create_server(PORT)
 	socket.peer_connected.connect(_peer_connected)
 	socket.peer_disconnected.connect(_peer_disconnected)
-	logger.info("Creating signaling server on port %d" % PORT)
+
+func create_server(ip: String):
+	Certificate.CreateX509Cert()
+	socket.create_server(PORT, ip, TLSOptions.server(Certificate.get_key(), Certificate.get_certificate()))
+	logger.info("Creating signaling server on url %s:%s" % [ip, PORT])
 
 func _peer_connected(id: int):
 	logger.info("Peer connected: %d" % id)
