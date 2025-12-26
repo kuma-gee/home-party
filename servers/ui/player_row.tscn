@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://ddmbv3srb36mq"]
+
+[ext_resource type="Script" uid="uid://ddl4e2igiqalx" path="res://servers/ui/player_row.gd" id="1_5iabr"]
+[ext_resource type="Texture2D" uid="uid://dppjsb1nftth5" path="res://icon.svg" id="1_nocah"]
+
+[node name="PlayerRow" type="HBoxContainer" node_paths=PackedStringArray("label", "texture_rect")]
+script = ExtResource("1_5iabr")
+label = NodePath("Label")
+texture_rect = NodePath("TextureRect")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "100"
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("1_nocah")
+expand_mode = 2
+stretch_mode = 5

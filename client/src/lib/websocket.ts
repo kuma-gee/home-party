@@ -80,6 +80,7 @@ export class WebSocketClient {
 	onIdReceived?: (id: number) => void;
 	onWebRTCStateChange?: (state: RTCPeerConnectionState) => void;
 	onWebRTCDataChannelOpen?: () => void;
+	onDataChannelMessage?: (data: string) => void;
 
 	constructor(private serverIp: string, private port: number = 14412) {}
 
@@ -216,7 +217,11 @@ export class WebSocketClient {
 					type: type,
 					sdp: sdp,
 				});
-			}
+			},
+            onDataChannelMessage: (data) => {
+                console.log('Received data channel message:', data);
+				this.onDataChannelMessage?.(data);
+            }
 		};
 
 		this.webrtcClient = new WebRTCClient(webrtcConfig);

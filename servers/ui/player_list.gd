@@ -1,9 +1,7 @@
 extends Control
 
-@export var lobby_server: LobbyServer
-
 func _ready() -> void:
-	lobby_server.update_players_list.connect(_on_update_players_list)
+	LobbyServer.update_players_list.connect(_on_update_players_list)
 
 func _on_update_players_list(players: Array) -> void:
 	for child in get_children():

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-	import { connectionStore, isConnected, peerId, webrtcState, webrtcDataChannelOpen } from '$lib/store';
+	import { connectionStore, isConnected, peerId, webrtcState, webrtcDataChannelOpen, dataChannelMessage } from '$lib/store';
 	import { page } from '$app/stores';
 	import VirtualJoystick from '$lib/VirtualJoystick.svelte';
 
@@ -121,21 +121,16 @@
 		errorMessage = '';
 	}
 
-	function sendTestInput(input: string, pressed: boolean) {
+	function sendButtonInput(input: string, pressed: boolean) {
 		connectionStore.sendInput(input, pressed);
 	}
 
-	function handleButtonPress(input: string) {
-		sendTestInput(input, true);
-		setTimeout(() => sendTestInput(input, false), 100);
-	}
-
 	function handleButtonDown(input: string) {
-		sendTestInput(input, true);
+		sendButtonInput(input, true);
 	}
 
 	function handleButtonUp(input: string) {
-		sendTestInput(input, false);
+		sendButtonInput(input, false);
 	}
 
 	function handleJoystickMove(vector: { x: number; y: number }) {
@@ -200,12 +195,17 @@
 					<VirtualJoystick onMove={handleJoystickMove} />
 				</div>
 
+				<!-- Message Display (Center) -->
+				{#if $dataChannelMessage}
+					<div class="message-display">
+						<p>{$dataChannelMessage}</p>
+					</div>
+				{/if}
+
 				<!-- Action Buttons (Bottom Right) -->
 				<div class="action-buttons">
 					<button 
 						class="action-btn secondary-btn"
-						ontouchstart={() => handleButtonDown('action2')}
-						ontouchend={() => handleButtonUp('action2')}
 						onmousedown={() => handleButtonDown('action2')}
 						onmouseup={() => handleButtonUp('action2')}
 					>
@@ -213,8 +213,6 @@
 					</button>
 					<button 
 						class="action-btn primary-btn"
-						ontouchstart={() => handleButtonDown('action')}
-						ontouchend={() => handleButtonUp('action')}
 						onmousedown={() => handleButtonDown('action')}
 						onmouseup={() => handleButtonUp('action')}
 					>
@@ -259,13 +257,6 @@
 		font-family: system-ui, -apple-system, sans-serif;
 		position: relative;
 		overflow: hidden;
-	}
-
-	h1 {
-		text-align: center;
-		color: #333;
-		margin: 2rem 0;
-		padding: 0 2rem;
 	}
 
 	h2 {
@@ -602,6 +593,42 @@
 
 	.secondary-btn {
 		background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);
+	}
+
+	/* Message Display */
+	.message-display {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background: rgba(0, 0, 0, 0.8);
+		backdrop-filter: blur(10px);
+		color: white;
+		padding: 1.5rem 2rem;
+		border-radius: 20px;
+		max-width: 80vw;
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+		text-align: center;
+		animation: fadeIn 0.3s ease-in;
+		z-index: 50;
+	}
+
+	.message-display p {
+		margin: 0;
+		font-size: 1.25rem;
+		font-weight: 500;
+		line-height: 1.5;
+	}
+
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+			transform: translate(-50%, -40%);
+		}
+		to {
+			opacity: 1;
+			transform: translate(-50%, -50%);
+		}
 	}
 
 	/* Mobile Optimizations */

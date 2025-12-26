@@ -8,7 +8,7 @@ signal server_stopped()
 signal client_connected(peer_id: int)
 signal client_disconnected(peer_id: int)
 
-@export var port: int = 8080
+@export var port: int = 80808
 @export var serve_directory: String = "build/web"
 @export var auto_start: bool = true
 

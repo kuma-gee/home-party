@@ -53,13 +53,8 @@ func set_session(type: String, sdp: String):
 	peer.set_remote_description(type, sdp)
 	logger.info("Set remote session description of type %s" % type)
 	
-func send_input(input: String, pressed: bool):
-	var data = "%s;%.0f" % [input, 1 if pressed else 0]
-	channel.put_packet(data.to_utf8_buffer())
-
-func send_move(input: String, v: Vector2):
-	var data = "%s;%.2f;%.2f" % [input, v.x, v.y]
-	channel.put_packet(data.to_utf8_buffer())
+func send_text(text: String):
+	channel.put_packet(text.to_utf8_buffer())
 
 func create_offer():
 	peer.create_offer()

@@ -18,6 +18,8 @@ config/icon="res://icon.svg"
 [autoload]
 
 HttpServer="*res://utilts/http_server.gd"
+LobbyServer="*res://utilts/lobby_server.gd"
+PlayerManager="*res://utilts/player_manager.gd"
 
 [display]
 
@@ -27,7 +29,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/qr_code/plugin.cfg", "res://addons/virtual_joystick/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot-css-theme/plugin.cfg", "res://addons/qr_code/plugin.cfg")
 
 [input]
 

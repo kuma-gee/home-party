@@ -1,12 +1,11 @@
-class_name LobbyServer
 extends Node
 
 signal player_connected(data: Dictionary)
 signal player_disconnected(uuid: String)
 signal update_players_list(players: Array)
 
-signal received_candidate(uuid: String, mid: String, index: int, sdp: String)
-signal received_session(uuid: String, type: String, sdp: String)
+signal received_candidate(peer_id: int, mid: String, index: int, sdp: String)
+signal received_session(peer_id: int, type: String, sdp: String)
 
 enum Message {
 	Id,
@@ -24,10 +23,8 @@ var logger = KumaLog.new("LobbyServer")
 func _ready() -> void:
 	socket.peer_connected.connect(_peer_connected)
 	socket.peer_disconnected.connect(_peer_disconnected)
-
-func create_server(ip: String):
 	socket.create_server(PORT, "*")
-	logger.info("Creating signaling server on url %s:%s" % [ip, PORT])
+	logger.info("Creating signaling server on port %s" % [PORT])
 
 func _peer_connected(id: int):
 	logger.info("Peer connected: %d" % id)
@@ -64,18 +61,14 @@ func _process(_delta: float) -> void:
 func _on_message_received(data: Dictionary):
 	if data.has("msg"):
 		match int(data.msg):
-			LobbyServer.Message.Id:
+			Message.Id:
 				_on_id_message(data)
-			LobbyServer.Message.GameClientSession:
+			Message.GameClientSession:
 				var peer_id = int(data.peer_id)
-				var uuid = peer_to_uuid.get(peer_id, "")
-				if uuid != "":
-					received_session.emit(uuid, data.type, data.sdp)
-			LobbyServer.Message.GameClientIceCandidate:
+				received_session.emit(peer_id, data.type, data.sdp)
+			Message.GameClientIceCandidate:
 				var peer_id = int(data.peer_id)
-				var uuid = peer_to_uuid.get(peer_id, "")
-				if uuid != "":
-					received_candidate.emit(uuid, data.mid, int(data.index), data.sdp)
+				received_candidate.emit(peer_id, data.mid, int(data.index), data.sdp)
 
 func _on_id_message(data: Dictionary):
 	var peer_id = int(data.peer_id)

@@ -8,6 +8,7 @@ export interface ConnectionState {
 	error: string | null;
 	webrtcState: RTCPeerConnectionState | null;
 	webrtcDataChannelOpen: boolean;
+	dataChannelMessage: string | null;
 }
 
 function createConnectionStore() {
@@ -18,6 +19,7 @@ function createConnectionStore() {
 		error: null,
 		webrtcState: null,
 		webrtcDataChannelOpen: false,
+		dataChannelMessage: null,
 	});
 
 	let client: WebSocketClient | null = null;
@@ -61,6 +63,10 @@ function createConnectionStore() {
 				update(state => ({ ...state, webrtcDataChannelOpen: true }));
 			};
 
+			client.onDataChannelMessage = (data: string) => {
+				update(state => ({ ...state, dataChannelMessage: data }));
+			};
+
 			try {
 				await client.connect();
 			} catch (error) {
@@ -80,6 +86,7 @@ function createConnectionStore() {
 				error: null,
 				webrtcState: null,
 				webrtcDataChannelOpen: false,
+				dataChannelMessage: null,
 			});
 		},
 		send: (data: any) => {
@@ -123,4 +130,9 @@ export const webrtcState = derived(
 export const webrtcDataChannelOpen = derived(
 	connectionStore,
 	$connectionStore => $connectionStore.webrtcDataChannelOpen
+);
+
+export const dataChannelMessage = derived(
+	connectionStore,
+	$connectionStore => $connectionStore.dataChannelMessage
 );
