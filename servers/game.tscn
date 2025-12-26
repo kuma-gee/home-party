@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://dfokhnxe3wv3r"]
+[gd_scene load_steps=9 format=3 uid="uid://dfokhnxe3wv3r"]
 
 [ext_resource type="Script" uid="uid://dq0a51hof6j67" path="res://servers/game.gd" id="1_e2o6t"]
 [ext_resource type="Script" uid="uid://dgfn4nv7yxows" path="res://servers/ui/player_list.gd" id="2_feb5d"]
+[ext_resource type="Script" uid="uid://d2kw2cx2uwjl4" path="res://utilts/http_server.gd" id="2_mpaex"]
 [ext_resource type="Script" uid="uid://hni8ihkjnhn6" path="res://utilts/lobby_server.gd" id="4_dgl23"]
 [ext_resource type="Script" uid="uid://cvrvjwxdt72vj" path="res://servers/player_spawner.gd" id="5_k1cak"]
 [ext_resource type="PackedScene" uid="uid://c8hy6654mshgi" path="res://servers/entities/player.tscn" id="6_mpaex"]
@@ -23,6 +24,10 @@ script = ExtResource("1_e2o6t")
 start_game_btn = NodePath("CanvasLayer/Control/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/Button")
 qr_code = NodePath("CanvasLayer/Control/PanelContainer/HBoxContainer/VBoxContainer2/QRCodeRect")
 url_label = NodePath("CanvasLayer/Control/PanelContainer/HBoxContainer/VBoxContainer2/URL")
+
+[node name="HttpServer" type="Node" parent="."]
+script = ExtResource("2_mpaex")
+metadata/_custom_type_script = "uid://d2kw2cx2uwjl4"
 
 [node name="LobbyServer" type="Node" parent="."]
 script = ExtResource("4_dgl23")
