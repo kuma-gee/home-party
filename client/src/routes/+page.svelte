@@ -2,6 +2,7 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { connectionStore, isConnected, peerId, webrtcState, webrtcDataChannelOpen } from '$lib/store';
 	import { page } from '$app/stores';
+	import VirtualJoystick from '$lib/VirtualJoystick.svelte';
 
 	let serverIp = $state('');
 	let connecting = $state(false);
@@ -55,6 +56,11 @@
 		setTimeout(() => sendTestInput(input, false), 100);
 	}
 
+	function handleJoystickMove(vector: { x: number; y: number }) {
+		connectionStore.sendMove('move', vector);
+	}
+
+
 </script>
 
 <div class="container">
@@ -106,6 +112,11 @@
 						<button onclick={() => handleButtonPress('menu')} class="control-btn">
 							Menu
 						</button>
+					</div>
+
+					<div class="joystick-section">
+						<h4>Movement</h4>
+						<VirtualJoystick onMove={handleJoystickMove} />
 					</div>
 				</div>
 			{/if}
@@ -247,6 +258,22 @@
 		margin: 0 0 1rem 0;
 		color: #333;
 		text-align: center;
+	}
+
+	.joystick-section {
+		margin-top: 2rem;
+		padding-top: 1.5rem;
+		border-top: 2px solid #e0e0e0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.joystick-section h4 {
+		margin: 0 0 1rem 0;
+		color: #555;
+		font-size: 1rem;
+		font-weight: 600;
 	}
 
 	.button-grid {
