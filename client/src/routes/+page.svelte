@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-	import { connectionStore, isConnected, peerId } from '$lib/store';
+	import { connectionStore, isConnected, peerId, webrtcState, webrtcDataChannelOpen } from '$lib/store';
 	import { page } from '$app/stores';
 
 	let serverIp = $state('');
@@ -45,6 +45,16 @@
 		connectionStore.disconnect();
 		errorMessage = '';
 	}
+
+	function sendTestInput(input: string, pressed: boolean) {
+		connectionStore.sendInput(input, pressed);
+	}
+
+	function handleButtonPress(input: string) {
+		sendTestInput(input, true);
+		setTimeout(() => sendTestInput(input, false), 100);
+	}
+
 </script>
 
 <div class="container">
@@ -77,7 +87,29 @@
 			<h2>Connected to Server</h2>
 			<p><strong>Server IP:</strong> {serverIp}</p>
 			<p><strong>Your Player ID:</strong> {$peerId ?? 'Waiting...'}</p>
+			<p><strong>WebRTC State:</strong> <span class="status-badge status-{$webrtcState}">{$webrtcState ?? 'initializing'}</span></p>
+			<p><strong>Data Channel:</strong> <span class="status-badge status-{$webrtcDataChannelOpen ? 'open' : 'closed'}">{$webrtcDataChannelOpen ? 'Open' : 'Closed'}</span></p>
 			
+			{#if $webrtcDataChannelOpen}
+				<div class="controls-section">
+					<h3>Test Controls</h3>
+					<div class="button-grid">
+						<button onclick={() => handleButtonPress('jump')} class="control-btn">
+							Jump
+						</button>
+						<button onclick={() => handleButtonPress('action')} class="control-btn">
+							Action
+						</button>
+						<button onclick={() => handleButtonPress('interact')} class="control-btn">
+							Interact
+						</button>
+						<button onclick={() => handleButtonPress('menu')} class="control-btn">
+							Menu
+						</button>
+					</div>
+				</div>
+			{/if}
+
 			<button onclick={handleDisconnect} class="disconnect-btn">Disconnect</button>
 		</div>
 	{/if}
@@ -174,6 +206,70 @@
 	.connected-info p {
 		margin: 0.5rem 0;
 		font-size: 1.1rem;
+	}
+
+	.status-badge {
+		padding: 0.25rem 0.75rem;
+		border-radius: 12px;
+		font-size: 0.9rem;
+		font-weight: 600;
+		text-transform: uppercase;
+	}
+
+	.status-connected,
+	.status-open {
+		background-color: #4CAF50;
+		color: white;
+	}
+
+	.status-connecting,
+	.status-new {
+		background-color: #2196F3;
+		color: white;
+	}
+
+	.status-disconnected,
+	.status-closed,
+	.status-failed {
+		background-color: #f44336;
+		color: white;
+	}
+
+	.controls-section {
+		margin: 2rem 0 1rem;
+		padding: 1.5rem;
+		background: white;
+		border-radius: 8px;
+		border: 2px solid #4CAF50;
+	}
+
+	.controls-section h3 {
+		margin: 0 0 1rem 0;
+		color: #333;
+		text-align: center;
+	}
+
+	.button-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 1rem;
+	}
+
+	.control-btn {
+		background-color: #2196F3;
+		padding: 1.5rem;
+		font-size: 1.1rem;
+		font-weight: 700;
+		transition: all 0.2s;
+	}
+
+	.control-btn:hover {
+		background-color: #1976D2;
+		transform: scale(1.05);
+	}
+
+	.control-btn:active {
+		transform: scale(0.95);
 	}
 
 	.error {
