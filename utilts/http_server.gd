@@ -1,4 +1,3 @@
-class_name HttpServer
 extends Node
 
 ## Simple HTTP server that serves static files from a directory

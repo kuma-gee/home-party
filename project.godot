@@ -15,6 +15,10 @@ run/main_scene="res://player-client/player_client.tscn"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+HttpServer="*res://utilts/http_server.gd"
+
 [display]
 
 window/size/viewport_width=1920
