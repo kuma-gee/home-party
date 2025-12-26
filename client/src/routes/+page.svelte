@@ -16,6 +16,9 @@
 			serverIp = ipParam;
 			// Auto-connect if IP is provided in URL
 			handleConnect();
+		} else {
+			// Prefill with current domain/hostname
+			serverIp = window.location.hostname || 'localhost';
 		}
 	});
 
@@ -56,6 +59,14 @@
 		setTimeout(() => sendTestInput(input, false), 100);
 	}
 
+	function handleButtonDown(input: string) {
+		sendTestInput(input, true);
+	}
+
+	function handleButtonUp(input: string) {
+		sendTestInput(input, false);
+	}
+
 	function handleJoystickMove(vector: { x: number; y: number }) {
 		connectionStore.sendMove('move', vector);
 	}
@@ -89,55 +100,69 @@
 			{/if}
 		</div>
 	{:else}
-		<div class="connected-info">
-			<h2>Connected to Server</h2>
-			<p><strong>Server IP:</strong> {serverIp}</p>
-			<p><strong>Your Player ID:</strong> {$peerId ?? 'Waiting...'}</p>
-			<p><strong>WebRTC State:</strong> <span class="status-badge status-{$webrtcState}">{$webrtcState ?? 'initializing'}</span></p>
-			<p><strong>Data Channel:</strong> <span class="status-badge status-{$webrtcDataChannelOpen ? 'open' : 'closed'}">{$webrtcDataChannelOpen ? 'Open' : 'Closed'}</span></p>
-			
-			{#if $webrtcDataChannelOpen}
-				<div class="controls-section">
-					<h3>Test Controls</h3>
-					<div class="button-grid">
-						<button onclick={() => handleButtonPress('jump')} class="control-btn">
-							Jump
-						</button>
-						<button onclick={() => handleButtonPress('action')} class="control-btn">
-							Action
-						</button>
-						<button onclick={() => handleButtonPress('interact')} class="control-btn">
-							Interact
-						</button>
-						<button onclick={() => handleButtonPress('menu')} class="control-btn">
-							Menu
-						</button>
-					</div>
-
-					<div class="joystick-section">
-						<h4>Movement</h4>
-						<VirtualJoystick onMove={handleJoystickMove} />
-					</div>
-				</div>
-			{/if}
-
-			<button onclick={handleDisconnect} class="disconnect-btn">Disconnect</button>
+		<!-- Connection Status Badge -->
+		<div class="status-corner">
+			<div class="status-indicator" class:connected={$webrtcDataChannelOpen}>
+				{#if $webrtcDataChannelOpen}
+					<span class="status-dot"></span>
+					<span class="status-text">Connected</span>
+				{:else}
+					<span class="status-text">Connecting...</span>
+				{/if}
+			</div>
+			<button onclick={handleDisconnect} class="disconnect-icon" title="Disconnect">✕</button>
 		</div>
+
+		{#if $webrtcDataChannelOpen}
+			<!-- Game Controls -->
+			<div class="game-controls">
+				<!-- Joystick (Bottom Left) -->
+				<div class="joystick-container-wrapper">
+					<VirtualJoystick onMove={handleJoystickMove} />
+				</div>
+
+				<!-- Action Buttons (Bottom Right) -->
+				<div class="action-buttons">
+					<button 
+						class="action-btn secondary-btn"
+						ontouchstart={() => handleButtonDown('action2')}
+						ontouchend={() => handleButtonUp('action2')}
+						onmousedown={() => handleButtonDown('action2')}
+						onmouseup={() => handleButtonUp('action2')}
+					>
+						B
+					</button>
+					<button 
+						class="action-btn primary-btn"
+						ontouchstart={() => handleButtonDown('action')}
+						ontouchend={() => handleButtonUp('action')}
+						onmousedown={() => handleButtonDown('action')}
+						onmouseup={() => handleButtonUp('action')}
+					>
+						A
+					</button>
+				</div>
+			</div>
+		{/if}
 	{/if}
 </div>
 
 <style>
 	.container {
-		max-width: 600px;
-		margin: 0 auto;
-		padding: 2rem;
+		width: 100vw;
+		height: 100vh;
+		margin: 0;
+		padding: 0;
 		font-family: system-ui, -apple-system, sans-serif;
+		position: relative;
+		overflow: hidden;
 	}
 
 	h1 {
 		text-align: center;
 		color: #333;
-		margin-bottom: 2rem;
+		margin: 2rem 0;
+		padding: 0 2rem;
 	}
 
 	h2 {
@@ -145,8 +170,10 @@
 		margin-bottom: 1rem;
 	}
 
-	.connection-form,
-	.connected-info {
+	/* Connection Form Styles */
+	.connection-form {
+		max-width: 400px;
+		margin: 2rem auto;
 		background: #f5f5f5;
 		padding: 2rem;
 		border-radius: 8px;
@@ -205,100 +232,6 @@
 		cursor: not-allowed;
 	}
 
-	.disconnect-btn {
-		background-color: #f44336;
-		margin-top: 1rem;
-	}
-
-	.disconnect-btn:hover {
-		background-color: #da190b;
-	}
-
-	.connected-info p {
-		margin: 0.5rem 0;
-		font-size: 1.1rem;
-	}
-
-	.status-badge {
-		padding: 0.25rem 0.75rem;
-		border-radius: 12px;
-		font-size: 0.9rem;
-		font-weight: 600;
-		text-transform: uppercase;
-	}
-
-	.status-connected,
-	.status-open {
-		background-color: #4CAF50;
-		color: white;
-	}
-
-	.status-connecting,
-	.status-new {
-		background-color: #2196F3;
-		color: white;
-	}
-
-	.status-disconnected,
-	.status-closed,
-	.status-failed {
-		background-color: #f44336;
-		color: white;
-	}
-
-	.controls-section {
-		margin: 2rem 0 1rem;
-		padding: 1.5rem;
-		background: white;
-		border-radius: 8px;
-		border: 2px solid #4CAF50;
-	}
-
-	.controls-section h3 {
-		margin: 0 0 1rem 0;
-		color: #333;
-		text-align: center;
-	}
-
-	.joystick-section {
-		margin-top: 2rem;
-		padding-top: 1.5rem;
-		border-top: 2px solid #e0e0e0;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
-
-	.joystick-section h4 {
-		margin: 0 0 1rem 0;
-		color: #555;
-		font-size: 1rem;
-		font-weight: 600;
-	}
-
-	.button-grid {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 1rem;
-	}
-
-	.control-btn {
-		background-color: #2196F3;
-		padding: 1.5rem;
-		font-size: 1.1rem;
-		font-weight: 700;
-		transition: all 0.2s;
-	}
-
-	.control-btn:hover {
-		background-color: #1976D2;
-		transform: scale(1.05);
-	}
-
-	.control-btn:active {
-		transform: scale(0.95);
-	}
-
 	.error {
 		color: #f44336;
 		margin-top: 1rem;
@@ -306,5 +239,180 @@
 		background-color: #ffebee;
 		border-radius: 4px;
 		text-align: center;
+	}
+
+	/* Game Controls - Full Screen Layout */
+	.game-controls {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		display: flex;
+		align-items: flex-end;
+		justify-content: space-between;
+		padding: 2rem;
+		box-sizing: border-box;
+		touch-action: none;
+		user-select: none;
+	}
+
+	/* Status Corner Badge */
+	.status-corner {
+		position: fixed;
+		top: 1rem;
+		right: 1rem;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		z-index: 100;
+	}
+
+	.status-indicator {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		background: rgba(0, 0, 0, 0.6);
+		backdrop-filter: blur(10px);
+		padding: 0.5rem 1rem;
+		border-radius: 20px;
+		color: white;
+		font-size: 0.875rem;
+		font-weight: 500;
+	}
+
+	.status-indicator.connected {
+		background: rgba(76, 175, 80, 0.8);
+	}
+
+	.status-dot {
+		width: 8px;
+		height: 8px;
+		background: #4CAF50;
+		border-radius: 50%;
+		animation: pulse 2s infinite;
+	}
+
+	@keyframes pulse {
+		0%, 100% {
+			opacity: 1;
+		}
+		50% {
+			opacity: 0.5;
+		}
+	}
+
+	.disconnect-icon {
+		width: 36px;
+		height: 36px;
+		padding: 0;
+		background: rgba(244, 67, 54, 0.9);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 1.25rem;
+		line-height: 1;
+		transition: all 0.2s;
+	}
+
+	.disconnect-icon:hover {
+		background: rgba(244, 67, 54, 1);
+		transform: scale(1.1);
+	}
+
+	/* Joystick Container */
+	.joystick-container-wrapper {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 1rem;
+	}
+
+	/* Action Buttons */
+	.action-buttons {
+		display: flex;
+		gap: 1.5rem;
+		align-items: center;
+	}
+
+	.action-btn {
+		width: 80px;
+		height: 80px;
+		border-radius: 50%;
+		border: 4px solid rgba(255, 255, 255, 0.3);
+		font-size: 2rem;
+		font-weight: 700;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+		transition: all 0.15s ease;
+		touch-action: none;
+		user-select: none;
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	.action-btn:active {
+		transform: scale(0.9);
+		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+	}
+
+	.primary-btn {
+		background: linear-gradient(135deg, #FF6B6B 0%, #EE5A6F 100%);
+		width: 90px;
+		height: 90px;
+	}
+
+	.secondary-btn {
+		background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);
+	}
+
+	/* Mobile Optimizations */
+	@media (max-width: 768px) {
+		.game-controls {
+			padding: 1.5rem;
+		}
+
+		.action-btn {
+			width: 70px;
+			height: 70px;
+			font-size: 1.75rem;
+		}
+
+		.primary-btn {
+			width: 80px;
+			height: 80px;
+		}
+
+		.status-corner {
+			top: 0.75rem;
+			right: 0.75rem;
+		}
+
+		.status-text {
+			display: none;
+		}
+
+		.status-indicator {
+			padding: 0.5rem;
+		}
+	}
+
+	@media (max-height: 600px) {
+		.game-controls {
+			padding: 1rem;
+		}
+
+		.action-btn {
+			width: 60px;
+			height: 60px;
+			font-size: 1.5rem;
+		}
+
+		.primary-btn {
+			width: 70px;
+			height: 70px;
+		}
 	}
 </style>
