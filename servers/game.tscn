@@ -65,7 +65,7 @@ render_target_update_mode = 4
 transform = Transform3D(0.9934268, 0.06475032, 0.09439573, -0.11446902, 0.56193984, 0.8192194, 0, -0.8246399, 0.56565803, 0, 23.31145, 0)
 
 [node name="Camera3D" type="Camera3D" parent="CanvasLayer/Control/HBoxContainer/SubViewportContainer/SubViewport"]
-transform = Transform3D(1, 0, 0, 0, 0.25881907, 0.9659258, 0, -0.9659258, 0.25881907, 0.6065397, 25.97927, 4.9295206)
+transform = Transform3D(1, 0, 0, 0, 0.25881907, 0.9659258, 0, -0.9659258, 0.25881907, -0.15752125, 21.226692, 5.7612734)
 current = true
 fov = 30.0
 

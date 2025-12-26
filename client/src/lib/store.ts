@@ -24,12 +24,13 @@ function createConnectionStore() {
 
 	return {
 		subscribe,
-		connect: async (serverIp: string) => {
+		connect: async (serverIp: string, playerName: string = '') => {
 			if (client) {
 				client.disconnect();
 			}
 
 			client = new WebSocketClient(serverIp);
+			client.setPlayerName(playerName);
 
 			client.onConnected = () => {
 				update(state => ({ ...state, connected: true, serverIp, error: null }));

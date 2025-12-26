@@ -71,6 +71,7 @@ export class WebSocketClient {
 	private reconnectDelay = 1000;
 	private intentionalDisconnect = false;
 	private webrtcClient: WebRTCClient | null = null;
+	private playerName: string = '';
 
 	onConnected?: () => void;
 	onDisconnected?: () => void;
@@ -81,6 +82,10 @@ export class WebSocketClient {
 	onWebRTCDataChannelOpen?: () => void;
 
 	constructor(private serverIp: string, private port: number = 14412) {}
+
+	setPlayerName(name: string) {
+		this.playerName = name;
+	}
 
 	connect(): Promise<void> {
 		return new Promise((resolve, reject) => {
@@ -167,7 +172,7 @@ export class WebSocketClient {
 					msg: MessageType.Id,
 					peer_id: this.peerId,
 					client_id: clientId,
-					name: 'Player ' + this.peerId,
+					name: this.playerName || 'Player ' + this.peerId,
 				});
 
 				this.initializeWebRTC();

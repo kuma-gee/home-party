@@ -18,7 +18,7 @@ func _ready() -> void:
 	http_server.start_server()
 	
 	# Use local HTTP server instead of external URL
-	var url = "http://%s:%d?ip=%s" % [ip, http_server.port, ip]
+	var url = "http://%s:%d" % [ip, http_server.port]
 	url_label.text = url
 	
 	var code = QRCodeRect.QRCode.new()

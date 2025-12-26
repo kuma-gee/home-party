@@ -7,6 +7,42 @@
 	let serverIp = $state('');
 	let connecting = $state(false);
 	let errorMessage = $state('');
+	let isFullscreen = $state(false);
+	let showFullscreenButton = $state(false);
+	let playerName = $state('');
+
+	// Request fullscreen
+	async function requestFullscreen() {
+		try {
+			const elem = document.documentElement;
+			if (elem.requestFullscreen) {
+				await elem.requestFullscreen();
+			} else if ((elem as any).webkitRequestFullscreen) {
+				await (elem as any).webkitRequestFullscreen();
+			} else if ((elem as any).mozRequestFullScreen) {
+				await (elem as any).mozRequestFullScreen();
+			} else if ((elem as any).msRequestFullscreen) {
+				await (elem as any).msRequestFullscreen();
+			}
+			isFullscreen = true;
+			showFullscreenButton = false;
+		} catch (error) {
+			console.error('Failed to enter fullscreen:', error);
+			showFullscreenButton = true;
+		}
+	}
+
+	// Handle fullscreen change
+	function handleFullscreenChange() {
+		isFullscreen = !!(document.fullscreenElement || 
+			(document as any).webkitFullscreenElement || 
+			(document as any).mozFullScreenElement || 
+			(document as any).msFullscreenElement);
+		
+		if (!isFullscreen && $webrtcDataChannelOpen) {
+			showFullscreenButton = true;
+		}
+	}
 
 	onMount(() => {
 		// Get server IP from URL parameters
@@ -20,10 +56,35 @@
 			// Prefill with current domain/hostname
 			serverIp = window.location.hostname || 'localhost';
 		}
+
+		// Load saved player name from localStorage
+		const savedName = localStorage.getItem('playerName');
+		if (savedName) {
+			playerName = savedName;
+		}
+
+		// Listen for fullscreen changes
+		document.addEventListener('fullscreenchange', handleFullscreenChange);
+		document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+		document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+		document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+		// Try to lock orientation to landscape if supported
+		if (screen.orientation && (screen.orientation as any).lock) {
+			(screen.orientation as any).lock('landscape').catch((err: any) => {
+				console.log('Orientation lock not supported or failed:', err);
+			});
+		}
 	});
 
 	onDestroy(() => {
 		connectionStore.disconnect();
+		
+		// Remove fullscreen listeners
+		document.removeEventListener('fullscreenchange', handleFullscreenChange);
+		document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+		document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
+		document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
 	});
 
 	async function handleConnect() {
@@ -32,11 +93,21 @@
 			return;
 		}
 
+		if (!playerName.trim()) {
+			errorMessage = 'Please enter your name';
+			return;
+		}
+
 		connecting = true;
 		errorMessage = '';
 
 		try {
-			await connectionStore.connect(serverIp);
+			// Save player name to localStorage
+			localStorage.setItem('playerName', playerName.trim());
+			
+			await connectionStore.connect(serverIp, playerName.trim());
+			// Try to enter fullscreen after successful connection
+			await requestFullscreen();
 		} catch (error) {
 			errorMessage = 'Failed to connect to server';
 			console.error(error);
@@ -81,6 +152,17 @@
 		<div class="connection-form">
 			<h2>Connect to Game Server</h2>
 			<div class="input-group">
+				<label for="player-name">Your Name:</label>
+				<input
+					id="player-name"
+					type="text"
+					bind:value={playerName}
+					placeholder="Enter your name"
+					disabled={connecting}
+					maxlength="20"
+				/>
+			</div>
+			<div class="input-group">
 				<label for="server-ip">Server IP Address:</label>
 				<input
 					id="server-ip"
@@ -91,7 +173,7 @@
 				/>
 			</div>
 
-			<button onclick={handleConnect} disabled={connecting || !serverIp}>
+			<button onclick={handleConnect} disabled={connecting || !serverIp || !playerName}>
 				{connecting ? 'Connecting...' : 'Connect'}
 			</button>
 
@@ -107,6 +189,9 @@
 					<span class="status-dot"></span>
 					<span class="status-text">Connected</span>
 				</div>
+				{#if showFullscreenButton}
+					<button onclick={requestFullscreen} class="fullscreen-icon" title="Enter Fullscreen">⛶</button>
+				{/if}
 				<button onclick={handleDisconnect} class="disconnect-icon" title="Disconnect">✕</button>
 			</div>
 
@@ -455,6 +540,25 @@
 		transform: scale(1.1);
 	}
 
+	.fullscreen-icon {
+		width: 36px;
+		height: 36px;
+		padding: 0;
+		background: rgba(33, 150, 243, 0.9);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 1.25rem;
+		line-height: 1;
+		transition: all 0.2s;
+	}
+
+	.fullscreen-icon:hover {
+		background: rgba(33, 150, 243, 1);
+		transform: scale(1.1);
+	}
+
 	/* Joystick Container */
 	.joystick-container-wrapper {
 		display: flex;
@@ -503,7 +607,7 @@
 	}
 
 	/* Mobile Optimizations */
-	@media (max-width: 768px) {
+	@media (max-width: 768px), (max-height: 450px) {
 		.game-controls {
 			padding: 1.5rem;
 		}
@@ -530,6 +634,29 @@
 
 		.status-indicator {
 			padding: 0.5rem;
+		}
+	}
+
+	/* Landscape mode optimizations */
+	@media (orientation: landscape) and (max-height: 500px) {
+		.game-controls {
+			padding: 1rem 2rem;
+		}
+
+		.action-btn {
+			width: 65px;
+			height: 65px;
+			font-size: 1.5rem;
+		}
+
+		.primary-btn {
+			width: 75px;
+			height: 75px;
+		}
+
+		.status-corner {
+			top: 0.5rem;
+			right: 0.5rem;
 		}
 	}
 
