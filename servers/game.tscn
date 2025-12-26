@@ -19,11 +19,11 @@ data = {
 [sub_resource type="ImageTexture" id="ImageTexture_mmpi0"]
 image = SubResource("Image_k1cak")
 
-[node name="Game" type="Node3D" node_paths=PackedStringArray("start_game_btn", "qr_code", "url_label")]
+[node name="Game" type="Node" node_paths=PackedStringArray("start_game_btn", "qr_code", "url_label")]
 script = ExtResource("1_e2o6t")
-start_game_btn = NodePath("CanvasLayer/Control/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/Button")
-qr_code = NodePath("CanvasLayer/Control/PanelContainer/HBoxContainer/VBoxContainer2/QRCodeRect")
-url_label = NodePath("CanvasLayer/Control/PanelContainer/HBoxContainer/VBoxContainer2/URL")
+start_game_btn = NodePath("CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/Button")
+qr_code = NodePath("CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/VBoxContainer2/QRCodeRect")
+url_label = NodePath("CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/VBoxContainer2/URL")
 
 [node name="HttpServer" type="Node" parent="."]
 script = ExtResource("2_mpaex")
@@ -43,78 +43,90 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control"]
-custom_minimum_size = Vector2(300, 400)
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control"]
 layout_mode = 1
-anchors_preset = 11
-anchor_left = 1.0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -300.0
-grow_horizontal = 0
+grow_horizontal = 2
 grow_vertical = 2
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="CanvasLayer/Control/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="CanvasLayer/Control/HBoxContainer/SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(1616, 1080)
+render_target_update_mode = 4
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="CanvasLayer/Control/HBoxContainer/SubViewportContainer/SubViewport"]
+transform = Transform3D(0.9934268, 0.06475032, 0.09439573, -0.11446902, 0.56193984, 0.8192194, 0, -0.8246399, 0.56565803, 0, 23.31145, 0)
+
+[node name="Camera3D" type="Camera3D" parent="CanvasLayer/Control/HBoxContainer/SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 0.25881907, 0.9659258, 0, -0.9659258, 0.25881907, 0.6065397, 25.97927, 4.9295206)
+current = true
+fov = 30.0
+
+[node name="PlayerSpawner" type="Marker3D" parent="CanvasLayer/Control/HBoxContainer/SubViewportContainer/SubViewport" node_paths=PackedStringArray("lobby_server")]
+script = ExtResource("5_k1cak")
+lobby_server = NodePath("../../../../../../LobbyServer")
+player_scene = ExtResource("6_mpaex")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CanvasLayer/Control/HBoxContainer/SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0075867176, 0)
+use_collision = true
+size = Vector3(10, 0.06517339, 10)
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control/HBoxContainer"]
+custom_minimum_size = Vector2(300, 400)
+layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/PanelContainer"]
+[node name="HBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/PanelContainer/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/PanelContainer/HBoxContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/Control/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Players"
 horizontal_alignment = 1
 
-[node name="PlayerList" type="VBoxContainer" parent="CanvasLayer/Control/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer" node_paths=PackedStringArray("lobby_server")]
+[node name="PlayerList" type="VBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer" node_paths=PackedStringArray("lobby_server")]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("2_feb5d")
-lobby_server = NodePath("../../../../../../../LobbyServer")
+lobby_server = NodePath("../../../../../../../../LobbyServer")
 
-[node name="Button" type="Button" parent="CanvasLayer/Control/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+[node name="Button" type="Button" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Start"
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Control/PanelContainer/HBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Label2" type="Label" parent="CanvasLayer/Control/PanelContainer/HBoxContainer/VBoxContainer2"]
+[node name="Label2" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 text = "Join the game!"
 horizontal_alignment = 1
 
-[node name="QRCodeRect" type="TextureRect" parent="CanvasLayer/Control/PanelContainer/HBoxContainer/VBoxContainer2"]
+[node name="QRCodeRect" type="TextureRect" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/VBoxContainer2"]
 custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 texture = SubResource("ImageTexture_mmpi0")
 stretch_mode = 5
 
-[node name="URL" type="Label" parent="CanvasLayer/Control/PanelContainer/HBoxContainer/VBoxContainer2"]
+[node name="URL" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 text = "127.0.0.1"
 horizontal_alignment = 1
 autowrap_mode = 2
-
-[node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0075867176, 0)
-use_collision = true
-size = Vector3(10, 0.06517339, 10)
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.25881907, 0.9659258, 0, -0.9659258, 0.25881907, 0.6065397, 25.97927, 4.9295206)
-fov = 30.0
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.9934268, 0.06475032, 0.09439573, -0.11446902, 0.56193984, 0.8192194, 0, -0.8246399, 0.56565803, 0, 23.31145, 0)
-
-[node name="PlayerSpawner" type="Marker3D" parent="." node_paths=PackedStringArray("lobby_server")]
-script = ExtResource("5_k1cak")
-lobby_server = NodePath("../LobbyServer")
-player_scene = ExtResource("6_mpaex")

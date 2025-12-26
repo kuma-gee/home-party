@@ -100,20 +100,16 @@
 			{/if}
 		</div>
 	{:else}
-		<!-- Connection Status Badge -->
-		<div class="status-corner">
-			<div class="status-indicator" class:connected={$webrtcDataChannelOpen}>
-				{#if $webrtcDataChannelOpen}
+		{#if $webrtcDataChannelOpen}
+			<!-- Connection Status Badge -->
+			<div class="status-corner">
+				<div class="status-indicator connected">
 					<span class="status-dot"></span>
 					<span class="status-text">Connected</span>
-				{:else}
-					<span class="status-text">Connecting...</span>
-				{/if}
+				</div>
+				<button onclick={handleDisconnect} class="disconnect-icon" title="Disconnect">✕</button>
 			</div>
-			<button onclick={handleDisconnect} class="disconnect-icon" title="Disconnect">✕</button>
-		</div>
 
-		{#if $webrtcDataChannelOpen}
 			<!-- Game Controls -->
 			<div class="game-controls">
 				<!-- Joystick (Bottom Left) -->
@@ -141,6 +137,30 @@
 					>
 						A
 					</button>
+				</div>
+			</div>
+		{:else}
+			<!-- Connecting Status Screen -->
+			<div class="connecting-screen">
+				<div class="connecting-content">
+					<div class="spinner"></div>
+					<h2>Connecting to Game Server</h2>
+					<div class="connection-steps">
+						<div class="step" class:active={$isConnected}>
+							<span class="step-icon">{$isConnected ? '✓' : '○'}</span>
+							<span class="step-text">WebSocket Connection</span>
+						</div>
+						<div class="step" class:active={$webrtcState === 'connected'}>
+							<span class="step-icon">{$webrtcState === 'connected' ? '✓' : '○'}</span>
+							<span class="step-text">WebRTC Connection</span>
+						</div>
+						<div class="step" class:active={$webrtcDataChannelOpen}>
+							<span class="step-icon">{$webrtcDataChannelOpen ? '✓' : '○'}</span>
+							<span class="step-text">Data Channel</span>
+						</div>
+					</div>
+					<p class="connecting-hint">Please wait...</p>
+					<button onclick={handleDisconnect} class="cancel-btn">Cancel</button>
 				</div>
 			</div>
 		{/if}
@@ -241,6 +261,119 @@
 		text-align: center;
 	}
 
+	/* Connecting Screen */
+	.connecting-screen {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 2rem;
+		box-sizing: border-box;
+	}
+
+	.connecting-content {
+		background: rgba(255, 255, 255, 0.95);
+		border-radius: 16px;
+		padding: 3rem 2rem;
+		max-width: 400px;
+		width: 100%;
+		text-align: center;
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+	}
+
+	.spinner {
+		width: 60px;
+		height: 60px;
+		border: 4px solid rgba(102, 126, 234, 0.2);
+		border-top-color: #667eea;
+		border-radius: 50%;
+		animation: spin 1s linear infinite;
+		margin: 0 auto 2rem;
+	}
+
+	@keyframes spin {
+		to { transform: rotate(360deg); }
+	}
+
+	.connecting-content h2 {
+		color: #333;
+		margin-bottom: 2rem;
+		font-size: 1.5rem;
+	}
+
+	.connection-steps {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		margin-bottom: 2rem;
+		text-align: left;
+	}
+
+	.step {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		padding: 0.75rem;
+		border-radius: 8px;
+		background: rgba(0, 0, 0, 0.05);
+		transition: all 0.3s ease;
+	}
+
+	.step.active {
+		background: rgba(76, 175, 80, 0.15);
+	}
+
+	.step-icon {
+		width: 24px;
+		height: 24px;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 0.875rem;
+		font-weight: 700;
+		background: rgba(0, 0, 0, 0.1);
+		color: #666;
+		flex-shrink: 0;
+	}
+
+	.step.active .step-icon {
+		background: #4CAF50;
+		color: white;
+	}
+
+	.step-text {
+		flex: 1;
+		color: #666;
+		font-size: 0.95rem;
+	}
+
+	.step.active .step-text {
+		color: #333;
+		font-weight: 600;
+	}
+
+	.connecting-hint {
+		color: #666;
+		font-size: 0.9rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.cancel-btn {
+		background-color: #f44336;
+		max-width: 200px;
+		margin: 0 auto;
+	}
+
+	.cancel-btn:hover {
+		background-color: #da190b;
+	}
+
 	/* Game Controls - Full Screen Layout */
 	.game-controls {
 		position: fixed;
@@ -248,6 +381,7 @@
 		left: 0;
 		width: 100vw;
 		height: 100vh;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 		display: flex;
 		align-items: flex-end;
 		justify-content: space-between;

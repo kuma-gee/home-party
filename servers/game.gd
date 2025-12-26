@@ -1,4 +1,4 @@
-extends Node3D
+extends Node
 
 const URL = "https://kuma-gee.com/home-party"
 
