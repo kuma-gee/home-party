@@ -1,3 +1,5 @@
+import { WebRTCClient, type WebRTCConfig } from './webrtc';
+
 export enum MessageType {
 	Id = 0,
 	GameClientSession = 1,
@@ -34,12 +36,15 @@ export class WebSocketClient {
 	private maxReconnectAttempts = 5;
 	private reconnectDelay = 1000;
 	private intentionalDisconnect = false;
+	private webrtcClient: WebRTCClient | null = null;
 
 	onConnected?: () => void;
 	onDisconnected?: () => void;
 	onError?: (error: Event) => void;
 	onMessage?: (message: Message) => void;
 	onIdReceived?: (id: number) => void;
+	onWebRTCStateChange?: (state: RTCPeerConnectionState) => void;
+	onWebRTCDataChannelOpen?: () => void;
 
 	constructor(private serverIp: string, private port: number = 14412) {}
 
@@ -133,12 +138,57 @@ export class WebSocketClient {
 					client_id: clientId,
 					name: 'Player ' + this.peerId,
 				});
+
+				// Initialize WebRTC after receiving ID
+				this.initializeWebRTC();
 				break;
 			case MessageType.GameClientSession:
+				const sessionMsg = message as SessionMessage;
+				this.webrtcClient?.setRemoteDescription(sessionMsg.type, sessionMsg.sdp)
+					.catch(error => console.error('Failed to set remote description:', error));
+				break;
 			case MessageType.GameClientIceCandidate:
-				this.onMessage?.(message);
+				const iceMsg = message as IceCandidateMessage;
+				this.webrtcClient?.addIceCandidate(iceMsg.mid, iceMsg.index, iceMsg.sdp)
+					.catch(error => console.error('Failed to add ICE candidate:', error));
 				break;
 		}
+	}
+
+	private async initializeWebRTC() {
+		const webrtcConfig: WebRTCConfig = {
+			onConnectionStateChange: (state) => {
+				console.log('WebRTC connection state:', state);
+				this.onWebRTCStateChange?.(state);
+			},
+			onDataChannelOpen: () => {
+				console.log('WebRTC data channel opened');
+				this.onWebRTCDataChannelOpen?.();
+			},
+			onIceCandidate: (mid, index, sdp) => {
+				this.send({
+					msg: MessageType.GameClientIceCandidate,
+					peer_id: this.peerId,
+					mid: mid,
+					index: index,
+					sdp: sdp,
+				});
+			},
+			onSessionDescription: (type, sdp) => {
+				this.send({
+					msg: MessageType.GameClientSession,
+					peer_id: this.peerId,
+					type: type,
+					sdp: sdp,
+				});
+			}
+		};
+
+		this.webrtcClient = new WebRTCClient(webrtcConfig);
+		await this.webrtcClient.initialize();
+		
+		// Create offer to start the connection
+		await this.webrtcClient.createOffer();
 	}
 
 	private attemptReconnect() {
@@ -176,6 +226,12 @@ export class WebSocketClient {
 			this.ws.close();
 			this.ws = null;
 		}
+
+		// Close WebRTC connection
+		if (this.webrtcClient) {
+			this.webrtcClient.close();
+			this.webrtcClient = null;
+		}
 	}
 
 	isConnected(): boolean {
@@ -184,5 +240,9 @@ export class WebSocketClient {
 
 	getPeerId(): number | null {
 		return this.peerId;
+	}
+
+	getWebRTCClient(): WebRTCClient | null {
+		return this.webrtcClient;
 	}
 }
