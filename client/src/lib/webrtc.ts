@@ -17,15 +17,7 @@ export class WebRTCClient {
 	}
 
 	async initialize() {
-		// Create peer connection with ICE servers configuration
-		const configuration: RTCConfiguration = {
-			iceServers: [
-				{ urls: 'stun:stun.l.google.com:19302' },
-				{ urls: 'stun:stun1.l.google.com:19302' },
-			]
-		};
-
-		this.peerConnection = new RTCPeerConnection(configuration);
+		this.peerConnection = new RTCPeerConnection();
 
 		// Set up event handlers
 		this.peerConnection.onicecandidate = (event) => {
@@ -91,7 +83,6 @@ export class WebRTCClient {
 			throw new Error('Peer connection not initialized');
 		}
 
-		console.log('Creating WebRTC offer...');
 		const offer = await this.peerConnection.createOffer();
 		await this.peerConnection.setLocalDescription(offer);
 

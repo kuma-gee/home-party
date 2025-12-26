@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://c8hy6654mshgi"]
 
 [ext_resource type="Script" uid="uid://b485ygfa85mmx" path="res://servers/entities/player.gd" id="1_cpkg6"]
-[ext_resource type="Script" uid="uid://brblo0j3sv1io" path="res://player-client/game_client.gd" id="2_fu8yg"]
+[ext_resource type="Script" uid="uid://brblo0j3sv1io" path="res://utilts/game_client.gd" id="2_fu8yg"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xgv5b"]
 radius = 0.21826172

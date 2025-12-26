@@ -18,9 +18,9 @@ func _on_ice_candidate(mid, index, sdp):
 	logger.info("Created ICE candidate: mid=%s, index=%d" % [mid, index])
 
 func _on_session(type, sdp):
-	send_session.emit(type, sdp)
 	peer.set_local_description(type, sdp)
 	logger.info("Created session description of type %s" % type)
+	send_session.emit(type, sdp)
 
 func _process(_delta):
 	peer.poll()
@@ -46,7 +46,7 @@ func add_ice_candidate(mid: String, index: int, sdp: String):
 func set_session(type: String, sdp: String):
 	peer.set_remote_description(type, sdp)
 	logger.info("Set remote session description of type %s" % type)
-
+	
 func send_input(input: String, pressed: bool):
 	var data = "%s;%.0f" % [input, 1 if pressed else 0]
 	channel.put_packet(data.to_utf8_buffer())

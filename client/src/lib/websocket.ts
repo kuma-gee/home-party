@@ -79,9 +79,6 @@ export class WebSocketClient {
 
 				this.ws.onmessage = async (event) => {
 					try {
-						console.log('WebSocket message received:', event);
-						
-						// Handle different data types (string, Blob, ArrayBuffer)
 						let messageText: string;
 						
 						if (typeof event.data === 'string') {
@@ -139,7 +136,6 @@ export class WebSocketClient {
 					name: 'Player ' + this.peerId,
 				});
 
-				// Initialize WebRTC after receiving ID
 				this.initializeWebRTC();
 				break;
 			case MessageType.GameClientSession:
@@ -186,9 +182,7 @@ export class WebSocketClient {
 
 		this.webrtcClient = new WebRTCClient(webrtcConfig);
 		await this.webrtcClient.initialize();
-		
-		// Create offer to start the connection
-		await this.webrtcClient.createOffer();
+        await this.webrtcClient.createOffer();
 	}
 
 	private attemptReconnect() {
