@@ -28,7 +28,7 @@ func _physics_process(delta: float) -> void:
 		velocity.y -= gravity * delta
 	
 	var motion = inputs["move"] if inputs.has("move") else Vector2.ZERO
-	var direction = (transform.basis * Vector3(motion.x, 0, motion.y)).normalized()
+	var direction = (transform.basis * Vector3(motion.x, 0, motion.y))
 	if direction:
 		velocity.x = direction.x * speed
 		velocity.z = direction.z * speed

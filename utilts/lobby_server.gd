@@ -2,11 +2,11 @@ class_name LobbyServer
 extends Node
 
 signal player_connected(data: Dictionary)
-signal player_disconnected(id: int)
+signal player_disconnected(uuid: String)
 signal update_players_list(players: Array)
 
-signal received_candidate(peer: int, mid: String, index: int, sdp: String)
-signal received_session(peer: int, type: String, sdp: String)
+signal received_candidate(uuid: String, mid: String, index: int, sdp: String)
+signal received_session(uuid: String, type: String, sdp: String)
 
 enum Message {
 	Id,
@@ -16,7 +16,8 @@ enum Message {
 
 const PORT = 14412
 
-var players = {}
+var players = {}  # Dictionary[String, Dictionary] - UUID -> player data
+var peer_to_uuid = {}  # Dictionary[int, String] - peer_id -> UUID mapping for WebRTC
 var socket = WebSocketMultiplayerPeer.new()
 var logger = KumaLog.new("LobbyServer")
 
@@ -30,7 +31,7 @@ func create_server(ip: String):
 
 func _peer_connected(id: int):
 	logger.info("Peer connected: %d" % id)
-	players[id] = {}
+	peer_to_uuid[id] = ""
 
 	_send_to_peer(id, {
 		"msg": Message.Id,
@@ -39,9 +40,12 @@ func _peer_connected(id: int):
 
 func _peer_disconnected(id: int):
 	logger.info("Peer disconnected: %d" % id)
-	players.erase(id)
-	player_disconnected.emit(id)
-	_update_players_list()
+	var uuid = peer_to_uuid.get(id, "")
+	if uuid != "":
+		players.erase(uuid)
+		player_disconnected.emit(uuid)
+		_update_players_list()
+	peer_to_uuid.erase(id)
 
 func _send_to_peer(id: int, data: Dictionary):
 	socket.get_peer(id).put_packet(JSON.stringify(data).to_utf8_buffer())
@@ -63,24 +67,46 @@ func _on_message_received(data: Dictionary):
 			LobbyServer.Message.Id:
 				_on_id_message(data)
 			LobbyServer.Message.GameClientSession:
-				received_session.emit(int(data.peer_id), data.type, data.sdp)
+				var peer_id = int(data.peer_id)
+				var uuid = peer_to_uuid.get(peer_id, "")
+				if uuid != "":
+					received_session.emit(uuid, data.type, data.sdp)
 			LobbyServer.Message.GameClientIceCandidate:
-				received_candidate.emit(int(data.peer_id), data.mid, int(data.index), data.sdp)
+				var peer_id = int(data.peer_id)
+				var uuid = peer_to_uuid.get(peer_id, "")
+				if uuid != "":
+					received_candidate.emit(uuid, data.mid, int(data.index), data.sdp)
 
 func _on_id_message(data: Dictionary):
 	var peer_id = int(data.peer_id)
-	players[peer_id] = data
+	var uuid = data.get("client_id", "")
+	
+	if uuid == "":
+		logger.error("Received Id message without client_id from peer %d" % peer_id)
+		return
+	
+	# Store the peer_id -> UUID mapping
+	peer_to_uuid[peer_id] = uuid
+	
+	# Store player data by UUID
+	players[uuid] = data
 	player_connected.emit(data)
 	_update_players_list()
 
 func _update_players_list():
 	var players_list = []
-	for id in players.keys():
-		var player_data = players[id]
+	for uuid in players.keys():
+		var player_data = players[uuid]
 		players_list.append(player_data)
 	
 	logger.info("Update players: %s" % [players.keys()])
 	update_players_list.emit(players_list)
+
+func get_peer_id_from_uuid(uuid: String) -> int:
+	for peer_id in peer_to_uuid.keys():
+		if peer_to_uuid[peer_id] == uuid:
+			return peer_id
+	return -1
 
 func send_session(path, type, sdp):
 	_send_to_peer(int(path), {

@@ -146,8 +146,6 @@
 </script>
 
 <div class="container">
-	<h1>Home Party Game Client</h1>
-
 	{#if !$isConnected}
 		<div class="connection-form">
 			<h2>Connect to Game Server</h2>
@@ -189,10 +187,10 @@
 					<span class="status-dot"></span>
 					<span class="status-text">Connected</span>
 				</div>
+				<button onclick={handleDisconnect} class="disconnect-icon" title="Disconnect">✕</button>
 				{#if showFullscreenButton}
 					<button onclick={requestFullscreen} class="fullscreen-icon" title="Enter Fullscreen">⛶</button>
 				{/if}
-				<button onclick={handleDisconnect} class="disconnect-icon" title="Disconnect">✕</button>
 			</div>
 
 			<!-- Game Controls -->
