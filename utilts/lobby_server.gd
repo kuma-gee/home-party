@@ -25,7 +25,6 @@ func _ready() -> void:
 	socket.peer_disconnected.connect(_peer_disconnected)
 
 func create_server(ip: String):
-	Certificate.CreateX509Cert()
 	socket.create_server(PORT, "*")
 	logger.info("Creating signaling server on url %s:%s" % [ip, PORT])
 
