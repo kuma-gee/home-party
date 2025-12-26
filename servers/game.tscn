@@ -1,11 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://dfokhnxe3wv3r"]
+[gd_scene load_steps=7 format=3 uid="uid://dfokhnxe3wv3r"]
 
 [ext_resource type="Script" uid="uid://dq0a51hof6j67" path="res://servers/game.gd" id="1_e2o6t"]
 [ext_resource type="Script" uid="uid://dgfn4nv7yxows" path="res://servers/ui/player_list.gd" id="2_feb5d"]
-[ext_resource type="Script" uid="uid://d2kw2cx2uwjl4" path="res://utilts/http_server.gd" id="2_mpaex"]
 [ext_resource type="Script" uid="uid://hni8ihkjnhn6" path="res://utilts/lobby_server.gd" id="4_dgl23"]
-[ext_resource type="Script" uid="uid://cvrvjwxdt72vj" path="res://servers/player_spawner.gd" id="5_k1cak"]
-[ext_resource type="PackedScene" uid="uid://c8hy6654mshgi" path="res://servers/entities/player.tscn" id="6_mpaex"]
+[ext_resource type="Script" uid="uid://di1md61d17fm0" path="res://servers/player_manager.gd" id="7_mmpi0"]
 
 [sub_resource type="Image" id="Image_k1cak"]
 data = {
@@ -25,9 +23,8 @@ start_game_btn = NodePath("CanvasLayer/Control/HBoxContainer/PanelContainer/HBox
 qr_code = NodePath("CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/VBoxContainer2/QRCodeRect")
 url_label = NodePath("CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/VBoxContainer2/URL")
 
-[node name="HttpServer" type="Node" parent="."]
-script = ExtResource("2_mpaex")
-metadata/_custom_type_script = "uid://d2kw2cx2uwjl4"
+[node name="PlayerManager" type="Node" parent="."]
+script = ExtResource("7_mmpi0")
 
 [node name="LobbyServer" type="Node" parent="."]
 script = ExtResource("4_dgl23")
@@ -61,23 +58,36 @@ handle_input_locally = false
 size = Vector2i(1616, 1080)
 render_target_update_mode = 4
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="CanvasLayer/Control/HBoxContainer/SubViewportContainer/SubViewport"]
-transform = Transform3D(0.9934268, 0.06475032, 0.09439573, -0.11446902, 0.56193984, 0.8192194, 0, -0.8246399, 0.56565803, 0, 23.31145, 0)
+[node name="Control" type="Control" parent="CanvasLayer/Control/HBoxContainer/SubViewportContainer/SubViewport"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Camera3D" type="Camera3D" parent="CanvasLayer/Control/HBoxContainer/SubViewportContainer/SubViewport"]
-transform = Transform3D(1, 0, 0, 0, 0.25881907, 0.9659258, 0, -0.9659258, 0.25881907, -0.15752125, 21.226692, 5.7612734)
-current = true
-fov = 30.0
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Control/HBoxContainer/SubViewportContainer/SubViewport/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="PlayerSpawner" type="Marker3D" parent="CanvasLayer/Control/HBoxContainer/SubViewportContainer/SubViewport" node_paths=PackedStringArray("lobby_server")]
-script = ExtResource("5_k1cak")
-lobby_server = NodePath("../../../../../../LobbyServer")
-player_scene = ExtResource("6_mpaex")
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/HBoxContainer/SubViewportContainer/SubViewport/Control/CenterContainer"]
+layout_mode = 2
 
-[node name="CSGBox3D" type="CSGBox3D" parent="CanvasLayer/Control/HBoxContainer/SubViewportContainer/SubViewport"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0075867176, 0)
-use_collision = true
-size = Vector3(10, 0.06517339, 10)
+[node name="Button" type="Button" parent="CanvasLayer/Control/HBoxContainer/SubViewportContainer/SubViewport/Control/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Test"
+
+[node name="Button2" type="Button" parent="CanvasLayer/Control/HBoxContainer/SubViewportContainer/SubViewport/Control/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Test"
+
+[node name="Button3" type="Button" parent="CanvasLayer/Control/HBoxContainer/SubViewportContainer/SubViewport/Control/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Test"
 
 [node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control/HBoxContainer"]
 custom_minimum_size = Vector2(300, 400)

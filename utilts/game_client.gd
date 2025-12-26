@@ -9,9 +9,14 @@ var peer = WebRTCPeerConnection.new()
 var channel = peer.create_data_channel("inputs", {"negotiated": true, "id": 1})
 var logger = KumaLog.new("GameClient")
 
+var inputs = {}
+
 func _ready():
 	peer.ice_candidate_created.connect(self._on_ice_candidate)
 	peer.session_description_created.connect(self._on_session)
+
+func get_move():
+	return inputs["move"] if inputs.has("move") else Vector2.ZERO
 
 func _on_ice_candidate(mid, index, sdp):
 	send_candidate.emit(mid, index, sdp)
@@ -37,6 +42,7 @@ func _process(_delta):
 			elif parts.size() == 3:
 				var input = parts[0]
 				var v = Vector2(parts[1].to_float(), parts[2].to_float())
+				inputs[input] = v
 				input_received.emit(input, v)
 
 func add_ice_candidate(mid: String, index: int, sdp: String):
