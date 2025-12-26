@@ -1,7 +1,7 @@
 extends Node
 
 signal player_connected(data: Dictionary)
-signal player_disconnected(uuid: String)
+signal player_disconnected(peer_id: int)
 signal update_players_list(players: Array)
 
 signal received_candidate(peer_id: int, mid: String, index: int, sdp: String)
@@ -40,8 +40,9 @@ func _peer_disconnected(id: int):
 	var uuid = peer_to_uuid.get(id, "")
 	if uuid != "":
 		players.erase(uuid)
-		player_disconnected.emit(uuid)
 		_update_players_list()
+		
+	player_disconnected.emit(id)
 	peer_to_uuid.erase(id)
 
 func _send_to_peer(id: int, data: Dictionary):
