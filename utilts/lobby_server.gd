@@ -26,7 +26,7 @@ func _ready() -> void:
 
 func create_server(ip: String):
 	Certificate.CreateX509Cert()
-	socket.create_server(PORT, ip, TLSOptions.server(Certificate.get_key(), Certificate.get_certificate()))
+	socket.create_server(PORT, "*")
 	logger.info("Creating signaling server on url %s:%s" % [ip, PORT])
 
 func _peer_connected(id: int):
