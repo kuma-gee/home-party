@@ -9,6 +9,9 @@ export interface ConnectionState {
 	webrtcState: RTCPeerConnectionState | null;
 	webrtcDataChannelOpen: boolean;
 	dataChannelMessage: string | null;
+	reconnecting: boolean;
+	reconnectAttempts: number;
+	maxReconnectAttempts: number;
 }
 
 function createConnectionStore() {
@@ -20,6 +23,9 @@ function createConnectionStore() {
 		webrtcState: null,
 		webrtcDataChannelOpen: false,
 		dataChannelMessage: null,
+		reconnecting: false,
+		reconnectAttempts: 0,
+		maxReconnectAttempts: 5,
 	});
 
 	let client: WebSocketClient | null = null;
@@ -67,6 +73,15 @@ function createConnectionStore() {
 				update(state => ({ ...state, dataChannelMessage: data }));
 			};
 
+			client.onReconnecting = (isReconnecting: boolean, attempts: number, maxAttempts: number) => {
+				update(state => ({ 
+					...state, 
+					reconnecting: isReconnecting, 
+					reconnectAttempts: attempts,
+					maxReconnectAttempts: maxAttempts 
+				}));
+			};
+
 			try {
 				await client.connect();
 			} catch (error) {
@@ -87,6 +102,9 @@ function createConnectionStore() {
 				webrtcState: null,
 				webrtcDataChannelOpen: false,
 				dataChannelMessage: null,
+				reconnecting: false,
+				reconnectAttempts: 0,
+				maxReconnectAttempts: 5,
 			});
 		},
 		send: (data: any) => {
@@ -135,4 +153,17 @@ export const webrtcDataChannelOpen = derived(
 export const dataChannelMessage = derived(
 	connectionStore,
 	$connectionStore => $connectionStore.dataChannelMessage
+);
+
+export const reconnecting = derived(
+	connectionStore,
+	$connectionStore => $connectionStore.reconnecting
+);
+
+export const reconnectAttempts = derived(
+	connectionStore,
+	$connectionStore => ({ 
+		current: $connectionStore.reconnectAttempts, 
+		max: $connectionStore.maxReconnectAttempts 
+	})
 );

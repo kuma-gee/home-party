@@ -1,0 +1,208 @@
+[gd_scene load_steps=13 format=3 uid="uid://bc2lecdk7vpl1"]
+
+[ext_resource type="Script" uid="uid://c03ys8d4r0bjm" path="res://mods-unpacked/KumaGee-Core/count_box/count_box_game.gd" id="1_bwii6"]
+[ext_resource type="Shader" uid="uid://dhod7psep452o" path="res://shader/grid.gdshader" id="1_kyqmx"]
+[ext_resource type="Shader" uid="uid://btxd56bhyysqb" path="res://shader/outline.gdshader" id="1_ujnhv"]
+[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme.css" id="4_7w20i"]
+[ext_resource type="Script" uid="uid://clj6iwh6bygfb" path="res://mods-unpacked/KumaGee-Core/ui/timer_label.gd" id="5_5lsn5"]
+[ext_resource type="Script" uid="uid://c56wtym64dded" path="res://mods-unpacked/KumaGee-Core/count_box/player_game_list.gd" id="5_b7ami"]
+[ext_resource type="PackedScene" uid="uid://ddmbv3srb36mq" path="res://mods-unpacked/KumaGee-Core/count_box/player_row.tscn" id="6_b7ami"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y37xm"]
+render_priority = 0
+shader = ExtResource("1_kyqmx")
+shader_parameter/grid_size = 32.0
+shader_parameter/cell_size = 1.067
+shader_parameter/gutter_size = 0.04
+shader_parameter/cell_color = Color(0.078, 0.024, 0, 1)
+shader_parameter/gutter_color = Color(0.078431375, 0.023529412, 0, 1)
+shader_parameter/cell_roundedness = 0.0
+shader_parameter/cell_manipulator_radius = 7.3
+shader_parameter/cell_manipulator_uv_pos = Vector2(0.5, 0.5)
+shader_parameter/manipulated_cell_size = 0.5
+shader_parameter/manipulator_gutter_color = Color(0.69803923, 0.28235295, 0, 1)
+shader_parameter/cell_manipulation_anim_speed = 1.0
+shader_parameter/gutter_noise_color = Color(0, 0, 0, 1)
+shader_parameter/gutter_noise_speed = 0.1
+shader_parameter/fresnel_color = Color(0.675, 0.192, 0, 1)
+shader_parameter/fresnel_intensity = 0.2
+shader_parameter/fresnel_amount = 15.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_kyqmx"]
+size = Vector2(30, 30)
+
+[sub_resource type="QuadMesh" id="QuadMesh_kyqmx"]
+flip_faces = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ujnhv"]
+render_priority = 0
+shader = ExtResource("1_ujnhv")
+shader_parameter/zNear = 0.05
+shader_parameter/zFar = 100.0
+shader_parameter/enable_outline = true
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_thickness = 1.0
+shader_parameter/enable_color_limit = true
+shader_parameter/color_levels = 8
+shader_parameter/enable_color_palette = true
+shader_parameter/color1 = Color(1, 0.925, 0.839, 1)
+shader_parameter/color2 = Color(1, 0.831, 0.639, 1)
+shader_parameter/color3 = Color(1, 0.667, 0.369, 1)
+shader_parameter/color4 = Color(0.816, 0.506, 0.349, 1)
+shader_parameter/color5 = Color(0.553, 0.412, 0.478, 1)
+shader_parameter/color6 = Color(0.329, 0.306, 0.408, 1)
+shader_parameter/color7 = Color(0.125, 0.236, 0.337, 1)
+shader_parameter/color8 = Color(0.05, 0.169, 0.271, 1)
+shader_parameter/enable_dithering = false
+shader_parameter/dither_strength = 0.3
+
+[sub_resource type="Environment" id="Environment_kyqmx"]
+background_mode = 1
+
+[node name="CountBoxGame" type="Node3D" node_paths=PackedStringArray("player_game_list", "box_root", "count_label", "start_marker")]
+script = ExtResource("1_bwii6")
+player_game_list = NodePath("CanvasLayer/Control/MarginContainer2/PlayerGameList")
+box_root = NodePath("BoxRoot")
+count_label = NodePath("CanvasLayer/Control/CenterContainer/ShowCount")
+start_marker = NodePath("Marker3D")
+
+[node name="StartTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="HideTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="CheckLockTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="GameTimer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.7303799, 0.27269256, -0.626246, 0.0062361346, 0.9141491, 0.40533018, 0.6830128, -0.29995033, 0.6659755, -7.7, 5, 8.2)
+projection = 1
+current = true
+size = 9.0
+
+[node name="Grid" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+material_override = SubResource("ShaderMaterial_y37xm")
+mesh = SubResource("PlaneMesh_kyqmx")
+
+[node name="ScreenShader" type="MeshInstance3D" parent="."]
+mesh = SubResource("QuadMesh_kyqmx")
+surface_material_override/0 = SubResource("ShaderMaterial_ujnhv")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_kyqmx")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.93605953, 0.33646786, -0.10286853, 0, 0.29237166, 0.9563048, 0.35184166, -0.89515823, 0.2736773, 0, 0, 0)
+
+[node name="Marker3D" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -4)
+
+[node name="BoxRoot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -12)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="BoxRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.508194, 0, -3.4997153)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="BoxRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.491806, 0, 3.5002847)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="BoxRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.508194, 0, 3.5002847)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="BoxRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.491806, 0, -3.4997153)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_7w20i")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
+grow_horizontal = 2
+
+[node name="StartTimerLabel" type="Label" parent="CanvasLayer/Control/MarginContainer" node_paths=PackedStringArray("timer")]
+layout_mode = 2
+theme_type_variation = &"LabelLarge"
+text = "10"
+horizontal_alignment = 1
+script = ExtResource("5_5lsn5")
+timer = NodePath("../../../../StartTimer")
+
+[node name="Text" type="Label" parent="CanvasLayer/Control/MarginContainer/StartTimerLabel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -70.0
+offset_top = 52.5
+offset_right = 70.0
+offset_bottom = 119.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"LabelLarge"
+text = "Count!"
+horizontal_alignment = 1
+
+[node name="GameTimerLabel" type="Label" parent="CanvasLayer/Control/MarginContainer" node_paths=PackedStringArray("timer")]
+layout_mode = 2
+theme_type_variation = &"LabelLarge"
+text = "10"
+horizontal_alignment = 1
+script = ExtResource("5_5lsn5")
+timer = NodePath("../../../../GameTimer")
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -24.5
+offset_bottom = 7.5
+grow_horizontal = 0
+grow_vertical = 2
+theme = ExtResource("4_7w20i")
+
+[node name="PlayerGameList" type="Control" parent="CanvasLayer/Control/MarginContainer2"]
+layout_mode = 2
+script = ExtResource("5_b7ami")
+player_row = ExtResource("6_b7ami")
+child_size = Vector2(0, 45)
+initial_dir = Vector2(1, 0)
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ShowCount" type="Label" parent="CanvasLayer/Control/CenterContainer"]
+layout_mode = 2
+theme_type_variation = &"LabelLarge"
+text = "13"

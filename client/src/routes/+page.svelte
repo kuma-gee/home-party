@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-	import { connectionStore, isConnected, peerId, webrtcState, webrtcDataChannelOpen, dataChannelMessage } from '$lib/store';
-	import { page } from '$app/stores';
+	import { connectionStore, isConnected, webrtcState, webrtcDataChannelOpen, dataChannelMessage, reconnecting, reconnectAttempts } from '$lib/store';
 	import VirtualJoystick from '$lib/VirtualJoystick.svelte';
 
 	let serverIp = $state('');
@@ -166,12 +165,21 @@
 				/>
 			</div>
 
-			<button onclick={handleConnect} disabled={connecting || !serverIp || !playerName}>
-				{connecting ? 'Connecting...' : 'Connect'}
+			<button onclick={handleConnect} disabled={connecting || !serverIp || !playerName || $reconnecting}>
+				{connecting ? 'Connecting...' : $reconnecting ? 'Reconnecting...' : 'Connect'}
 			</button>
 
 			{#if errorMessage}
 				<p class="error">{errorMessage}</p>
+			{/if}
+
+			{#if $reconnecting}
+				<div class="reconnect-indicator">
+					<div class="spinner-small"></div>
+					<p class="reconnect-text">
+						Attempting to reconnect ({$reconnectAttempts.current}/{$reconnectAttempts.max})...
+					</p>
+				</div>
 			{/if}
 		</div>
 	{:else}
@@ -206,8 +214,8 @@
 				<div class="action-buttons">
 					<button 
 						class="action-btn secondary-btn"
-						onmousedown={() => handleButtonDown('action2')}
-						onmouseup={() => handleButtonUp('action2')}
+						onmousedown={() => handleButtonDown('secondary')}
+						onmouseup={() => handleButtonUp('secondary')}
 					>
 						B
 					</button>
@@ -225,7 +233,12 @@
 			<div class="connecting-screen">
 				<div class="connecting-content">
 					<div class="spinner"></div>
-					<h2>Connecting to Game Server</h2>
+					<h2>{$reconnecting ? 'Reconnecting to Game Server' : 'Connecting to Game Server'}</h2>
+					{#if $reconnecting}
+						<p class="reconnect-attempts">
+							Attempt {$reconnectAttempts.current} of {$reconnectAttempts.max}
+						</p>
+					{/if}
 					<div class="connection-steps">
 						<div class="step" class:active={$isConnected}>
 							<span class="step-icon">{$isConnected ? '✓' : '○'}</span>
@@ -240,7 +253,7 @@
 							<span class="step-text">Data Channel</span>
 						</div>
 					</div>
-					<p class="connecting-hint">Please wait...</p>
+					<p class="connecting-hint">{$reconnecting ? 'Please wait while we try to reconnect...' : 'Please wait...'}</p>
 					<button onclick={handleDisconnect} class="cancel-btn">Cancel</button>
 				</div>
 			</div>
@@ -700,5 +713,41 @@
 			width: 70px;
 			height: 70px;
 		}
+	}
+
+	/* Reconnect Indicator Styles */
+	.reconnect-indicator {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.75rem;
+		margin-top: 1rem;
+		padding: 0.75rem;
+		background-color: #fff3cd;
+		border: 1px solid #ffc107;
+		border-radius: 4px;
+		color: #856404;
+	}
+
+	.spinner-small {
+		width: 20px;
+		height: 20px;
+		border: 3px solid rgba(255, 193, 7, 0.3);
+		border-top-color: #ffc107;
+		border-radius: 50%;
+		animation: spin 1s linear infinite;
+	}
+
+	.reconnect-text {
+		margin: 0;
+		font-size: 0.9rem;
+		font-weight: 500;
+	}
+
+	.reconnect-attempts {
+		color: #ff9800;
+		font-size: 1rem;
+		font-weight: 600;
+		margin: -0.5rem 0 1.5rem;
 	}
 </style>

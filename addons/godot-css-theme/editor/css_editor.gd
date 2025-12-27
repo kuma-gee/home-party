@@ -42,7 +42,7 @@ func _update_files_list():
 func _add_files_to_list_rec(dir: String):
 	var items = DirAccess.get_files_at(dir)
 	for item in items:
-		if item.get_extension() == "css" and load(item):
+		if item.get_extension() == "css" and ResourceLoader.exists(item, str(Theme)):
 			_add_to_list(dir, item)
 	
 	var dirs = DirAccess.get_directories_at(dir)

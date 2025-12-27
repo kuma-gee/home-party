@@ -17,9 +17,11 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-HttpServer="*res://utilts/http_server.gd"
-LobbyServer="*res://utilts/lobby_server.gd"
-PlayerManager="*res://utilts/player_manager.gd"
+ModLoaderStore="*res://addons/mod_loader/mod_loader_store.gd"
+ModLoader="*res://addons/mod_loader/mod_loader.gd"
+HttpServer="*res://main/utils/http_server.gd"
+LobbyServer="*res://main/utils/lobby_server.gd"
+PlayerManager="*res://main/utils/player_manager.gd"
 
 [display]
 

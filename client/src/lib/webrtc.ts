@@ -2,7 +2,7 @@ export interface WebRTCConfig {
 	onConnectionStateChange?: (state: RTCPeerConnectionState) => void;
 	onDataChannelOpen?: () => void;
 	onDataChannelClose?: () => void;
-	onDataChannelMessage?: (data: string) => void;
+	onDataChannelMessage?: (data: MessageEvent<any>) => void;
 	onIceCandidate?: (mid: string | null, index: number | null, sdp: string) => void;
 	onSessionDescription?: (type: string, sdp: string) => void;
 }
@@ -70,7 +70,7 @@ export class WebRTCClient {
 
 		this.dataChannel.onmessage = (event) => {
 			console.log('Data channel message received:', event.data);
-			this.config.onDataChannelMessage?.(event.data);
+			this.config.onDataChannelMessage?.(event);
 		};
 
 		this.dataChannel.onerror = (error) => {

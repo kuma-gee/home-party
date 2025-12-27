@@ -1,0 +1,21 @@
+{
+	"name": "Core",
+	"namespace": "KumaGee",
+	"version_number": "1.0.0",
+	"description": "Core games",
+	"website_url": "https://github.com/kuma-gee/home-party",
+	"dependencies": [],
+	"extra": {
+		"godot": {
+			"authors": ["KumaGee"],
+			"tags": [],
+			"description_rich": "",
+			"optional_dependencies": [],
+			"load_before": [],
+			"incompatibilities": [],
+			"compatible_mod_loader_version": ["6.2.0"],
+			"compatible_game_version": ["1.2.3"],
+			"config_schema": {}
+		}
+	}
+}

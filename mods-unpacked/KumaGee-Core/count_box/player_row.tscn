@@ -1,0 +1,44 @@
+[gd_scene load_steps=3 format=3 uid="uid://ddmbv3srb36mq"]
+
+[ext_resource type="Script" uid="uid://ddl4e2igiqalx" path="res://mods-unpacked/KumaGee-Core/count_box/player_row.gd" id="1_5iabr"]
+[ext_resource type="Texture2D" uid="uid://dppjsb1nftth5" path="res://icon.svg" id="1_nocah"]
+
+[node name="PlayerRow" type="Control" node_paths=PackedStringArray("text_label", "name_label", "texture_rect")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5iabr")
+text_label = NodePath("PlayerRow/Text")
+name_label = NodePath("PlayerRow/Name")
+texture_rect = NodePath("PlayerRow/TextureRect")
+
+[node name="PlayerRow" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -55.0
+offset_top = -11.5
+offset_bottom = 11.5
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="Text" type="Label" parent="PlayerRow"]
+layout_mode = 2
+text = "100"
+
+[node name="Name" type="Label" parent="PlayerRow"]
+visible = false
+layout_mode = 2
+text = "100"
+
+[node name="TextureRect" type="TextureRect" parent="PlayerRow"]
+layout_mode = 2
+texture = ExtResource("1_nocah")
+expand_mode = 2
+stretch_mode = 5

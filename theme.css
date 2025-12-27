@@ -1,0 +1,24 @@
+:root {
+    --default-margin: 16;
+    --default-separation: 8;
+}
+
+body {
+  font-size: 24;
+}
+
+Label.Large {
+  font-size: 48;
+  --const-outline-size: 16;
+}
+
+MarginContainer {
+  --const-margin-left: var(--default-margin);
+  --const-margin-right: var(--default-margin);
+  --const-margin-top: var(--default-margin);
+  --const-margin-bottom: var(--default-margin);
+}
+
+VBoxContainer, HBoxContainer {
+  --const-separation: var(--default-separation);
+}
