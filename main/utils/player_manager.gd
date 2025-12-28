@@ -1,8 +1,10 @@
 extends Node
 
 var logger := KumaLog.new("PlayerManager")
+var playing_clients: Array[GameClient] = []
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	LobbyServer.player_connected.connect(create_peer)
 	LobbyServer.player_disconnected.connect(remove_peer)
 	LobbyServer.received_candidate.connect(_on_received_candidate)
@@ -42,9 +44,11 @@ func remove_peer(peer_id: int):
 	else:
 		logger.warn("Failed to remove player with id %s" % peer_id)
 
-func get_players() -> Array[GameClient]:
-	var result: Array[GameClient] = []
+func start_game():
+	playing_clients = []
 	for child in get_children():
 		if child is GameClient:
-			result.append(child as GameClient)
-	return result
+			playing_clients.append(child as GameClient)
+
+func get_players() -> Array[GameClient]:
+	return playing_clients

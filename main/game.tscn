@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dfokhnxe3wv3r"]
+[gd_scene load_steps=10 format=3 uid="uid://dfokhnxe3wv3r"]
 
 [ext_resource type="Script" uid="uid://dq0a51hof6j67" path="res://main/game.gd" id="1_e2o6t"]
 [ext_resource type="Script" uid="uid://dgfn4nv7yxows" path="res://main/ui/player_list.gd" id="2_feb5d"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cwf7fl2qf2pb5" path="res://main/ui/game_select.tscn" id="4_3qcir"]
 [ext_resource type="Script" uid="uid://brg6aumaixieg" path="res://main/ui/game_qr.gd" id="4_46yon"]
 [ext_resource type="Script" uid="uid://didybt66x4pke" path="res://main/game_mode.gd" id="5_vfw6y"]
+[ext_resource type="Script" uid="uid://h8dkv5dk31yf" path="res://main/ui/pause.gd" id="7_jc0vi"]
 
 [sub_resource type="Image" id="Image_vfw6y"]
 data = {
@@ -19,11 +20,12 @@ data = {
 [sub_resource type="ImageTexture" id="ImageTexture_mmpi0"]
 image = SubResource("Image_vfw6y")
 
-[node name="Game" type="Node" node_paths=PackedStringArray("start_button", "game_list")]
+[node name="Game" type="Node" node_paths=PackedStringArray("start_button", "game_list", "menu")]
 script = ExtResource("1_e2o6t")
 start_button = NodePath("CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/Button")
 game_list = NodePath("CanvasLayer/Control/HBoxContainer/SubViewportContainer/SubViewport/Start/CenterContainer/VBoxContainer")
 game_button = ExtResource("4_3qcir")
+menu = NodePath("CanvasLayer/Control/HBoxContainer")
 
 [node name="GameLoader" type="Node" parent="."]
 script = ExtResource("3_ph3h8")
@@ -133,3 +135,35 @@ layout_mode = 2
 text = "127.0.0.1"
 horizontal_alignment = 1
 autowrap_mode = 2
+
+[node name="Pause" type="ColorRect" parent="CanvasLayer/Control" node_paths=PackedStringArray("game_mode", "continue_btn", "back_btn")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5882353)
+script = ExtResource("7_jc0vi")
+game_mode = NodePath("../../../GameMode")
+continue_btn = NodePath("CenterContainer/VBoxContainer/Continue")
+back_btn = NodePath("CenterContainer/VBoxContainer/Back")
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Control/Pause"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Pause/CenterContainer"]
+layout_mode = 2
+
+[node name="Continue" type="Button" parent="CanvasLayer/Control/Pause/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Continue"
+
+[node name="Back" type="Button" parent="CanvasLayer/Control/Pause/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Back to lobby"

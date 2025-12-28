@@ -10,11 +10,13 @@ var played_games := 0
 var games: Array[GameResource]
 var game_node: BaseGame
 var wins = {}
+var playing := false
 
 func start_games(selected_games: Array[GameResource]):
 	wins = {}
 	games = selected_games
 	started.emit()
+	playing = true
 	next_game()
 
 func next_game():
@@ -51,4 +53,5 @@ func end_game():
 	for p in players:
 		p.reset()
 	
+	playing = false
 	finished.emit()

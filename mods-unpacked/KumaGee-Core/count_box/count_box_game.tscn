@@ -3,9 +3,9 @@
 [ext_resource type="Script" uid="uid://c03ys8d4r0bjm" path="res://mods-unpacked/KumaGee-Core/count_box/count_box_game.gd" id="1_bwii6"]
 [ext_resource type="Shader" uid="uid://dhod7psep452o" path="res://shader/grid.gdshader" id="1_kyqmx"]
 [ext_resource type="Shader" uid="uid://btxd56bhyysqb" path="res://shader/outline.gdshader" id="1_ujnhv"]
-[ext_resource type="Script" uid="uid://b2vxuiihxvp5t" path="res://mods-unpacked/KumaGee-Core/ui/round_manager.gd" id="2_6vxk2"]
+[ext_resource type="Script" uid="uid://b2vxuiihxvp5t" path="res://mods-unpacked/KumaGee-Core/utils/round_manager.gd" id="2_6vxk2"]
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme.css" id="4_7w20i"]
-[ext_resource type="Script" uid="uid://clj6iwh6bygfb" path="res://mods-unpacked/KumaGee-Core/ui/timer_label.gd" id="5_5lsn5"]
+[ext_resource type="Script" uid="uid://clj6iwh6bygfb" path="res://mods-unpacked/KumaGee-Core/utils/timer_label.gd" id="5_5lsn5"]
 [ext_resource type="Script" uid="uid://c56wtym64dded" path="res://mods-unpacked/KumaGee-Core/count_box/player_game_list.gd" id="5_b7ami"]
 [ext_resource type="PackedScene" uid="uid://ddmbv3srb36mq" path="res://mods-unpacked/KumaGee-Core/count_box/player_row.tscn" id="6_b7ami"]
 

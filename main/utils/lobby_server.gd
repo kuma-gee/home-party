@@ -21,6 +21,7 @@ var socket = WebSocketMultiplayerPeer.new()
 var logger = KumaLog.new("LobbyServer")
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	socket.peer_connected.connect(_peer_connected)
 	socket.peer_disconnected.connect(_peer_disconnected)
 	socket.create_server(PORT, "*")

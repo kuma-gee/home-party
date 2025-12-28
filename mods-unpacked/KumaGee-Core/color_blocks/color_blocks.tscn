@@ -5,9 +5,9 @@
 [ext_resource type="PackedScene" uid="uid://c8hy6654mshgi" path="res://mods-unpacked/KumaGee-Core/entities/player.tscn" id="3_56xa4"]
 [ext_resource type="PackedScene" uid="uid://hu3fomqxqo3i" path="res://mods-unpacked/KumaGee-Core/color_blocks/player_color_box.tscn" id="4_ycyaf"]
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme.css" id="5_i7amv"]
-[ext_resource type="Script" uid="uid://clj6iwh6bygfb" path="res://mods-unpacked/KumaGee-Core/ui/timer_label.gd" id="6_g7kcx"]
-[ext_resource type="Script" uid="uid://ben7bi872onq6" path="res://mods-unpacked/KumaGee-Core/ui/team_split.gd" id="7_88w1i"]
-[ext_resource type="Script" uid="uid://clp2vp3fxoicl" path="res://mods-unpacked/KumaGee-Core/ui/create_grid.gd" id="7_i7amv"]
+[ext_resource type="Script" uid="uid://clj6iwh6bygfb" path="res://mods-unpacked/KumaGee-Core/utils/timer_label.gd" id="6_g7kcx"]
+[ext_resource type="Script" uid="uid://ben7bi872onq6" path="res://mods-unpacked/KumaGee-Core/utils/team_split.gd" id="7_88w1i"]
+[ext_resource type="Script" uid="uid://clp2vp3fxoicl" path="res://mods-unpacked/KumaGee-Core/utils/create_grid.gd" id="7_i7amv"]
 
 [node name="ColorBlocks" type="Node3D" node_paths=PackedStringArray("winner_label")]
 script = ExtResource("1_d7hyr")

@@ -83,6 +83,7 @@ func setup(players: Array[GameClient], game_setup: GameSetup):
 	teams = team_split.create_teams(players, colors.size(), game_setup.team_mode)
 	var i = clamp(teams.size() / float(colors.size()), 0.0, 1.0)
 	var grid_size = int(ceil(lerp(min_grid_size, max_grid_size, i)))
+	
 	blocks = create_grid.create_grid(grid_size)
 	_create_players()
 
