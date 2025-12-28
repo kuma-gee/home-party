@@ -1,13 +1,13 @@
 class_name BaseGame
 extends Node
 
-signal round_finished()
+signal game_finished()
 
-func setup(_players: Array[GameClient]):
+func setup(_players: Array[GameClient], game_setup: GameSetup):
 	pass
 
-func start_game(_diff := 0.0):
+func start_game():
 	pass
 
-func get_winners() -> Array[String]:
-	return []
+func get_points() -> Dictionary[String, int]:
+	return {}

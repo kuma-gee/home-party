@@ -24,6 +24,7 @@ extends BaseGame
 @onready var hide_timer: Timer = $HideTimer
 @onready var start_timer: Timer = $StartTimer
 @onready var check_lock_timer: Timer = $CheckLockTimer
+@onready var round_manager: RoundManager = $RoundManager
 
 var is_finished := false
 var count_players: Array[CountPlayer] = []
@@ -31,6 +32,12 @@ var difficulty := 0.0
 var box_count := 0
 
 func _ready() -> void:
+	round_manager.end_rounds.connect(func(): game_finished.emit())
+	round_manager.start_round.connect(func(diff):
+		difficulty = diff
+		start_game()
+	)
+	
 	box_root.hide()
 	hide_timer.timeout.connect(func():
 		box_root.hide()
@@ -64,12 +71,18 @@ func _evaluate_count():
 		c.is_winner = c.count == box_count
 		
 	await get_tree().create_timer(2.0).timeout
-	round_finished.emit()
+	round_manager.finish_round(_round_winners())
 
-func get_winners():
-	return count_players.filter(func(x): return x.is_winner).map(func(x): return x.game_client.uuid)
+func _round_winners():
+	var result: Array[String] = []
+	for x in count_players.filter(func(x): return x.is_winner).map(func(x): return x.game_client.uuid):
+		result.append(x)
+	return result
 
-func setup(players: Array[GameClient]):
+func get_points() -> Dictionary[String, int]:
+	return round_manager.wins
+
+func setup(players: Array[GameClient], _game_setup: GameSetup):
 	for p in players:
 		var player = CountPlayer.new()
 		player.game_client = p
@@ -80,6 +93,7 @@ func setup(players: Array[GameClient]):
 		count_players.append(player)
 	
 	player_game_list.add_players(count_players)
+	round_manager.start_rounds(players)
 
 func _is_all_locked():
 	for p in count_players:
@@ -97,9 +111,8 @@ func reset_game():
 	count_label.hide()
 	box_root.hide()
 
-func start_game(diff := 0.0):
+func start_game():
 	reset_game()
-	difficulty = diff
 	start_timer.start()
 
 func _spawn():

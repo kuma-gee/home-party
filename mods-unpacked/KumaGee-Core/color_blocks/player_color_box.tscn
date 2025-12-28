@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://hu3fomqxqo3i"]
+
+[ext_resource type="Script" uid="uid://bmuux5jueyy1u" path="res://mods-unpacked/KumaGee-Core/color_blocks/player_color_box.gd" id="1_u7xh5"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_s4h83"]
+height = 1.0505371
+radius = 0.28564453
+
+[node name="PlayerColorBox" type="Area3D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_u7xh5")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.56197965, 0)
+shape = SubResource("CylinderShape3D_s4h83")

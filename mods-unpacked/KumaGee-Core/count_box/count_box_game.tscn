@@ -1,8 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://bc2lecdk7vpl1"]
+[gd_scene load_steps=14 format=3 uid="uid://bc2lecdk7vpl1"]
 
 [ext_resource type="Script" uid="uid://c03ys8d4r0bjm" path="res://mods-unpacked/KumaGee-Core/count_box/count_box_game.gd" id="1_bwii6"]
 [ext_resource type="Shader" uid="uid://dhod7psep452o" path="res://shader/grid.gdshader" id="1_kyqmx"]
 [ext_resource type="Shader" uid="uid://btxd56bhyysqb" path="res://shader/outline.gdshader" id="1_ujnhv"]
+[ext_resource type="Script" uid="uid://b2vxuiihxvp5t" path="res://mods-unpacked/KumaGee-Core/ui/round_manager.gd" id="2_6vxk2"]
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme.css" id="4_7w20i"]
 [ext_resource type="Script" uid="uid://clj6iwh6bygfb" path="res://mods-unpacked/KumaGee-Core/ui/timer_label.gd" id="5_5lsn5"]
 [ext_resource type="Script" uid="uid://c56wtym64dded" path="res://mods-unpacked/KumaGee-Core/count_box/player_game_list.gd" id="5_b7ami"]
@@ -66,8 +67,11 @@ box_root = NodePath("BoxRoot")
 count_label = NodePath("CanvasLayer/Control/CenterContainer/ShowCount")
 start_marker = NodePath("Marker3D")
 
+[node name="RoundManager" type="Node" parent="."]
+script = ExtResource("2_6vxk2")
+
 [node name="StartTimer" type="Timer" parent="."]
-wait_time = 3.0
+wait_time = 5.0
 one_shot = true
 
 [node name="HideTimer" type="Timer" parent="."]
@@ -105,19 +109,6 @@ transform = Transform3D(0.93605953, 0.33646786, -0.10286853, 0, 0.29237166, 0.95
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -4)
 
 [node name="BoxRoot" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -12)
-
-[node name="CSGBox3D" type="CSGBox3D" parent="BoxRoot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.508194, 0, -3.4997153)
-
-[node name="CSGBox3D2" type="CSGBox3D" parent="BoxRoot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.491806, 0, 3.5002847)
-
-[node name="CSGBox3D3" type="CSGBox3D" parent="BoxRoot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.508194, 0, 3.5002847)
-
-[node name="CSGBox3D4" type="CSGBox3D" parent="BoxRoot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.491806, 0, -3.4997153)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -192,7 +183,6 @@ layout_mode = 2
 script = ExtResource("5_b7ami")
 player_row = ExtResource("6_b7ami")
 child_size = Vector2(0, 45)
-initial_dir = Vector2(1, 0)
 
 [node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Control"]
 layout_mode = 1
@@ -206,3 +196,36 @@ grow_vertical = 2
 layout_mode = 2
 theme_type_variation = &"LabelLarge"
 text = "13"
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5882353)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/ColorRect/VBoxContainer"]
+layout_mode = 2
+text = "Press A to count up
+Press B to lock"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="CanvasLayer/Control/ColorRect/VBoxContainer"]
+layout_mode = 2

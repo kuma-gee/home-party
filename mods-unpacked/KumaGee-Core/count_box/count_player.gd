@@ -27,6 +27,7 @@ func _ready() -> void:
 	game_client.input_received.connect(_on_input_received)
 
 func _on_input_received(input: String, value):
+	if not started: return
 	if input == "action" and value == true and not is_locked:
 		count += 1
 	elif input == "secondary" and not is_locked:

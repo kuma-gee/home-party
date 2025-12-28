@@ -1,8 +1,11 @@
-[gd_resource type="Resource" script_class="GameResource" load_steps=4 format=3 uid="uid://dlwx0jk0tvw2e"]
+[gd_resource type="Resource" script_class="GameResource" load_steps=7 format=3 uid="uid://dlwx0jk0tvw2e"]
 
 [ext_resource type="Texture2D" uid="uid://dppjsb1nftth5" path="res://icon.svg" id="1_4goec"]
 [ext_resource type="Script" uid="uid://bwykg0o4vosvn" path="res://main/game_resource.gd" id="1_6jht4"]
 [ext_resource type="PackedScene" uid="uid://bc2lecdk7vpl1" path="res://mods-unpacked/KumaGee-Core/count_box/count_box_game.tscn" id="1_81oc3"]
+[ext_resource type="Script" uid="uid://btc1factr54dk" path="res://main/tags/tag_resource.gd" id="4_36aqg"]
+[ext_resource type="Resource" uid="uid://ylp5atxqmpvr" path="res://main/tags/mini_game_tag.tres" id="5_8ovtx"]
+[ext_resource type="Resource" uid="uid://cnm5006jpp31" path="res://main/tags/simple_tag.tres" id="6_8ovtx"]
 
 [resource]
 script = ExtResource("1_6jht4")
@@ -10,4 +13,5 @@ name = "Count Boxes"
 description = "Count the correct number of boxes on the screen"
 image = ExtResource("1_4goec")
 scene = ExtResource("1_81oc3")
+tags = Array[ExtResource("4_36aqg")]([ExtResource("5_8ovtx"), ExtResource("6_8ovtx")])
 metadata/_custom_type_script = "uid://bwykg0o4vosvn"

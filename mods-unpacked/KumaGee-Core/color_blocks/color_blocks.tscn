@@ -1,0 +1,112 @@
+[gd_scene load_steps=7 format=3 uid="uid://brre0v0qsn6wd"]
+
+[ext_resource type="Script" uid="uid://4jubo1a84pb3" path="res://mods-unpacked/KumaGee-Core/color_blocks/color_blocks.gd" id="1_d7hyr"]
+[ext_resource type="PackedScene" uid="uid://b4o3hds6pu4e0" path="res://mods-unpacked/KumaGee-Core/color_blocks/color_block.tscn" id="2_n2wds"]
+[ext_resource type="PackedScene" uid="uid://c8hy6654mshgi" path="res://mods-unpacked/KumaGee-Core/entities/player.tscn" id="3_56xa4"]
+[ext_resource type="PackedScene" uid="uid://hu3fomqxqo3i" path="res://mods-unpacked/KumaGee-Core/color_blocks/player_color_box.tscn" id="4_ycyaf"]
+[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme.css" id="5_i7amv"]
+[ext_resource type="Script" uid="uid://clj6iwh6bygfb" path="res://mods-unpacked/KumaGee-Core/ui/timer_label.gd" id="6_g7kcx"]
+
+[node name="ColorBlocks" type="Node3D" node_paths=PackedStringArray("camera", "winner_label", "floor_box", "east_wall_box", "west_wall_box", "north_wall_box", "south_wall_box")]
+script = ExtResource("1_d7hyr")
+camera = NodePath("Camera3D")
+block_scene = ExtResource("2_n2wds")
+player_scene = ExtResource("3_56xa4")
+player_block_scene = ExtResource("4_ycyaf")
+winner_label = NodePath("CanvasLayer/Control/CenterContainer/WinnerLabel")
+colors = Array[Color]([Color(0.7882353, 0.1882353, 0.1882353, 1), Color(0.2901961, 0.8509804, 0.2901961, 1), Color(0.23529412, 0.31764707, 0.87058824, 1), Color(1, 1, 0.36862746, 1), Color(1, 0.7058824, 0.16078432, 1), Color(0.67058825, 0.23529412, 0.9411765, 1), Color(0.4117647, 1, 1, 1), Color(1, 0.45882353, 1, 1)])
+floor_box = NodePath("Floor")
+east_wall_box = NodePath("East")
+west_wall_box = NodePath("West")
+north_wall_box = NodePath("North")
+south_wall_box = NodePath("South")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.28702614, 0.9579227, 0, -0.9579227, 0.28702614, 0, 14.065874, 5.2630568)
+current = true
+size = 17.062874
+
+[node name="Floor" type="CSGBox3D" parent="."]
+use_collision = true
+size = Vector3(10, 0.2, 10)
+
+[node name="East" type="CSGBox3D" parent="."]
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 6, 1, 0)
+use_collision = true
+size = Vector3(10, 0.2, 10)
+
+[node name="West" type="CSGBox3D" parent="."]
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, -6, 1, 0)
+use_collision = true
+size = Vector3(10, 0.2, 10)
+
+[node name="South" type="CSGBox3D" parent="."]
+transform = Transform3D(1.9106855e-15, -4.371139e-08, 1, -1, -4.371139e-08, 0, 4.371139e-08, -1, -4.371139e-08, 0, 1, 6)
+use_collision = true
+size = Vector3(10, 0.2, 10)
+
+[node name="North" type="CSGBox3D" parent="."]
+transform = Transform3D(1.9106855e-15, -4.371139e-08, 1, -1, -4.371139e-08, 0, 4.371139e-08, -1, -4.371139e-08, 0, 1, -6)
+use_collision = true
+size = Vector3(10, 0.2, 10)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.92957073, 0.22246638, 0.29395062, -0.36864388, 0.5609704, 0.7412249, 0, -0.797384, 0.60347253, 0, 7.461938, 0)
+
+[node name="GameTime" type="Timer" parent="."]
+wait_time = 30.0
+one_shot = true
+
+[node name="StartTime" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_i7amv")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
+grow_horizontal = 2
+
+[node name="StartTimerLabel" type="Label" parent="CanvasLayer/Control/MarginContainer" node_paths=PackedStringArray("timer")]
+layout_mode = 2
+theme_type_variation = &"LabelLarge"
+text = "10"
+horizontal_alignment = 1
+script = ExtResource("6_g7kcx")
+timer = NodePath("../../../../StartTime")
+
+[node name="GameTimerLabel" type="Label" parent="CanvasLayer/Control/MarginContainer" node_paths=PackedStringArray("timer")]
+layout_mode = 2
+theme_type_variation = &"LabelLarge"
+text = "10"
+horizontal_alignment = 1
+script = ExtResource("6_g7kcx")
+timer = NodePath("../../../../GameTime")
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="WinnerLabel" type="Label" parent="CanvasLayer/Control/CenterContainer"]
+layout_mode = 2
+theme_type_variation = &"LabelLarge"
+text = "Red won!"

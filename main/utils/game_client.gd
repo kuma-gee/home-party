@@ -34,7 +34,7 @@ func _process(_delta):
 	if channel.get_ready_state() == WebRTCDataChannel.STATE_OPEN:
 		while channel.get_available_packet_count() > 0:
 			var data = channel.get_packet().get_string_from_utf8()
-			logger.info("Received input: %s" % data)
+			logger.debug("Received input: %s" % data)
 
 			var parts = data.split(";")
 			if parts.size() == 2:
@@ -49,19 +49,15 @@ func _process(_delta):
 
 func add_ice_candidate(mid: String, index: int, sdp: String):
 	peer.add_ice_candidate(mid, index, sdp)
-	logger.info("Added ICE candidate: mid=%s, index=%d" % [mid, index])
+	logger.debug("Added ICE candidate: mid=%s, index=%d" % [mid, index])
 
 func set_session(type: String, sdp: String):
 	peer.set_remote_description(type, sdp)
-	logger.info("Set remote session description of type %s" % type)
+	logger.debug("Set remote session description of type %s" % type)
 	
 func send_text(text: String):
 	channel.put_packet(text.to_utf8_buffer())
 	sent_text.emit(text)
-
-func create_offer():
-	peer.create_offer()
-	logger.info("Creating WebRTC offer...")
 
 func reset():
 	inputs = {}

@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://dfokhnxe3wv3r"]
+[gd_scene load_steps=9 format=3 uid="uid://dfokhnxe3wv3r"]
 
 [ext_resource type="Script" uid="uid://dq0a51hof6j67" path="res://main/game.gd" id="1_e2o6t"]
 [ext_resource type="Script" uid="uid://dgfn4nv7yxows" path="res://main/ui/player_list.gd" id="2_feb5d"]
 [ext_resource type="Script" uid="uid://ddetao6ypdnd4" path="res://main/utils/game_loader.gd" id="3_ph3h8"]
+[ext_resource type="PackedScene" uid="uid://cwf7fl2qf2pb5" path="res://main/ui/game_select.tscn" id="4_3qcir"]
 [ext_resource type="Script" uid="uid://brg6aumaixieg" path="res://main/ui/game_qr.gd" id="4_46yon"]
 [ext_resource type="Script" uid="uid://didybt66x4pke" path="res://main/game_mode.gd" id="5_vfw6y"]
 
@@ -18,9 +19,11 @@ data = {
 [sub_resource type="ImageTexture" id="ImageTexture_mmpi0"]
 image = SubResource("Image_vfw6y")
 
-[node name="Game" type="Node" node_paths=PackedStringArray("game_list")]
+[node name="Game" type="Node" node_paths=PackedStringArray("start_button", "game_list")]
 script = ExtResource("1_e2o6t")
+start_button = NodePath("CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/Button")
 game_list = NodePath("CanvasLayer/Control/HBoxContainer/SubViewportContainer/SubViewport/Start/CenterContainer/VBoxContainer")
+game_button = ExtResource("4_3qcir")
 
 [node name="GameLoader" type="Node" parent="."]
 script = ExtResource("3_ph3h8")

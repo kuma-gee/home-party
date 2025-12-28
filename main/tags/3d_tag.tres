@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="TagResource" load_steps=2 format=3 uid="uid://bdg12shf77v56"]
+
+[ext_resource type="Script" uid="uid://btc1factr54dk" path="res://main/tags/tag_resource.gd" id="1_g6s5s"]
+
+[resource]
+script = ExtResource("1_g6s5s")
+tag = "3D"
+description = "3D Movement"
+color = Color(1, 0.4509804, 0.4509804, 1)
+metadata/_custom_type_script = "uid://btc1factr54dk"

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="TagResource" load_steps=2 format=3 uid="uid://cnm5006jpp31"]
+
+[ext_resource type="Script" uid="uid://btc1factr54dk" path="res://main/tags/tag_resource.gd" id="1_a8ao3"]
+
+[resource]
+script = ExtResource("1_a8ao3")
+tag = "Simple"
+description = "A simple gameplay"
+color = Color(0.9254902, 1, 0.101960786, 1)
+metadata/_custom_type_script = "uid://btc1factr54dk"

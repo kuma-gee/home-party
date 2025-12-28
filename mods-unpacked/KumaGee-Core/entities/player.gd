@@ -1,4 +1,3 @@
-class_name Player
 extends CharacterBody3D
 
 @export var speed = 3.0
@@ -7,12 +6,17 @@ extends CharacterBody3D
 @onready var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 var game_client: GameClient
-var data = {}
+var locked := true
 
 func _ready() -> void:
+	var data = LobbyServer.get_player_data(game_client.uuid)
 	name_label.text = "%s" % data.get("name", "Player")
 
 func _physics_process(delta: float) -> void:
+	if not is_instance_valid(game_client) or locked:
+		velocity = Vector3.ZERO
+		return
+	
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 	

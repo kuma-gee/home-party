@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="TagResource" load_steps=2 format=3 uid="uid://cbpoep2dt0dm5"]
+
+[ext_resource type="Script" uid="uid://btc1factr54dk" path="res://main/tags/tag_resource.gd" id="1_f7ovc"]
+
+[resource]
+script = ExtResource("1_f7ovc")
+tag = "Team Tag"
+description = "Can be played in teams"
+color = Color(0.27450982, 0.6509804, 0.25490198, 1)
+metadata/_custom_type_script = "uid://btc1factr54dk"

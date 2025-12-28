@@ -1,12 +1,13 @@
 [gd_scene load_steps=3 format=3 uid="uid://c8hy6654mshgi"]
 
-[ext_resource type="Script" uid="uid://b485ygfa85mmx" path="res://main/entities/player.gd" id="1_cpkg6"]
+[ext_resource type="Script" uid="uid://b485ygfa85mmx" path="res://mods-unpacked/KumaGee-Core/entities/player.gd" id="1_cpkg6"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xgv5b"]
 radius = 0.21826172
 height = 1.0366211
 
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("name_label")]
+collision_layer = 2
 script = ExtResource("1_cpkg6")
 name_label = NodePath("NameLabel")
 
@@ -18,6 +19,10 @@ shape = SubResource("CapsuleShape3D_xgv5b")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5168568, 0)
 radius = 0.20898438
 height = 0.9920654
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGCylinder3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.26104736, 0.13207626)
+size = Vector3(0.33984375, 0.14355469, 0.24047852)
 
 [node name="NameLabel" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5019438, 0)

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="GameResource" load_steps=6 format=3 uid="uid://btxmt365sw3ls"]
+
+[ext_resource type="Script" uid="uid://bwykg0o4vosvn" path="res://main/game_resource.gd" id="1_4igie"]
+[ext_resource type="PackedScene" uid="uid://brre0v0qsn6wd" path="res://mods-unpacked/KumaGee-Core/color_blocks/color_blocks.tscn" id="1_dyqq5"]
+[ext_resource type="Script" uid="uid://btc1factr54dk" path="res://main/tags/tag_resource.gd" id="2_dyqq5"]
+[ext_resource type="Resource" uid="uid://cbpoep2dt0dm5" path="res://main/tags/team_tag.tres" id="4_7ew7u"]
+[ext_resource type="Resource" uid="uid://bdg12shf77v56" path="res://main/tags/3d_tag.tres" id="5_pwmsb"]
+
+[resource]
+script = ExtResource("1_4igie")
+name = "Color Blocks"
+description = "Fill the blocks with your color"
+scene = ExtResource("1_dyqq5")
+tags = Array[ExtResource("2_dyqq5")]([ExtResource("4_7ew7u"), ExtResource("5_pwmsb")])
+metadata/_custom_type_script = "uid://bwykg0o4vosvn"
