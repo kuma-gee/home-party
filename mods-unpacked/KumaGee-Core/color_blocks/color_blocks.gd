@@ -102,6 +102,7 @@ func _create_players():
 		for player in teams[team]:
 			var node = player_scene.instantiate() as Node3D
 			node.game_client = player
+			node.enable_stun()
 			add_child(node)
 
 			var player_block = player_block_scene.instantiate() as Node3D

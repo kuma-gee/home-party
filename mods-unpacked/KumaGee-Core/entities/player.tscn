@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://c8hy6654mshgi"]
+[gd_scene load_steps=4 format=3 uid="uid://c8hy6654mshgi"]
 
 [ext_resource type="Script" uid="uid://b485ygfa85mmx" path="res://mods-unpacked/KumaGee-Core/entities/player.gd" id="1_cpkg6"]
 
@@ -6,23 +6,37 @@
 radius = 0.21826172
 height = 1.0366211
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("name_label")]
+[sub_resource type="BoxShape3D" id="BoxShape3D_3bnhn"]
+size = Vector3(0.6425781, 1.0759277, 0.38952637)
+
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("name_label", "body", "hit_area")]
 collision_layer = 2
 script = ExtResource("1_cpkg6")
 name_label = NodePath("NameLabel")
+body = NodePath("CollisionShape3D")
+hit_area = NodePath("CollisionShape3D/HitArea")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.50355715, 0)
 shape = SubResource("CapsuleShape3D_xgv5b")
 
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5168568, 0)
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="CollisionShape3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.013299644, 0)
 radius = 0.20898438
 height = 0.9920654
 
-[node name="CSGBox3D" type="CSGBox3D" parent="CSGCylinder3D"]
+[node name="CSGBox3D" type="CSGBox3D" parent="CollisionShape3D/CSGCylinder3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.26104736, 0.13207626)
 size = Vector3(0.33984375, 0.14355469, 0.24047852)
+
+[node name="HitArea" type="Area3D" parent="CollisionShape3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.50355715, 0)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CollisionShape3D/HitArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.616333, 0.4925995)
+shape = SubResource("BoxShape3D_3bnhn")
 
 [node name="NameLabel" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5019438, 0)
@@ -30,3 +44,7 @@ billboard = 1
 double_sided = false
 no_depth_test = true
 text = "Test"
+
+[node name="StunTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
