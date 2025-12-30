@@ -2,12 +2,12 @@
 	import { onMount, onDestroy } from 'svelte';
 
 	interface Props {
-		onMove?: (vector: { x: number; y: number }) => void;
+		onmove?: (event: CustomEvent<{ x: number; y: number }>) => void;
 		deadzone?: number;
 		maxDistance?: number;
 	}
 
-	let { onMove = () => {}, deadzone = 10, maxDistance = 75 }: Props = $props();
+	let { onmove, deadzone = 10, maxDistance = 75 }: Props = $props();
 
 	let baseElement: HTMLDivElement;
 	let tipElement: HTMLDivElement;
@@ -17,6 +17,12 @@
 
 	let tipX = $state(0);
 	let tipY = $state(0);
+
+	function dispatchMove(vector: { x: number; y: number }) {
+		if (onmove) {
+			onmove(new CustomEvent('move', { detail: vector }) as any);
+		}
+	}
 
 	function handleTouchStart(event: TouchEvent) {
 		if (touchIndex !== null) return;
@@ -116,11 +122,11 @@
 				y: (deltaY / distance) * normalizedDistance
 			};
 			
-			onMove(output);
+			dispatchMove(output);
 		} else {
 			isPressed = false;
 			output = { x: 0, y: 0 };
-			onMove(output);
+			dispatchMove(output);
 		}
 	}
 
@@ -130,7 +136,7 @@
 		output = { x: 0, y: 0 };
 		tipX = 0;
 		tipY = 0;
-		onMove({ x: 0, y: 0 });
+		dispatchMove({ x: 0, y: 0 });
 	}
 
 	onMount(() => {
@@ -217,22 +223,5 @@
 
 	.joystick-tip.pressed {
 		background: rgba(25, 118, 210, 0.9);
-	}
-
-	@media (max-width: 768px) {
-		.joystick-container {
-			width: 120px;
-			height: 120px;
-		}
-
-		.joystick-base {
-			width: 120px;
-			height: 120px;
-		}
-
-		.joystick-tip {
-			width: 50px;
-			height: 50px;
-		}
 	}
 </style>

@@ -298,26 +298,23 @@ export class WebSocketClient {
       this.ws = null;
     }
 
-    // Close WebRTC connection
     if (this.webrtcClient) {
       this.webrtcClient.close();
       this.webrtcClient = null;
     }
+
+    this.peerId = null;
   }
 
-  isConnected(): boolean {
-    return this.ws !== null && this.ws.readyState === WebSocket.OPEN;
-  }
-
-  getReconnecting(): boolean {
-    return this.isReconnecting;
+  getWebRTCClient(): WebRTCClient | null {
+    return this.webrtcClient;
   }
 
   getPeerId(): number | null {
     return this.peerId;
   }
 
-  getWebRTCClient(): WebRTCClient | null {
-    return this.webrtcClient;
+  isConnected(): boolean {
+    return this.ws !== null && this.ws.readyState === WebSocket.OPEN;
   }
 }

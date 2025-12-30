@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-	import { connectionStore, isConnected, webrtcState, webrtcDataChannelOpen, dataChannelMessage, reconnecting, reconnectAttempts } from '$lib/store';
-	import VirtualJoystick from '$lib/VirtualJoystick.svelte';
+	import { connectionStore, isConnected, webrtcState, webrtcDataChannelOpen, dataChannelMessage, reconnecting, reconnectAttempts } from '../lib/store';
+	import VirtualJoystick from '../lib/VirtualJoystick.svelte';
 
 	let serverIp = $state('');
 	let connecting = $state(false);
@@ -126,17 +126,20 @@
 
 	function handleButtonDown(input: string) {
 		sendButtonInput(input, true);
+        console.log('Button down', input)
 	}
 
 	function handleButtonUp(input: string) {
 		sendButtonInput(input, false);
+        console.log('Button up', input)
 	}
 
 	function handleJoystickMove(vector: { x: number; y: number }) {
 		connectionStore.sendMove('move', vector);
+        console.log('Joystick move', vector);
 	}
 
-
+    
 </script>
 
 <div class="container">
@@ -200,7 +203,7 @@
 			<div class="game-controls">
 				<!-- Joystick (Bottom Left) -->
 				<div class="joystick-container-wrapper">
-					<VirtualJoystick onMove={handleJoystickMove} />
+					<VirtualJoystick onmove={(e) => handleJoystickMove(e.detail)} />
 				</div>
 
 				<!-- Message Display (Center) -->
@@ -216,6 +219,8 @@
 						class="action-btn secondary-btn"
 						onmousedown={() => handleButtonDown('secondary')}
 						onmouseup={() => handleButtonUp('secondary')}
+						ontouchstart={() => handleButtonDown('secondary')}
+						ontouchend={() => handleButtonUp('secondary')}
 					>
 						B
 					</button>
@@ -223,6 +228,8 @@
 						class="action-btn primary-btn"
 						onmousedown={() => handleButtonDown('action')}
 						onmouseup={() => handleButtonUp('action')}
+						ontouchstart={() => handleButtonDown('action')}
+						ontouchend={() => handleButtonUp('action')}
 					>
 						A
 					</button>

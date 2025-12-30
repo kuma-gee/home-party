@@ -5,6 +5,8 @@ extends CharacterBody3D
 @onready var recover_time: Timer = $RecoverTime
 @onready var collision_shape_3d: CollisionShape3D = $CollisionShape3D
 
+@onready var original_height := global_position.y
+
 var locked := true:
 	set(v):
 		locked = v
@@ -20,7 +22,7 @@ var falling := false:
 func _ready() -> void:
 	recover_time.timeout.connect(func():
 		collision_shape_3d.disabled = false
-		position.y = 0
+		position.y = original_height
 		show()
 	)
 

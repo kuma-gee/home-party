@@ -60,8 +60,6 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector3.ZERO
 		return
 	
-	ground_spring_cast.apply_gravity(self, delta)
-
 	if not locked and not stunned:
 		var motion = game_client.get_move()
 		var direction = (transform.basis * Vector3(motion.x, 0, motion.y)).normalized()
@@ -75,8 +73,10 @@ func _physics_process(delta: float) -> void:
 			velocity.x = move_toward(velocity.x, 0, speed)
 			velocity.z = move_toward(velocity.z, 0, speed)
 	else:
-		velocity = Vector3.ZERO
+		velocity.x = 0
+		velocity.z = 0
 	
+	ground_spring_cast.apply_gravity(self, delta)
 	move_and_slide()
 	
 	if global_position.y < -5:
