@@ -33,9 +33,8 @@ func next_game():
 	
 	var players = PlayerManager.get_players()
 	var game_setup = GameSetup.new()
-	game_node.setup(players, game_setup)
 	game_node.game_finished.connect(func(): _on_game_finished())
-	game_node.start_game()
+	game_node.start_game(players, game_setup)
 	played_games += 1
 
 func _on_game_finished():
@@ -46,8 +45,9 @@ func _on_game_finished():
 	next_game()
 
 func end_game():
-	game_node.queue_free()
-	game_node = null
+	if game_node:
+		game_node.queue_free()
+		game_node = null
 	
 	var players = PlayerManager.get_players()
 	for p in players:

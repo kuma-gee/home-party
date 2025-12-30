@@ -3,9 +3,9 @@
 [ext_resource type="Script" uid="uid://4jubo1a84pb3" path="res://mods-unpacked/KumaGee-Core/color_blocks/color_blocks.gd" id="1_d7hyr"]
 [ext_resource type="PackedScene" uid="uid://b4o3hds6pu4e0" path="res://mods-unpacked/KumaGee-Core/color_blocks/color_block.tscn" id="2_n2wds"]
 [ext_resource type="PackedScene" uid="uid://c8hy6654mshgi" path="res://mods-unpacked/KumaGee-Core/entities/player.tscn" id="3_56xa4"]
+[ext_resource type="PackedScene" uid="uid://cprdqoqxo03oe" path="res://mods-unpacked/KumaGee-Core/utils/game_start.tscn" id="4_i7amv"]
 [ext_resource type="PackedScene" uid="uid://hu3fomqxqo3i" path="res://mods-unpacked/KumaGee-Core/color_blocks/player_color_box.tscn" id="4_ycyaf"]
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme.css" id="5_i7amv"]
-[ext_resource type="Script" uid="uid://clj6iwh6bygfb" path="res://mods-unpacked/KumaGee-Core/utils/timer_label.gd" id="6_g7kcx"]
 [ext_resource type="Script" uid="uid://ben7bi872onq6" path="res://mods-unpacked/KumaGee-Core/utils/team_split.gd" id="7_88w1i"]
 [ext_resource type="Script" uid="uid://clp2vp3fxoicl" path="res://mods-unpacked/KumaGee-Core/utils/create_grid.gd" id="7_i7amv"]
 
@@ -13,7 +13,7 @@
 script = ExtResource("1_d7hyr")
 player_scene = ExtResource("3_56xa4")
 player_block_scene = ExtResource("4_ycyaf")
-winner_label = NodePath("CanvasLayer/Control/CenterContainer/WinnerLabel")
+winner_label = NodePath("GameStart/Control/CenterContainer/WinnerLabel")
 colors = Array[Color]([Color(0.7882353, 0.1882353, 0.1882353, 1), Color(0.2901961, 0.8509804, 0.2901961, 1), Color(0.23529412, 0.31764707, 0.87058824, 1), Color(1, 1, 0.36862746, 1), Color(1, 0.7058824, 0.16078432, 1), Color(0.67058825, 0.23529412, 0.9411765, 1), Color(0.4117647, 1, 1, 1), Color(1, 0.45882353, 1, 1)])
 
 [node name="Camera3D" type="Camera3D" parent="."]
@@ -24,17 +24,10 @@ size = 17.062874
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.92957073, 0.22246638, 0.29395062, -0.36864388, 0.5609704, 0.7412249, 0, -0.797384, 0.60347253, 0, 7.461938, 0)
 
-[node name="GameTime" type="Timer" parent="."]
-wait_time = 30.0
-one_shot = true
+[node name="GameStart" parent="." node_paths=PackedStringArray("gameover_screen") instance=ExtResource("4_i7amv")]
+gameover_screen = NodePath("Control")
 
-[node name="StartTime" type="Timer" parent="."]
-wait_time = 5.0
-one_shot = true
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="Control" type="Control" parent="CanvasLayer"]
+[node name="Control" type="Control" parent="GameStart"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -43,33 +36,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("5_i7amv")
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -20.0
-offset_right = 20.0
-offset_bottom = 40.0
-grow_horizontal = 2
-
-[node name="StartTimerLabel" type="Label" parent="CanvasLayer/Control/MarginContainer" node_paths=PackedStringArray("timer")]
-layout_mode = 2
-theme_type_variation = &"LabelLarge"
-text = "10"
-horizontal_alignment = 1
-script = ExtResource("6_g7kcx")
-timer = NodePath("../../../../StartTime")
-
-[node name="GameTimerLabel" type="Label" parent="CanvasLayer/Control/MarginContainer" node_paths=PackedStringArray("timer")]
-layout_mode = 2
-theme_type_variation = &"LabelLarge"
-text = "10"
-horizontal_alignment = 1
-script = ExtResource("6_g7kcx")
-timer = NodePath("../../../../GameTime")
-
-[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Control"]
+[node name="CenterContainer" type="CenterContainer" parent="GameStart/Control"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -77,7 +44,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="WinnerLabel" type="Label" parent="CanvasLayer/Control/CenterContainer"]
+[node name="WinnerLabel" type="Label" parent="GameStart/Control/CenterContainer"]
 layout_mode = 2
 theme_type_variation = &"LabelLarge"
 text = "Red won!"

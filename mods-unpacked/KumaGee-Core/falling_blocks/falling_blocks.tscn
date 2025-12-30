@@ -1,0 +1,54 @@
+[gd_scene load_steps=7 format=3 uid="uid://bbvhrib8im24x"]
+
+[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme.css" id="1_axx2n"]
+[ext_resource type="Script" uid="uid://t5ck5kkpbw6v" path="res://mods-unpacked/KumaGee-Core/falling_blocks/falling_blocks.gd" id="1_xcajm"]
+[ext_resource type="PackedScene" uid="uid://c8hy6654mshgi" path="res://mods-unpacked/KumaGee-Core/entities/player.tscn" id="2_xcajm"]
+[ext_resource type="Script" uid="uid://clp2vp3fxoicl" path="res://mods-unpacked/KumaGee-Core/utils/create_grid.gd" id="3_f3wuf"]
+[ext_resource type="PackedScene" uid="uid://cprdqoqxo03oe" path="res://mods-unpacked/KumaGee-Core/utils/game_start.tscn" id="4_axx2n"]
+[ext_resource type="PackedScene" uid="uid://celjb6dniyha7" path="res://mods-unpacked/KumaGee-Core/falling_blocks/falling_block.tscn" id="5_axx2n"]
+
+[node name="FallingBlocks" type="Node3D"]
+script = ExtResource("1_xcajm")
+player_scene = ExtResource("2_xcajm")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.28702614, 0.9579227, 0, -0.9579227, 0.28702614, 0, 14.065874, 5.2630568)
+current = true
+size = 17.062874
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.92957073, 0.22246638, 0.29395062, -0.36864388, 0.5609704, 0.7412249, 0, -0.797384, 0.60347253, 0, 7.461938, 0)
+
+[node name="CreateGrid" type="Node" parent="." node_paths=PackedStringArray("camera")]
+script = ExtResource("3_f3wuf")
+camera = NodePath("../Camera3D")
+block_scene = ExtResource("5_axx2n")
+min_grid_size = 12
+max_grid_size = 28
+block_offset = Vector3(0, -1, 0)
+create_floor = false
+
+[node name="GameStart" parent="." node_paths=PackedStringArray("gameover_screen") instance=ExtResource("4_axx2n")]
+gameover_screen = NodePath("Control")
+
+[node name="Control" type="Control" parent="GameStart"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_axx2n")
+
+[node name="CenterContainer" type="CenterContainer" parent="GameStart/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="WinnerLabel" type="Label" parent="GameStart/Control/CenterContainer"]
+layout_mode = 2
+theme_type_variation = &"LabelLarge"
+text = "Gameover!"

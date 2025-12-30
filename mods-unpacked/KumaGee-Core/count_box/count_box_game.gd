@@ -35,7 +35,7 @@ func _ready() -> void:
 	round_manager.end_rounds.connect(func(): game_finished.emit())
 	round_manager.start_round.connect(func(diff):
 		difficulty = diff
-		start_game()
+		_start_round()
 	)
 	
 	box_root.hide()
@@ -82,19 +82,6 @@ func _round_winners():
 func get_points() -> Dictionary[String, int]:
 	return round_manager.wins
 
-func setup(players: Array[GameClient], _game_setup: GameSetup):
-	for p in players:
-		var player = CountPlayer.new()
-		player.game_client = p
-		player.locked_changed.connect(func(l):
-			if l: check_lock_timer.start()
-		)
-		add_child(player)
-		count_players.append(player)
-	
-	player_game_list.add_players(count_players)
-	round_manager.start_rounds(players)
-
 func _is_all_locked():
 	for p in count_players:
 		if not p.is_locked:
@@ -111,7 +98,21 @@ func reset_game():
 	count_label.hide()
 	box_root.hide()
 
-func start_game():
+func start_game(players: Array[GameClient], game_setup: GameSetup):
+	for p in players:
+		var player = CountPlayer.new()
+		player.game_client = p
+		player.locked_changed.connect(func(l):
+			if l: check_lock_timer.start()
+		)
+		add_child(player)
+		count_players.append(player)
+	
+	player_game_list.add_players(count_players)
+	round_manager.start_rounds(players)
+	_start_round()
+
+func _start_round():
 	reset_game()
 	start_timer.start()
 

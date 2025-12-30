@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="GameResource" load_steps=5 format=3 uid="uid://dbemientmggum"]
+
+[ext_resource type="Texture2D" uid="uid://dppjsb1nftth5" path="res://icon.svg" id="1_1enj4"]
+[ext_resource type="Script" uid="uid://bwykg0o4vosvn" path="res://main/game_resource.gd" id="1_3cywp"]
+[ext_resource type="Script" uid="uid://btc1factr54dk" path="res://main/tags/tag_resource.gd" id="2_1enj4"]
+[ext_resource type="PackedScene" uid="uid://bbvhrib8im24x" path="res://mods-unpacked/KumaGee-Core/falling_blocks/falling_blocks.tscn" id="2_uetmc"]
+
+[resource]
+script = ExtResource("1_3cywp")
+name = "Falling Blocks"
+description = "Survive the falling blocks"
+image = ExtResource("1_1enj4")
+scene = ExtResource("2_uetmc")
+metadata/_custom_type_script = "uid://bwykg0o4vosvn"

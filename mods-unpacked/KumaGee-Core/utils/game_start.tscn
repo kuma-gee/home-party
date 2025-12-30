@@ -1,0 +1,42 @@
+[gd_scene load_steps=4 format=3 uid="uid://cprdqoqxo03oe"]
+
+[ext_resource type="Script" uid="uid://dqluleingbb10" path="res://mods-unpacked/KumaGee-Core/utils/game_start.gd" id="1_wtiwd"]
+[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme.css" id="2_3au4e"]
+[ext_resource type="Script" uid="uid://clj6iwh6bygfb" path="res://mods-unpacked/KumaGee-Core/utils/timer_label.gd" id="3_ayrgx"]
+
+[node name="GameStart" type="CanvasLayer"]
+script = ExtResource("1_wtiwd")
+
+[node name="StartTime" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[node name="GameTime" type="Timer" parent="."]
+wait_time = 30.0
+one_shot = true
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -43.5
+offset_right = -3.5
+offset_bottom = 40.0
+grow_horizontal = 2
+theme = ExtResource("2_3au4e")
+
+[node name="StartTimerLabel" type="Label" parent="MarginContainer" node_paths=PackedStringArray("timer")]
+layout_mode = 2
+theme_type_variation = &"LabelLarge"
+text = "10"
+horizontal_alignment = 1
+script = ExtResource("3_ayrgx")
+timer = NodePath("../../StartTime")
+
+[node name="GameTimerLabel" type="Label" parent="MarginContainer" node_paths=PackedStringArray("timer")]
+layout_mode = 2
+theme_type_variation = &"LabelLarge"
+text = "10"
+horizontal_alignment = 1
+script = ExtResource("3_ayrgx")
+timer = NodePath("../../GameTime")

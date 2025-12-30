@@ -6,12 +6,12 @@ enum Action {
 	JUMP,
 }
 
-@export var jump_force = 7.0
+@export var jump_force = 5.0
 @export var speed = 3.0
 @export var name_label: Label3D
 @export var body: Node3D
 @export var hit_area: Area3D
-
+@onready var ground_spring_cast: GroundSpringCast = $GroundSpringCast
 @onready var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var stun_timer: Timer = $StunTimer
 
@@ -19,6 +19,10 @@ var game_client: GameClient
 var action := Action.NONE
 var locked := true
 var stunned := false
+var died := false:
+	set(v):
+		died = v
+		visible = not v
 
 func _ready() -> void:
 	var data = LobbyServer.get_player_data(game_client.uuid)
@@ -27,6 +31,8 @@ func _ready() -> void:
 	stun_timer.timeout.connect(func(): stunned = false)
 
 func _on_input_received(input: String, value):
+	if died or locked or stunned: return
+
 	if input == "action" and value == true:
 		_do_action()
 
@@ -47,16 +53,14 @@ func _stun_others():
 			b.stun()
 
 func _jump():
-	if is_on_floor():
-		velocity.y = jump_force
+	ground_spring_cast.jump(self, jump_force)
 
 func _physics_process(delta: float) -> void:
-	if not is_instance_valid(game_client):
+	if not is_instance_valid(game_client) or died:
 		velocity = Vector3.ZERO
 		return
 	
-	if not is_on_floor():
-		velocity.y -= gravity * delta
+	ground_spring_cast.apply_gravity(self, delta)
 
 	if not locked and not stunned:
 		var motion = game_client.get_move()
@@ -70,9 +74,17 @@ func _physics_process(delta: float) -> void:
 		else:
 			velocity.x = move_toward(velocity.x, 0, speed)
 			velocity.z = move_toward(velocity.z, 0, speed)
+	else:
+		velocity = Vector3.ZERO
 	
 	move_and_slide()
+	
+	if global_position.y < -5:
+		died = true
 
 func stun():
 	stunned = true
 	stun_timer.start()
+
+func set_locked(lock: bool):
+	locked = lock

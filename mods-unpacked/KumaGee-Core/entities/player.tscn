@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://c8hy6654mshgi"]
+[gd_scene load_steps=5 format=3 uid="uid://c8hy6654mshgi"]
 
 [ext_resource type="Script" uid="uid://b485ygfa85mmx" path="res://mods-unpacked/KumaGee-Core/entities/player.gd" id="1_cpkg6"]
+[ext_resource type="Script" uid="uid://s27yrhfnhort" path="res://mods-unpacked/KumaGee-Core/entities/ground_spring_cast.gd" id="2_o7jwf"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xgv5b"]
 radius = 0.21826172
@@ -48,3 +49,6 @@ text = "Test"
 [node name="StunTimer" type="Timer" parent="."]
 wait_time = 3.0
 one_shot = true
+
+[node name="GroundSpringCast" type="RayCast3D" parent="."]
+script = ExtResource("2_o7jwf")

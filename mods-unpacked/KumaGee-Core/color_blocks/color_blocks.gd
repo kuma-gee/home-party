@@ -26,32 +26,18 @@ extends BaseGame
 	"Magenta",
 ]
 
-@export var max_grid_size := 24
-@export var min_grid_size := 10
-
-@onready var game_time: Timer = $GameTime
-@onready var start_time: Timer = $StartTime
 @onready var team_split: Node = $TeamSplit
 @onready var create_grid: Node = $CreateGrid
+@onready var game_start: CanvasLayer = $GameStart
 
 var blocks := []
-var player_nodes: Array[Node3D] = []
 var teams = {}
 var winners = []
 
 func _ready() -> void:
-	start_time.timeout.connect(func(): _start())
-	game_time.timeout.connect(func(): _end_game())
-
-func _start():
-	game_time.start()
-	for p in player_nodes:
-		p.locked = false
+	game_start.game_ended.connect(func(): _end_game())
 
 func _end_game():
-	for p in player_nodes:
-		p.locked = true
-	
 	var color_count = {}
 	for b in blocks:
 		var idx = colors.find(b.current_color)
@@ -68,7 +54,6 @@ func _end_game():
 	
 	if winning_color_idx >= 0:
 		winner_label.text = "%s won!" % color_names[winning_color_idx]
-		winner_label.show()
 
 		for team_id in teams:
 			var team_color_idx = team_id % colors.size()
@@ -78,26 +63,17 @@ func _end_game():
 	
 	await get_tree().create_timer(2.0).timeout
 	game_finished.emit()
-		
-func setup(players: Array[GameClient], game_setup: GameSetup):
-	teams = team_split.create_teams(players, colors.size(), game_setup.team_mode)
-	var i = clamp(teams.size() / float(colors.size()), 0.0, 1.0)
-	var grid_size = int(ceil(lerp(min_grid_size, max_grid_size, i)))
 	
-	blocks = create_grid.create_grid(grid_size)
-	_create_players()
-
-func start_game(_diff := 0.0):
+func start_game(players: Array[GameClient], game_setup: GameSetup):
 	winners = []
-	winner_label.hide()
-	start_time.start()
-
-func get_winners() -> Array[String]:
-	return winners
-
-func _create_players():
-	var used_positions = []
+	teams = team_split.create_teams(players, colors.size(), game_setup.team_mode)
+	blocks = create_grid.create_grid(teams.size() / float(colors.size()))
 	
+	var player_nodes = _create_players()
+	game_start.start_game(player_nodes)
+
+func _create_players() -> Array[Node3D]:
+	var players: Array[Node3D] = []
 	for team in teams:
 		var color = colors[team % colors.size()]
 		for player in teams[team]:
@@ -109,10 +85,7 @@ func _create_players():
 			var player_block = player_block_scene.instantiate() as Node3D
 			player_block.color = color
 			node.add_child(player_block)
-			
-			# Position player at random grid position
-			var grid_pos = create_grid.get_random_position(used_positions)
-			used_positions.append(grid_pos)
-			node.position = grid_pos
+			node.position = create_grid.get_random_position()
 
-			player_nodes.append(node)
+			players.append(node)
+	return players

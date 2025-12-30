@@ -2,21 +2,25 @@ extends Node
 
 @export var camera: Camera3D
 @export var block_scene: PackedScene
-
-@export_category("Grid")
 @export var grid_spacing := 1.0
+@export var min_grid_size := 10
+@export var max_grid_size := 24
+@export var camera_distance := 1.5
+@export var block_offset := Vector3.ZERO
+@export var create_floor := true
 
-var grid_size = 0
-var spacing = 0
+var used_positions := []
+var grid_size := 0
 
 func _setup_floor_and_walls():
-	var floor_box = _create_box()
-	floor_box.size.x = grid_size * spacing
-	floor_box.size.z = grid_size * spacing
-	
-	var offset = -spacing / 2.0
-	floor_box.position.x = offset
-	floor_box.position.z = offset
+	var offset = -grid_spacing / 2.0
+
+	if create_floor:
+		var floor_box = _create_box()
+		floor_box.size.x = grid_size * grid_spacing
+		floor_box.size.z = grid_size * grid_spacing
+		floor_box.position.x = offset
+		floor_box.position.z = offset
 
 	var east_wall = _create_box()
 	var west_wall = _create_box()
@@ -34,18 +38,18 @@ func _setup_floor_and_walls():
 	south_wall.rotation.z = deg_to_rad(-90)
 	south_wall.rotation.x = deg_to_rad(90)
 
-	east_wall.size.z = grid_size * spacing
-	west_wall.size.z = grid_size * spacing
-	north_wall.size.z = grid_size * spacing
-	south_wall.size.z = grid_size * spacing
+	east_wall.size.z = grid_size * grid_spacing
+	west_wall.size.z = grid_size * grid_spacing
+	north_wall.size.z = grid_size * grid_spacing
+	south_wall.size.z = grid_size * grid_spacing
 
-	east_wall.position.x = (grid_size * spacing) / 2.0 + (east_wall.size.y / 2.0) + offset
+	east_wall.position.x = (grid_size * grid_spacing) / 2.0 + (east_wall.size.y / 2.0) + offset
 	east_wall.position.z = offset
-	west_wall.position.x = -((grid_size * spacing) / 2.0 + (west_wall.size.y / 2.0) - offset)
+	west_wall.position.x = -((grid_size * grid_spacing) / 2.0 + (west_wall.size.y / 2.0) - offset)
 	west_wall.position.z = offset
-	north_wall.position.z = -((grid_size * spacing) / 2.0 + (north_wall.size.y / 2.0) - offset)
+	north_wall.position.z = -((grid_size * grid_spacing) / 2.0 + (north_wall.size.y / 2.0) - offset)
 	north_wall.position.x = offset
-	south_wall.position.z = (grid_size * spacing) / 2.0 + (south_wall.size.y / 2.0) + offset
+	south_wall.position.z = (grid_size * grid_spacing) / 2.0 + (south_wall.size.y / 2.0) + offset
 	south_wall.position.x = offset
 
 func _create_box():
@@ -55,18 +59,19 @@ func _create_box():
 	add_child(b)
 	return b
 
-func create_grid(size):
-	grid_size = size
-	spacing = grid_spacing
+func create_grid(size_percent: float):
+	used_positions = []
+	var i = clamp(size_percent, 0.0, 1.0)
+	grid_size = int(ceil(lerp(min_grid_size, max_grid_size, i)))
 	var blocks := []
 	for x in range(grid_size):
 		for z in range(grid_size):
 			var block = block_scene.instantiate() as Node3D
 			block.position = Vector3(
-				(x - grid_size / 2.0) * spacing,
+				(x - grid_size / 2.0) * grid_spacing,
 				0.0,
-				(z - grid_size / 2.0) * spacing
-			)
+				(z - grid_size / 2.0) * grid_spacing
+			) + block_offset
 			add_child(block)
 			blocks.append(block)
 	
@@ -75,15 +80,17 @@ func create_grid(size):
 
 	return blocks
 
-func get_random_position(exclude := []):
-	var grid_pos = _get_random_grid_position(exclude)
-	return Vector3(
-		(grid_pos.x - grid_size / 2.0) * spacing,
+func get_random_position():
+	var grid_pos = _get_random_grid_position()
+	var pos = Vector3(
+		(grid_pos.x - grid_size / 2.0) * grid_spacing,
 		0.5,  # Slightly above the grid
-		(grid_pos.y - grid_size / 2.0) * spacing
+		(grid_pos.y - grid_size / 2.0) * grid_spacing
 	)
+	used_positions.append(pos)
+	return pos
 
-func _get_random_grid_position(used_positions: Array) -> Vector2i:
+func _get_random_grid_position() -> Vector2i:
 	var max_attempts = 100
 	var attempts = 0
 	
@@ -104,11 +111,11 @@ func _position_camera():
 	if not camera:
 		return
 	
-	var grid_world_size = grid_size * spacing
+	var grid_world_size = grid_size * grid_spacing
 	var fov_rad = deg_to_rad(camera.fov)
 	var distance = (grid_world_size / 2.0) / tan(fov_rad / 2.0)
 	
-	distance *= 1.5
+	distance *= camera_distance
 	
 	var angle = deg_to_rad(60)
 	camera.position = Vector3(0, distance * sin(angle), distance * cos(angle))

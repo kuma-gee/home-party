@@ -3,10 +3,7 @@ extends Node
 
 signal game_finished()
 
-func setup(_players: Array[GameClient], game_setup: GameSetup):
-	pass
-
-func start_game():
+func start_game(players: Array[GameClient], game_setup: GameSetup):
 	pass
 
 func get_points() -> Dictionary[String, int]:
