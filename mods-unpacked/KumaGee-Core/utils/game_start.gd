@@ -11,17 +11,19 @@ var player_nodes: Array[Node3D]= []
 
 func _ready() -> void:
 	gameover_screen.hide()
-	start_time.timeout.connect(func(): _start())
-	game_time.timeout.connect(func(): _end_game())
+	start_time.timeout.connect(func(): start())
+	game_time.timeout.connect(func(): end_game())
 
-func _start():
+func start():
+	start_time.stop()
 	game_started.emit()
 	game_time.start()
 	for p in player_nodes:
 		if p.has_method("set_locked"):
 			p.set_locked(false)
 
-func _end_game():
+func end_game():
+	game_time.stop()
 	game_ended.emit()
 	for p in player_nodes:
 		if p.has_method("set_locked"):

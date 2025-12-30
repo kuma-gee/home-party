@@ -21,7 +21,7 @@ func _on_game_ended():
 	
 	var alive_players := []
 	for player in game_start.player_nodes:
-		if player.died: continue
+		if player.is_dead: continue
 		alive_players.append(player)
 	
 	await get_tree().create_timer(2.0).timeout
@@ -39,7 +39,17 @@ func _create_players(players: Array[GameClient]):
 		node.game_client = player
 		node.enable_jump()
 		add_child(node)
+		node.died.connect(func():
+			if _is_all_dead():
+				game_start.end_game()
+		)
 		node.position = create_grid.get_random_position()
 		result.append(node)
 	
 	return result
+
+func _is_all_dead():
+	for player in game_start.player_nodes:
+		if not player.is_dead:
+			return false
+	return true

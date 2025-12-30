@@ -51,4 +51,5 @@ wait_time = 3.0
 one_shot = true
 
 [node name="GroundSpringCast" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.284729, 0)
 script = ExtResource("2_o7jwf")

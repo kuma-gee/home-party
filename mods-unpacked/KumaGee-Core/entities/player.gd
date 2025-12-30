@@ -1,5 +1,7 @@
 extends CharacterBody3D
 
+signal died()
+
 enum Action {
 	NONE,
 	STUN,
@@ -19,9 +21,9 @@ var game_client: GameClient
 var action := Action.NONE
 var locked := true
 var stunned := false
-var died := false:
+var is_dead := false:
 	set(v):
-		died = v
+		is_dead = v
 		visible = not v
 
 func _ready() -> void:
@@ -31,7 +33,7 @@ func _ready() -> void:
 	stun_timer.timeout.connect(func(): stunned = false)
 
 func _on_input_received(input: String, value):
-	if died or locked or stunned: return
+	if is_dead or locked or stunned: return
 
 	if input == "action" and value == true:
 		_do_action()
@@ -56,7 +58,7 @@ func _jump():
 	ground_spring_cast.jump(self, jump_force)
 
 func _physics_process(delta: float) -> void:
-	if not is_instance_valid(game_client) or died:
+	if not is_instance_valid(game_client) or is_dead:
 		velocity = Vector3.ZERO
 		return
 	
@@ -80,7 +82,8 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	
 	if global_position.y < -5:
-		died = true
+		is_dead = true
+		died.emit()
 
 func stun():
 	stunned = true

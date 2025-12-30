@@ -21,6 +21,10 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	if not is_colliding():
 		do_jump = false
+	else:
+		var collider = get_collider()
+		if collider.has_method("push"):
+			collider.push(-get_collision_normal())
 	
 	if not is_grounded():
 		has_jumped = true
