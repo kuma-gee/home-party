@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://bucm2qqb3tnt5"]
+
+[ext_resource type="PackedScene" uid="uid://bwdnol38dj5p2" path="res://mods-unpacked/KumaGee-VRCore/whack-a-mole/whackHole.glb" id="1_70ykw"]
+[ext_resource type="Script" uid="uid://colqbb8mg2tck" path="res://mods-unpacked/KumaGee-VRCore/whack-a-mole/mole.gd" id="1_cnind"]
+[ext_resource type="PackedScene" uid="uid://812ho3cqugf2" path="res://mods-unpacked/KumaGee-VRCore/whack-a-mole/mole.glb" id="2_cnind"]
+[ext_resource type="Shader" uid="uid://cdfjqx6ei5653" path="res://shader/circle_inner.gdshader" id="4_w7ak0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nx8fp"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cnind"]
+shading_mode = 0
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w7ak0"]
+albedo_color = Color(0.59, 0.4307, 0.3245, 1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_cnind"]
+viewport_path = NodePath("Sprite3D/SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nx8fp"]
+shader = ExtResource("4_w7ak0")
+shader_parameter/radius = 1.0
+shader_parameter/inner_radius = 0.86000004085
+shader_parameter/fill = 1.0
+shader_parameter/blur = 0.0001
+shader_parameter/bg_color = Color(0, 0, 0, 1)
+shader_parameter/inner_color = Color(0, 0, 0, 0)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_w7ak0"]
+radius = 0.09811878
+
+[node name="Mole" type="Node3D" unique_id=708801023 node_paths=PackedStringArray("color_rect")]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, 0, 0, 0)
+script = ExtResource("1_cnind")
+color_rect = NodePath("Sprite3D/SubViewport/ColorRect")
+
+[node name="whackHole" parent="." unique_id=67928478 instance=ExtResource("1_70ykw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.001984924, 0)
+
+[node name="WhackHole" parent="whackHole" index="0" unique_id=935434749]
+surface_material_override/0 = SubResource("StandardMaterial3D_nx8fp")
+surface_material_override/1 = SubResource("StandardMaterial3D_cnind")
+
+[node name="mole" parent="." unique_id=1256611931 instance=ExtResource("2_cnind")]
+
+[node name="Mole" parent="mole" index="0" unique_id=1575353988]
+surface_material_override/0 = SubResource("StandardMaterial3D_w7ak0")
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=841804273]
+transform = Transform3D(0.1, 1.3113414e-08, 5.7320557e-16, 0, -4.371139e-09, 0.1, 1.3113414e-08, -0.1, -4.371139e-09, 0, 0, 0)
+layers = 524288
+texture = SubResource("ViewportTexture_cnind")
+
+[node name="SubViewport" type="SubViewport" parent="Sprite3D" unique_id=1521576310]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(256, 256)
+
+[node name="ColorRect" type="ColorRect" parent="Sprite3D/SubViewport" unique_id=74446597]
+material = SubResource("ShaderMaterial_nx8fp")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Area3D" type="Area3D" parent="." unique_id=2126309141]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.086267695, 0)
+collision_layer = 0
+collision_mask = 65536
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=970353245]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.005454898, 0)
+shape = SubResource("SphereShape3D_w7ak0")
+
+[editable path="whackHole"]
+[editable path="mole"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bc2lecdk7vpl1"]
+[gd_scene format=3 uid="uid://bc2lecdk7vpl1"]
 
 [ext_resource type="Script" uid="uid://c03ys8d4r0bjm" path="res://mods-unpacked/KumaGee-Core/count_box/count_box_game.gd" id="1_bwii6"]
 [ext_resource type="Shader" uid="uid://dhod7psep452o" path="res://shader/grid.gdshader" id="1_kyqmx"]
@@ -38,81 +38,63 @@ flip_faces = true
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ujnhv"]
 render_priority = 0
 shader = ExtResource("1_ujnhv")
-shader_parameter/zNear = 0.05
-shader_parameter/zFar = 100.0
-shader_parameter/enable_outline = true
-shader_parameter/outline_color = Color(0, 0, 0, 1)
-shader_parameter/outline_thickness = 1.0
-shader_parameter/enable_color_limit = true
-shader_parameter/color_levels = 8
-shader_parameter/enable_color_palette = true
-shader_parameter/color1 = Color(1, 0.925, 0.839, 1)
-shader_parameter/color2 = Color(1, 0.831, 0.639, 1)
-shader_parameter/color3 = Color(1, 0.667, 0.369, 1)
-shader_parameter/color4 = Color(0.816, 0.506, 0.349, 1)
-shader_parameter/color5 = Color(0.553, 0.412, 0.478, 1)
-shader_parameter/color6 = Color(0.329, 0.306, 0.408, 1)
-shader_parameter/color7 = Color(0.125, 0.236, 0.337, 1)
-shader_parameter/color8 = Color(0.05, 0.169, 0.271, 1)
-shader_parameter/enable_dithering = false
-shader_parameter/dither_strength = 0.3
 
 [sub_resource type="Environment" id="Environment_kyqmx"]
 background_mode = 1
 
-[node name="CountBoxGame" type="Node3D" node_paths=PackedStringArray("player_game_list", "box_root", "count_label", "start_marker")]
+[node name="CountBoxGame" type="Node3D" unique_id=64067539 node_paths=PackedStringArray("player_game_list", "box_root", "count_label", "start_marker")]
 script = ExtResource("1_bwii6")
 player_game_list = NodePath("CanvasLayer/Control/MarginContainer2/PlayerGameList")
 box_root = NodePath("BoxRoot")
 count_label = NodePath("CanvasLayer/Control/CenterContainer/ShowCount")
 start_marker = NodePath("Marker3D")
 
-[node name="RoundManager" type="Node" parent="."]
+[node name="RoundManager" type="Node" parent="." unique_id=1364006799]
 script = ExtResource("2_6vxk2")
 
-[node name="StartTimer" type="Timer" parent="."]
+[node name="StartTimer" type="Timer" parent="." unique_id=1264766389]
 wait_time = 5.0
 one_shot = true
 
-[node name="HideTimer" type="Timer" parent="."]
+[node name="HideTimer" type="Timer" parent="." unique_id=104494866]
 one_shot = true
 
-[node name="CheckLockTimer" type="Timer" parent="."]
+[node name="CheckLockTimer" type="Timer" parent="." unique_id=597027128]
 one_shot = true
 
-[node name="GameTimer" type="Timer" parent="."]
+[node name="GameTimer" type="Timer" parent="." unique_id=193599495]
 wait_time = 10.0
 one_shot = true
 
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1271190948]
 transform = Transform3D(0.7303799, 0.27269256, -0.626246, 0.0062361346, 0.9141491, 0.40533018, 0.6830128, -0.29995033, 0.6659755, -7.7, 5, 8.2)
 projection = 1
 current = true
 size = 9.0
 
-[node name="Grid" type="MeshInstance3D" parent="."]
+[node name="Grid" type="MeshInstance3D" parent="." unique_id=1779892907]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 material_override = SubResource("ShaderMaterial_y37xm")
 mesh = SubResource("PlaneMesh_kyqmx")
 
-[node name="ScreenShader" type="MeshInstance3D" parent="."]
+[node name="ScreenShader" type="MeshInstance3D" parent="." unique_id=1372322990]
 mesh = SubResource("QuadMesh_kyqmx")
 surface_material_override/0 = SubResource("ShaderMaterial_ujnhv")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2054400967]
 environment = SubResource("Environment_kyqmx")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=191557912]
 transform = Transform3D(0.93605953, 0.33646786, -0.10286853, 0, 0.29237166, 0.9563048, 0.35184166, -0.89515823, 0.2736773, 0, 0, 0)
 
-[node name="Marker3D" type="Marker3D" parent="."]
+[node name="Marker3D" type="Marker3D" parent="." unique_id=75307433]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -4)
 
-[node name="BoxRoot" type="Node3D" parent="."]
+[node name="BoxRoot" type="Node3D" parent="." unique_id=1084685591]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1774693600]
 
-[node name="Control" type="Control" parent="CanvasLayer"]
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=73693852]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -121,7 +103,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("4_7w20i")
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control" unique_id=244973146]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -131,7 +113,7 @@ offset_right = 20.0
 offset_bottom = 40.0
 grow_horizontal = 2
 
-[node name="StartTimerLabel" type="Label" parent="CanvasLayer/Control/MarginContainer" node_paths=PackedStringArray("timer")]
+[node name="StartTimerLabel" type="Label" parent="CanvasLayer/Control/MarginContainer" unique_id=15762458 node_paths=PackedStringArray("timer")]
 layout_mode = 2
 theme_type_variation = &"LabelLarge"
 text = "10"
@@ -139,7 +121,7 @@ horizontal_alignment = 1
 script = ExtResource("5_5lsn5")
 timer = NodePath("../../../../StartTimer")
 
-[node name="Text" type="Label" parent="CanvasLayer/Control/MarginContainer/StartTimerLabel"]
+[node name="Text" type="Label" parent="CanvasLayer/Control/MarginContainer/StartTimerLabel" unique_id=1701274979]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -156,7 +138,7 @@ theme_type_variation = &"LabelLarge"
 text = "Count!"
 horizontal_alignment = 1
 
-[node name="GameTimerLabel" type="Label" parent="CanvasLayer/Control/MarginContainer" node_paths=PackedStringArray("timer")]
+[node name="GameTimerLabel" type="Label" parent="CanvasLayer/Control/MarginContainer" unique_id=269232929 node_paths=PackedStringArray("timer")]
 layout_mode = 2
 theme_type_variation = &"LabelLarge"
 text = "10"
@@ -164,7 +146,7 @@ horizontal_alignment = 1
 script = ExtResource("5_5lsn5")
 timer = NodePath("../../../../GameTimer")
 
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control"]
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control" unique_id=1773370920]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -178,13 +160,13 @@ grow_horizontal = 0
 grow_vertical = 2
 theme = ExtResource("4_7w20i")
 
-[node name="PlayerGameList" type="Control" parent="CanvasLayer/Control/MarginContainer2"]
+[node name="PlayerGameList" type="Control" parent="CanvasLayer/Control/MarginContainer2" unique_id=2044213058]
 layout_mode = 2
 script = ExtResource("5_b7ami")
 player_row = ExtResource("6_b7ami")
 child_size = Vector2(0, 45)
 
-[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Control"]
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Control" unique_id=1046008627]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -192,12 +174,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ShowCount" type="Label" parent="CanvasLayer/Control/CenterContainer"]
+[node name="ShowCount" type="Label" parent="CanvasLayer/Control/CenterContainer" unique_id=384096688]
 layout_mode = 2
 theme_type_variation = &"LabelLarge"
 text = "13"
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control"]
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control" unique_id=837244335]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -207,7 +189,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.5882353)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/ColorRect"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/ColorRect" unique_id=67265188]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -221,11 +203,11 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/Control/ColorRect/VBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/Control/ColorRect/VBoxContainer" unique_id=1403191428]
 layout_mode = 2
 text = "Press A to count up
 Press B to lock"
 horizontal_alignment = 1
 
-[node name="Label2" type="Label" parent="CanvasLayer/Control/ColorRect/VBoxContainer"]
+[node name="Label2" type="Label" parent="CanvasLayer/Control/ColorRect/VBoxContainer" unique_id=1718645341]
 layout_mode = 2

@@ -1,0 +1,114 @@
+[gd_scene format=3 uid="uid://mo4yhdbr4a3m"]
+
+[ext_resource type="Script" uid="uid://ov1y3prv6px8" path="res://mods-unpacked/KumaGee-VRCore/whack-a-mole/whack_a_mole.gd" id="1_flbhu"]
+[ext_resource type="PackedScene" uid="uid://btlljhtniv3dr" path="res://mods-unpacked/KumaGee-VRCore/vr-base/vr_space.tscn" id="1_mabgp"]
+[ext_resource type="PackedScene" uid="uid://b4ysuy43poobf" path="res://addons/godot-xr-tools/functions/function_pickup.tscn" id="2_oja1m"]
+[ext_resource type="PackedScene" uid="uid://bqdek3sykmwe8" path="res://mods-unpacked/KumaGee-VRCore/whack-a-mole/table.glb" id="2_wnwrs"]
+[ext_resource type="PackedScene" uid="uid://c3ofo5ps035lo" path="res://mods-unpacked/KumaGee-VRCore/whack-a-mole/whack.tscn" id="4_27m8u"]
+[ext_resource type="PackedScene" uid="uid://bucm2qqb3tnt5" path="res://mods-unpacked/KumaGee-VRCore/whack-a-mole/mole.tscn" id="4_flbhu"]
+[ext_resource type="PackedScene" uid="uid://ce7vysyvondf8" path="res://addons/godot-xr-tools/objects/snap_zone.tscn" id="5_vp8d5"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_flbhu"]
+size = Vector3(0.74121094, 0.83618164, 1.0224609)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0ybad"]
+size = Vector3(0.027740479, 1.456543, 1.0224609)
+
+[node name="WhackAMole" type="Node3D" unique_id=708991687]
+script = ExtResource("1_flbhu")
+
+[node name="VRSpace" parent="." unique_id=841158329 instance=ExtResource("1_mabgp")]
+
+[node name="FunctionPickup" parent="VRSpace/SubViewport/XROrigin3D/LeftHand" parent_id_path=PackedInt32Array(841158329, 1695547435) index="1" unique_id=1389353789 instance=ExtResource("2_oja1m")]
+
+[node name="FunctionPickup2" parent="VRSpace/SubViewport/XROrigin3D/RightHand" parent_id_path=PackedInt32Array(841158329, 863706665) index="1" unique_id=263448469 instance=ExtResource("2_oja1m")]
+
+[node name="table" parent="." unique_id=1846589728 instance=ExtResource("2_wnwrs")]
+transform = Transform3D(1.3113416e-07, 0, 1, 0, 1, 0, -1, 0, 1.3113416e-07, 0, 0, -1.0543048)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="table" unique_id=1135137877]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="table/StaticBody3D" unique_id=1119889022]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.41653484, 0)
+shape = SubResource("BoxShape3D_flbhu")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="table/StaticBody3D" unique_id=787104717]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.37547302, 0.7631261, -5.684342e-14)
+shape = SubResource("BoxShape3D_0ybad")
+
+[node name="SnapZone" parent="table" unique_id=902396213 instance=ExtResource("5_vp8d5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.43080133, 0.7616982, 5.6492752e-08)
+snap_mode = 1
+
+[node name="Whack" parent="." unique_id=777328390 instance=ExtResource("4_27m8u")]
+transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0.8044816, -0.6023409)
+
+[node name="Room" type="CSGBox3D" parent="." unique_id=1026987283]
+use_collision = true
+size = Vector3(5, 0.05, 5)
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="Room" unique_id=238059997]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 0)
+visible = false
+use_collision = true
+size = Vector3(5, 0.05, 5)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Room" unique_id=1008435856]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 1, 2.5)
+visible = false
+use_collision = true
+size = Vector3(5, 0.05, 5)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Room" unique_id=153027704]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 1, -2.5)
+visible = false
+use_collision = true
+size = Vector3(5, 0.05, 5)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Room" unique_id=461662262]
+transform = Transform3D(-4.371139e-08, 1, -4.371139e-08, 0, -4.371139e-08, -1, -1, -4.371139e-08, 1.9106855e-15, -2.5, 1, 0)
+visible = false
+use_collision = true
+size = Vector3(5, 0.05, 5)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="Room" unique_id=116649577]
+transform = Transform3D(-4.371139e-08, 1, -4.371139e-08, 0, -4.371139e-08, -1, -1, -4.371139e-08, 1.9106855e-15, 2.5, 1, 0)
+visible = false
+use_collision = true
+size = Vector3(5, 0.05, 5)
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1596644708]
+transform = Transform3D(-1, -8.2150535e-08, 2.9900352e-08, 0, 0.34202015, 0.9396926, -8.742278e-08, 0.9396926, -0.34202015, 0, 1.652599, -1.2725222)
+
+[node name="PlayerRoot" type="Node" parent="." unique_id=833339927]
+
+[node name="Moles" type="Node3D" parent="." unique_id=481464838]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, -1.0543048)
+
+[node name="Mole3" parent="Moles" unique_id=708801023 instance=ExtResource("4_flbhu")]
+transform = Transform3D(1, 0, -5.5636256e-08, 0, 1, 0, 5.5636256e-08, 0, 1, -0.30758968, 0.848, -0.15308392)
+
+[node name="Mole" parent="Moles" unique_id=1851592982 instance=ExtResource("4_flbhu")]
+transform = Transform3D(1, 0, -5.5636256e-08, 0, 1, 0, 5.5636256e-08, 0, 1, -7.1054274e-15, 0.848, -0.15308392)
+
+[node name="Mole2" parent="Moles" unique_id=949001441 instance=ExtResource("4_flbhu")]
+transform = Transform3D(1, 0, -5.5636256e-08, 0, 1, 0, 5.5636256e-08, 0, 1, 0.30289623, 0.848, -0.15308392)
+
+[node name="Mole6" parent="Moles" unique_id=1468331179 instance=ExtResource("4_flbhu")]
+transform = Transform3D(1, 0, -5.5636256e-08, 0, 1, 0, 5.5636256e-08, 0, 1, -0.30758968, 0.848, 0.14574516)
+
+[node name="Mole4" parent="Moles" unique_id=986169436 instance=ExtResource("4_flbhu")]
+transform = Transform3D(1, 0, -5.5636256e-08, 0, 1, 0, 5.5636256e-08, 0, 1, -3.5527137e-15, 0.848, 0.14574516)
+
+[node name="Mole5" parent="Moles" unique_id=1385701454 instance=ExtResource("4_flbhu")]
+transform = Transform3D(1, 0, -5.5636256e-08, 0, 1, 0, 5.5636256e-08, 0, 1, 0.30289623, 0.848, 0.14574516)
+
+[node name="PlayTime" type="Timer" parent="." unique_id=394384342]
+wait_time = 500.0
+one_shot = true
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=733463827]
+transform = Transform3D(0.9315327, 0.18421467, 0.31354728, -0.36365774, 0.4718777, 0.8031715, 0, -0.8622044, 0.50656056, 0, 5.6426454, 0)
+
+[editable path="VRSpace"]
+[editable path="VRSpace/StartXR"]

@@ -11,9 +11,11 @@ enum Message {
 	Id,
 	GameClientSession,
 	GameClientIceCandidate,
+	InputLayout,
 }
 
 const PORT = 14412
+@export_enum("joystick", "buttons") var input_layout: String = "buttons"
 
 var players = {}  # Dictionary[String, Dictionary] - UUID -> player data
 var peer_to_uuid = {}  # Dictionary[int, String] - peer_id -> UUID mapping for WebRTC
@@ -34,6 +36,11 @@ func _peer_connected(id: int):
 	_send_to_peer(id, {
 		"msg": Message.Id,
 		"id": id,
+	})
+
+	_send_to_peer(id, {
+		"msg": Message.InputLayout,
+		"layout": input_layout,
 	})
 
 func _peer_disconnected(id: int):

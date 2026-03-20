@@ -6,6 +6,7 @@ export interface ConnectionState {
 	peerId: number | null;
 	serverIp: string | null;
 	error: string | null;
+	inputLayout: 'joystick' | 'buttons';
 	webrtcState: RTCPeerConnectionState | null;
 	webrtcDataChannelOpen: boolean;
 	dataChannelMessage: string | null;
@@ -20,6 +21,7 @@ function createConnectionStore() {
 		peerId: null,
 		serverIp: null,
 		error: null,
+		inputLayout: 'joystick',
 		webrtcState: null,
 		webrtcDataChannelOpen: false,
 		dataChannelMessage: null,
@@ -61,6 +63,10 @@ function createConnectionStore() {
 				update(state => ({ ...state, peerId: id }));
 			};
 
+			client.onInputLayoutReceived = (layout: 'joystick' | 'buttons') => {
+				update(state => ({ ...state, inputLayout: layout }));
+			};
+
 			client.onWebRTCStateChange = (webrtcState: RTCPeerConnectionState) => {
 				update(state => ({ ...state, webrtcState }));
 			};
@@ -99,6 +105,7 @@ function createConnectionStore() {
 				peerId: null,
 				serverIp: null,
 				error: null,
+				inputLayout: 'joystick',
 				webrtcState: null,
 				webrtcDataChannelOpen: false,
 				dataChannelMessage: null,
@@ -138,6 +145,11 @@ export const isConnected = derived(
 export const peerId = derived(
 	connectionStore,
 	$connectionStore => $connectionStore.peerId
+);
+
+export const inputLayout = derived(
+	connectionStore,
+	$connectionStore => $connectionStore.inputLayout
 );
 
 export const webrtcState = derived(

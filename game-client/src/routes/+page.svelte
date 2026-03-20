@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-	import { connectionStore, isConnected, webrtcState, webrtcDataChannelOpen, dataChannelMessage, reconnecting, reconnectAttempts } from '../lib/store';
+	import { connectionStore, isConnected, inputLayout, webrtcState, webrtcDataChannelOpen, dataChannelMessage, reconnecting, reconnectAttempts } from '../lib/store';
 	import VirtualJoystick from '../lib/VirtualJoystick.svelte';
 
 	let serverIp = $state('');
@@ -203,7 +203,7 @@
 			<div class="game-controls">
 				<!-- Joystick (Bottom Left) -->
 				<div class="joystick-container-wrapper">
-					<VirtualJoystick onmove={(e) => handleJoystickMove(e.detail)} />
+					<VirtualJoystick inputMode={$inputLayout} onmove={(e) => handleJoystickMove(e.detail)} />
 				</div>
 
 				<!-- Message Display (Center) -->

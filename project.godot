@@ -26,6 +26,8 @@ ModLoader="*res://addons/mod_loader/mod_loader.gd"
 HttpServer="*res://main/utils/http_server.gd"
 LobbyServer="*res://main/utils/lobby_server.gd"
 PlayerManager="*res://main/utils/player_manager.gd"
+XRToolsUserSettings="*uid://bqgb8i74tm0t"
+XRToolsRumbleManager="*uid://by853dk86g1qw"
 
 [display]
 
@@ -35,7 +37,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot-css-theme/plugin.cfg", "res://addons/qr_code/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot-css-theme/plugin.cfg", "res://addons/godot-xr-tools/plugin.cfg", "res://addons/qr_code/plugin.cfg")
 
 [input]
 
@@ -63,6 +65,24 @@ pause={
 
 [layer_names]
 
-3d_physics/layer_1="Static"
-3d_physics/layer_2="Player"
-3d_physics/layer_3="HurtBox"
+3d_physics/layer_1="Static World"
+3d_physics/layer_2="Dynamic World"
+3d_physics/layer_3="Pickable Objects"
+3d_physics/layer_4="Wall Walking"
+3d_physics/layer_5="Grappling Target"
+3d_physics/layer_17="Held Objects"
+3d_physics/layer_18="Player Hands"
+3d_physics/layer_19="Grab Handles"
+3d_physics/layer_20="Player Body"
+3d_physics/layer_21="Pointable Objects"
+3d_physics/layer_22="Hand Pose Areas"
+3d_physics/layer_23="UI Objects"
+
+[rendering]
+
+renderer/rendering_method="mobile"
+
+[xr]
+
+openxr/enabled=true
+shaders/enabled=true
