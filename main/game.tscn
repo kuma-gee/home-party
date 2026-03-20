@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dfokhnxe3wv3r"]
+[gd_scene format=3 uid="uid://dfokhnxe3wv3r"]
 
 [ext_resource type="Script" uid="uid://dq0a51hof6j67" path="res://main/game.gd" id="1_e2o6t"]
 [ext_resource type="Script" uid="uid://dgfn4nv7yxows" path="res://main/ui/player_list.gd" id="2_feb5d"]
@@ -20,24 +20,24 @@ data = {
 [sub_resource type="ImageTexture" id="ImageTexture_mmpi0"]
 image = SubResource("Image_jc0vi")
 
-[node name="Game" type="Node" node_paths=PackedStringArray("start_button", "game_list", "menu")]
+[node name="Game" type="Node" unique_id=421921579 node_paths=PackedStringArray("start_button", "game_list", "menu")]
 script = ExtResource("1_e2o6t")
 start_button = NodePath("CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/Button")
 game_list = NodePath("CanvasLayer/Control/HBoxContainer/SubViewportContainer/SubViewport/Start/CenterContainer/VBoxContainer")
 game_button = ExtResource("4_3qcir")
 menu = NodePath("CanvasLayer/Control/HBoxContainer")
 
-[node name="GameLoader" type="Node" parent="."]
+[node name="GameLoader" type="Node" parent="." unique_id=1604047825]
 script = ExtResource("3_ph3h8")
 metadata/_custom_type_script = "uid://ddetao6ypdnd4"
 
-[node name="GameMode" type="Node" parent="."]
+[node name="GameMode" type="Node" parent="." unique_id=409398898]
 script = ExtResource("5_vfw6y")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=450883531]
 layer = 20
 
-[node name="Control" type="Control" parent="CanvasLayer"]
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=1816691846]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -45,7 +45,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control" unique_id=189627406]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -53,17 +53,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="CanvasLayer/Control/HBoxContainer"]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="CanvasLayer/Control/HBoxContainer" unique_id=2000346242]
 layout_mode = 2
 size_flags_horizontal = 3
 stretch = true
 
-[node name="SubViewport" type="SubViewport" parent="CanvasLayer/Control/HBoxContainer/SubViewportContainer"]
+[node name="SubViewport" type="SubViewport" parent="CanvasLayer/Control/HBoxContainer/SubViewportContainer" unique_id=1068280739]
 handle_input_locally = false
 size = Vector2i(1616, 1080)
 render_target_update_mode = 4
 
-[node name="Start" type="Control" parent="CanvasLayer/Control/HBoxContainer/SubViewportContainer/SubViewport"]
+[node name="Start" type="Control" parent="CanvasLayer/Control/HBoxContainer/SubViewportContainer/SubViewport" unique_id=1058837223]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -71,7 +71,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Control/HBoxContainer/SubViewportContainer/SubViewport/Start"]
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Control/HBoxContainer/SubViewportContainer/SubViewport/Start" unique_id=23442315]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -79,39 +79,39 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/HBoxContainer/SubViewportContainer/SubViewport/Start/CenterContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/HBoxContainer/SubViewportContainer/SubViewport/Start/CenterContainer" unique_id=1080109732]
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control/HBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control/HBoxContainer" unique_id=1638570461]
 custom_minimum_size = Vector2(300, 400)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer"]
+[node name="HBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer" unique_id=83149849]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer" unique_id=1975085817]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/MarginContainer" unique_id=1378233552]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer" unique_id=465952564]
 layout_mode = 2
 text = "Players"
 horizontal_alignment = 1
 
-[node name="PlayerList" type="VBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+[node name="PlayerList" type="VBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer" unique_id=1269555906]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("2_feb5d")
 
-[node name="Button" type="Button" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+[node name="Button" type="Button" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer" unique_id=1982503836]
 layout_mode = 2
 text = "Start"
 
-[node name="GameQR" type="VBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer" node_paths=PackedStringArray("qr_code", "url_label")]
+[node name="GameQR" type="VBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer" unique_id=1860117466 node_paths=PackedStringArray("qr_code", "url_label")]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_vertical = 4
@@ -119,24 +119,24 @@ script = ExtResource("4_46yon")
 qr_code = NodePath("QRCodeRect")
 url_label = NodePath("URL")
 
-[node name="Label2" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/GameQR"]
+[node name="Label2" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/GameQR" unique_id=1375466097]
 layout_mode = 2
 text = "Join the game!"
 horizontal_alignment = 1
 
-[node name="QRCodeRect" type="TextureRect" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/GameQR"]
+[node name="QRCodeRect" type="TextureRect" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/GameQR" unique_id=1439402957]
 custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 texture = SubResource("ImageTexture_mmpi0")
 stretch_mode = 5
 
-[node name="URL" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/GameQR"]
+[node name="URL" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/GameQR" unique_id=1406731202]
 layout_mode = 2
 text = "127.0.0.1"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="Pause" type="ColorRect" parent="CanvasLayer/Control" node_paths=PackedStringArray("game_mode", "continue_btn", "back_btn")]
+[node name="Pause" type="ColorRect" parent="CanvasLayer/Control" unique_id=2071411695 node_paths=PackedStringArray("game_mode", "continue_btn", "back_btn")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -149,7 +149,7 @@ game_mode = NodePath("../../../GameMode")
 continue_btn = NodePath("CenterContainer/VBoxContainer/Continue")
 back_btn = NodePath("CenterContainer/VBoxContainer/Back")
 
-[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Control/Pause"]
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Control/Pause" unique_id=503147823]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -157,13 +157,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Pause/CenterContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Pause/CenterContainer" unique_id=1124158028]
 layout_mode = 2
 
-[node name="Continue" type="Button" parent="CanvasLayer/Control/Pause/CenterContainer/VBoxContainer"]
+[node name="Continue" type="Button" parent="CanvasLayer/Control/Pause/CenterContainer/VBoxContainer" unique_id=1609303052]
 layout_mode = 2
 text = "Continue"
 
-[node name="Back" type="Button" parent="CanvasLayer/Control/Pause/CenterContainer/VBoxContainer"]
+[node name="Back" type="Button" parent="CanvasLayer/Control/Pause/CenterContainer/VBoxContainer" unique_id=580600112]
 layout_mode = 2
 text = "Back to lobby"

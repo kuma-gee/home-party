@@ -13,9 +13,10 @@ enum Action {
 @export var name_label: Label3D
 @export var body: Node3D
 @export var hit_area: Area3D
+
 @onready var ground_spring_cast: GroundSpringCast = $GroundSpringCast
-@onready var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var stun_timer: Timer = $StunTimer
+@onready var player_color_box: Area3D = $PlayerColorBox
 
 var game_client: GameClient
 var action := Action.NONE
@@ -48,6 +49,10 @@ func enable_stun():
 
 func enable_jump():
 	action = Action.JUMP
+
+func enable_color(color: Color):
+	player_color_box.monitorable = true
+	player_color_box.color = color
 
 func _stun_others():
 	for b in hit_area.get_overlapping_bodies():

@@ -63,23 +63,28 @@ func create_grid(size_percent: float):
 	used_positions = []
 	var i = clamp(size_percent, 0.0, 1.0)
 	grid_size = int(ceil(lerp(min_grid_size, max_grid_size, i)))
-	var blocks := []
-	for x in range(grid_size):
-		for z in range(grid_size):
-			var block = block_scene.instantiate() as Node3D
-			block.position = Vector3(
-				(x - grid_size / 2.0) * grid_spacing,
-				0.0,
-				(z - grid_size / 2.0) * grid_spacing
-			) + block_offset
-			add_child(block)
-			blocks.append(block)
-	
+	var blocks = _create_blocks()
 	_setup_floor_and_walls()
 	_position_camera()
 
 	return blocks
 
+func _create_blocks():
+	var blocks := []
+	
+	if block_scene:
+		for x in range(grid_size):
+			for z in range(grid_size):
+				var block = block_scene.instantiate() as Node3D
+				block.position = Vector3(
+					(x - grid_size / 2.0) * grid_spacing,
+					0.0,
+					(z - grid_size / 2.0) * grid_spacing
+				) + block_offset
+				add_child(block)
+				blocks.append(block)
+	return blocks
+	
 func get_random_position():
 	var grid_pos = _get_random_grid_position()
 	var pos = Vector3(

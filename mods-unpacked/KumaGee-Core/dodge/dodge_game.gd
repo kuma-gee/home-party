@@ -1,24 +1,15 @@
 extends BaseGame
 
-@onready var create_grid: Node = $CreateGrid
+@export var spawn_radius := 3.0
 @onready var game_start: CanvasLayer = $GameStart
 @onready var player_spawner: Node3D = $PlayerSpawner
 
 var winners = []
-var blocks = []
 
 func _ready() -> void:
-	game_start.game_started.connect(func(): _on_game_started())
 	game_start.game_ended.connect(func(): _on_game_ended())
 
-func _on_game_started():
-	for b in blocks:
-		b.set_locked(false)
-
 func _on_game_ended():
-	for b in blocks:
-		b.set_locked(true)
-	
 	var alive_players := []
 	for player in game_start.player_nodes:
 		if player.is_dead: continue
@@ -28,14 +19,14 @@ func _on_game_ended():
 	game_finished.emit()
 
 func start_game(players: Array[GameClient], _game_setup: GameSetup):
-	blocks = create_grid.create_grid(players.size() / 8.0)
+	var spawn_angle = TAU / players.size()
 	player_spawner.reset()
-	player_spawner.create_players(players, func(x, _i): _setup_player(x))
+	player_spawner.create_players(players, func(x, i): _setup_player(x, spawn_angle * i))
 	game_start.start_game(player_spawner.players)
 
-func _setup_player(node: Node3D):
+func _setup_player(node: Node3D, spawn_angle: float):
 	node.enable_jump()
-	node.position = create_grid.get_random_position()
+	node.position = Vector3.FORWARD.rotated(Vector3.UP, spawn_angle) * spawn_radius
 	node.died.connect(func():
 		if _is_all_dead():
 			game_start.end_game()

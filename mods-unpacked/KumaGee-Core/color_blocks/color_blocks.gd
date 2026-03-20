@@ -1,7 +1,5 @@
 extends BaseGame
 
-@export var player_scene: PackedScene
-@export var player_block_scene: PackedScene
 @export var winner_label: Label
 
 @export var colors: Array[Color] = [
@@ -29,6 +27,7 @@ extends BaseGame
 @onready var team_split: Node = $TeamSplit
 @onready var create_grid: Node = $CreateGrid
 @onready var game_start: CanvasLayer = $GameStart
+@onready var player_spawner: Node3D = $PlayerSpawner
 
 var blocks := []
 var teams = {}
@@ -69,23 +68,14 @@ func start_game(players: Array[GameClient], game_setup: GameSetup):
 	teams = team_split.create_teams(players, colors.size(), game_setup.team_mode)
 	blocks = create_grid.create_grid(teams.size() / float(colors.size()))
 	
-	var player_nodes = _create_players()
-	game_start.start_game(player_nodes)
-
-func _create_players() -> Array[Node3D]:
-	var players: Array[Node3D] = []
+	player_spawner.reset()
 	for team in teams:
 		var color = colors[team % colors.size()]
-		for player in teams[team]:
-			var node = player_scene.instantiate() as Node3D
-			node.game_client = player
-			node.enable_stun()
-			add_child(node)
+		player_spawner.create_players(teams[team], func(p, _i): _setup_player(p, color))
+		
+	game_start.start_game(player_spawner.players)
 
-			var player_block = player_block_scene.instantiate() as Node3D
-			player_block.color = color
-			node.add_child(player_block)
-			node.position = create_grid.get_random_position()
-
-			players.append(node)
-	return players
+func _setup_player(node: Node3D, color: Color):
+	node.enable_stun()
+	node.enable_color(color)
+	node.position = create_grid.get_random_position()
