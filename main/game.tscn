@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://brg6aumaixieg" path="res://main/ui/game_qr.gd" id="4_46yon"]
 [ext_resource type="Script" uid="uid://didybt66x4pke" path="res://main/game_mode.gd" id="5_vfw6y"]
 [ext_resource type="Script" uid="uid://h8dkv5dk31yf" path="res://main/ui/pause.gd" id="7_jc0vi"]
+[ext_resource type="PackedScene" uid="uid://btlljhtniv3dr" path="res://mods-unpacked/KumaGee-VRCore/vr-base/vr_space.tscn" id="8_2c7eb"]
 
 [sub_resource type="Image" id="Image_jc0vi"]
 data = {
@@ -21,6 +22,7 @@ data = {
 image = SubResource("Image_jc0vi")
 
 [node name="Game" type="Node" unique_id=421921579 node_paths=PackedStringArray("start_button", "game_list", "menu")]
+process_mode = 3
 script = ExtResource("1_e2o6t")
 start_button = NodePath("CanvasLayer/Control/HBoxContainer/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/Button")
 game_list = NodePath("CanvasLayer/Control/HBoxContainer/SubViewportContainer/SubViewport/Start/CenterContainer/VBoxContainer")
@@ -35,7 +37,7 @@ metadata/_custom_type_script = "uid://ddetao6ypdnd4"
 script = ExtResource("5_vfw6y")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=450883531]
-layer = 20
+layer = -1
 
 [node name="Control" type="Control" parent="CanvasLayer" unique_id=1816691846]
 layout_mode = 3
@@ -167,3 +169,5 @@ text = "Continue"
 [node name="Back" type="Button" parent="CanvasLayer/Control/Pause/CenterContainer/VBoxContainer" unique_id=580600112]
 layout_mode = 2
 text = "Back to lobby"
+
+[node name="VRSpace" parent="." unique_id=841158329 instance=ExtResource("8_2c7eb")]

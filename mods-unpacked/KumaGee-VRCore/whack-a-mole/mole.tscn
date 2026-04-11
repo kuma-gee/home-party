@@ -6,7 +6,7 @@
 [ext_resource type="Shader" uid="uid://cdfjqx6ei5653" path="res://shader/circle_inner.gdshader" id="4_w7ak0"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nx8fp"]
-albedo_color = Color(1, 0, 0, 1)
+albedo_color = Color(0.7273088, 0.4603526, 0.31337243, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cnind"]
 shading_mode = 0

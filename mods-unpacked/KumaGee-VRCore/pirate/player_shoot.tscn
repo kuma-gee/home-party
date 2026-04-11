@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://cfkaaf5hagfis"]
+
+[ext_resource type="Script" uid="uid://c52vk877urogd" path="res://mods-unpacked/KumaGee-VRCore/pirate/player_shoot_point.gd" id="1_rjxo5"]
+[ext_resource type="PackedScene" uid="uid://b55so4qv83nwa" path="res://mods-unpacked/KumaGee-VRCore/assets/prototyping/indicator-round-d.glb" id="2_x3jma"]
+
+[node name="PlayerShoot" type="Node3D" unique_id=571802471 node_paths=PackedStringArray("visuals")]
+script = ExtResource("1_rjxo5")
+visuals = NodePath("indicator-round-d2")
+
+[node name="indicator-round-d2" parent="." unique_id=1409446682 instance=ExtResource("2_x3jma")]

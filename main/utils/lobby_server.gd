@@ -29,6 +29,14 @@ func _ready() -> void:
 	socket.create_server(PORT, "*")
 	logger.info("Creating signaling server on port %s" % [PORT])
 
+func send_layout(layout: String):
+	input_layout = layout
+	for peer_id in peer_to_uuid.keys():
+		_send_to_peer(peer_id, {
+			"msg": Message.InputLayout,
+			"layout": input_layout,
+		})
+
 func _peer_connected(id: int):
 	logger.info("Peer connected: %d" % id)
 	peer_to_uuid[id] = ""

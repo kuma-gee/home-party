@@ -273,7 +273,6 @@
 			>▼</button>
 		</div>
 	{:else}
-		Test
 		<div
 			class="joystick-base"
 			bind:this={baseElement}

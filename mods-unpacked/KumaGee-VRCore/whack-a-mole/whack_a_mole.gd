@@ -1,14 +1,27 @@
 extends BaseGame
 
+@export var score: Label
+@export var whack_spawn: Node3D
+@export var reset_whack_button: XRToolsInteractableAreaButton
+
 @onready var player_root: Node = $PlayerRoot
 @onready var moles: Node3D = $Moles
 @onready var play_time: Timer = $PlayTime
+@onready var whack: XRToolsPickable = $Whack
 
-var hits := 0
+var hits := 0:
+	set(v):
+		hits = v
+		score.text = "%s" % hits
 var misses := 0
 
 func _ready() -> void:
+	hits = 0
 	play_time.timeout.connect(_on_game_finished)
+	reset_whack_button.button_pressed.connect(func():
+		whack.rotation_degrees = Vector3(180, 0, 0)
+		whack.global_position = whack_spawn.global_position
+	)
 
 func _on_game_finished():
 	print("Game finished! Hits: %d, Misses: %d" % [hits, misses])

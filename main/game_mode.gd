@@ -24,18 +24,24 @@ func next_game():
 		end_game()
 		return
 	
+	var res = games.pick_random()
+	_create_game(res)
+	played_games += 1
+
+func _create_game(res: GameResource):
 	if game_node != null:
 		game_node.queue_free()
 
-	var res = games.pick_random()
 	game_node = res.scene.instantiate() as BaseGame
 	add_child(game_node)
 	
 	var players = PlayerManager.get_players()
 	var game_setup = GameSetup.new()
 	game_node.game_finished.connect(func(): _on_game_finished())
+	game_node.back_to_menu.connect(func(): end_game())
+	game_node.game_restart.connect(func(): _create_game(res))
+	game_node.process_mode = Node.PROCESS_MODE_PAUSABLE
 	game_node.start_game(players, game_setup)
-	played_games += 1
 
 func _on_game_finished():
 	var points = game_node.get_points()

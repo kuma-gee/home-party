@@ -1,0 +1,240 @@
+[gd_scene format=3 uid="uid://csuiqxx75negf"]
+
+[ext_resource type="Script" uid="uid://bdb2g88cmihu7" path="res://mods-unpacked/KumaGee-VRCore/pirate/pirate_defend.gd" id="1_qqeml"]
+[ext_resource type="PackedScene" uid="uid://cfkaaf5hagfis" path="res://mods-unpacked/KumaGee-VRCore/pirate/player_shoot.tscn" id="2_6lnjn"]
+[ext_resource type="PackedScene" uid="uid://btlljhtniv3dr" path="res://mods-unpacked/KumaGee-VRCore/vr-base/vr_space.tscn" id="2_atiqd"]
+[ext_resource type="PackedScene" uid="uid://b4ysuy43poobf" path="res://addons/godot-xr-tools/functions/function_pickup.tscn" id="3_08wrx"]
+[ext_resource type="PackedScene" uid="uid://fiul51tsyoop" path="res://addons/godot-xr-tools/functions/function_teleport.tscn" id="4_2tdr6"]
+[ext_resource type="Script" uid="uid://crtkl6ldhona6" path="res://mods-unpacked/KumaGee-VRCore/pirate/hurt_box.gd" id="5_atiqd"]
+[ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="5_w56sk"]
+[ext_resource type="PackedScene" uid="uid://07hx6dhudy5k" path="res://mods-unpacked/KumaGee-VRCore/assets/pirate/patch-sand-foliage.glb" id="7_qqeml"]
+[ext_resource type="PackedScene" uid="uid://7lgpyjq2fykg" path="res://mods-unpacked/KumaGee-VRCore/assets/pirate/ship-pirate-large.glb" id="7_sf4ir"]
+[ext_resource type="Shader" uid="uid://c45mkp5k5xvrl" path="res://mods-unpacked/KumaGee-VRCore/pirate/water.gdshader" id="10_sf4ir"]
+[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme.css" id="11_gksw4"]
+[ext_resource type="PackedScene" uid="uid://cw1s1cpm8m1lj" path="res://mods-unpacked/KumaGee-VRCore/pirate/barrel.tscn" id="11_qqeml"]
+[ext_resource type="Script" uid="uid://54ff6uyo8677" path="res://mods-unpacked/KumaGee-VRCore/whack-a-mole/time.gd" id="12_s4ws1"]
+[ext_resource type="Script" uid="uid://bw36fn1jy1q51" path="res://mods-unpacked/KumaGee-VRCore/pirate/health_bar.gd" id="13_2tdr6"]
+[ext_resource type="Texture2D" uid="uid://dppjsb1nftth5" path="res://icon.svg" id="13_08wrx"]
+[ext_resource type="Texture2D" uid="uid://mvptv2yf3vd4" path="res://mods-unpacked/KumaGee-VRCore/pirate/Sky_Anime_03_Day_a.png" id="16_w56sk"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_w56sk"]
+panorama = ExtResource("16_w56sk")
+
+[sub_resource type="Sky" id="Sky_5vkqn"]
+sky_material = SubResource("PanoramaSkyMaterial_w56sk")
+
+[sub_resource type="Environment" id="Environment_2tdr6"]
+background_mode = 2
+sky = SubResource("Sky_5vkqn")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2tdr6"]
+radius = 0.37841797
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_h72uw"]
+size = Vector2(200, 200)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qqeml"]
+render_priority = 0
+shader = ExtResource("10_sf4ir")
+shader_parameter/WATER_COL = Color(0.043137256, 0.5882353, 0.8784314, 1)
+shader_parameter/WATER2_COL = Color(0.07599998, 0.67323333, 0.95, 1)
+shader_parameter/FOAM_COL = Color(0.33999997, 0.7469999, 1, 1)
+shader_parameter/distortion_speed = 2.0
+shader_parameter/tile = Vector2(20, 20)
+shader_parameter/height = 2.0
+shader_parameter/wave_size = Vector2(2, 2)
+shader_parameter/wave_speed = 1.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_sf4ir"]
+height = 0.5136719
+radius = 7.0
+
+[node name="PirateDefend" type="Node3D" unique_id=708991687 node_paths=PackedStringArray("menu_button", "restart_button", "gameover_label", "gameover_ui", "player_hurtbox", "shoot_points")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.7632189, 0)
+script = ExtResource("1_qqeml")
+menu_button = NodePath("CanvasLayer/ColorRect/CenterContainer/VBoxContainer/VBoxContainer/Menu")
+restart_button = NodePath("CanvasLayer/ColorRect/CenterContainer/VBoxContainer/VBoxContainer/Restart")
+gameover_label = NodePath("CanvasLayer/ColorRect/CenterContainer/VBoxContainer/Label")
+gameover_ui = NodePath("CanvasLayer/ColorRect")
+player_hurtbox = NodePath("VRSpace/SubViewport/XROrigin3D/Body/HurtBox")
+shoot_points = [NodePath("ship-pirate-large2/ShootPoint"), NodePath("ship-pirate-large2/ShootPoint2"), NodePath("ship-pirate-large3/ShootPoint"), NodePath("ship-pirate-large3/ShootPoint2"), NodePath("ship-pirate-large5/ShootPoint"), NodePath("ship-pirate-large5/ShootPoint2")]
+player_scene = ExtResource("2_6lnjn")
+barrel_scene = ExtResource("11_qqeml")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1799037133]
+environment = SubResource("Environment_2tdr6")
+
+[node name="VRSpace" parent="." unique_id=841158329 instance=ExtResource("2_atiqd")]
+
+[node name="HurtBox" type="Area3D" parent="VRSpace/SubViewport/XROrigin3D/Body" parent_id_path=PackedInt32Array(841158329, 281622546) index="2" unique_id=1604124314]
+transform = Transform3D(-2, 0, 1.7484555e-07, 0, 2, 0, -1.7484555e-07, 0, -2, 0, 0, 0)
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("5_atiqd")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="VRSpace/SubViewport/XROrigin3D/Body/HurtBox" unique_id=1261375568]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.90098625, 0)
+shape = SubResource("CapsuleShape3D_2tdr6")
+
+[node name="FunctionPickup" parent="VRSpace/SubViewport/XROrigin3D/LeftHand" parent_id_path=PackedInt32Array(841158329, 1695547435) index="1" unique_id=1389353789 instance=ExtResource("3_08wrx")]
+
+[node name="FunctionTeleport" parent="VRSpace/SubViewport/XROrigin3D/LeftHand" parent_id_path=PackedInt32Array(841158329, 1695547435) index="2" unique_id=1759800539 instance=ExtResource("4_2tdr6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1)
+
+[node name="FunctionPickup2" parent="VRSpace/SubViewport/XROrigin3D/RightHand" parent_id_path=PackedInt32Array(841158329, 863706665) index="1" unique_id=263448469 instance=ExtResource("3_08wrx")]
+
+[node name="MovementTurn" parent="VRSpace/SubViewport/XROrigin3D/RightHand" parent_id_path=PackedInt32Array(841158329, 863706665) index="2" unique_id=1259927105 instance=ExtResource("5_w56sk")]
+
+[node name="ship-pirate-large2" parent="." unique_id=818398480 instance=ExtResource("7_sf4ir")]
+transform = Transform3D(-0.96592593, 0, 0.25881898, 0, 1, 0, -0.25881898, 0, -0.96592593, 13.882425, -0.44, 3.2393918)
+
+[node name="ShootPoint" type="Marker3D" parent="ship-pirate-large2" unique_id=823176236]
+transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 1.92, 2.92, 0)
+
+[node name="ShootPoint2" type="Marker3D" parent="ship-pirate-large2" unique_id=1498381855]
+transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 1.92, 2.92, -2.14)
+
+[node name="ship-pirate-large3" parent="." unique_id=1690239090 instance=ExtResource("7_sf4ir")]
+transform = Transform3D(0.7071067, 0, -0.70710677, 0, 1, 0, 0.70710677, 0, 0.7071067, -11.282768, -0.44, -9.7084255)
+
+[node name="ShootPoint" type="Marker3D" parent="ship-pirate-large3" unique_id=899569398]
+transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 1.92, 2.92, 0)
+
+[node name="ShootPoint2" type="Marker3D" parent="ship-pirate-large3" unique_id=22181332]
+transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 1.92, 2.92, -2.14)
+
+[node name="ship-pirate-large5" parent="." unique_id=1005313522 instance=ExtResource("7_sf4ir")]
+transform = Transform3D(0.7071067, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.7071067, -9.836771, -0.44, 12.758707)
+
+[node name="ShootPoint" type="Marker3D" parent="ship-pirate-large5" unique_id=1588699516]
+transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 1.92, 2.92, 0)
+
+[node name="ShootPoint2" type="Marker3D" parent="ship-pirate-large5" unique_id=95289942]
+transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 1.92, 2.92, -2.14)
+
+[node name="Water" type="MeshInstance3D" parent="." unique_id=50599008]
+mesh = SubResource("PlaneMesh_h72uw")
+surface_material_override/0 = SubResource("ShaderMaterial_qqeml")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=29566873]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0.23917437, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=992733206]
+transform = Transform3D(1, 0, 1.5951684e-12, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("CylinderShape3D_sf4ir")
+
+[node name="patch-sand-foliage2" parent="." unique_id=1852054674 instance=ExtResource("7_qqeml")]
+transform = Transform3D(-8.742278e-08, 0, -2.5, 0, 2, 0, 2, 0, -1.09278474e-07, 0, 0.23917437, 0)
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1596644708]
+transform = Transform3D(0.9659259, -0.24419884, 0.08575653, 1.4876436e-09, 0.3313379, 0.9435122, -0.25881895, -0.9113628, 0.32004786, 2.627781, 16.379116, 7.4515266)
+
+[node name="PlayerRoot" type="Node" parent="." unique_id=833339927]
+
+[node name="PlayTime" type="Timer" parent="." unique_id=394384342]
+wait_time = 500.0
+one_shot = true
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=733463827]
+transform = Transform3D(0.9315327, 0.18421467, 0.31354728, -0.36365774, 0.4718777, 0.8031715, 0, -0.8622044, 0.50656056, 4.852756, 8.480776, 0)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=63989802]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=2014670140]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme = ExtResource("11_gksw4")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer" unique_id=349377137]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/MarginContainer/HBoxContainer" unique_id=1100064960]
+layout_mode = 2
+
+[node name="Score" type="Label" parent="CanvasLayer/MarginContainer/HBoxContainer/VBoxContainer2" unique_id=437528321]
+layout_mode = 2
+text = "Time"
+horizontal_alignment = 1
+
+[node name="Time" type="Label" parent="CanvasLayer/MarginContainer/HBoxContainer/VBoxContainer2" unique_id=833477901 node_paths=PackedStringArray("timer")]
+layout_mode = 2
+text = "A"
+horizontal_alignment = 1
+script = ExtResource("12_s4ws1")
+timer = NodePath("../../../../../PlayTime")
+
+[node name="Control" type="Control" parent="CanvasLayer/MarginContainer/HBoxContainer" unique_id=1813073618]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HealthBar" type="HBoxContainer" parent="CanvasLayer/MarginContainer/HBoxContainer" unique_id=1440600343 node_paths=PackedStringArray("hurt_box")]
+layout_mode = 2
+size_flags_vertical = 0
+alignment = 2
+script = ExtResource("13_2tdr6")
+hurt_box = NodePath("../../../../VRSpace/SubViewport/XROrigin3D/Body/HurtBox")
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer/HBoxContainer/HealthBar" unique_id=1598599410]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("13_08wrx")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/MarginContainer/HBoxContainer/HealthBar" unique_id=1225519791]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("13_08wrx")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="CanvasLayer/MarginContainer/HBoxContainer/HealthBar" unique_id=1481961134]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("13_08wrx")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=403816356]
+process_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("11_gksw4")
+color = Color(0, 0, 0, 0.5882353)
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/ColorRect" unique_id=282848611]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/ColorRect/CenterContainer" unique_id=1114400841]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="Label" type="Label" parent="CanvasLayer/ColorRect/CenterContainer/VBoxContainer" unique_id=1228456207]
+layout_mode = 2
+text = "Won"
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/ColorRect/CenterContainer/VBoxContainer" unique_id=1421050405]
+layout_mode = 2
+
+[node name="Restart" type="Button" parent="CanvasLayer/ColorRect/CenterContainer/VBoxContainer/VBoxContainer" unique_id=2001523003]
+layout_mode = 2
+text = "Restart"
+
+[node name="Menu" type="Button" parent="CanvasLayer/ColorRect/CenterContainer/VBoxContainer/VBoxContainer" unique_id=1797205563]
+layout_mode = 2
+text = "Back to menu"
+
+[editable path="VRSpace"]
+[editable path="VRSpace/StartXR"]
+[editable path="VRSpace/SubViewport/XROrigin3D/Body/characterMedium"]

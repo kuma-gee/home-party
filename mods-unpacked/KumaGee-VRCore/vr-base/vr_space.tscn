@@ -1,9 +1,14 @@
 [gd_scene format=3 uid="uid://btlljhtniv3dr"]
 
 [ext_resource type="PackedScene" uid="uid://b4kad2kuba1yn" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_hand_low.tscn" id="2_f012p"]
+[ext_resource type="PackedScene" uid="uid://oabojy0uqucd" path="res://mods-unpacked/KumaGee-VRCore/assets/characters/Model/characterMedium.fbx" id="2_udhni"]
+[ext_resource type="Texture2D" uid="uid://dsiqjnbjxbd68" path="res://mods-unpacked/KumaGee-VRCore/assets/characters/Skins/skaterMaleA.png" id="3_eqf7s"]
 [ext_resource type="PackedScene" uid="uid://l2n30mpbkdyw" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/right_hand_low.tscn" id="3_qly20"]
 [ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="5_qkbkc"]
 [ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="6_ajv2u"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_01vt5"]
+albedo_texture = ExtResource("3_eqf7s")
 
 [node name="VRSpace" type="Node3D" unique_id=841158329]
 
@@ -16,6 +21,17 @@ size = Vector2i(0, 0)
 render_target_update_mode = 4
 
 [node name="XROrigin3D" type="XROrigin3D" parent="SubViewport" unique_id=1472073]
+
+[node name="Body" type="Node3D" parent="SubViewport/XROrigin3D" unique_id=281622546]
+transform = Transform3D(-0.5, 0, -4.371139e-08, 0, 0.5, 0, 4.371139e-08, 0, -0.5, 0, 0, 0)
+
+[node name="characterMedium" parent="SubViewport/XROrigin3D/Body" unique_id=608236063 instance=ExtResource("2_udhni")]
+
+[node name="characterMedium" parent="SubViewport/XROrigin3D/Body/characterMedium/Root/Skeleton3D" parent_id_path=PackedInt32Array(608236063, 1693296605) index="0" unique_id=285012328]
+layers = 524288
+surface_material_override/0 = SubResource("StandardMaterial3D_01vt5")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="SubViewport/XROrigin3D/Body" unique_id=1831159436]
 
 [node name="PlayerBody" parent="SubViewport/XROrigin3D" unique_id=2005540090 instance=ExtResource("6_ajv2u")]
 
@@ -36,3 +52,4 @@ tracker = &"right_hand"
 [node name="RightHand" parent="SubViewport/XROrigin3D/RightHand" unique_id=1627722633 instance=ExtResource("3_qly20")]
 
 [editable path="StartXR"]
+[editable path="SubViewport/XROrigin3D/Body/characterMedium"]
