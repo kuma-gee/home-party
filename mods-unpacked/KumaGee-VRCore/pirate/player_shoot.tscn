@@ -8,3 +8,8 @@ script = ExtResource("1_rjxo5")
 visuals = NodePath("indicator-round-d2")
 
 [node name="indicator-round-d2" parent="." unique_id=1409446682 instance=ExtResource("2_x3jma")]
+
+[node name="rotate-y" parent="indicator-round-d2/indicator-round-d" parent_id_path=PackedInt32Array(1409446682, 1475134011) index="0" unique_id=223993230]
+layers = 524288
+
+[editable path="indicator-round-d2"]

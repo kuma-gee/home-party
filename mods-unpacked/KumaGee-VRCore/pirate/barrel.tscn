@@ -3,12 +3,16 @@
 [ext_resource type="PackedScene" uid="uid://jrxr4c37stf1" path="res://mods-unpacked/KumaGee-VRCore/assets/pirate/barrel.glb" id="1_ikvi5"]
 [ext_resource type="Script" uid="uid://byhg4t4ldkamd" path="res://mods-unpacked/KumaGee-VRCore/pirate/barrel.gd" id="1_llgkl"]
 [ext_resource type="Script" uid="uid://dn1hlla402of8" path="res://mods-unpacked/KumaGee-VRCore/pirate/hit_area.gd" id="3_dd6aa"]
+[ext_resource type="Script" uid="uid://crtkl6ldhona6" path="res://mods-unpacked/KumaGee-VRCore/pirate/hurt_box.gd" id="4_niq6i"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ikvi5"]
 radius = 0.78895026
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_llgkl"]
 radius = 0.8606327
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_niq6i"]
+radius = 0.81508046
 
 [node name="Barrel" type="CharacterBody3D" unique_id=1611131427]
 collision_layer = 0
@@ -27,3 +31,13 @@ script = ExtResource("3_dd6aa")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HitArea" unique_id=333730114]
 shape = SubResource("SphereShape3D_llgkl")
+
+[node name="HurtBox" type="Area3D" parent="." unique_id=247971429]
+collision_layer = 64
+collision_mask = 0
+script = ExtResource("4_niq6i")
+health = 1
+metadata/_custom_type_script = "uid://crtkl6ldhona6"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtBox" unique_id=202025330]
+shape = SubResource("SphereShape3D_niq6i")

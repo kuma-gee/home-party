@@ -5,13 +5,18 @@ extends CharacterBody3D
 @export var gravity: float = 7.0
 @export var high_arc: bool = true
 @onready var hit_area: Area3D = $HitArea
+@onready var hurt_box: HurtBox = $HurtBox
 
 var target: Vector3
 var active: bool = false
 var proj_velocity: Vector3 = Vector3.ZERO
 
 func _ready() -> void:
-	hit_area.hit.connect(func(): queue_free())
+	hit_area.hit.connect(_break)
+	hurt_box.died.connect(_break)
+
+func _break():
+	queue_free()
 
 func _physics_process(delta: float) -> void:
 	if not active:

@@ -175,7 +175,8 @@ func _physics_process(delta):
 		$Target/Player_figure.scale = Vector3(ws, ws, ws)
 
 	if _controller and _controller.get_is_active() and \
-			_controller.is_button_pressed(teleport_button_action):
+			_controller.get_input(rotation_action).y < -0.5:
+			#_controller.is_button_pressed(teleport_button_action):
 		if !is_teleporting:
 			is_teleporting = true
 			$Teleport.visible = true
@@ -304,7 +305,7 @@ func _physics_process(delta):
 				color = cant_teleport_color
 
 			# check our axis to see if we need to rotate
-			teleport_rotation += (delta * _controller.get_vector2(rotation_action).x * -4.0)
+			#teleport_rotation += (delta * _controller.get_vector2(rotation_action).x * -4.0)
 
 			# update target and colour
 			var target_basis := Basis()
