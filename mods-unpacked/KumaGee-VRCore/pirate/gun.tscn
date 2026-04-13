@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dm2vknykqcmcj"]
 
 [ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_onams"]
+[ext_resource type="AudioStream" uid="uid://b3eys6llyvu6h" path="res://mods-unpacked/KumaGee-VRCore/assets/sounds/laserShoot.wav" id="2_gfwa7"]
 [ext_resource type="PackedScene" uid="uid://clhjdk5qhcb6y" path="res://mods-unpacked/KumaGee-VRCore/assets/blasters/blasterH.glb" id="2_nqqf4"]
 [ext_resource type="PackedScene" uid="uid://c25yxb0vt53vc" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_left.tscn" id="3_atjkv"]
 [ext_resource type="PackedScene" uid="uid://ctw7nbntd5pcj" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_right.tscn" id="4_f35gx"]
@@ -28,27 +29,32 @@ shader_parameter/inner_color = Color(0, 0, 0, 0)
 [node name="PickableObject" unique_id=777328390 instance=ExtResource("1_onams")]
 second_hand_grab = 1
 
-[node name="CollisionShape3D" parent="." index="0" unique_id=1198871219]
+[node name="FireSFX" type="AudioStreamPlayer3D" parent="." index="0" unique_id=1646579021]
+stream = ExtResource("2_gfwa7")
+volume_db = -20.0
+pitch_scale = 0.8
+
+[node name="CollisionShape3D" parent="." index="1" unique_id=1198871219]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, -0.008135393, 0)
 shape = SubResource("CapsuleShape3D_nqqf4")
 
-[node name="blasterH2" parent="." index="1" unique_id=1718075456 instance=ExtResource("2_nqqf4")]
+[node name="blasterH2" parent="." index="2" unique_id=1718075456 instance=ExtResource("2_nqqf4")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0, 0)
 
 [node name="blasterH" parent="blasterH2" index="0" unique_id=1338077992]
 layers = 262144
 
-[node name="GrabPointHandLeft" parent="." index="2" unique_id=1688684482 instance=ExtResource("3_atjkv")]
+[node name="GrabPointHandLeft" parent="." index="3" unique_id=1688684482 instance=ExtResource("3_atjkv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0058659464, -0.028119296, 0.087077454)
 
-[node name="GrabPointHandRight" parent="." index="3" unique_id=1052381438 instance=ExtResource("4_f35gx")]
+[node name="GrabPointHandRight" parent="." index="4" unique_id=1052381438 instance=ExtResource("4_f35gx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.028563254, 0.07936255)
 
-[node name="GrabPointSnap" parent="." index="4" unique_id=1767947045 instance=ExtResource("6_7bp5g")]
+[node name="GrabPointSnap" parent="." index="5" unique_id=1767947045 instance=ExtResource("6_7bp5g")]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, -0.032421403, 0.17874484)
 visible = true
 
-[node name="RayCast3D" type="RayCast3D" parent="." index="5" unique_id=111730963 node_paths=PackedStringArray("pickupable")]
+[node name="RayCast3D" type="RayCast3D" parent="." index="6" unique_id=111730963 node_paths=PackedStringArray("pickupable")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.26034692)
 target_position = Vector3(0, 0, -10)
 collision_mask = 64
@@ -60,7 +66,7 @@ pickupable = NodePath("..")
 [node name="Firerate" type="Timer" parent="RayCast3D" index="0" unique_id=2042986361]
 one_shot = true
 
-[node name="Sprite3D" type="Sprite3D" parent="." index="6" unique_id=1446316416]
+[node name="Sprite3D" type="Sprite3D" parent="." index="7" unique_id=1446316416]
 transform = Transform3D(0.1, 0, 0, 0, 0.07071068, 0.07071068, 0, -0.07071068, 0.07071068, 0, 0.059832856, 0.22237095)
 texture = SubResource("ViewportTexture_7bp5g")
 

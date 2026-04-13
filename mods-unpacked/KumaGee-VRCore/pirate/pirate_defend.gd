@@ -4,6 +4,7 @@ extends BaseGame
 @export var restart_button: Button
 @export var gameover_label: Label
 @export var gameover_ui: Control
+@export var spawner: PowerUpSpawner
 
 @export var player_hurtbox: HurtBox
 @export var shoot_points: Array[Node3D] = []
@@ -20,14 +21,17 @@ func _ready() -> void:
 	gameover_ui.hide()
 
 func _on_player_died():
-	get_tree().paused = true
-	gameover_ui.show()
+	_finish_game()
 	gameover_label.text = "Player died!"
 
 func _on_game_finished():
+	_finish_game()
+	gameover_label.text = "Player survived!"
+
+func _finish_game():
 	get_tree().paused = true
 	gameover_ui.show()
-	gameover_label.text = "Player survived!"
+	spawner.stop()
 
 func start_game(players: Array[GameClient], _game_setup: GameSetup):
 	get_tree().paused = false
@@ -43,9 +47,13 @@ func start_game(players: Array[GameClient], _game_setup: GameSetup):
 		player.global_transform = point.global_transform
 	
 	play_time.start()
+	spawner.start()
 
 func _spawn_barrel_at(player: PlayerShootPoint, target: Vector3):
 	var barrel = barrel_scene.instantiate()
 	barrel.position = player.global_position
+	barrel.speed_multiplier = player.get_speed_multiplier()
+	barrel.scale *= player.get_scale_multiplier()
+	barrel.picked_up.connect(func(power_up): player.add_power_up(power_up))
 	get_tree().current_scene.add_child(barrel)
 	barrel.throw_to(target)
