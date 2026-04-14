@@ -28,6 +28,7 @@ LobbyServer="*res://main/utils/lobby_server.gd"
 PlayerManager="*res://main/utils/player_manager.gd"
 XRToolsUserSettings="*uid://bqgb8i74tm0t"
 XRToolsRumbleManager="*uid://by853dk86g1qw"
+AudioManager="*uid://ewg3o036k8yw"
 
 [display]
 

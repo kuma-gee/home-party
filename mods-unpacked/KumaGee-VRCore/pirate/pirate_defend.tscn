@@ -292,7 +292,7 @@ tree_root = SubResource("AnimationNodeBlendTree_167ky")
 [node name="FunctionPickup" parent="VRSpace/SubViewport/XROrigin3D/LeftHand" parent_id_path=PackedInt32Array(841158329, 1695547435) index="1" unique_id=1389353789 instance=ExtResource("3_08wrx")]
 
 [node name="HandUI" type="Sprite3D" parent="VRSpace/SubViewport/XROrigin3D/LeftHand" parent_id_path=PackedInt32Array(841158329, 1695547435) index="2" unique_id=479824168]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.15931451, 0)
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.1203374, 0.036836505, 0.09187293)
 billboard = 1
 texture = SubResource("ViewportTexture_gksw4")
 script = ExtResource("10_s4ws1")

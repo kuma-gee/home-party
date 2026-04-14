@@ -2,6 +2,7 @@ extends RayCast3D
 
 @export var pickupable: XRToolsPickable
 @onready var firerate: Timer = $Firerate
+@onready var fire_sfx: SFXPlayer = $FireSFX
 
 var _laser_mesh: ImmediateMesh
 var _laser_material: StandardMaterial3D
@@ -47,5 +48,8 @@ func _on_action_pressed(_p: XRToolsPickable) -> void:
 		var collider = get_collider()
 		if collider is HurtBox:
 			collider.hit(1)
+			add_exception(collider)
 	
+	fire_sfx.play()
 	firerate.start()
+	clear_exceptions()
