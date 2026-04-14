@@ -13,8 +13,12 @@ Godot Server (VR host)
   ├─ BaseGame subclasses — individual mini-games (in mods)
   └─ GameClient nodes — one per connected web client
 
-Web Client (Svelte + TypeScript, game-client/)
+main/ - Core godot part
+  └─ everything required for basic game setup
+
+game-client/ - Web Client (Svelte + TypeScript)
   └─ Connects via WebSocket (port 14412) for signaling, then WebRTC for input
+  └─ Provide the interface for the players on the phone
 ```
 
 ## Key Autoloads

@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://ce7vysyvondf8" path="res://addons/godot-xr-tools/objects/snap_zone.tscn" id="7_5vkqn"]
 [ext_resource type="PackedScene" uid="uid://07hx6dhudy5k" path="res://mods-unpacked/KumaGee-VRCore/assets/pirate/patch-sand-foliage.glb" id="7_qqeml"]
 [ext_resource type="PackedScene" uid="uid://7lgpyjq2fykg" path="res://mods-unpacked/KumaGee-VRCore/assets/pirate/ship-pirate-large.glb" id="7_sf4ir"]
+[ext_resource type="Script" uid="uid://dv15swwxgqs6i" path="res://mods-unpacked/KumaGee-VRCore/pirate/hand_ui.gd" id="10_s4ws1"]
 [ext_resource type="Shader" uid="uid://c45mkp5k5xvrl" path="res://mods-unpacked/KumaGee-VRCore/pirate/water.gdshader" id="10_sf4ir"]
 [ext_resource type="PackedScene" uid="uid://cw7girhrs4k7c" path="res://mods-unpacked/KumaGee-VRCore/assets/models/belt.glb" id="10_urw1i"]
 [ext_resource type="PackedScene" uid="uid://dm2vknykqcmcj" path="res://mods-unpacked/KumaGee-VRCore/pirate/gun.tscn" id="11_5vkqn"]
@@ -66,6 +67,9 @@ nodes/OpenHand/position = Vector2(-600, 100)
 nodes/Trigger/node = SubResource("AnimationNodeBlend2_cpc4q")
 nodes/Trigger/position = Vector2(-360, 20)
 node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_gksw4"]
+viewport_path = NodePath("VRSpace/SubViewport/XROrigin3D/LeftHand/HandUI/SubViewport")
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_167ky"]
 animation = &"Grip"
@@ -287,6 +291,48 @@ tree_root = SubResource("AnimationNodeBlendTree_cglii")
 
 [node name="FunctionPickup" parent="VRSpace/SubViewport/XROrigin3D/LeftHand" parent_id_path=PackedInt32Array(841158329, 1695547435) index="1" unique_id=1389353789 instance=ExtResource("3_08wrx")]
 
+[node name="HandUI" type="Sprite3D" parent="VRSpace/SubViewport/XROrigin3D/LeftHand" parent_id_path=PackedInt32Array(841158329, 1695547435) index="2" unique_id=479824168]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.15931451, 0)
+billboard = 1
+texture = SubResource("ViewportTexture_gksw4")
+script = ExtResource("10_s4ws1")
+
+[node name="SubViewport" type="SubViewport" parent="VRSpace/SubViewport/XROrigin3D/LeftHand/HandUI" unique_id=371409098]
+disable_3d = true
+transparent_bg = true
+
+[node name="CenterContainer" type="CenterContainer" parent="VRSpace/SubViewport/XROrigin3D/LeftHand/HandUI/SubViewport" unique_id=166623805]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VRSpace/SubViewport/XROrigin3D/LeftHand/HandUI/SubViewport/CenterContainer" unique_id=1711424310]
+layout_mode = 2
+script = ExtResource("13_2tdr6")
+
+[node name="TextureRect" type="TextureRect" parent="VRSpace/SubViewport/XROrigin3D/LeftHand/HandUI/SubViewport/CenterContainer/HBoxContainer" unique_id=1227569253]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("13_08wrx")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="VRSpace/SubViewport/XROrigin3D/LeftHand/HandUI/SubViewport/CenterContainer/HBoxContainer" unique_id=22939278]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("13_08wrx")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="VRSpace/SubViewport/XROrigin3D/LeftHand/HandUI/SubViewport/CenterContainer/HBoxContainer" unique_id=1026447130]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("13_08wrx")
+expand_mode = 3
+stretch_mode = 5
+
 [node name="AnimationTree" parent="VRSpace/SubViewport/XROrigin3D/RightHand/RightHand" parent_id_path=PackedInt32Array(841158329, 1627722633) index="1"]
 tree_root = SubResource("AnimationNodeBlendTree_ljvcq")
 
@@ -315,12 +361,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22909081, 0.18745345, -0.19
 
 [node name="PickableObject2" parent="VRSpace/SubViewport" parent_id_path=PackedInt32Array(841158329, 1709074553) index="2" unique_id=1175105242 instance=ExtResource("11_5vkqn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22909081, 0.18745345, -0.19250427)
-
-[node name="CanvasLayer" type="CanvasLayer" parent="VRSpace/SubViewport" parent_id_path=PackedInt32Array(841158329, 1709074553) index="3" unique_id=1297769937]
-
-[node name="MarginContainer" type="MarginContainer" parent="VRSpace/SubViewport/CanvasLayer" unique_id=144557907]
-offset_right = 40.0
-offset_bottom = 40.0
 
 [node name="ship-pirate-large2" parent="." unique_id=818398480 instance=ExtResource("7_sf4ir")]
 transform = Transform3D(-0.96592593, 0, 0.25881898, 0, 1, 0, -0.25881898, 0, -0.96592593, 13.882425, -1.2077248, 3.2393918)
