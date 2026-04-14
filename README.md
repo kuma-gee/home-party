@@ -1,3 +1,3 @@
 ## Credits
 
-- [Revolver](https://sketchfab.com/3d-models/revolver-c0f8a6995a8344d1b5a55e54cd7143fa)
+- [Blunderbass](https://sketchfab.com/3d-models/stylized-blunderbuss-hand-painted-f3ef63310a7047a39de58cff734f56c8)
