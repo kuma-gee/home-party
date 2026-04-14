@@ -7,7 +7,8 @@ var game: GameResource
 
 func _ready() -> void:
 	toggled.connect(func(_on): _update())
-	label.text = game.name
+	if game:
+		label.text = game.name
 	_update()
 
 func _update():

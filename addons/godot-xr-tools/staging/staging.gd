@@ -70,6 +70,7 @@ signal xr_ended
 
 ## The current scene
 var current_scene : XRToolsSceneBase
+var current_player: XRPlayer
 
 ## The current scene path
 var current_scene_path : String
@@ -77,12 +78,11 @@ var current_scene_path : String
 # Tween for fading
 var _tween : Tween
 
-## The [XROrigin3D] node used while staging
-@onready var xr_origin : XROrigin3D = XRHelpers.get_xr_origin(self)
-
-## The [XRCamera3D] node used while staging
-@onready var xr_camera : XRCamera3D = XRHelpers.get_xr_camera(self)
-
+@export var xr_origin : XROrigin3D
+@export var xr_camera : XRCamera3D
+@export var loading: LoadingScreen
+@export var scene: Node3D
+@export var vr_viewport: SubViewport
 
 func _ready():
 	# Do not initialise if in the editor
@@ -91,7 +91,7 @@ func _ready():
 
 	# Specify the camera to track
 	if xr_camera:
-		$LoadingScreen.set_camera(xr_camera)
+		loading.set_camera(xr_camera)
 
 	# We start by loading our main level scene
 	load_scene(main_scene)
@@ -102,14 +102,14 @@ func _get_configuration_warnings() -> PackedStringArray:
 	var warnings := PackedStringArray()
 
 	# Report missing XR Origin
-	var test_origin : XROrigin3D = XRHelpers.get_xr_origin(self)
-	if !test_origin:
-		warnings.append("No XROrigin3D node found, please add one")
-
-	# Report missing XR Camera
-	var test_camera : XRCamera3D = XRHelpers.get_xr_camera(self)
-	if !test_camera:
-		warnings.append("No XRCamera3D node found, please add one to your XROrigin3D node")
+	#var test_origin : XROrigin3D = XRHelpers.get_xr_origin(self)
+	#if !test_origin:
+		#warnings.append("No XROrigin3D node found, please add one")
+#
+	## Report missing XR Camera
+	#var test_camera : XRCamera3D = XRHelpers.get_xr_camera(self)
+	#if !test_camera:
+		#warnings.append("No XRCamera3D node found, please add one to your XROrigin3D node")
 
 	# Report main scene not specified
 	if main_scene == "":
@@ -179,10 +179,10 @@ func load_scene(p_scene_path : String, user_data = null) -> void:
 		xr_origin.set_process_internal(true)
 		xr_origin.current = true
 		xr_camera.current = true
-		$LoadingScreen.progress = 0.0
-		$LoadingScreen.enable_press_to_continue = false
-		$LoadingScreen.follow_camera = true
-		$LoadingScreen.visible = true
+		loading.progress = 0.0
+		loading.enable_press_to_continue = false
+		loading.follow_camera = true
+		loading.visible = true
 		switching_to_loading_scene.emit(user_data)
 
 		# Fade to visible
@@ -194,7 +194,7 @@ func load_scene(p_scene_path : String, user_data = null) -> void:
 
 	# If the loading screen is visible then show the progress and optionally
 	# wait for the continue. Once done fade out the loading screen.
-	if $LoadingScreen.visible:
+	if loading.visible:
 		# Loop waiting for the scene to load
 		var res : ResourceLoader.ThreadLoadStatus
 		while true:
@@ -203,7 +203,7 @@ func load_scene(p_scene_path : String, user_data = null) -> void:
 			if res != ResourceLoader.THREAD_LOAD_IN_PROGRESS:
 				break
 
-			$LoadingScreen.progress = progress[0]
+			loading.progress = progress[0]
 			await get_tree().create_timer(0.1).timeout
 
 		# Handle load error
@@ -220,8 +220,8 @@ func load_scene(p_scene_path : String, user_data = null) -> void:
 
 		# Wait for user to be ready
 		if prompt_for_continue:
-			$LoadingScreen.enable_press_to_continue = true
-			await $LoadingScreen.continue_pressed
+			loading.enable_press_to_continue = true
+			await loading.continue_pressed
 
 		# Fade to black
 		if _tween:
@@ -231,8 +231,8 @@ func load_scene(p_scene_path : String, user_data = null) -> void:
 		await _tween.finished
 
 		# Hide our loading screen
-		$LoadingScreen.follow_camera = false
-		$LoadingScreen.visible = false
+		loading.follow_camera = false
+		loading.visible = false
 		xr_origin.set_process_internal(false)
 
 	# Get the loaded scene
@@ -241,13 +241,16 @@ func load_scene(p_scene_path : String, user_data = null) -> void:
 	# Setup our new scene
 	current_scene = new_scene.instantiate()
 	current_scene_path = p_scene_path
-	$Scene.add_child(current_scene)
+	current_player = current_scene.xr_player_scene.instantiate()
+	scene.add_child(current_scene)
+	vr_viewport.add_child(current_player)
 	_add_signals(current_scene)
 
 	# We create a small delay here to give tracking some time to update our nodes...
 	await get_tree().create_timer(0.1).timeout
 	current_scene.scene_loaded(user_data)
 	scene_loaded.emit(current_scene, user_data)
+	current_player.activate()
 
 	# Fade to visible
 	if _tween:

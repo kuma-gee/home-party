@@ -1,4 +1,5 @@
 @tool
+class_name LoadingScreen
 extends Node3D
 
 

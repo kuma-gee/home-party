@@ -1,4 +1,4 @@
-extends BaseGame
+extends Node3D
 
 @export var menu_button: Button
 @export var restart_button: Button
@@ -16,8 +16,8 @@ func _ready() -> void:
 	play_time.timeout.connect(_on_game_finished)
 	player_hurtbox.died.connect(_on_player_died)
 	
-	menu_button.pressed.connect(func(): back_to_menu.emit())
-	restart_button.pressed.connect(func(): game_restart.emit())
+	#menu_button.pressed.connect(func(): exit_to_main_menu())
+	#restart_button.pressed.connect(func(): game_restart.emit())
 	gameover_ui.hide()
 
 func _on_player_died():
