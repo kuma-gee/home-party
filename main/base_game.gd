@@ -7,6 +7,3 @@ signal back_to_menu()
 
 func start_game(players: Array[GameClient], game_setup: GameSetup):
 	pass
-
-func get_points() -> Dictionary[String, int]:
-	return {}

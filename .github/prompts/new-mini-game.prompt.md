@@ -13,7 +13,6 @@ Scaffold a new VR mini-game called **${input:gameName}** inside `mods-unpacked/K
 
    - `extends BaseGame`
    - `start_game(players, game_setup)` — call `LobbyServer.send_layout("joystick")`, iterate players, connect `input_received` to a local handler, start a `Timer` node named `PlayTime`
-   - `get_points()` — return `scores` dict mapping `player.uuid` to int
    - Private `_on_input(player, input, value)` handler with a `match input:` block covering at minimum `"move"`
    - `_on_game_finished()` that emits `game_finished`
    - Log with `KumaLog.new("${input:gameName}")`
@@ -55,7 +54,6 @@ Scaffold a new VR mini-game called **${input:gameName}** inside `mods-unpacked/K
 
 ## Constraints
 
-- Do not touch `mods-unpacked/KumaGee-Core/` — it is legacy code.
 - Do not modify files in `addons/` unless there is a critical bug.
-- Follow the `BaseGame` API exactly: `start_game` / `get_points` / signals `game_finished`, `game_restart`, `back_to_menu`.
+- Follow the `BaseGame` API exactly: `start_game` / signals `game_finished`, `game_restart`, `back_to_menu`.
 - The `.tres` must be a `GameResource` so `GameLoader` can discover it automatically — no manual registration needed.

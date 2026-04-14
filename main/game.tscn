@@ -5,7 +5,6 @@
 [ext_resource type="Script" uid="uid://ddetao6ypdnd4" path="res://main/utils/game_loader.gd" id="3_ph3h8"]
 [ext_resource type="PackedScene" uid="uid://cwf7fl2qf2pb5" path="res://main/ui/game_select.tscn" id="4_3qcir"]
 [ext_resource type="Script" uid="uid://brg6aumaixieg" path="res://main/ui/game_qr.gd" id="4_46yon"]
-[ext_resource type="Script" uid="uid://didybt66x4pke" path="res://main/game_mode.gd" id="5_vfw6y"]
 [ext_resource type="PackedScene" uid="uid://cne8oxil0b4yy" path="res://mods-unpacked/KumaGee-VRCore/vr-base/menu_world.tscn" id="6_4u4fy"]
 
 [sub_resource type="Image" id="Image_jc0vi"]
@@ -33,9 +32,6 @@ menu_viewport = NodePath("CanvasLayer/SubViewportContainer/SubViewport")
 [node name="GameLoader" type="Node" parent="." unique_id=1604047825]
 script = ExtResource("3_ph3h8")
 metadata/_custom_type_script = "uid://ddetao6ypdnd4"
-
-[node name="GameMode" type="Node" parent="." unique_id=409398898]
-script = ExtResource("5_vfw6y")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=450883531]
 layer = -1

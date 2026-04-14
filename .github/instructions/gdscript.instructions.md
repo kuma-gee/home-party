@@ -15,17 +15,12 @@ func start_game(players: Array[GameClient], game_setup: GameSetup) -> void:
     # Called once when the game session starts.
     # Wire up player inputs here. Do not call super().
     pass
-
-func get_points() -> Dictionary[String, int]:
-    # Return UUID → score. Called after game_finished is emitted.
-    # Keys are player.uuid strings.
-    return {}
 ```
 
-Emit these signals (inherited) to communicate with `GameMode`:
+Emit these signals (inherited) to communicate with the game host:
 
 ```gdscript
-game_finished.emit()    # Game is over, GameMode will call get_points()
+game_finished.emit()    # Game is over
 game_restart.emit()     # Replay the same game
 back_to_menu.emit()     # Return to game selection screen
 ```
@@ -83,11 +78,8 @@ var scores: Dictionary = {}   # uuid -> int
 func start_game(players: Array[GameClient], _setup: GameSetup) -> void:
     for p in players:
         scores[p.uuid] = 0
-
-func get_points() -> Dictionary[String, int]:
-    return scores
 ```
 
 ## Pausing
 
-Games run under `PROCESS_MODE_PAUSABLE` (set by `GameMode`). Use `get_tree().paused = true/false` to freeze gameplay while showing results UI.
+Games run under `PROCESS_MODE_PAUSABLE` (set by `Game` when launching). Use `get_tree().paused = true/false` to freeze gameplay while showing results UI.

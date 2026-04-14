@@ -2,14 +2,14 @@
 
 ## Overview
 
-Multiplayer VR party game framework built with Godot 4.6. A VR headset acts as the game server; web browser clients connect as player controllers. The game cycles through a sequence of VR mini-games selected from a menu.
+Multiplayer VR party game framework built with Godot 4.6. A VR headset acts as the game server; web browser clients connect as player controllers. The host selects a VR mini-game from a menu; players join and play that single game.
 
 ## Architecture
 
 ```
 Godot Server (VR host)
   ├─ Autoloads: ModLoader, LobbyServer, PlayerManager, HttpServer
-  ├─ GameMode — cycles through selected games
+  ├─ Game (main/game.gd) — selects and launches a single mini-game
   ├─ BaseGame subclasses — individual mini-games (in mods)
   └─ GameClient nodes — one per connected web client
 
@@ -32,10 +32,9 @@ game-client/ - Web Client (Svelte + TypeScript)
 
 ## Game Lifecycle
 
-1. `GameMode.start_games(selected: Array[GameResource])` randomly picks games, instantiates each `BaseGame` scene, and calls `start_game(players, game_setup)`.
-2. Game signals `game_finished` when done; `GameMode` calls `get_points()` to accumulate wins.
-3. After `num_of_games` rounds, `GameMode` emits `finished`.
-4. Games can also emit `game_restart` (replay same game) or `back_to_menu`.
+1. Host selects one game in the UI and presses Start; `Game.start_game_resource(res)` instantiates the `BaseGame` scene and calls `start_game(players, game_setup)`.
+2. Game signals `game_finished` or `back_to_menu` when done; `Game.end_game()` cleans up and returns to the menu.
+3. Games can also emit `game_restart` to replay the same game without returning to the menu.
 
 ## Input Protocol (WebRTC Data Channel)
 
@@ -81,4 +80,3 @@ npm run build            # Build Svelte app → copies output to ../build/web/
 ## Off-Limits Directories
 
 - **`addons/`** — External third-party plugins. Read them to understand their APIs, but **do not modify** unless there is a critical bug with no workaround.
-- **`mods-unpacked/KumaGee-Core/`** — Legacy non-VR code from a previous version. Do not use as a reference or modify.
