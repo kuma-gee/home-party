@@ -8,7 +8,6 @@ signal finished()
 @export var menu: Control
 @export var menu_viewport: SubViewport
 
-var world: MenuWorld
 var logger := KumaLog.new("Game")
 var game_node: BaseGame
 var playing := false

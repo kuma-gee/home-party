@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bdb2g88cmihu7" path="res://mods-unpacked/KumaGee-VRCore/pirate/pirate_defend.gd" id="1_qqeml"]
 [ext_resource type="PackedScene" uid="uid://cfkaaf5hagfis" path="res://mods-unpacked/KumaGee-VRCore/pirate/player_shoot.tscn" id="2_6lnjn"]
-[ext_resource type="PackedScene" uid="uid://btlljhtniv3dr" path="res://mods-unpacked/KumaGee-VRCore/vr-base/vr_space.tscn" id="2_atiqd"]
+[ext_resource type="PackedScene" uid="uid://btlljhtniv3dr" path="res://main/vr/vr_space.tscn" id="2_atiqd"]
 [ext_resource type="PackedScene" uid="uid://b4ysuy43poobf" path="res://addons/godot-xr-tools/functions/function_pickup.tscn" id="3_08wrx"]
 [ext_resource type="PackedScene" uid="uid://fiul51tsyoop" path="res://addons/godot-xr-tools/functions/function_teleport.tscn" id="4_2tdr6"]
 [ext_resource type="Script" uid="uid://crtkl6ldhona6" path="res://mods-unpacked/KumaGee-VRCore/pirate/hurt_box.gd" id="5_atiqd"]
@@ -34,11 +34,73 @@ sky_material = SubResource("PanoramaSkyMaterial_w56sk")
 background_mode = 2
 sky = SubResource("Sky_5vkqn")
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2tdr6"]
+radius = 0.37841797
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_s4ws1"]
+animation = &"Grip"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fb2or"]
+animation = &"Grip"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_fklxj"]
+filter_enabled = true
+filters = ["Armature/Skeleton3D:Little_Distal_L", "Armature/Skeleton3D:Little_Intermediate_L", "Armature/Skeleton3D:Little_Metacarpal_L", "Armature/Skeleton3D:Little_Proximal_L", "Armature/Skeleton3D:Middle_Distal_L", "Armature/Skeleton3D:Middle_Intermediate_L", "Armature/Skeleton3D:Middle_Metacarpal_L", "Armature/Skeleton3D:Middle_Proximal_L", "Armature/Skeleton3D:Ring_Distal_L", "Armature/Skeleton3D:Ring_Intermediate_L", "Armature/Skeleton3D:Ring_Metacarpal_L", "Armature/Skeleton3D:Ring_Proximal_L", "Armature/Skeleton3D:Thumb_Distal_L", "Armature/Skeleton3D:Thumb_Metacarpal_L", "Armature/Skeleton3D:Thumb_Proximal_L", "Armature/Skeleton:Little_Distal_L", "Armature/Skeleton:Little_Intermediate_L", "Armature/Skeleton:Little_Proximal_L", "Armature/Skeleton:Middle_Distal_L", "Armature/Skeleton:Middle_Intermediate_L", "Armature/Skeleton:Middle_Proximal_L", "Armature/Skeleton:Ring_Distal_L", "Armature/Skeleton:Ring_Intermediate_L", "Armature/Skeleton:Ring_Proximal_L", "Armature/Skeleton:Thumb_Distal_L", "Armature/Skeleton:Thumb_Proximal_L"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_cpc4q"]
+animation = &"Grip 5"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_cglii"]
+filter_enabled = true
+filters = ["Armature/Skeleton3D:Index_Distal_L", "Armature/Skeleton3D:Index_Intermediate_L", "Armature/Skeleton3D:Index_Metacarpal_L", "Armature/Skeleton3D:Index_Proximal_L", "Armature/Skeleton:Index_Distal_L", "Armature/Skeleton:Index_Intermediate_L", "Armature/Skeleton:Index_Proximal_L"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_167ky"]
+graph_offset = Vector2(-536, 11)
+nodes/ClosedHand1/node = SubResource("AnimationNodeAnimation_s4ws1")
+nodes/ClosedHand1/position = Vector2(-600, 300)
+nodes/ClosedHand2/node = SubResource("AnimationNodeAnimation_fb2or")
+nodes/ClosedHand2/position = Vector2(-360, 300)
+nodes/Grip/node = SubResource("AnimationNodeBlend2_fklxj")
+nodes/Grip/position = Vector2(0, 20)
+nodes/OpenHand/node = SubResource("AnimationNodeAnimation_cpc4q")
+nodes/OpenHand/position = Vector2(-600, 100)
+nodes/Trigger/node = SubResource("AnimationNodeBlend2_cglii")
+nodes/Trigger/position = Vector2(-360, 20)
+node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1"]
+
 [sub_resource type="ViewportTexture" id="ViewportTexture_gksw4"]
 viewport_path = NodePath("VRSpace/SubViewport/XROrigin3D/LeftHand/HandUI/SubViewport")
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2tdr6"]
-radius = 0.37841797
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_v1l2h"]
+animation = &"Grip"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_3ud28"]
+animation = &"Grip"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_lfp6c"]
+filter_enabled = true
+filters = ["Armature/Skeleton3D:Little_Distal_R", "Armature/Skeleton3D:Little_Intermediate_R", "Armature/Skeleton3D:Little_Metacarpal_R", "Armature/Skeleton3D:Little_Proximal_R", "Armature/Skeleton3D:Middle_Distal_R", "Armature/Skeleton3D:Middle_Intermediate_R", "Armature/Skeleton3D:Middle_Metacarpal_R", "Armature/Skeleton3D:Middle_Proximal_R", "Armature/Skeleton3D:Ring_Distal_R", "Armature/Skeleton3D:Ring_Intermediate_R", "Armature/Skeleton3D:Ring_Metacarpal_R", "Armature/Skeleton3D:Ring_Proximal_R", "Armature/Skeleton3D:Thumb_Distal_R", "Armature/Skeleton3D:Thumb_Metacarpal_R", "Armature/Skeleton3D:Thumb_Proximal_R", "Armature/Skeleton:Little_Distal_R", "Armature/Skeleton:Little_Intermediate_R", "Armature/Skeleton:Little_Proximal_R", "Armature/Skeleton:Middle_Distal_R", "Armature/Skeleton:Middle_Intermediate_R", "Armature/Skeleton:Middle_Proximal_R", "Armature/Skeleton:Ring_Distal_R", "Armature/Skeleton:Ring_Intermediate_R", "Armature/Skeleton:Ring_Proximal_R", "Armature/Skeleton:Thumb_Distal_R", "Armature/Skeleton:Thumb_Proximal_R"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_bo2u8"]
+animation = &"Grip 5"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_ljvcq"]
+filter_enabled = true
+filters = ["Armature/Skeleton3D:Index_Distal_R", "Armature/Skeleton3D:Index_Intermediate_R", "Armature/Skeleton3D:Index_Metacarpal_R", "Armature/Skeleton3D:Index_Proximal_R", "Armature/Skeleton:Index_Distal_R", "Armature/Skeleton:Index_Intermediate_R", "Armature/Skeleton:Index_Proximal_R"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_avy6b"]
+graph_offset = Vector2(-552.664, 107.301)
+nodes/ClosedHand1/node = SubResource("AnimationNodeAnimation_v1l2h")
+nodes/ClosedHand1/position = Vector2(-600, 300)
+nodes/ClosedHand2/node = SubResource("AnimationNodeAnimation_3ud28")
+nodes/ClosedHand2/position = Vector2(-360, 300)
+nodes/Grip/node = SubResource("AnimationNodeBlend2_lfp6c")
+nodes/Grip/position = Vector2(0, 40)
+nodes/OpenHand/node = SubResource("AnimationNodeAnimation_bo2u8")
+nodes/OpenHand/position = Vector2(-600, 100)
+nodes/Trigger/node = SubResource("AnimationNodeBlend2_ljvcq")
+nodes/Trigger/position = Vector2(-360, 40)
+node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_h72uw"]
 size = Vector2(200, 200)
@@ -73,88 +135,95 @@ barrel_scene = ExtResource("11_qqeml")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1799037133]
 environment = SubResource("Environment_2tdr6")
 
-[node name="VRSpace_SubViewport_XROrigin3D_RightHand#FunctionTeleport" parent="." unique_id=1759800539 instance=ExtResource("4_2tdr6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1)
+[node name="VRSpace" parent="." unique_id=841158329 instance=ExtResource("2_atiqd")]
 
-[node name="VRSpace_SubViewport_XROrigin3D_RightHand#FunctionPickup2" parent="." unique_id=263448469 instance=ExtResource("3_08wrx")]
+[node name="VRSpace_SubViewport_XROrigin3D_PlayerBody_Body#Belt" type="Node3D" parent="VRSpace/SubViewport/XRPlayer/PlayerBody/Body" parent_id_path=PackedInt32Array(841158329, 1404813673, 1031441429) index="2" unique_id=1365384479]
+transform = Transform3D(4, 0, -6.993822e-07, 0, 4, 0, 6.993822e-07, 0, 4, 0, 3.3582501, 0)
 
-[node name="VRSpace_SubViewport_XROrigin3D_RightHand#MovementTurn" parent="." unique_id=1259927105 instance=ExtResource("5_w56sk")]
+[node name="belt" parent="VRSpace/SubViewport/XRPlayer/PlayerBody/Body/VRSpace_SubViewport_XROrigin3D_PlayerBody_Body#Belt" unique_id=164723472 instance=ExtResource("10_urw1i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.029243201)
 
-[node name="VRSpace_SubViewport_XROrigin3D_LeftHand#FunctionPickup" parent="." unique_id=1389353789 instance=ExtResource("3_08wrx")]
+[node name="SnapZone" parent="VRSpace/SubViewport/XRPlayer/PlayerBody/Body/VRSpace_SubViewport_XROrigin3D_PlayerBody_Body#Belt" unique_id=537384005 instance=ExtResource("7_5vkqn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.21337086, 0, -0.061077446)
+initial_object = NodePath("../../../../../PickableObject")
 
-[node name="VRSpace_SubViewport_XROrigin3D_LeftHand#HandUI" type="Sprite3D" parent="." unique_id=479824168]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.1203374, 0.036836505, 0.09187293)
+[node name="SnapZone2" parent="VRSpace/SubViewport/XRPlayer/PlayerBody/Body/VRSpace_SubViewport_XROrigin3D_PlayerBody_Body#Belt" unique_id=1883047161 instance=ExtResource("7_5vkqn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.21255003, 0, -0.054171383)
+initial_object = NodePath("../../../../../PickableObject2")
+
+[node name="VRSpace_SubViewport_XROrigin3D_PlayerBody_Body#HurtBox" type="Area3D" parent="VRSpace/SubViewport/XRPlayer/PlayerBody/Body" parent_id_path=PackedInt32Array(841158329, 1404813673, 1031441429) index="3" unique_id=1604124314]
+transform = Transform3D(4, 0, -6.993822e-07, 0, 4, 0, 6.993822e-07, 0, 4, 0, 0, 0)
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("5_atiqd")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="VRSpace/SubViewport/XRPlayer/PlayerBody/Body/VRSpace_SubViewport_XROrigin3D_PlayerBody_Body#HurtBox" unique_id=1261375568]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.90098625, 0)
+shape = SubResource("CapsuleShape3D_2tdr6")
+
+[node name="AnimationTree" parent="VRSpace/SubViewport/XRPlayer/LeftHand/LeftHand" parent_id_path=PackedInt32Array(841158329, 1404813673, 1600276417) index="1"]
+tree_root = SubResource("AnimationNodeBlendTree_167ky")
+
+[node name="VRSpace_SubViewport_XROrigin3D_LeftHand#FunctionPickup" parent="VRSpace/SubViewport/XRPlayer/LeftHand" parent_id_path=PackedInt32Array(841158329, 1404813673, 2106749189) index="1" unique_id=1389353789 instance=ExtResource("3_08wrx")]
+
+[node name="VRSpace_SubViewport_XROrigin3D_LeftHand#HandUI" type="Sprite3D" parent="VRSpace/SubViewport/XRPlayer/LeftHand" parent_id_path=PackedInt32Array(841158329, 1404813673, 2106749189) index="2" unique_id=479824168]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.62033737, -0.9631635, 0.59187293)
 billboard = 1
 texture = SubResource("ViewportTexture_gksw4")
 script = ExtResource("10_s4ws1")
 
-[node name="SubViewport" type="SubViewport" parent="VRSpace_SubViewport_XROrigin3D_LeftHand#HandUI" unique_id=371409098]
+[node name="SubViewport" type="SubViewport" parent="VRSpace/SubViewport/XRPlayer/LeftHand/VRSpace_SubViewport_XROrigin3D_LeftHand#HandUI" unique_id=371409098]
 disable_3d = true
 transparent_bg = true
 
-[node name="CenterContainer" type="CenterContainer" parent="VRSpace_SubViewport_XROrigin3D_LeftHand#HandUI/SubViewport" unique_id=166623805]
+[node name="CenterContainer" type="CenterContainer" parent="VRSpace/SubViewport/XRPlayer/LeftHand/VRSpace_SubViewport_XROrigin3D_LeftHand#HandUI/SubViewport" unique_id=166623805]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VRSpace_SubViewport_XROrigin3D_LeftHand#HandUI/SubViewport/CenterContainer" unique_id=1711424310]
+[node name="HBoxContainer" type="HBoxContainer" parent="VRSpace/SubViewport/XRPlayer/LeftHand/VRSpace_SubViewport_XROrigin3D_LeftHand#HandUI/SubViewport/CenterContainer" unique_id=1711424310]
 layout_mode = 2
 script = ExtResource("13_2tdr6")
 
-[node name="TextureRect" type="TextureRect" parent="VRSpace_SubViewport_XROrigin3D_LeftHand#HandUI/SubViewport/CenterContainer/HBoxContainer" unique_id=1227569253]
+[node name="TextureRect" type="TextureRect" parent="VRSpace/SubViewport/XRPlayer/LeftHand/VRSpace_SubViewport_XROrigin3D_LeftHand#HandUI/SubViewport/CenterContainer/HBoxContainer" unique_id=1227569253]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 texture = ExtResource("13_08wrx")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="TextureRect2" type="TextureRect" parent="VRSpace_SubViewport_XROrigin3D_LeftHand#HandUI/SubViewport/CenterContainer/HBoxContainer" unique_id=22939278]
+[node name="TextureRect2" type="TextureRect" parent="VRSpace/SubViewport/XRPlayer/LeftHand/VRSpace_SubViewport_XROrigin3D_LeftHand#HandUI/SubViewport/CenterContainer/HBoxContainer" unique_id=22939278]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 texture = ExtResource("13_08wrx")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="TextureRect3" type="TextureRect" parent="VRSpace_SubViewport_XROrigin3D_LeftHand#HandUI/SubViewport/CenterContainer/HBoxContainer" unique_id=1026447130]
+[node name="TextureRect3" type="TextureRect" parent="VRSpace/SubViewport/XRPlayer/LeftHand/VRSpace_SubViewport_XROrigin3D_LeftHand#HandUI/SubViewport/CenterContainer/HBoxContainer" unique_id=1026447130]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 texture = ExtResource("13_08wrx")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="VRSpace" parent="." unique_id=841158329 instance=ExtResource("2_atiqd")]
+[node name="AnimationTree" parent="VRSpace/SubViewport/XRPlayer/RightHand/RightHand" parent_id_path=PackedInt32Array(841158329, 1404813673, 40282269) index="1"]
+tree_root = SubResource("AnimationNodeBlendTree_avy6b")
+
+[node name="VRSpace_SubViewport_XROrigin3D_RightHand#FunctionTeleport" parent="VRSpace/SubViewport/XRPlayer/RightHand" parent_id_path=PackedInt32Array(841158329, 1404813673, 1667605568) index="1" unique_id=1759800539 instance=ExtResource("4_2tdr6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1)
+
+[node name="VRSpace_SubViewport_XROrigin3D_RightHand#FunctionPickup2" parent="VRSpace/SubViewport/XRPlayer/RightHand" parent_id_path=PackedInt32Array(841158329, 1404813673, 1667605568) index="2" unique_id=263448469 instance=ExtResource("3_08wrx")]
+
+[node name="VRSpace_SubViewport_XROrigin3D_RightHand#MovementTurn" parent="VRSpace/SubViewport/XRPlayer/RightHand" parent_id_path=PackedInt32Array(841158329, 1404813673, 1667605568) index="3" unique_id=1259927105 instance=ExtResource("5_w56sk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, -1, 0.5)
 
 [node name="PickableObject" parent="VRSpace/SubViewport" parent_id_path=PackedInt32Array(841158329, 1709074553) index="1" unique_id=777328390 instance=ExtResource("11_5vkqn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22909081, 0.18745345, -0.19250427)
 
 [node name="PickableObject2" parent="VRSpace/SubViewport" parent_id_path=PackedInt32Array(841158329, 1709074553) index="2" unique_id=1175105242 instance=ExtResource("11_5vkqn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22909081, 0.18745345, -0.19250427)
-
-[node name="VRSpace_SubViewport_XROrigin3D_PlayerBody_Body#Belt" type="Node3D" parent="." unique_id=1365384479]
-transform = Transform3D(-2, 0, 1.7484555e-07, 0, 2, 0, -1.7484555e-07, 0, -2, 0, 1.6791251, 0)
-
-[node name="belt" parent="VRSpace_SubViewport_XROrigin3D_PlayerBody_Body#Belt" unique_id=164723472 instance=ExtResource("10_urw1i")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.029243201)
-
-[node name="SnapZone" parent="VRSpace_SubViewport_XROrigin3D_PlayerBody_Body#Belt" unique_id=537384005 instance=ExtResource("7_5vkqn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.21337086, 0, -0.061077446)
-initial_object = NodePath("../../../../../PickableObject")
-
-[node name="SnapZone2" parent="VRSpace_SubViewport_XROrigin3D_PlayerBody_Body#Belt" unique_id=1883047161 instance=ExtResource("7_5vkqn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.21255003, 0, -0.054171383)
-initial_object = NodePath("../../../../../PickableObject2")
-
-[node name="VRSpace_SubViewport_XROrigin3D_PlayerBody_Body#HurtBox" type="Area3D" parent="." unique_id=1604124314]
-transform = Transform3D(-2, 0, 1.7484555e-07, 0, 2, 0, -1.7484555e-07, 0, -2, 0, 0, 0)
-collision_layer = 32
-collision_mask = 0
-script = ExtResource("5_atiqd")
-
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="VRSpace_SubViewport_XROrigin3D_PlayerBody_Body#HurtBox" unique_id=1261375568]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.90098625, 0)
-shape = SubResource("CapsuleShape3D_2tdr6")
 
 [node name="ship-pirate-large2" parent="." unique_id=818398480 instance=ExtResource("7_sf4ir")]
 transform = Transform3D(-0.96592593, 0, 0.25881898, 0, 1, 0, -0.25881898, 0, -0.96592593, 13.882425, -1.2077248, 3.2393918)
@@ -321,3 +390,9 @@ max_time = 8.0
 
 [editable path="VRSpace"]
 [editable path="VRSpace/StartXR"]
+[editable path="VRSpace/SubViewport/XRPlayer"]
+[editable path="VRSpace/SubViewport/XRPlayer/PlayerBody/Body/characterMedium"]
+[editable path="VRSpace/SubViewport/XRPlayer/LeftHand/LeftHand"]
+[editable path="VRSpace/SubViewport/XRPlayer/LeftHand/LeftHand/Hand_Nails_low_L"]
+[editable path="VRSpace/SubViewport/XRPlayer/RightHand/RightHand"]
+[editable path="VRSpace/SubViewport/XRPlayer/RightHand/RightHand/Hand_Nails_low_R"]

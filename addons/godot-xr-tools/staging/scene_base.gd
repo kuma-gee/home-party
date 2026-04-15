@@ -42,7 +42,7 @@ signal request_quit
 # warning-ignore:unused_parameter
 # gdlint:disable=unused-argument
 
-@export var xr_player_scene: PackedScene
+@export var xr_player: VRSpace
 #@export var xr_origin: XROrigin3D
 
 ## Interface

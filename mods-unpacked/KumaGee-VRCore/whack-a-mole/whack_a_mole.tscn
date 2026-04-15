@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://mo4yhdbr4a3m"]
 
 [ext_resource type="Script" uid="uid://ov1y3prv6px8" path="res://mods-unpacked/KumaGee-VRCore/whack-a-mole/whack_a_mole.gd" id="1_flbhu"]
-[ext_resource type="PackedScene" uid="uid://btlljhtniv3dr" path="res://mods-unpacked/KumaGee-VRCore/vr-base/vr_space.tscn" id="1_mabgp"]
+[ext_resource type="PackedScene" uid="uid://btlljhtniv3dr" path="res://main/vr/vr_space.tscn" id="1_mabgp"]
 [ext_resource type="PackedScene" uid="uid://b4ysuy43poobf" path="res://addons/godot-xr-tools/functions/function_pickup.tscn" id="2_oja1m"]
 [ext_resource type="PackedScene" uid="uid://bqdek3sykmwe8" path="res://mods-unpacked/KumaGee-VRCore/whack-a-mole/table.glb" id="2_wnwrs"]
 [ext_resource type="PackedScene" uid="uid://c3ofo5ps035lo" path="res://mods-unpacked/KumaGee-VRCore/whack-a-mole/whack.tscn" id="4_27m8u"]

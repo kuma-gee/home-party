@@ -1,4 +1,3 @@
-@tool
 class_name XRToolsStaging
 extends Node3D
 
@@ -70,7 +69,6 @@ signal xr_ended
 
 ## The current scene
 var current_scene : XRToolsSceneBase
-var current_player: XRPlayer
 
 ## The current scene path
 var current_scene_path : String
@@ -78,11 +76,11 @@ var current_scene_path : String
 # Tween for fading
 var _tween : Tween
 
+@export var start_xr: XRToolsStartXR
 @export var xr_origin : XROrigin3D
 @export var xr_camera : XRCamera3D
 @export var loading: LoadingScreen
 @export var scene: Node3D
-@export var vr_viewport: SubViewport
 
 func _ready():
 	# Do not initialise if in the editor
@@ -155,18 +153,19 @@ func load_scene(p_scene_path : String, user_data = null) -> void:
 		# Report pre-exiting and remove the scene signals
 		current_scene.scene_pre_exiting(user_data)
 		_remove_signals(current_scene)
+		await current_scene.xr_player.deactivate()
 
 		# Fade to black
-		if _tween:
-			_tween.kill()
-		_tween = get_tree().create_tween()
-		_tween.tween_method(set_fade, 0.0, 1.0, 1.0)
-		await _tween.finished
+		#if _tween:
+			#_tween.kill()
+		#_tween = get_tree().create_tween()
+		#_tween.tween_method(set_fade, 0.0, 1.0, 1.0)
+		#await _tween.finished
 
 		# Now we remove our scene
 		emit_signal("scene_exiting", current_scene, user_data)
 		current_scene.scene_exiting(user_data)
-		$Scene.remove_child(current_scene)
+		scene.remove_child(current_scene)
 		current_scene.queue_free()
 		current_scene = null
 
@@ -176,6 +175,7 @@ func load_scene(p_scene_path : String, user_data = null) -> void:
 		ResourceLoader.load_threaded_get_status(p_scene_path) != ResourceLoader.THREAD_LOAD_LOADED:
 
 		# Make our loading screen visible again and reset some stuff
+		start_xr._initialize()
 		xr_origin.set_process_internal(true)
 		xr_origin.current = true
 		xr_camera.current = true
@@ -229,6 +229,7 @@ func load_scene(p_scene_path : String, user_data = null) -> void:
 		_tween = get_tree().create_tween()
 		_tween.tween_method(set_fade, 0.0, 1.0, 1.0)
 		await _tween.finished
+		await get_tree().create_timer(0.5).timeout
 
 		# Hide our loading screen
 		loading.follow_camera = false
@@ -241,23 +242,22 @@ func load_scene(p_scene_path : String, user_data = null) -> void:
 	# Setup our new scene
 	current_scene = new_scene.instantiate()
 	current_scene_path = p_scene_path
-	current_player = current_scene.xr_player_scene.instantiate()
 	scene.add_child(current_scene)
-	vr_viewport.add_child(current_player)
 	_add_signals(current_scene)
 
 	# We create a small delay here to give tracking some time to update our nodes...
-	await get_tree().create_timer(0.1).timeout
+	await get_tree().create_timer(0.2).timeout
 	current_scene.scene_loaded(user_data)
 	scene_loaded.emit(current_scene, user_data)
-	current_player.activate()
+	await current_scene.xr_player.activate()
 
 	# Fade to visible
-	if _tween:
-		_tween.kill()
-	_tween = get_tree().create_tween()
-	_tween.tween_method(set_fade, 1.0, 0.0, 1.0)
-	await _tween.finished
+	#if _tween:
+		#_tween.kill()
+	#_tween = get_tree().create_tween()
+	#_tween.tween_method(set_fade, 1.0, 0.0, 1.0)
+	#await _tween.finished
+	#await get_tree().create_timer(0.2).timeout
 
 	# Report new scene visible
 	current_scene.scene_visible(user_data)
