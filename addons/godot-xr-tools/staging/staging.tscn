@@ -7,8 +7,10 @@
 [ext_resource type="PackedScene" uid="uid://btknduttnmoxf" path="res://addons/godot-xr-tools/misc/vr_common_shader_cache.tscn" id="5"]
 [ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="6_balvx"]
 
-[node name="Staging" type="Node3D" unique_id=343982823 node_paths=PackedStringArray("xr_origin", "xr_camera", "loading", "scene")]
+[node name="Staging" type="Node3D" unique_id=343982823 node_paths=PackedStringArray("start_xr", "xr_origin", "xr_camera", "loading", "scene")]
 script = ExtResource("1")
+prompt_for_continue = false
+start_xr = NodePath("StartXR")
 xr_origin = NodePath("SubViewport/XROrigin3D")
 xr_camera = NodePath("SubViewport/XROrigin3D/XRCamera3D")
 loading = NodePath("SubViewport/LoadingScreen")

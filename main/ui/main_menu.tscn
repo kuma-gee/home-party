@@ -1,10 +1,12 @@
 [gd_scene format=3 uid="uid://chirc88nbetqw"]
 
 [ext_resource type="Script" uid="uid://dglacqq1lllwf" path="res://main/main_menu.gd" id="1_g8bdj"]
+[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme.css" id="1_wd65l"]
 [ext_resource type="PackedScene" uid="uid://cwf7fl2qf2pb5" path="res://main/ui/game_select.tscn" id="2_wd65l"]
 [ext_resource type="Script" uid="uid://ddetao6ypdnd4" path="res://main/utils/game_loader.gd" id="3_g3a1o"]
 [ext_resource type="Script" uid="uid://dgfn4nv7yxows" path="res://main/ui/player_list.gd" id="4_ap68h"]
 [ext_resource type="Script" uid="uid://brg6aumaixieg" path="res://main/ui/game_qr.gd" id="5_dmrf3"]
+[ext_resource type="PackedScene" uid="uid://f8e1u58jvfd1" path="res://main/ui/joined_player.tscn" id="7_g3a1o"]
 
 [sub_resource type="Image" id="Image_g8bdj"]
 data = {
@@ -25,6 +27,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_wd65l")
 script = ExtResource("1_g8bdj")
 game_button = ExtResource("2_wd65l")
 
@@ -32,75 +35,22 @@ game_button = ExtResource("2_wd65l")
 script = ExtResource("3_g3a1o")
 metadata/_custom_type_script = "uid://ddetao6ypdnd4"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=812264131]
+[node name="JoinCode" type="PanelContainer" parent="." unique_id=459110960]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_left = -332.0
+offset_top = -408.0
+grow_horizontal = 0
+grow_vertical = 0
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="HBoxContainer" unique_id=108132373]
-layout_mode = 2
-size_flags_horizontal = 3
-stretch = true
-
-[node name="SubViewport" type="SubViewport" parent="HBoxContainer/SubViewportContainer" unique_id=2117254750]
-handle_input_locally = false
-size = Vector2i(1616, 1080)
-render_target_update_mode = 4
-
-[node name="Start" type="Control" parent="HBoxContainer/SubViewportContainer/SubViewport" unique_id=605313384]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="CenterContainer" type="CenterContainer" parent="HBoxContainer/SubViewportContainer/SubViewport/Start" unique_id=387468803]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="GameList" type="VBoxContainer" parent="HBoxContainer/SubViewportContainer/SubViewport/Start/CenterContainer" unique_id=764580656]
-unique_name_in_owner = true
+[node name="MarginContainer" type="MarginContainer" parent="JoinCode" unique_id=494314294]
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer" unique_id=1960055705]
-custom_minimum_size = Vector2(300, 400)
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="HBoxContainer" type="VBoxContainer" parent="HBoxContainer/PanelContainer" unique_id=1807975949]
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/PanelContainer/HBoxContainer" unique_id=569762103]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/PanelContainer/HBoxContainer/MarginContainer" unique_id=1406157866]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="HBoxContainer/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer" unique_id=1125189772]
-layout_mode = 2
-text = "Players"
-horizontal_alignment = 1
-
-[node name="PlayerList" type="VBoxContainer" parent="HBoxContainer/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer" unique_id=1862492792]
-layout_mode = 2
-size_flags_vertical = 3
-script = ExtResource("4_ap68h")
-
-[node name="StartGame" type="Button" parent="HBoxContainer/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer" unique_id=813084975]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Start"
-
-[node name="GameQR" type="VBoxContainer" parent="HBoxContainer/PanelContainer/HBoxContainer" unique_id=360150261 node_paths=PackedStringArray("qr_code", "url_label")]
+[node name="GameQR" type="VBoxContainer" parent="JoinCode/MarginContainer" unique_id=360150261 node_paths=PackedStringArray("qr_code", "url_label")]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_vertical = 4
@@ -108,19 +58,72 @@ script = ExtResource("5_dmrf3")
 qr_code = NodePath("QRCodeRect")
 url_label = NodePath("URL")
 
-[node name="Label2" type="Label" parent="HBoxContainer/PanelContainer/HBoxContainer/GameQR" unique_id=1730683008]
+[node name="Label2" type="Label" parent="JoinCode/MarginContainer/GameQR" unique_id=1730683008]
 layout_mode = 2
 text = "Join the game!"
 horizontal_alignment = 1
 
-[node name="QRCodeRect" type="TextureRect" parent="HBoxContainer/PanelContainer/HBoxContainer/GameQR" unique_id=1751619534]
-custom_minimum_size = Vector2(0, 200)
+[node name="QRCodeRect" type="TextureRect" parent="JoinCode/MarginContainer/GameQR" unique_id=1751619534]
+custom_minimum_size = Vector2(0, 260)
 layout_mode = 2
 texture = SubResource("ImageTexture_mmpi0")
 stretch_mode = 5
 
-[node name="URL" type="Label" parent="HBoxContainer/PanelContainer/HBoxContainer/GameQR" unique_id=145947103]
+[node name="URL" type="Label" parent="JoinCode/MarginContainer/GameQR" unique_id=145947103]
 layout_mode = 2
 text = "127.0.0.1"
 horizontal_alignment = 1
 autowrap_mode = 2
+
+[node name="Players" type="MarginContainer" parent="." unique_id=569762103]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -32.0
+offset_bottom = 90.0
+grow_horizontal = 0
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Players" unique_id=1406157866]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Players/VBoxContainer" unique_id=1125189772]
+visible = false
+layout_mode = 2
+text = "Players"
+horizontal_alignment = 1
+
+[node name="PlayerList" type="VBoxContainer" parent="Players/VBoxContainer" unique_id=1862492792]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 2
+script = ExtResource("4_ap68h")
+player_scene = ExtResource("7_g3a1o")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=387468803]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="StartGame" type="Button" parent="CenterContainer" unique_id=813084975]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Start"
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1506385521]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 32.0
+grow_vertical = 2
+theme_override_constants/margin_left = 52
+
+[node name="GameList" type="VBoxContainer" parent="MarginContainer" unique_id=764580656]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 32

@@ -1,4 +1,3 @@
-@tool
 class_name XRToolsSceneBase
 extends Node3D
 
@@ -43,13 +42,8 @@ signal request_quit
 # gdlint:disable=unused-argument
 
 @export var xr_player: VRSpace
-#@export var xr_origin: XROrigin3D
 
 ## Interface
-
-func _ready() -> void:
-	pass
-
 
 # Add support for is_xr_class on XRTools classes
 func is_xr_class(xr_name:  String) -> bool:
@@ -190,6 +184,7 @@ func exit_to_main_menu() -> void:
 ## See [method scene_loaded] for options to provide advanced scene-transition
 ## functionality.
 func load_scene(p_scene_path : String, user_data = null) -> void:
+	print("loading scene: %s" % p_scene_path)
 	emit_signal("request_load_scene", p_scene_path, user_data)
 
 

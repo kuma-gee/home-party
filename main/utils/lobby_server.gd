@@ -2,7 +2,7 @@ extends Node
 
 signal player_connected(data: Dictionary)
 signal player_disconnected(peer_id: int)
-signal update_players_list(players: Array)
+signal updated_players_list(players: Array)
 
 signal received_candidate(peer_id: int, mid: String, index: int, sdp: String)
 signal received_session(peer_id: int, type: String, sdp: String)
@@ -15,7 +15,7 @@ enum Message {
 }
 
 const PORT = 14412
-@export_enum("joystick", "buttons") var input_layout: String = "buttons"
+@export_enum("joystick", "buttons") var input_layout: String = "joystick"
 
 var players = {}  # Dictionary[String, Dictionary] - UUID -> player data
 var peer_to_uuid = {}  # Dictionary[int, String] - peer_id -> UUID mapping for WebRTC
@@ -56,7 +56,7 @@ func _peer_disconnected(id: int):
 	var uuid = peer_to_uuid.get(id, "")
 	if uuid != "":
 		players.erase(uuid)
-		_update_players_list()
+		update_players_list()
 		
 	player_disconnected.emit(id)
 	peer_to_uuid.erase(id)
@@ -101,16 +101,16 @@ func _on_id_message(data: Dictionary):
 	# Store player data by UUID
 	players[uuid] = data
 	player_connected.emit(data)
-	_update_players_list()
+	update_players_list()
 
-func _update_players_list():
+func update_players_list():
 	var players_list = []
 	for uuid in players.keys():
 		var player_data = players[uuid]
 		players_list.append(player_data)
 	
 	logger.info("Update players: %s" % [players.keys()])
-	update_players_list.emit(players_list)
+	updated_players_list.emit(players_list)
 
 func get_peer_id_from_uuid(uuid: String) -> int:
 	for peer_id in peer_to_uuid.keys():

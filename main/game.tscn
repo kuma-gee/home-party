@@ -1,13 +1,9 @@
 [gd_scene format=3 uid="uid://dfokhnxe3wv3r"]
 
-[ext_resource type="Script" uid="uid://dq0a51hof6j67" path="res://main/game.gd" id="1_e2o6t"]
 [ext_resource type="PackedScene" uid="uid://bnqnnnet4dw12" path="res://addons/godot-xr-tools/staging/staging.tscn" id="3_46yon"]
-[ext_resource type="PackedScene" uid="uid://cne8oxil0b4yy" path="res://main/menu_world.tscn" id="6_4u4fy"]
 
 [node name="Game" type="Node" unique_id=421921579]
 process_mode = 3
-script = ExtResource("1_e2o6t")
-menu_world = ExtResource("6_4u4fy")
 
 [node name="Staging" parent="." unique_id=343982823 instance=ExtResource("3_46yon")]
 main_scene = "uid://cne8oxil0b4yy"

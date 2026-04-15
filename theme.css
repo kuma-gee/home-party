@@ -4,7 +4,7 @@
 }
 
 body {
-  font-size: 48;
+  font-size: 36;
 }
 
 Label.Large {
@@ -21,4 +21,9 @@ MarginContainer {
 
 VBoxContainer, HBoxContainer {
   --const-separation: var(--default-separation);
+}
+
+PanelContainer {
+  border-radius: 12;
+  background: #111111;
 }

@@ -8,9 +8,9 @@
 [ext_resource type="Script" uid="uid://6ro65chunt1m" path="res://mods-unpacked/KumaGee-VRCore/pirate/gun_cast.gd" id="5_c5un6"]
 [ext_resource type="PackedScene" uid="uid://dh8grd7s3n8kg" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_snap.tscn" id="6_7bp5g"]
 [ext_resource type="Shader" uid="uid://cdfjqx6ei5653" path="res://shader/circle_inner.gdshader" id="7_1ng30"]
-[ext_resource type="AudioStream" uid="uid://byabenwhdcapu" path="res://mods-unpacked/KumaGee-VRCore/assets/sounds/拳銃を撃つ.mp3" id="8_mgj7y"]
 [ext_resource type="Script" uid="uid://b6t5ttmc37k1r" path="res://mods-unpacked/KumaGee-VRCore/pirate/circle_timer.gd" id="8_mphva"]
 [ext_resource type="Script" uid="uid://dgs3dj8la0mk0" path="res://main/utils/sfx_player.gd" id="8_p1h72"]
+[ext_resource type="AudioStream" uid="uid://dcyf0qyd747r" path="res://mods-unpacked/KumaGee-VRCore/assets/sounds/ショットガン発射.mp3" id="11_mgj7y"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_nqqf4"]
 radius = 0.095703125
@@ -28,7 +28,7 @@ shader_parameter/blur = 0.0001
 shader_parameter/bg_color = Color(0, 0, 0, 0)
 shader_parameter/inner_color = Color(0, 0, 0, 0)
 
-[node name="PickableObject" unique_id=777328390 instance=ExtResource("1_onams")]
+[node name="Gun" unique_id=777328390 instance=ExtResource("1_onams")]
 second_hand_grab = 1
 
 [node name="CollisionShape3D" parent="." index="0" unique_id=1198871219]
@@ -84,9 +84,9 @@ pickupable = NodePath("..")
 
 [node name="FireSFX" type="Node" parent="RayCast3D" index="0" unique_id=402796818]
 script = ExtResource("8_p1h72")
-audio = ExtResource("8_mgj7y")
-min_pitch = 0.6
-max_pitch = 0.8
+audio = ExtResource("11_mgj7y")
+min_pitch = 0.7
+max_pitch = 0.9
 
 [node name="Firerate" type="Timer" parent="RayCast3D" index="1" unique_id=2042986361]
 one_shot = true

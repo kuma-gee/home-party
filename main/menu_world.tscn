@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cne8oxil0b4yy"]
 
 [ext_resource type="Texture2D" uid="uid://cm64xmgrkvi6m" path="res://mods-unpacked/KumaGee-VRCore/assets/prototype-textures/PNG/Dark/texture_08.png" id="1_amvp5"]
-[ext_resource type="Script" uid="uid://177gygw2xqqu" path="res://addons/godot-xr-tools/staging/scene_base.gd" id="1_l58ff"]
+[ext_resource type="Script" uid="uid://bn2j0qy7acdco" path="res://main/menu_world.gd" id="1_uouel"]
 [ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="3_stc03"]
 [ext_resource type="PackedScene" uid="uid://cwf7fl2qf2pb5" path="res://main/ui/game_select.tscn" id="6_4iry2"]
 [ext_resource type="PackedScene" uid="uid://btlljhtniv3dr" path="res://main/vr/vr_space.tscn" id="6_d3iuq"]
@@ -98,8 +98,9 @@ nodes/Trigger/node = SubResource("AnimationNodeBlend2_3vjtu")
 nodes/Trigger/position = Vector2(-360, 40)
 node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1"]
 
-[node name="MenuWorld" type="Node3D" unique_id=1335721879 node_paths=PackedStringArray("xr_player")]
-script = ExtResource("1_l58ff")
+[node name="MenuWorld" type="Node3D" unique_id=1335721879 node_paths=PackedStringArray("main_menu", "xr_player")]
+script = ExtResource("1_uouel")
+main_menu = NodePath("CanvasLayer/MainMenu")
 xr_player = NodePath("VRSpace")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1579734198]
@@ -137,6 +138,8 @@ shape = SubResource("BoxShape3D_hi2v3")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2043989948]
 layer = -1
+
+[node name="MainMenu" parent="CanvasLayer" unique_id=1930356349 instance=ExtResource("6_l58ff")]
 
 [node name="VRSpace" parent="." unique_id=841158329 instance=ExtResource("6_d3iuq")]
 

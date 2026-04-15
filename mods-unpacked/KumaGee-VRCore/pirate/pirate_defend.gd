@@ -1,4 +1,4 @@
-extends Node3D
+extends XRToolsSceneBase
 
 @export var menu_button: Button
 @export var restart_button: Button
@@ -16,8 +16,8 @@ func _ready() -> void:
 	play_time.timeout.connect(_on_game_finished)
 	player_hurtbox.died.connect(_on_player_died)
 	
-	#menu_button.pressed.connect(func(): exit_to_main_menu())
-	#restart_button.pressed.connect(func(): game_restart.emit())
+	menu_button.pressed.connect(func(): exit_to_main_menu())
+	restart_button.pressed.connect(func(): reset_scene())
 	gameover_ui.hide()
 
 func _on_player_died():
@@ -33,10 +33,11 @@ func _finish_game():
 	gameover_ui.show()
 	spawner.stop()
 
-func start_game(players: Array[GameClient], _game_setup: GameSetup):
+func scene_loaded(_user_data = null):
 	get_tree().paused = false
 	LobbyServer.send_layout("joystick")
 
+	var players = PlayerManager.playing_clients
 	for i in range(players.size()):
 		var player := player_scene.instantiate() as PlayerShootPoint
 		player.game_client = players[i]

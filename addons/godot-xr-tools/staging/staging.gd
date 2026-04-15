@@ -229,7 +229,7 @@ func load_scene(p_scene_path : String, user_data = null) -> void:
 		_tween = get_tree().create_tween()
 		_tween.tween_method(set_fade, 0.0, 1.0, 1.0)
 		await _tween.finished
-		await get_tree().create_timer(0.5).timeout
+		await get_tree().create_timer(0.1).timeout
 
 		# Hide our loading screen
 		loading.follow_camera = false
