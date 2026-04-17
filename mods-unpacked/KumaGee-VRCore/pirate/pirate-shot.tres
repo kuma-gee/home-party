@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="GameResource" format=3 uid="uid://g84oah3h8fgs"]
 
+[ext_resource type="PackedScene" uid="uid://dxa8mvr5m0qdx" path="res://mods-unpacked/KumaGee-VRCore/pirate/pirate_game_icon.tscn" id="1_br7af"]
 [ext_resource type="PackedScene" uid="uid://csuiqxx75negf" path="res://mods-unpacked/KumaGee-VRCore/pirate/pirate_defend.tscn" id="1_f8vuy"]
 [ext_resource type="Script" uid="uid://bwykg0o4vosvn" path="res://main/game_resource.gd" id="2_5o8ye"]
 [ext_resource type="Script" uid="uid://btc1factr54dk" path="res://main/tags/tag_resource.gd" id="3_js5o6"]
@@ -10,5 +11,6 @@ script = ExtResource("2_5o8ye")
 name = "Pirate Shot"
 description = "Shoot incoming barrels"
 scene = ExtResource("1_f8vuy")
+icon = ExtResource("1_br7af")
 tags = Array[ExtResource("3_js5o6")]([ExtResource("4_ea8r8")])
 metadata/_custom_type_script = "uid://bwykg0o4vosvn"

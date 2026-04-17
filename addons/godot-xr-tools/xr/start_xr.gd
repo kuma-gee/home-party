@@ -47,6 +47,8 @@ static var _xr_active : bool = false
 ## If non-zero, specifies the target refresh rate
 @export var target_refresh_rate : float = 0
 
+@export var init := false
+
 
 ## Current XR interface
 var xr_interface : XRInterface
@@ -126,23 +128,24 @@ func _setup_for_openxr() -> bool:
 
 	# Set the render target size multiplier
 	xr_interface.render_target_size_multiplier = render_target_size_multiplier
+	
+	if init:
+		# Initialize the OpenXR interface
+		if not xr_interface.is_initialized():
+			print("OpenXR: Initializing interface")
+			if not xr_interface.initialize():
+				push_error("OpenXR: Failed to initialize")
+				xr_failed_to_initialize.emit()
+				return false
 
-	# Initialize the OpenXR interface
-	if not xr_interface.is_initialized():
-		print("OpenXR: Initializing interface")
-		if not xr_interface.initialize():
-			push_error("OpenXR: Failed to initialize")
-			xr_failed_to_initialize.emit()
-			return false
+		# Connect the OpenXR events
+		xr_interface.connect("session_begun", _on_openxr_session_begun)
+		xr_interface.connect("session_visible", _on_openxr_visible_state)
+		xr_interface.connect("session_focussed", _on_openxr_focused_state)
 
-	# Connect the OpenXR events
-	xr_interface.connect("session_begun", _on_openxr_session_begun)
-	xr_interface.connect("session_visible", _on_openxr_visible_state)
-	xr_interface.connect("session_focussed", _on_openxr_focused_state)
-
-	# Check for passthrough
-	if enable_passthrough and xr_interface.is_passthrough_supported():
-		enable_passthrough = xr_interface.start_passthrough()
+		# Check for passthrough
+		if enable_passthrough and xr_interface.is_passthrough_supported():
+			enable_passthrough = xr_interface.start_passthrough()
 
 	# Disable vsync
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
@@ -204,10 +207,11 @@ func _setup_for_webxr() -> bool:
 	print("WebXR: Configuring interface")
 
 	# Connect the WebXR events
-	xr_interface.connect("session_supported", _on_webxr_session_supported)
-	xr_interface.connect("session_started", _on_webxr_session_started)
-	xr_interface.connect("session_ended", _on_webxr_session_ended)
-	xr_interface.connect("session_failed", _on_webxr_session_failed)
+	if init:
+		xr_interface.connect("session_supported", _on_webxr_session_supported)
+		xr_interface.connect("session_started", _on_webxr_session_started)
+		xr_interface.connect("session_ended", _on_webxr_session_ended)
+		xr_interface.connect("session_failed", _on_webxr_session_failed)
 
 	# If the viewport is already in XR mode then we are done.
 	if get_xr_viewport().use_xr:

@@ -19,8 +19,8 @@ func _ready() -> void:
 	start_button.disabled = true
 
 func _on_start_button_pressed() -> void:
-	if LobbyServer.players.is_empty():
-		return
+	#if LobbyServer.players.is_empty():
+		#return
 
 	var game = _get_selected_game()
 	if not game: return

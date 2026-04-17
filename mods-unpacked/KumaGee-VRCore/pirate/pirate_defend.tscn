@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://btlljhtniv3dr" path="res://main/vr/vr_space.tscn" id="2_atiqd"]
 [ext_resource type="PackedScene" uid="uid://b4ysuy43poobf" path="res://addons/godot-xr-tools/functions/function_pickup.tscn" id="3_08wrx"]
 [ext_resource type="PackedScene" uid="uid://fiul51tsyoop" path="res://addons/godot-xr-tools/functions/function_teleport.tscn" id="4_2tdr6"]
-[ext_resource type="Script" uid="uid://crtkl6ldhona6" path="res://mods-unpacked/KumaGee-VRCore/pirate/hurt_box.gd" id="5_atiqd"]
+[ext_resource type="Script" uid="uid://crtkl6ldhona6" path="res://main/utils/hurt_box.gd" id="5_atiqd"]
 [ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="5_w56sk"]
 [ext_resource type="PackedScene" uid="uid://ce7vysyvondf8" path="res://addons/godot-xr-tools/objects/snap_zone.tscn" id="7_5vkqn"]
 [ext_resource type="PackedScene" uid="uid://07hx6dhudy5k" path="res://mods-unpacked/KumaGee-VRCore/assets/pirate/patch-sand-foliage.glb" id="7_qqeml"]
@@ -22,7 +22,7 @@
 [ext_resource type="Texture2D" uid="uid://mvptv2yf3vd4" path="res://mods-unpacked/KumaGee-VRCore/pirate/Sky_Anime_03_Day_a.png" id="16_w56sk"]
 [ext_resource type="Script" uid="uid://1mour1glexh2" path="res://mods-unpacked/KumaGee-VRCore/pirate/power_up_spawner.gd" id="20_xqvi7"]
 [ext_resource type="PackedScene" uid="uid://do3l6ysp22o14" path="res://mods-unpacked/KumaGee-VRCore/pirate/power_up.tscn" id="21_bxdu4"]
-[ext_resource type="Script" uid="uid://83bhx62u4d7k" path="res://mods-unpacked/KumaGee-VRCore/pirate/random_timer.gd" id="22_gksw4"]
+[ext_resource type="Script" uid="uid://83bhx62u4d7k" path="res://main/utils/random_timer.gd" id="22_gksw4"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_w56sk"]
 panorama = ExtResource("16_w56sk")
@@ -35,7 +35,8 @@ background_mode = 2
 sky = SubResource("Sky_5vkqn")
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2tdr6"]
-radius = 0.37841797
+radius = 0.6274414
+height = 3.8481445
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_s4ws1"]
 animation = &"Grip"
@@ -139,6 +140,9 @@ environment = SubResource("Environment_2tdr6")
 
 [node name="VRSpace" parent="." unique_id=841158329 instance=ExtResource("2_atiqd")]
 
+[node name="StartXR" parent="VRSpace" index="0" unique_id=1916138429]
+init = false
+
 [node name="PickableObject" parent="VRSpace/SubViewport" parent_id_path=PackedInt32Array(841158329, 1709074553) index="1" unique_id=777328390 instance=ExtResource("11_5vkqn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22909081, 0.18745345, -0.19250427)
 
@@ -146,7 +150,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22909081, 0.18745345, -0.19
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22909081, 0.18745345, -0.19250427)
 
 [node name="Belt" type="Node3D" parent="VRSpace/SubViewport/XRPlayer/PlayerBody/Body" parent_id_path=PackedInt32Array(841158329, 1031441429) index="2" unique_id=1365384479]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -7.817894e-09, 1.490918, 0.08942628)
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -7.817894e-09, 1.917302, 0.08942628)
 
 [node name="belt" parent="VRSpace/SubViewport/XRPlayer/PlayerBody/Body/Belt" unique_id=164723472 instance=ExtResource("10_urw1i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.029243201)
@@ -160,13 +164,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.21255003, 0, -0.054171383)
 initial_object = NodePath("../../../../../PickableObject2")
 
 [node name="HurtBox" type="Area3D" parent="VRSpace/SubViewport/XRPlayer/PlayerBody/Body" parent_id_path=PackedInt32Array(841158329, 1031441429) index="3" unique_id=1604124314]
-transform = Transform3D(4, 0, -6.993822e-07, 0, 4, 0, 6.993822e-07, 0, 4, 0, 0, 0)
+transform = Transform3D(1, 0, -1.7484555e-07, 0, 1, 0, 1.7484555e-07, 0, 1, 0, 0, 0)
 collision_layer = 32
 collision_mask = 0
 script = ExtResource("5_atiqd")
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="VRSpace/SubViewport/XRPlayer/PlayerBody/Body/HurtBox" unique_id=1261375568]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.90098625, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8250585, 0)
 shape = SubResource("CapsuleShape3D_2tdr6")
 
 [node name="AnimationTree" parent="VRSpace/SubViewport/XRPlayer/LeftHand/LeftHand" parent_id_path=PackedInt32Array(841158329, 1600276417) index="1"]
@@ -175,7 +179,7 @@ tree_root = SubResource("AnimationNodeBlendTree_167ky")
 [node name="FunctionPickup" parent="VRSpace/SubViewport/XRPlayer/LeftHand" parent_id_path=PackedInt32Array(841158329, 2106749189) index="1" unique_id=1389353789 instance=ExtResource("3_08wrx")]
 
 [node name="HandUI" type="Sprite3D" parent="VRSpace/SubViewport/XRPlayer/LeftHand" parent_id_path=PackedInt32Array(841158329, 2106749189) index="2" unique_id=479824168]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.07318616, 0, 0)
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.07318616, -0.0064657927, 0.017358422)
 billboard = 1
 texture = SubResource("ViewportTexture_s4ws1")
 script = ExtResource("10_s4ws1")
@@ -190,42 +194,54 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("11_gksw4")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VRSpace/SubViewport/XRPlayer/LeftHand/HandUI/SubViewport/CenterContainer" unique_id=1711424310 node_paths=PackedStringArray("hurt_box")]
+[node name="VBoxContainer" type="VBoxContainer" parent="VRSpace/SubViewport/XRPlayer/LeftHand/HandUI/SubViewport/CenterContainer" unique_id=1585561463]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VRSpace/SubViewport/XRPlayer/LeftHand/HandUI/SubViewport/CenterContainer/VBoxContainer" unique_id=1711424310 node_paths=PackedStringArray("hurt_box")]
 layout_mode = 2
 script = ExtResource("13_2tdr6")
-hurt_box = NodePath("../../../../../PlayerBody/Body/HurtBox")
+hurt_box = NodePath("../../../../../../PlayerBody/Body/HurtBox")
 
-[node name="TextureRect" type="TextureRect" parent="VRSpace/SubViewport/XRPlayer/LeftHand/HandUI/SubViewport/CenterContainer/HBoxContainer" unique_id=1227569253]
+[node name="TextureRect" type="TextureRect" parent="VRSpace/SubViewport/XRPlayer/LeftHand/HandUI/SubViewport/CenterContainer/VBoxContainer/HBoxContainer" unique_id=1227569253]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 texture = ExtResource("13_08wrx")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="TextureRect2" type="TextureRect" parent="VRSpace/SubViewport/XRPlayer/LeftHand/HandUI/SubViewport/CenterContainer/HBoxContainer" unique_id=22939278]
+[node name="TextureRect2" type="TextureRect" parent="VRSpace/SubViewport/XRPlayer/LeftHand/HandUI/SubViewport/CenterContainer/VBoxContainer/HBoxContainer" unique_id=22939278]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 texture = ExtResource("13_08wrx")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="TextureRect3" type="TextureRect" parent="VRSpace/SubViewport/XRPlayer/LeftHand/HandUI/SubViewport/CenterContainer/HBoxContainer" unique_id=1026447130]
+[node name="TextureRect3" type="TextureRect" parent="VRSpace/SubViewport/XRPlayer/LeftHand/HandUI/SubViewport/CenterContainer/VBoxContainer/HBoxContainer" unique_id=1026447130]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 texture = ExtResource("13_08wrx")
 expand_mode = 3
 stretch_mode = 5
+
+[node name="Timer" type="Label" parent="VRSpace/SubViewport/XRPlayer/LeftHand/HandUI/SubViewport/CenterContainer/VBoxContainer" unique_id=953708440 node_paths=PackedStringArray("timer")]
+layout_mode = 2
+text = "00"
+horizontal_alignment = 1
+script = ExtResource("12_s4ws1")
+timer = NodePath("../../../../../../../../../PlayTime")
 
 [node name="AnimationTree" parent="VRSpace/SubViewport/XRPlayer/RightHand/RightHand" parent_id_path=PackedInt32Array(841158329, 40282269) index="1"]
 tree_root = SubResource("AnimationNodeBlendTree_avy6b")
 
 [node name="FunctionTeleport" parent="VRSpace/SubViewport/XRPlayer/RightHand" parent_id_path=PackedInt32Array(841158329, 1667605568) index="1" unique_id=1759800539 instance=ExtResource("4_2tdr6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1)
 
 [node name="FunctionPickup2" parent="VRSpace/SubViewport/XRPlayer/RightHand" parent_id_path=PackedInt32Array(841158329, 1667605568) index="2" unique_id=263448469 instance=ExtResource("3_08wrx")]
 
 [node name="MovementTurn" parent="VRSpace/SubViewport/XRPlayer/RightHand" parent_id_path=PackedInt32Array(841158329, 1667605568) index="3" unique_id=1259927105 instance=ExtResource("5_w56sk")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="VRSpace/SubViewport" parent_id_path=PackedInt32Array(841158329, 1709074553) index="4" unique_id=1614332008]
 
 [node name="ship-pirate-large2" parent="." unique_id=818398480 instance=ExtResource("7_sf4ir")]
 transform = Transform3D(-0.96592593, 0, 0.25881898, 0, 1, 0, -0.25881898, 0, -0.96592593, 13.882425, -1.2077248, 3.2393918)

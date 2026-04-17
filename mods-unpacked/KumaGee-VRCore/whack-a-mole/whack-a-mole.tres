@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="GameResource" format=3 uid="uid://bkrru5r7kt6vk"]
 
+[ext_resource type="PackedScene" uid="uid://dxa8mvr5m0qdx" path="res://mods-unpacked/KumaGee-VRCore/pirate/pirate_game_icon.tscn" id="1_5goq3"]
 [ext_resource type="PackedScene" uid="uid://mo4yhdbr4a3m" path="res://mods-unpacked/KumaGee-VRCore/whack-a-mole/whack_a_mole.tscn" id="1_k1o0r"]
 [ext_resource type="Script" uid="uid://bwykg0o4vosvn" path="res://main/game_resource.gd" id="1_r7hsu"]
 [ext_resource type="Script" uid="uid://btc1factr54dk" path="res://main/tags/tag_resource.gd" id="2_k1o0r"]
@@ -10,5 +11,6 @@ script = ExtResource("1_r7hsu")
 name = "Whack-A-Mole"
 description = "Play Whack-A-Mole"
 scene = ExtResource("1_k1o0r")
+icon = ExtResource("1_5goq3")
 tags = Array[ExtResource("2_k1o0r")]([ExtResource("4_d35cf")])
 metadata/_custom_type_script = "uid://bwykg0o4vosvn"

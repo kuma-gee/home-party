@@ -2,10 +2,10 @@
 
 [ext_resource type="PackedScene" uid="uid://jrxr4c37stf1" path="res://mods-unpacked/KumaGee-VRCore/assets/pirate/barrel.glb" id="1_ikvi5"]
 [ext_resource type="Script" uid="uid://byhg4t4ldkamd" path="res://mods-unpacked/KumaGee-VRCore/pirate/barrel.gd" id="1_llgkl"]
-[ext_resource type="Script" uid="uid://dn1hlla402of8" path="res://mods-unpacked/KumaGee-VRCore/pirate/hit_area.gd" id="3_dd6aa"]
-[ext_resource type="Script" uid="uid://crtkl6ldhona6" path="res://mods-unpacked/KumaGee-VRCore/pirate/hurt_box.gd" id="4_niq6i"]
+[ext_resource type="Script" uid="uid://dn1hlla402of8" path="res://main/utils/hit_area.gd" id="3_dd6aa"]
+[ext_resource type="Script" uid="uid://crtkl6ldhona6" path="res://main/utils/hurt_box.gd" id="4_niq6i"]
 [ext_resource type="AudioStream" uid="uid://mgkt14i02t8h" path="res://mods-unpacked/KumaGee-VRCore/assets/sounds/Wood+Box+Break.wav" id="5_vhr5b"]
-[ext_resource type="Script" uid="uid://b4woodkg2nup8" path="res://mods-unpacked/KumaGee-VRCore/pirate/randomized_sfx.gd" id="6_u56x2"]
+[ext_resource type="Script" uid="uid://b4woodkg2nup8" path="res://main/utils/randomized_sfx.gd" id="6_u56x2"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ikvi5"]
 radius = 0.78895026

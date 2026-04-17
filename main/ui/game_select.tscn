@@ -1,42 +1,31 @@
 [gd_scene format=3 uid="uid://cwf7fl2qf2pb5"]
 
-[ext_resource type="Script" uid="uid://dex4wj4tjo5jg" path="res://main/ui/game_select.gd" id="1_fpv4s"]
-[ext_resource type="Texture2D" uid="uid://dppjsb1nftth5" path="res://icon.svg" id="1_xbos1"]
+[ext_resource type="Script" uid="uid://b37bxflp231tn" path="res://main/game_select_area.gd" id="1_xbos1"]
 
-[node name="GameSelect" type="TextureButton" unique_id=619326854 node_paths=PackedStringArray("label", "tex")]
-custom_minimum_size = Vector2(200, 30)
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -15.0
-offset_right = 100.0
-offset_bottom = 15.0
-grow_vertical = 2
-toggle_mode = true
-script = ExtResource("1_fpv4s")
-label = NodePath("Label")
-tex = NodePath("TextureRect")
+[sub_resource type="SphereShape3D" id="SphereShape3D_fpv4s"]
+radius = 0.15
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=619700640]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("1_xbos1")
-expand_mode = 3
-stretch_mode = 5
+[node name="GameSelect" type="Node3D" unique_id=1060935706 node_paths=PackedStringArray("start_timer", "label", "interact_area")]
+script = ExtResource("1_xbos1")
+start_timer = NodePath("StartTimer")
+label = NodePath("Label3D")
+interact_area = NodePath("InteractArea")
 
-[node name="Label" type="Label" parent="." unique_id=1261901118]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -11.5
-offset_right = 42.0
-offset_bottom = 11.5
-grow_vertical = 2
-text = "TestT"
-vertical_alignment = 1
+[node name="Label3D" type="Label3D" parent="." unique_id=1212298580]
+billboard = 2
+double_sided = false
+no_depth_test = true
+text = "Start in 1s"
+font_size = 16
+
+[node name="StartTimer" type="Timer" parent="." unique_id=629465546]
+wait_time = 6.0
+one_shot = true
+
+[node name="InteractArea" type="Area3D" parent="." unique_id=1428854167]
+collision_layer = 0
+collision_mask = 131072
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractArea" unique_id=995057620]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05117826, 0)
+shape = SubResource("SphereShape3D_fpv4s")

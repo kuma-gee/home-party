@@ -76,6 +76,7 @@ var current_scene_path : String
 # Tween for fading
 var _tween : Tween
 
+@export var desktop_fade: Control
 @export var start_xr: XRToolsStartXR
 @export var xr_origin : XROrigin3D
 @export var xr_camera : XRCamera3D
@@ -98,16 +99,6 @@ func _ready():
 # Verifies our staging has a valid configuration.
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings := PackedStringArray()
-
-	# Report missing XR Origin
-	#var test_origin : XROrigin3D = XRHelpers.get_xr_origin(self)
-	#if !test_origin:
-		#warnings.append("No XROrigin3D node found, please add one")
-#
-	## Report missing XR Camera
-	#var test_camera : XRCamera3D = XRHelpers.get_xr_camera(self)
-	#if !test_camera:
-		#warnings.append("No XRCamera3D node found, please add one to your XROrigin3D node")
 
 	# Report main scene not specified
 	if main_scene == "":
@@ -150,17 +141,16 @@ func load_scene(p_scene_path : String, user_data = null) -> void:
 
 	# If a current scene is visible then fade it out and unload it.
 	if current_scene:
+		# Fade to black
+		if _tween:
+			_tween.kill()
+		_tween = get_tree().create_tween()
+		_tween.tween_method(set_fade, 0.0, 1.0, 0.5)
+		
 		# Report pre-exiting and remove the scene signals
 		current_scene.scene_pre_exiting(user_data)
 		_remove_signals(current_scene)
 		await current_scene.xr_player.deactivate()
-
-		# Fade to black
-		#if _tween:
-			#_tween.kill()
-		#_tween = get_tree().create_tween()
-		#_tween.tween_method(set_fade, 0.0, 1.0, 1.0)
-		#await _tween.finished
 
 		# Now we remove our scene
 		emit_signal("scene_exiting", current_scene, user_data)
@@ -189,7 +179,7 @@ func load_scene(p_scene_path : String, user_data = null) -> void:
 		if _tween:
 			_tween.kill()
 		_tween = get_tree().create_tween()
-		_tween.tween_method(set_fade, 1.0, 0.0, 1.0)
+		_tween.tween_method(set_fade, 1.0, 0.0, 0.5)
 		await _tween.finished
 
 	# If the loading screen is visible then show the progress and optionally
@@ -252,12 +242,12 @@ func load_scene(p_scene_path : String, user_data = null) -> void:
 	await current_scene.xr_player.activate()
 
 	# Fade to visible
-	#if _tween:
-		#_tween.kill()
-	#_tween = get_tree().create_tween()
-	#_tween.tween_method(set_fade, 1.0, 0.0, 1.0)
-	#await _tween.finished
-	#await get_tree().create_timer(0.2).timeout
+	if _tween:
+		_tween.kill()
+	_tween = get_tree().create_tween()
+	_tween.tween_method(set_fade, 1.0, 0.0, 1.0)
+	await _tween.finished
+	await get_tree().create_timer(0.2).timeout
 
 	# Report new scene visible
 	current_scene.scene_visible(user_data)
@@ -272,6 +262,7 @@ func load_scene(p_scene_path : String, user_data = null) -> void:
 ## unless hidden.
 func set_fade(p_value : float):
 	XRToolsFade.set_fade("staging", Color(0, 0, 0, p_value))
+	desktop_fade.modulate.a = p_value
 
 
 func _add_signals(p_scene : XRToolsSceneBase):

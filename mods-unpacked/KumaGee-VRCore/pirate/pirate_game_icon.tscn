@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://dxa8mvr5m0qdx"]
+
+[ext_resource type="PackedScene" uid="uid://b04c0irdp3hbi" path="res://mods-unpacked/KumaGee-VRCore/assets/blunderbuss/scene.gltf" id="1_0qaw1"]
+[ext_resource type="PackedScene" uid="uid://jrxr4c37stf1" path="res://mods-unpacked/KumaGee-VRCore/assets/pirate/barrel.glb" id="2_7nt2m"]
+
+[node name="PirateGameIcon" type="Node3D" unique_id=1393413089]
+
+[node name="Sketchfab_Scene" parent="." unique_id=1192997662 instance=ExtResource("1_0qaw1")]
+transform = Transform3D(-0.04327169, 0.01568877, 0.01953006, 0.024006082, 0.014827672, 0.041277684, 0.0071602147, 0.045099907, -0.020364894, 0.053479552, 0.025539875, -0.009554692)
+
+[node name="barrel2" parent="." unique_id=1286530298 instance=ExtResource("2_7nt2m")]
+transform = Transform3D(-0.08, 6.993822e-09, 3.057097e-16, 0, -3.4969112e-09, 0.08, 6.993822e-09, 0.08, 3.4969112e-09, -0.07401949, 0.053319514, -0.015451662)

@@ -1,6 +1,6 @@
 @tool
 class_name LoadingScreen
-extends Node3D
+extends CameraFollow3D
 
 
 ## XR Tools Loading Screen
@@ -22,12 +22,6 @@ extends Node3D
 signal continue_pressed
 
 
-## If true, the screen follows the camera
-@export var follow_camera : bool = true: set = set_follow_camera
-
-## Curve for following the camera
-@export var follow_speed : Curve
-
 ## Splash screen texture
 @export var splash_screen : Texture2D: set = set_splash_screen
 
@@ -37,9 +31,6 @@ signal continue_pressed
 ## If true, the contine message is shown, if false the progress bar is visible.
 @export var enable_press_to_continue : bool = false: set = set_enable_press_to_continue
 
-
-# Camera to track
-var _camera : XRCamera3D
 
 # Splash screen material
 var _splash_screen_material : StandardMaterial3D
@@ -57,48 +48,7 @@ func _ready():
 	_update_splash_screen()
 	_update_progress_bar()
 	_update_enable_press_to_continue()
-	_update_follow_camera()
-
-
-func _process(delta):
-	# Skip if in editor
-	if Engine.is_editor_hint():
-		return
-
-	# Skip if no camera to track
-	if !_camera:
-		return
-
-	# Get the camera direction (horizontal only)
-	var camera_dir := _camera.global_transform.basis.z
-	camera_dir.y = 0.0
-	camera_dir = camera_dir.normalized()
-
-	# Get the loading screen direction
-	var loading_screen_dir := global_transform.basis.z
-
-	# Get the angle
-	var angle := loading_screen_dir.signed_angle_to(camera_dir, Vector3.UP)
-	if angle == 0:
-		return
-
-	# Do rotation based on the curve
-	global_transform.basis = global_transform.basis.rotated(
-			Vector3.UP * sign(angle),
-			follow_speed.sample_baked(abs(angle) / PI) * delta
-	).orthonormalized()
-
-
-## Set the camera to track
-func set_camera(p_camera : XRCamera3D) -> void:
-	_camera = p_camera
-	_update_follow_camera()
-
-
-## Set the follow_camera property
-func set_follow_camera(p_enabled : bool) -> void:
-	follow_camera = p_enabled
-	_update_follow_camera()
+	super._ready()
 
 
 ## Set the splash_screen texture property
@@ -117,11 +67,6 @@ func set_progress_bar(p_progress : float) -> void:
 func set_enable_press_to_continue(p_enable : bool) -> void:
 	enable_press_to_continue = p_enable
 	_update_enable_press_to_continue()
-
-
-func _update_follow_camera():
-	if _camera and !Engine.is_editor_hint():
-		set_process(follow_camera)
 
 
 func _update_splash_screen():
