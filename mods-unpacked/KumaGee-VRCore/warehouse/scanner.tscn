@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://cfdd0h3h74goa"]
+
+[ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_qspds"]
+[ext_resource type="PackedScene" uid="uid://du1u45r3rwgbp" path="res://mods-unpacked/KumaGee-VRCore/assets/conveyer/Models/GLB format/robot-arm-b.glb" id="2_v2mq6"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_v2mq6"]
+radius = 0.061523438
+height = 0.41992188
+
+[node name="Scanner" unique_id=777328390 instance=ExtResource("1_qspds")]
+
+[node name="CollisionShape3D" parent="." index="0" unique_id=1198871219]
+transform = Transform3D(0, 1.0000001, 0, -1.0000001, 0, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_v2mq6")
+
+[node name="robot-arm-b2" parent="." index="1" unique_id=426287764 instance=ExtResource("2_v2mq6")]
+transform = Transform3D(-4.371139e-09, 0.1, 0, -0.1, -4.371139e-09, 0, 0, 0, 0.1, -0.14544022, -0.005449742, 0)

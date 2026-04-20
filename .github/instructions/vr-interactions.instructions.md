@@ -41,49 +41,13 @@ collision_layer = (1 << 0)        # Layer 1 (static world)
 collision_mask  = (1 << 17) | (1 << 19)  # Responds to hands (18) and body (20)
 ```
 
-## Hand UI Pattern
-
-Show HUD anchored to the player's palm. Reference: `pirate/hand_ui.gd`.
-
-Key idea — `Sprite3D` (or `SubViewport3D`) is a child of the hand node; toggle `visible` based on palm orientation:
-
-```gdscript
-extends Sprite3D
-
-@export var palm_up_threshold := 0.5
-
-func _process(_delta: float) -> void:
-    visible = global_basis.x.dot(Vector3.UP) > palm_up_threshold
-```
-
-Attach the node as a child of the XR hand controller node so it follows hand movement automatically.
-
 ## Placing Players in a VR Game
 
-`start_game` typically assigns each `GameClient` an in-world proxy node rather than spawning a physical avatar:
+The VR player is added to the scene via `vr_space.tscn` and player functionality like
+pickup or pointer is added to the hands inside the game scene.
 
-```gdscript
-func start_game(players: Array[GameClient], _setup: GameSetup) -> void:
-    LobbyServer.send_layout("joystick")
-    for i in range(players.size()):
-        var proxy = player_scene.instantiate()
-        proxy.game_client = players[i]
-        var spawn = spawn_points[i % spawn_points.size()]
-        spawn.add_child(proxy)
-        proxy.global_transform = spawn.global_transform
-```
-
-## Pirate game reference (pirate/)
-
-- `pirate_defend.gd` — template for a single-VR-player game with survival/timer logic
-- `player_shoot_point.gd` — player proxy that reads joystick input to aim and fire
-- `gun_cast.gd` — raycasting from gun node to determine shoot target
-
-## Whack-a-Mole reference (whack-a-mole/)
-
-- `whack_a_mole.gd` — template for a VR-physical hit game with `XRToolsPickable`
-- `player_mole.gd` — player proxy that maps web-client directional input to mole focus index
-- `mole.gd` — target object; emits `hit` / `miss` signals
+While mobile players connecting via `GameClient` will have a script that handles the
+input from the `GameClient` and act accordingly.
 
 ## Game Resource Registration
 

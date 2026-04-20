@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://jed586qgcyqg"]
+
+[ext_resource type="PackedScene" uid="uid://cnumn534gy7pk" path="res://mods-unpacked/KumaGee-VRCore/assets/conveyer/Models/GLB format/box-small.glb" id="1_d0bfu"]
+
+[node name="WarehouseIcon" type="Node3D" unique_id=1099010070]
+
+[node name="box-small2" parent="." unique_id=1729026930 instance=ExtResource("1_d0bfu")]
+transform = Transform3D(0.3, 0, 0, 0, 0.2, 0, 0, 0, 0.3, 0, 0, 0)

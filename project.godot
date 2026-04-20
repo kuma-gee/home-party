@@ -34,7 +34,6 @@ AudioManager="*uid://ewg3o036k8yw"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/stretch/aspect="expand"
 
 [editor_plugins]
 
@@ -74,6 +73,7 @@ pause={
 3d_physics/layer_6="PlayerHurtBox"
 3d_physics/layer_7="EnemyHurtBox"
 3d_physics/layer_8="PowerUp"
+3d_physics/layer_9="Moveable"
 3d_physics/layer_17="Held Objects"
 3d_physics/layer_18="Player Hands"
 3d_physics/layer_19="Grab Handles"

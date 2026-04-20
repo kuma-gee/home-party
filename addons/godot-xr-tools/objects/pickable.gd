@@ -256,10 +256,10 @@ func drop_and_free():
 
 
 # Called when this object is picked up
-func pick_up(by: Node3D) -> void:
+func pick_up(by: Node3D) -> bool:
 	# Skip if not enabled
 	if not enabled:
-		return
+		return false
 
 	# Find the grabber information
 	var grabber := Grabber.new(by)
@@ -269,11 +269,11 @@ func pick_up(by: Node3D) -> void:
 		# Ignore if we don't support second-hand grab
 		if second_hand_grab == SecondHandGrab.IGNORE:
 			print_verbose("%s> second-hand grab not enabled" % name)
-			return
+			return false
 
 		# Ignore if either pickup isn't by a hand
 		if not _grab_driver.primary.pickup or not grabber.pickup:
-			return
+			return false
 
 		# Construct the second grab
 		if second_hand_grab != SecondHandGrab.SWAP:
@@ -284,7 +284,7 @@ func pick_up(by: Node3D) -> void:
 
 			# Report the secondary grab
 			grabbed.emit(self, by)
-			return
+			return true
 
 		# Swapping hands, let go with the primary grab
 		print_verbose("%s> letting go to swap hands" % name)
@@ -324,6 +324,7 @@ func pick_up(by: Node3D) -> void:
 	# Report picked up and grabbed
 	picked_up.emit(self)
 	grabbed.emit(self, by)
+	return true
 
 
 # Called when this object is dropped
@@ -372,7 +373,7 @@ func let_go(by: Node3D, p_linear_velocity: Vector3, p_angular_velocity: Vector3)
 	angular_velocity = p_angular_velocity
 
 	# let interested parties know
-	dropped.emit(self)
+	dropped.emit(self) 
 
 
 ## Get the node currently holding this object

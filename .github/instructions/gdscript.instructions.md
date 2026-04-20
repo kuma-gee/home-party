@@ -4,56 +4,22 @@ applyTo: "**/*.gd"
 ---
 # GDScript Conventions — Home Party
 
-## BaseGame: required API
+## XRToolsSceneBase: required API
 
-All mini-games extend `BaseGame` and must implement:
+All mini-games extend `XRToolsSceneBase` which provides APIs for managing the scene
+and transitions. The scenes for the `GameClient` must be setup in in the `scene_loaded`
+method.
 
-```gdscript
-extends BaseGame
+## GameClient: Player Inputs
 
-func start_game(players: Array[GameClient], game_setup: GameSetup) -> void:
-    # Called once when the game session starts.
-    # Wire up player inputs here. Do not call super().
-    pass
-```
+Use the `GameClient.input_received` to get the player inputs which are one for movement
+and two more buttons for the primary and secondary actions. 
 
-Emit these signals (inherited) to communicate with the game host:
-
-```gdscript
-game_finished.emit()    # Game is over
-game_restart.emit()     # Replay the same game
-back_to_menu.emit()     # Return to game selection screen
-```
-
-## Player Input Wiring
-
-Connect `GameClient.input_received` in `start_game`. The signal fires for every packet:
-
-```gdscript
-func start_game(players: Array[GameClient], _game_setup: GameSetup) -> void:
-    for player in players:
-        player.input_received.connect(func(input: String, value): _on_input(player, input, value))
-
-func _on_input(player: GameClient, input: String, value) -> void:
-    match input:
-        "move":
-            # value is Vector2, normalized -1..1 on each axis
-            player_node.velocity = value * speed
-        "action":
-            # value is bool (true = pressed, false = released)
-            if value:
-                player_node.do_action()
-```
-
-Poll the last move vector without a signal (useful in `_process`):
-
-```gdscript
-var dir: Vector2 = player.get_move()
-```
+The `get_move` can be used to get the current player movement input
 
 ## Input Layout
 
-Tell the web client which UI to show (call from `start_game`):
+Tell the web client which UI to show:
 
 ```gdscript
 LobbyServer.send_layout("joystick")   # Analog stick
@@ -68,16 +34,6 @@ Use `KumaLog` instead of `print`:
 var logger = KumaLog.new("MyGame")
 logger.info("Game started with %d players" % players.size())
 logger.debug("Player moved: %s" % str(dir))
-```
-
-## Score tracking pattern
-
-```gdscript
-var scores: Dictionary = {}   # uuid -> int
-
-func start_game(players: Array[GameClient], _setup: GameSetup) -> void:
-    for p in players:
-        scores[p.uuid] = 0
 ```
 
 ## Pausing

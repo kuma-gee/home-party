@@ -1,0 +1,79 @@
+[gd_scene format=3 uid="uid://bjemhxyjs5ne6"]
+
+[ext_resource type="Script" uid="uid://0l06iplwx2uw" path="res://mods-unpacked/KumaGee-VRCore/player/fps_player.gd" id="1_krq8x"]
+[ext_resource type="PackedScene" uid="uid://oabojy0uqucd" path="res://mods-unpacked/KumaGee-VRCore/assets/characters/Model/characterMedium.fbx" id="2_ka8gu"]
+[ext_resource type="Script" uid="uid://beia3uc5guc8d" path="res://mods-unpacked/KumaGee-VRCore/player/pickup_hand_3d.gd" id="3_dxdo2"]
+[ext_resource type="Script" uid="uid://r2ip3x3bxw0i" path="res://mods-unpacked/KumaGee-VRCore/player/ground_spring_cast.gd" id="8_ffq0p"]
+[ext_resource type="Shader" uid="uid://cdfjqx6ei5653" path="res://shader/circle_inner.gdshader" id="14_we0o2"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ka8gu"]
+radius = 0.16796875
+height = 0.9785156
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5nf5r"]
+size = Vector3(0.5, 1, 0.42797852)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_we0o2"]
+viewport_path = NodePath("ColorRing/SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_l7of8"]
+shader = ExtResource("14_we0o2")
+shader_parameter/radius = 0.550000026125
+shader_parameter/inner_radius = 0.400000019
+shader_parameter/fill = 1.0
+shader_parameter/blur = 0.009999999747
+shader_parameter/bg_color = Color(0, 0, 0, 1)
+shader_parameter/inner_color = Color(0, 0, 0, 0)
+
+[node name="FPSPlayer" type="CharacterBody3D" unique_id=1756570454 node_paths=PackedStringArray("body", "color_ring", "hand") groups=["resetable"]]
+collision_layer = 2
+collision_mask = 16391
+script = ExtResource("1_krq8x")
+speed = 3.0
+push_force = 1.0
+body = NodePath("CollisionShape3D")
+colors = Array[Color]([Color(1, 0, 0, 1), Color(0.10830901, 0.44832176, 0.90811163, 1), Color(0.14999998, 1, 0, 1), Color(1, 0.9607843, 0.2509804, 1), Color(0.4000001, 0, 1, 1), Color(1, 0.61960787, 0.011764706, 1), Color(0, 0.93333334, 1, 1), Color(0.9019608, 0.27058825, 1, 1)])
+color_ring = NodePath("ColorRing/SubViewport/Ring")
+hand = NodePath("")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=992237309]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6461112, 0)
+shape = SubResource("CapsuleShape3D_ka8gu")
+
+[node name="characterMedium" parent="CollisionShape3D" unique_id=608236063 instance=ExtResource("2_ka8gu")]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, -0.6461112, 0)
+
+[node name="Hand" type="Area3D" parent="CollisionShape3D" unique_id=1673976636]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.049642622, 0.28678036)
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("3_dxdo2")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="CollisionShape3D/Hand" unique_id=1170753050]
+transform = Transform3D(0.99999976, 0, 0, 0, 0.99999976, 0, 0, 0, 0.99999976, 0, -0.12744284, 0.075261354)
+shape = SubResource("BoxShape3D_5nf5r")
+
+[node name="GroundSpringCast" type="RayCast3D" parent="." unique_id=903227710]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.36215165, 0)
+script = ExtResource("8_ffq0p")
+
+[node name="ColorRing" type="Sprite3D" parent="." unique_id=1098146893]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.057024956, 0)
+texture = SubResource("ViewportTexture_we0o2")
+
+[node name="SubViewport" type="SubViewport" parent="ColorRing" unique_id=2021832964]
+transparent_bg = true
+size = Vector2i(160, 160)
+
+[node name="Ring" type="ColorRect" parent="ColorRing/SubViewport" unique_id=724713833]
+material = SubResource("ShaderMaterial_l7of8")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="DashSound" type="AudioStreamPlayer" parent="." unique_id=1002373996]
+volume_db = -15.0
+pitch_scale = 1.5
