@@ -1,0 +1,79 @@
+[gd_scene format=3 uid="uid://dmj0gi4dftqml"]
+
+[ext_resource type="PackedScene" uid="uid://cs0irynhw2w5f" path="res://mods-unpacked/KumaGee-VRCore/assets/halloween/fence_pillar.gltf" id="18_rbx6f"]
+[ext_resource type="PackedScene" uid="uid://2pgoyj5fv8fd" path="res://mods-unpacked/KumaGee-VRCore/assets/halloween/fence_pillar_broken.gltf" id="19_itwcx"]
+[ext_resource type="PackedScene" uid="uid://uf62shfbbvs1" path="res://mods-unpacked/KumaGee-VRCore/assets/halloween/floor_dirt_grave.gltf" id="23_lhghw"]
+[ext_resource type="PackedScene" uid="uid://cdnk8a5dpmxhp" path="res://mods-unpacked/KumaGee-VRCore/assets/halloween/floor_dirt_small.gltf" id="24_7wddv"]
+[ext_resource type="PackedScene" uid="uid://cp11b487fsyfw" path="res://mods-unpacked/KumaGee-VRCore/assets/halloween/grave_A.gltf" id="28_quod6"]
+[ext_resource type="PackedScene" uid="uid://dg4jqcoig0f85" path="res://mods-unpacked/KumaGee-VRCore/assets/halloween/grave_A_destroyed.gltf" id="29_1h2n3"]
+[ext_resource type="PackedScene" uid="uid://b442suem6eujo" path="res://mods-unpacked/KumaGee-VRCore/assets/halloween/grave_B.gltf" id="30_5tb1s"]
+[ext_resource type="PackedScene" uid="uid://cun02bhw52tbx" path="res://mods-unpacked/KumaGee-VRCore/assets/halloween/path_A.gltf" id="33_i1b8w"]
+[ext_resource type="PackedScene" uid="uid://ba20dskl6mft5" path="res://mods-unpacked/KumaGee-VRCore/assets/halloween/path_B.gltf" id="34_k1gri"]
+[ext_resource type="PackedScene" uid="uid://dc0ggxtsohdqo" path="res://mods-unpacked/KumaGee-VRCore/assets/halloween/path_C.gltf" id="35_2p1w1"]
+[ext_resource type="PackedScene" uid="uid://btr31unt660cq" path="res://mods-unpacked/KumaGee-VRCore/assets/halloween/path_D.gltf" id="36_ppx1j"]
+[ext_resource type="PackedScene" uid="uid://cixpmaxwq841o" path="res://mods-unpacked/KumaGee-VRCore/assets/halloween/pillar.gltf" id="37_ntbke"]
+[ext_resource type="PackedScene" uid="uid://dvv2s4pdidrm3" path="res://mods-unpacked/KumaGee-VRCore/assets/halloween/post.gltf" id="40_mlyau"]
+[ext_resource type="PackedScene" uid="uid://cn6tepgfd8in" path="res://mods-unpacked/KumaGee-VRCore/assets/halloween/post_lantern.gltf" id="41_gc5a2"]
+[ext_resource type="PackedScene" uid="uid://bgh778w3rnnc2" path="res://mods-unpacked/KumaGee-VRCore/assets/halloween/post_skull.gltf" id="42_8wmxa"]
+[ext_resource type="PackedScene" uid="uid://c1vbwiwlgh5mn" path="res://mods-unpacked/KumaGee-VRCore/assets/halloween/pumpkin_orange.gltf" id="43_2v56i"]
+[ext_resource type="PackedScene" uid="uid://bigmqixtybcos" path="res://mods-unpacked/KumaGee-VRCore/assets/halloween/pumpkin_orange_jackolantern.gltf" id="44_66gpy"]
+[ext_resource type="PackedScene" uid="uid://dhtxy5rtafc7a" path="res://mods-unpacked/KumaGee-VRCore/assets/halloween/pumpkin_orange_small.gltf" id="45_0anrh"]
+[ext_resource type="PackedScene" uid="uid://boivlrxacpenm" path="res://mods-unpacked/KumaGee-VRCore/assets/halloween/pumpkin_yellow.gltf" id="46_7io8l"]
+[ext_resource type="PackedScene" uid="uid://dauu04f2qonqb" path="res://mods-unpacked/KumaGee-VRCore/assets/halloween/pumpkin_yellow_jackolantern.gltf" id="47_dmunm"]
+[ext_resource type="PackedScene" uid="uid://b8j30oph6ylf2" path="res://mods-unpacked/KumaGee-VRCore/assets/halloween/pumpkin_yellow_small.gltf" id="48_588dk"]
+[ext_resource type="PackedScene" uid="uid://d1oh2mwxnjir" path="res://mods-unpacked/KumaGee-VRCore/assets/halloween/shrine.gltf" id="50_v1aj2"]
+[ext_resource type="PackedScene" uid="uid://bo0cr36ixo0qn" path="res://mods-unpacked/KumaGee-VRCore/assets/halloween/shrine_candles.gltf" id="51_lae4d"]
+[ext_resource type="PackedScene" uid="uid://c8dyhbdov4fy3" path="res://mods-unpacked/KumaGee-VRCore/assets/halloween/skull.gltf" id="52_7qxeg"]
+[ext_resource type="PackedScene" uid="uid://ryxqcjbwm5td" path="res://mods-unpacked/KumaGee-VRCore/assets/halloween/skull_candle.gltf" id="53_8j3vp"]
+
+[node name="halloweenMeshes" type="Node3D" unique_id=1352998126]
+
+[node name="floor_dirt_small2" parent="." unique_id=1180852788 instance=ExtResource("24_7wddv")]
+
+[node name="grave_A2" parent="." unique_id=854261807 instance=ExtResource("28_quod6")]
+
+[node name="grave_A_destroyed2" parent="." unique_id=1344937809 instance=ExtResource("29_1h2n3")]
+
+[node name="grave_B2" parent="." unique_id=1568644314 instance=ExtResource("30_5tb1s")]
+
+[node name="post2" parent="." unique_id=723365610 instance=ExtResource("40_mlyau")]
+
+[node name="post_lantern2" parent="." unique_id=60401228 instance=ExtResource("41_gc5a2")]
+
+[node name="post_skull2" parent="." unique_id=185621818 instance=ExtResource("42_8wmxa")]
+
+[node name="floor_dirt_grave2" parent="." unique_id=302046814 instance=ExtResource("23_lhghw")]
+
+[node name="path_A2" parent="." unique_id=2105376215 instance=ExtResource("33_i1b8w")]
+
+[node name="path_B2" parent="." unique_id=1209188910 instance=ExtResource("34_k1gri")]
+
+[node name="path_C2" parent="." unique_id=291740601 instance=ExtResource("35_2p1w1")]
+
+[node name="path_D2" parent="." unique_id=81665202 instance=ExtResource("36_ppx1j")]
+
+[node name="fence_pillar2" parent="." unique_id=663992874 instance=ExtResource("18_rbx6f")]
+
+[node name="fence_pillar_broken2" parent="." unique_id=2062177266 instance=ExtResource("19_itwcx")]
+
+[node name="pillar2" parent="." unique_id=286188891 instance=ExtResource("37_ntbke")]
+
+[node name="shrine2" parent="." unique_id=278251228 instance=ExtResource("50_v1aj2")]
+
+[node name="shrine_candles2" parent="." unique_id=599886126 instance=ExtResource("51_lae4d")]
+
+[node name="skull2" parent="." unique_id=1942781873 instance=ExtResource("52_7qxeg")]
+
+[node name="skull_candle2" parent="." unique_id=2140975955 instance=ExtResource("53_8j3vp")]
+
+[node name="pumpkin_orange2" parent="." unique_id=1405628409 instance=ExtResource("43_2v56i")]
+
+[node name="pumpkin_orange_jackolantern2" parent="." unique_id=293908365 instance=ExtResource("44_66gpy")]
+
+[node name="pumpkin_orange_small2" parent="." unique_id=1226389098 instance=ExtResource("45_0anrh")]
+
+[node name="pumpkin_yellow2" parent="." unique_id=1319143954 instance=ExtResource("46_7io8l")]
+
+[node name="pumpkin_yellow_jackolantern2" parent="." unique_id=123136280 instance=ExtResource("47_dmunm")]
+
+[node name="pumpkin_yellow_small2" parent="." unique_id=1907660655 instance=ExtResource("48_588dk")]

@@ -58,13 +58,13 @@ func _process(_delta: float) -> void:
 
 
 # Called when the handle is picked up
-func pick_up(by) -> void:
+func pick_up(by) -> bool:
 	# Call the base-class to perform the pickup
 	super(by)
 
 	# Enable the process function while held
 	set_process(true)
-
+	return true
 
 # Called when the handle is dropped
 func let_go(by: Node3D, _p_linear_velocity: Vector3, _p_angular_velocity: Vector3) -> void:

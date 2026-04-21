@@ -11,12 +11,15 @@
 [ext_resource type="PackedScene" uid="uid://drfqs0dthc38a" path="res://mods-unpacked/KumaGee-VRCore/assets/space/Models/GLB format/balcony-rail-center.glb" id="8_3p1gs"]
 [ext_resource type="PackedScene" uid="uid://c1qe5rc3y5a08" path="res://mods-unpacked/KumaGee-VRCore/assets/space/Models/GLB format/computer-system.glb" id="8_qt1wl"]
 [ext_resource type="PackedScene" uid="uid://bysj7f8ky2jhd" path="res://mods-unpacked/KumaGee-VRCore/assets/space/Models/GLB format/balcony-rail-corner.glb" id="9_lwj7d"]
+[ext_resource type="Script" uid="uid://c62s4v1gc87g5" path="res://mods-unpacked/KumaGee-VRCore/warehouse/scan_screen.gd" id="10_4e45h"]
 [ext_resource type="PackedScene" uid="uid://btlljhtniv3dr" path="res://main/vr/vr_space.tscn" id="12_0di2v"]
 [ext_resource type="PackedScene" uid="uid://beqgt4q3cvc01" path="res://mods-unpacked/KumaGee-VRCore/assets/space/Models/GLB format/table.glb" id="13_0di2v"]
 [ext_resource type="PackedScene" uid="uid://cfdd0h3h74goa" path="res://mods-unpacked/KumaGee-VRCore/warehouse/scanner.tscn" id="13_qt1wl"]
 [ext_resource type="PackedScene" uid="uid://b4ysuy43poobf" path="res://addons/godot-xr-tools/functions/function_pickup.tscn" id="14_qt1wl"]
 [ext_resource type="Script" uid="uid://jp71eaeuv7pu" path="res://mods-unpacked/KumaGee-VRCore/warehouse/package_spawner.gd" id="14_rgx5g"]
+[ext_resource type="PackedScene" uid="uid://fiul51tsyoop" path="res://addons/godot-xr-tools/functions/function_teleport.tscn" id="16_6oi2c"]
 [ext_resource type="PackedScene" uid="uid://b4no28woflvxy" path="res://mods-unpacked/KumaGee-VRCore/warehouse/package.tscn" id="16_iyx6w"]
+[ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="17_qn3wt"]
 [ext_resource type="PackedScene" uid="uid://bjemhxyjs5ne6" path="res://mods-unpacked/KumaGee-VRCore/player/fps_player.tscn" id="18_c5tsu"]
 [ext_resource type="Script" uid="uid://b1f1y52jugtns" path="res://mods-unpacked/KumaGee-VRCore/player/player_spawner.gd" id="19_jklv2"]
 
@@ -26,8 +29,11 @@ size = Vector3(20, 0.5, 20)
 [sub_resource type="BoxShape3D" id="BoxShape3D_qt1wl"]
 size = Vector3(13.26, 1.5, 0.3)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_qn3wt"]
+size = Vector3(1.1052246, 0.90319824, 0.59765625)
+
 [sub_resource type="ViewportTexture" id="ViewportTexture_qt1wl"]
-viewport_path = NodePath("VRArea/computer-wide2/Sprite3D/SubViewport")
+viewport_path = NodePath("VRArea/computer-wide2/ScanScreen/SubViewport")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_rgx5g"]
 viewport_path = NodePath("VRArea/computer-system2/Sprite3D/SubViewport")
@@ -176,7 +182,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0)
 collision_layer = 0
 collision_mask = 256
 script = ExtResource("4_rgx5g")
-speed = 10
+speed = 1
 direction = Vector3(1, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Conveyor/ConveyorArea" unique_id=262780112]
@@ -187,25 +193,69 @@ shape = SubResource("BoxShape3D_qt1wl")
 [node name="table2" parent="VRArea" unique_id=477646091 instance=ExtResource("13_0di2v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.013877392, 0, 0.925773)
 
+[node name="StaticBody3D" type="StaticBody3D" parent="VRArea/table2" unique_id=605791936]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VRArea/table2/StaticBody3D" unique_id=621604301]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.04840088, 0)
+shape = SubResource("BoxShape3D_qn3wt")
+
 [node name="chair-headrest2" parent="VRArea" unique_id=1099345611 instance=ExtResource("7_ljs30")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0023126602, 0, 0.02323848)
 
 [node name="computer-wide2" parent="VRArea" unique_id=1247102575 instance=ExtResource("7_0di2v")]
 transform = Transform3D(-0.70710677, 0, -0.70710677, 0, 1, 0, 0.70710677, 0, -0.70710677, 0.9223243, 0, 0.7353464)
 
-[node name="Sprite3D" type="Sprite3D" parent="VRArea/computer-wide2" unique_id=477707227]
+[node name="ScanScreen" type="Sprite3D" parent="VRArea/computer-wide2" unique_id=477707227 node_paths=PackedStringArray("scanner", "color", "code_label", "types_container")]
 transform = Transform3D(0.14, 0, 0, 0, 0.07624946, 0.117413886, 0, -0.117413886, 0.07624946, 0, 0.35, -0.01)
 texture = SubResource("ViewportTexture_qt1wl")
+script = ExtResource("10_4e45h")
+scanner = NodePath("../../Scanner")
+color = NodePath("SubViewport/MarginContainer/VBoxContainer/HBoxContainer/Color")
+code_label = NodePath("SubViewport/MarginContainer/VBoxContainer/Code")
+types_container = NodePath("SubViewport/MarginContainer/VBoxContainer/HBoxContainer/Types")
 
-[node name="SubViewport" type="SubViewport" parent="VRArea/computer-wide2/Sprite3D" unique_id=757177346]
+[node name="SubViewport" type="SubViewport" parent="VRArea/computer-wide2/ScanScreen" unique_id=757177346]
 size = Vector2i(512, 280)
 
-[node name="ColorRect" type="ColorRect" parent="VRArea/computer-wide2/Sprite3D/SubViewport" unique_id=1932224484]
+[node name="ColorRect" type="ColorRect" parent="VRArea/computer-wide2/ScanScreen/SubViewport" unique_id=1932224484]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+color = Color(0.15487596, 0.154876, 0.15487596, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="VRArea/computer-wide2/ScanScreen/SubViewport" unique_id=580738672]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VRArea/computer-wide2/ScanScreen/SubViewport/MarginContainer" unique_id=614916254]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VRArea/computer-wide2/ScanScreen/SubViewport/MarginContainer/VBoxContainer" unique_id=758718396]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 36
+
+[node name="Color" type="ColorRect" parent="VRArea/computer-wide2/ScanScreen/SubViewport/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1174250867]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Types" type="VBoxContainer" parent="VRArea/computer-wide2/ScanScreen/SubViewport/MarginContainer/VBoxContainer/HBoxContainer" unique_id=662397245]
+layout_mode = 2
+
+[node name="Code" type="Label" parent="VRArea/computer-wide2/ScanScreen/SubViewport/MarginContainer/VBoxContainer" unique_id=806674862]
+layout_mode = 2
+text = "R123T123"
 
 [node name="computer-system2" parent="VRArea" unique_id=200422524 instance=ExtResource("8_qt1wl")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 1.0897565, 0, -0.16712302)
@@ -256,6 +306,10 @@ tree_root = SubResource("AnimationNodeBlendTree_b7cim")
 
 [node name="AnimationTree" parent="VRArea/VRSpace/SubViewport/XRPlayer/RightHand/RightHand" parent_id_path=PackedInt32Array(841158329, 40282269) index="1"]
 tree_root = SubResource("AnimationNodeBlendTree_umvet")
+
+[node name="FunctionTeleport" parent="VRArea/VRSpace/SubViewport/XRPlayer/RightHand" parent_id_path=PackedInt32Array(841158329, 1667605568) index="2" unique_id=1240179748 instance=ExtResource("16_6oi2c")]
+
+[node name="MovementTurn" parent="VRArea/VRSpace/SubViewport/XRPlayer/RightHand" parent_id_path=PackedInt32Array(841158329, 1667605568) index="3" unique_id=1484839285 instance=ExtResource("17_qn3wt")]
 
 [node name="Scanner" parent="VRArea" unique_id=777328390 instance=ExtResource("13_qt1wl")]
 transform = Transform3D(0.49999997, 0, -0.8660254, 0, 1, 0, 0.8660254, 0, 0.49999997, -0.42307782, 0.47401518, 0.9042276)

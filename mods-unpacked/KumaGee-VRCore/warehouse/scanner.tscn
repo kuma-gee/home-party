@@ -2,16 +2,38 @@
 
 [ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_qspds"]
 [ext_resource type="PackedScene" uid="uid://du1u45r3rwgbp" path="res://mods-unpacked/KumaGee-VRCore/assets/conveyer/Models/GLB format/robot-arm-b.glb" id="2_v2mq6"]
+[ext_resource type="Script" uid="uid://d0wpwy2wb747e" path="res://mods-unpacked/KumaGee-VRCore/warehouse/scanner.gd" id="3_4re6b"]
+[ext_resource type="PackedScene" uid="uid://ctw7nbntd5pcj" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_right.tscn" id="3_ome4f"]
+[ext_resource type="PackedScene" uid="uid://c25yxb0vt53vc" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_left.tscn" id="4_4re6b"]
+[ext_resource type="PackedScene" uid="uid://dh8grd7s3n8kg" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_snap.tscn" id="5_bsuxa"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_v2mq6"]
 radius = 0.061523438
 height = 0.41992188
 
-[node name="Scanner" unique_id=777328390 instance=ExtResource("1_qspds")]
+[node name="Scanner" unique_id=777328390 node_paths=PackedStringArray("ray_cast") instance=ExtResource("1_qspds")]
+script = ExtResource("3_4re6b")
+ray_cast = NodePath("ScanCast")
+second_hand_grab = 1
 
 [node name="CollisionShape3D" parent="." index="0" unique_id=1198871219]
-transform = Transform3D(0, 1.0000001, 0, -1.0000001, 0, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(1.9106857e-15, -4.3711392e-08, 1, -1.0000001, -4.3711392e-08, 0, 4.3711392e-08, -1.0000001, -4.371139e-08, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_v2mq6")
 
 [node name="robot-arm-b2" parent="." index="1" unique_id=426287764 instance=ExtResource("2_v2mq6")]
-transform = Transform3D(-4.371139e-09, 0.1, 0, -0.1, -4.371139e-09, 0, 0, 0, 0.1, -0.14544022, -0.005449742, 0)
+transform = Transform3D(1.9106854e-16, -4.371139e-09, 0.1, -0.1, -4.371139e-09, 0, 4.371139e-09, -0.1, -4.371139e-09, 0, -0.005, 0.14921725)
+
+[node name="ScanCast" type="RayCast3D" parent="." index="2" unique_id=1149873524]
+target_position = Vector3(0, 0, -1)
+collision_mask = 128
+collide_with_areas = true
+collide_with_bodies = false
+
+[node name="GrabPointHandRight" parent="." index="3" unique_id=1648323623 instance=ExtResource("3_ome4f")]
+visible = true
+
+[node name="GrabPointHandLeft" parent="." index="4" unique_id=1824828354 instance=ExtResource("4_4re6b")]
+visible = true
+
+[node name="GrabPointSnap" parent="." index="5" unique_id=660143799 instance=ExtResource("5_bsuxa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.07045624)
