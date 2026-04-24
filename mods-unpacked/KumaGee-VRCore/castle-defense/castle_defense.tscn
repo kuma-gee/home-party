@@ -1,0 +1,448 @@
+[gd_scene format=3 uid="uid://cdcastle0001"]
+
+[ext_resource type="Script" uid="uid://bo8dkp1wvefbu" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/castle_defense.gd" id="1_cdef"]
+[ext_resource type="Script" uid="uid://clgft3mio2mex" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/catapult.gd" id="3_cat"]
+[ext_resource type="Script" uid="uid://8p0xhl610wdb" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/bomb.gd" id="4_bomb"]
+[ext_resource type="PackedScene" uid="uid://dvcr7erf7sa4h" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/fire_orb.tscn" id="5_a14ph"]
+[ext_resource type="PackedScene" uid="uid://bjemhxyjs5ne6" path="res://mods-unpacked/KumaGee-VRCore/player/fps_player.tscn" id="5_fps"]
+[ext_resource type="PackedScene" uid="uid://b4ysuy43poobf" path="res://addons/godot-xr-tools/functions/function_pickup.tscn" id="5_w0s4v"]
+[ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="6_5cd4w"]
+[ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="6_a14ph"]
+[ext_resource type="PackedScene" uid="uid://bkh78koqbpbod" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/bow.tscn" id="6_rjw0b"]
+[ext_resource type="PackedScene" uid="uid://cdboulder001" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/boulder.tscn" id="7_boulder"]
+[ext_resource type="Script" uid="uid://crtkl6ldhona6" path="res://main/utils/hurt_box.gd" id="9_hurtbox"]
+[ext_resource type="PackedScene" uid="uid://btlljhtniv3dr" path="res://main/vr/vr_space.tscn" id="10_a14ph"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_Ground"]
+albedo_color = Color(0.35, 0.52, 0.28, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_Castle"]
+albedo_color = Color(0.65, 0.62, 0.57, 1)
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="Mat_Gate"]
+albedo_color = Color(0.42, 0.27, 0.13, 1)
+roughness = 0.85
+
+[sub_resource type="BoxShape3D" id="Shape_GateHurt"]
+size = Vector3(4.5, 5, 0.6)
+
+[sub_resource type="BoxShape3D" id="Shape_GateZone"]
+size = Vector3(5, 4, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_a14ph"]
+size = Vector3(14.886963, 1, 3.2265625)
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_w0s4v"]
+animation = &"Grip"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_5cd4w"]
+animation = &"Grip"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_jv2d0"]
+filter_enabled = true
+filters = ["Armature/Skeleton3D:Little_Distal_L", "Armature/Skeleton3D:Little_Intermediate_L", "Armature/Skeleton3D:Little_Metacarpal_L", "Armature/Skeleton3D:Little_Proximal_L", "Armature/Skeleton3D:Middle_Distal_L", "Armature/Skeleton3D:Middle_Intermediate_L", "Armature/Skeleton3D:Middle_Metacarpal_L", "Armature/Skeleton3D:Middle_Proximal_L", "Armature/Skeleton3D:Ring_Distal_L", "Armature/Skeleton3D:Ring_Intermediate_L", "Armature/Skeleton3D:Ring_Metacarpal_L", "Armature/Skeleton3D:Ring_Proximal_L", "Armature/Skeleton3D:Thumb_Distal_L", "Armature/Skeleton3D:Thumb_Metacarpal_L", "Armature/Skeleton3D:Thumb_Proximal_L", "Armature/Skeleton:Little_Distal_L", "Armature/Skeleton:Little_Intermediate_L", "Armature/Skeleton:Little_Proximal_L", "Armature/Skeleton:Middle_Distal_L", "Armature/Skeleton:Middle_Intermediate_L", "Armature/Skeleton:Middle_Proximal_L", "Armature/Skeleton:Ring_Distal_L", "Armature/Skeleton:Ring_Intermediate_L", "Armature/Skeleton:Ring_Proximal_L", "Armature/Skeleton:Thumb_Distal_L", "Armature/Skeleton:Thumb_Proximal_L"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fh86t"]
+animation = &"Grip 5"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_areys"]
+filter_enabled = true
+filters = ["Armature/Skeleton3D:Index_Distal_L", "Armature/Skeleton3D:Index_Intermediate_L", "Armature/Skeleton3D:Index_Metacarpal_L", "Armature/Skeleton3D:Index_Proximal_L", "Armature/Skeleton:Index_Distal_L", "Armature/Skeleton:Index_Intermediate_L", "Armature/Skeleton:Index_Proximal_L"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_ka738"]
+graph_offset = Vector2(-536, 11)
+nodes/ClosedHand1/node = SubResource("AnimationNodeAnimation_w0s4v")
+nodes/ClosedHand1/position = Vector2(-600, 300)
+nodes/ClosedHand2/node = SubResource("AnimationNodeAnimation_5cd4w")
+nodes/ClosedHand2/position = Vector2(-360, 300)
+nodes/Grip/node = SubResource("AnimationNodeBlend2_jv2d0")
+nodes/Grip/position = Vector2(0, 20)
+nodes/OpenHand/node = SubResource("AnimationNodeAnimation_fh86t")
+nodes/OpenHand/position = Vector2(-600, 100)
+nodes/Trigger/node = SubResource("AnimationNodeBlend2_areys")
+nodes/Trigger/position = Vector2(-360, 20)
+node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_a11e3"]
+animation = &"Grip"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_iwc37"]
+animation = &"Grip"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_jsi8f"]
+filter_enabled = true
+filters = ["Armature/Skeleton3D:Little_Distal_R", "Armature/Skeleton3D:Little_Intermediate_R", "Armature/Skeleton3D:Little_Metacarpal_R", "Armature/Skeleton3D:Little_Proximal_R", "Armature/Skeleton3D:Middle_Distal_R", "Armature/Skeleton3D:Middle_Intermediate_R", "Armature/Skeleton3D:Middle_Metacarpal_R", "Armature/Skeleton3D:Middle_Proximal_R", "Armature/Skeleton3D:Ring_Distal_R", "Armature/Skeleton3D:Ring_Intermediate_R", "Armature/Skeleton3D:Ring_Metacarpal_R", "Armature/Skeleton3D:Ring_Proximal_R", "Armature/Skeleton3D:Thumb_Distal_R", "Armature/Skeleton3D:Thumb_Metacarpal_R", "Armature/Skeleton3D:Thumb_Proximal_R", "Armature/Skeleton:Little_Distal_R", "Armature/Skeleton:Little_Intermediate_R", "Armature/Skeleton:Little_Proximal_R", "Armature/Skeleton:Middle_Distal_R", "Armature/Skeleton:Middle_Intermediate_R", "Armature/Skeleton:Middle_Proximal_R", "Armature/Skeleton:Ring_Distal_R", "Armature/Skeleton:Ring_Intermediate_R", "Armature/Skeleton:Ring_Proximal_R", "Armature/Skeleton:Thumb_Distal_R", "Armature/Skeleton:Thumb_Proximal_R"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_3sspo"]
+animation = &"Grip 5"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_rtkkv"]
+filter_enabled = true
+filters = ["Armature/Skeleton3D:Index_Distal_R", "Armature/Skeleton3D:Index_Intermediate_R", "Armature/Skeleton3D:Index_Metacarpal_R", "Armature/Skeleton3D:Index_Proximal_R", "Armature/Skeleton:Index_Distal_R", "Armature/Skeleton:Index_Intermediate_R", "Armature/Skeleton:Index_Proximal_R"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_unmfg"]
+graph_offset = Vector2(-552.664, 107.301)
+nodes/ClosedHand1/node = SubResource("AnimationNodeAnimation_a11e3")
+nodes/ClosedHand1/position = Vector2(-600, 300)
+nodes/ClosedHand2/node = SubResource("AnimationNodeAnimation_iwc37")
+nodes/ClosedHand2/position = Vector2(-360, 300)
+nodes/Grip/node = SubResource("AnimationNodeBlend2_jsi8f")
+nodes/Grip/position = Vector2(0, 40)
+nodes/OpenHand/node = SubResource("AnimationNodeAnimation_3sspo")
+nodes/OpenHand/position = Vector2(-600, 100)
+nodes/Trigger/node = SubResource("AnimationNodeBlend2_rtkkv")
+nodes/Trigger/position = Vector2(-360, 40)
+node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_g2kc1"]
+radius = 0.067832924
+
+[sub_resource type="StandardMaterial3D" id="Mat_Catapult"]
+albedo_color = Color(0.38, 0.25, 0.12, 1)
+roughness = 0.9
+
+[sub_resource type="SphereShape3D" id="Shape_OpZone"]
+radius = 3.5
+
+[sub_resource type="SphereShape3D" id="Shape_OpZoneR"]
+radius = 3.5
+
+[sub_resource type="SphereShape3D" id="Shape_BombBody"]
+radius = 0.3
+
+[sub_resource type="SphereMesh" id="Mesh_Bomb"]
+radius = 0.3
+height = 0.6
+
+[sub_resource type="StandardMaterial3D" id="Mat_Bomb"]
+albedo_color = Color(0.15, 0.15, 0.15, 1)
+roughness = 0.6
+
+[sub_resource type="SphereShape3D" id="Shape_BombBodyB"]
+radius = 0.3
+
+[sub_resource type="SphereShape3D" id="Shape_BombBodyC"]
+radius = 0.3
+
+[node name="CastleDefense" type="Node3D" unique_id=1524346607 node_paths=PackedStringArray("menu_button", "restart_button", "gameover_ui", "gameover_label", "gate_hurtbox", "gate_zone", "gate_label", "spawn_points", "xr_player")]
+script = ExtResource("1_cdef")
+menu_button = NodePath("GameoverUI/GameoverPanel/VBoxContainer/MenuButton")
+restart_button = NodePath("GameoverUI/GameoverPanel/VBoxContainer/RestartButton")
+gameover_ui = NodePath("GameoverUI/GameoverPanel")
+gameover_label = NodePath("GameoverUI/GameoverPanel/VBoxContainer/GameoverLabel")
+gate_hurtbox = NodePath("Castle/Gate/GateHurtBox")
+gate_zone = NodePath("Castle/Gate/GateZone")
+gate_label = NodePath("Castle/Gate/GateHealthLabel")
+player_scene = ExtResource("5_fps")
+spawn_points = [NodePath("AttackerArea/SpawnPoints/SpawnPoint1"), NodePath("AttackerArea/SpawnPoints/SpawnPoint2"), NodePath("AttackerArea/SpawnPoints/SpawnPoint3"), NodePath("AttackerArea/SpawnPoints/SpawnPoint4")]
+xr_player = NodePath("VRSpace")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1645281176]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="PlayTime" type="Timer" parent="." unique_id=96472218]
+wait_time = 120.0
+one_shot = true
+
+[node name="Ground" type="CSGBox3D" parent="." unique_id=1900245130]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 14)
+use_collision = true
+size = Vector3(60, 0.5, 60)
+material = SubResource("Mat_Ground")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1181458762]
+transform = Transform3D(1, 0, 0, 0, 0.50000006, 0.8660254, 0, -0.8660254, 0.50000006, 0, 21, 37)
+
+[node name="Castle" type="Node3D" parent="." unique_id=775708432]
+
+[node name="Wall_North" type="CSGBox3D" parent="Castle" unique_id=1851813262]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -10)
+use_collision = true
+size = Vector3(20, 5, 1)
+material = SubResource("Mat_Castle")
+
+[node name="Wall_East" type="CSGBox3D" parent="Castle" unique_id=601530386]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 2.5, 0)
+use_collision = true
+size = Vector3(1, 5, 20)
+material = SubResource("Mat_Castle")
+
+[node name="Wall_West" type="CSGBox3D" parent="Castle" unique_id=569239706]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 2.5, 0)
+use_collision = true
+size = Vector3(1, 5, 20)
+material = SubResource("Mat_Castle")
+
+[node name="Wall_SE" type="CSGBox3D" parent="Castle" unique_id=873584814]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.75, 2.5, 10)
+use_collision = true
+size = Vector3(7.5, 5, 1)
+material = SubResource("Mat_Castle")
+
+[node name="Wall_SW" type="CSGBox3D" parent="Castle" unique_id=16729273]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.75, 2.5, 10)
+use_collision = true
+size = Vector3(7.5, 5, 1)
+material = SubResource("Mat_Castle")
+
+[node name="Tower_NE" type="CSGCylinder3D" parent="Castle" unique_id=2099955102]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 3.5, -10)
+use_collision = true
+radius = 1.5
+height = 7.0
+material = SubResource("Mat_Castle")
+
+[node name="Tower_NW" type="CSGCylinder3D" parent="Castle" unique_id=1605734821]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 3.5, -10)
+use_collision = true
+radius = 1.5
+height = 7.0
+material = SubResource("Mat_Castle")
+
+[node name="Tower_SE" type="CSGCylinder3D" parent="Castle" unique_id=654601994]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 3.5, 10)
+use_collision = true
+radius = 1.5
+height = 7.0
+material = SubResource("Mat_Castle")
+
+[node name="Tower_SW" type="CSGCylinder3D" parent="Castle" unique_id=1471250362]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 3.5, 10)
+use_collision = true
+radius = 1.5
+height = 7.0
+material = SubResource("Mat_Castle")
+
+[node name="Gate" type="Node3D" parent="Castle" unique_id=15485347]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+
+[node name="GateDoor" type="CSGBox3D" parent="Castle/Gate" unique_id=301299451]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+use_collision = true
+size = Vector3(4.5, 5, 0.6)
+material = SubResource("Mat_Gate")
+
+[node name="GateHurtBox" type="Area3D" parent="Castle/Gate" unique_id=1814912010]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+script = ExtResource("9_hurtbox")
+health = 10
+
+[node name="GateHitShape" type="CollisionShape3D" parent="Castle/Gate/GateHurtBox" unique_id=105378868]
+shape = SubResource("Shape_GateHurt")
+
+[node name="GateZone" type="Area3D" parent="Castle/Gate" unique_id=627669205]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 1.2)
+
+[node name="GateZoneShape" type="CollisionShape3D" parent="Castle/Gate/GateZone" unique_id=1584439723]
+shape = SubResource("Shape_GateZone")
+
+[node name="GateHealthLabel" type="Label3D" parent="Castle/Gate" unique_id=640576236]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.8, 0)
+pixel_size = 0.01
+billboard = 2
+text = "Gate: 10/10"
+font_size = 64
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Castle" unique_id=1078185124]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.489681, 8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Castle/StaticBody3D" unique_id=679345197]
+shape = SubResource("BoxShape3D_a14ph")
+
+[node name="VRSpace" parent="." unique_id=841158329 instance=ExtResource("10_a14ph")]
+
+[node name="XRPlayer" parent="VRSpace/SubViewport" parent_id_path=PackedInt32Array(841158329, 1709074553) index="1" unique_id=1404813673]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 8.760864)
+
+[node name="AnimationTree" parent="VRSpace/SubViewport/XRPlayer/LeftHand/LeftHand" parent_id_path=PackedInt32Array(841158329, 1600276417) index="1"]
+tree_root = SubResource("AnimationNodeBlendTree_ka738")
+
+[node name="FunctionPickup" parent="VRSpace/SubViewport/XRPlayer/LeftHand" parent_id_path=PackedInt32Array(841158329, 2106749189) index="1" unique_id=1924663514 instance=ExtResource("5_w0s4v")]
+
+[node name="AnimationTree" parent="VRSpace/SubViewport/XRPlayer/RightHand/RightHand" parent_id_path=PackedInt32Array(841158329, 40282269) index="1"]
+tree_root = SubResource("AnimationNodeBlendTree_unmfg")
+
+[node name="MovementTurn" parent="VRSpace/SubViewport/XRPlayer/RightHand" parent_id_path=PackedInt32Array(841158329, 1667605568) index="1" unique_id=2008313491 instance=ExtResource("6_5cd4w")]
+
+[node name="FunctionPickup2" parent="VRSpace/SubViewport/XRPlayer/RightHand" parent_id_path=PackedInt32Array(841158329, 1667605568) index="2" unique_id=1988130203 instance=ExtResource("5_w0s4v")]
+
+[node name="FireOrb" parent="VRSpace" unique_id=107013500 instance=ExtResource("5_a14ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.9025006, 10)
+
+[node name="FireOrb2" parent="VRSpace" unique_id=1158891516 instance=ExtResource("5_a14ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 5.9025006, 10)
+
+[node name="BowGrip" parent="VRSpace" unique_id=777328390 instance=ExtResource("6_a14ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 5.9025006, 8.449216)
+
+[node name="CollisionShape3D" parent="VRSpace/BowGrip" index="0" unique_id=1198871219]
+shape = SubResource("SphereShape3D_g2kc1")
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="VRSpace/BowGrip" unique_id=1601548907]
+radius = 0.05
+
+[node name="Bow" parent="VRSpace" unique_id=1090233234 node_paths=PackedStringArray("bow_grip") instance=ExtResource("6_rjw0b")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 1, 5.9025006, 8.926395)
+bow_grip = NodePath("../BowGrip")
+
+[node name="VRArea" type="Node3D" parent="." unique_id=1226348335]
+
+[node name="AttackerArea" type="Node3D" parent="." unique_id=992782613]
+
+[node name="Catapult_Left" type="Node3D" parent="AttackerArea" unique_id=121794732 node_paths=PackedStringArray("gate_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 24)
+script = ExtResource("3_cat")
+gate_target = NodePath("../../Castle/Gate")
+boulder_scene = ExtResource("7_boulder")
+
+[node name="Base" type="CSGBox3D" parent="AttackerArea/Catapult_Left" unique_id=348459334]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+use_collision = true
+size = Vector3(3, 1, 4)
+material = SubResource("Mat_Catapult")
+
+[node name="Arm" type="CSGBox3D" parent="AttackerArea/Catapult_Left" unique_id=1231273111]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -0.5)
+size = Vector3(0.4, 3, 0.4)
+material = SubResource("Mat_Catapult")
+
+[node name="LaunchPoint" type="Node3D" parent="AttackerArea/Catapult_Left/Arm" unique_id=1140309124]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+
+[node name="OperatingZone" type="Area3D" parent="AttackerArea/Catapult_Left" unique_id=1997694]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="OperatingShape" type="CollisionShape3D" parent="AttackerArea/Catapult_Left/OperatingZone" unique_id=1145630682]
+shape = SubResource("Shape_OpZone")
+
+[node name="Cooldown" type="Timer" parent="AttackerArea/Catapult_Left" unique_id=1977081829]
+wait_time = 5.0
+one_shot = true
+
+[node name="Catapult_Right" type="Node3D" parent="AttackerArea" unique_id=1263149627 node_paths=PackedStringArray("gate_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, 24)
+script = ExtResource("3_cat")
+gate_target = NodePath("../../Castle/Gate")
+boulder_scene = ExtResource("7_boulder")
+
+[node name="Base" type="CSGBox3D" parent="AttackerArea/Catapult_Right" unique_id=244063937]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+use_collision = true
+size = Vector3(3, 1, 4)
+material = SubResource("Mat_Catapult")
+
+[node name="Arm" type="CSGBox3D" parent="AttackerArea/Catapult_Right" unique_id=292742461]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -0.5)
+size = Vector3(0.4, 3, 0.4)
+material = SubResource("Mat_Catapult")
+
+[node name="LaunchPoint" type="Node3D" parent="AttackerArea/Catapult_Right/Arm" unique_id=1597812344]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+
+[node name="OperatingZone" type="Area3D" parent="AttackerArea/Catapult_Right" unique_id=1764173642]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="OperatingShape" type="CollisionShape3D" parent="AttackerArea/Catapult_Right/OperatingZone" unique_id=1036991555]
+shape = SubResource("Shape_OpZoneR")
+
+[node name="Cooldown" type="Timer" parent="AttackerArea/Catapult_Right" unique_id=50431761]
+wait_time = 5.0
+one_shot = true
+
+[node name="Bomb_1" type="RigidBody3D" parent="AttackerArea" unique_id=1536503701]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0.35, 36)
+script = ExtResource("4_bomb")
+
+[node name="BombShape" type="CollisionShape3D" parent="AttackerArea/Bomb_1" unique_id=1914096248]
+shape = SubResource("Shape_BombBody")
+
+[node name="BombMesh" type="MeshInstance3D" parent="AttackerArea/Bomb_1" unique_id=546539458]
+mesh = SubResource("Mesh_Bomb")
+surface_material_override/0 = SubResource("Mat_Bomb")
+
+[node name="Bomb_2" type="RigidBody3D" parent="AttackerArea" unique_id=1121278533]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 36)
+script = ExtResource("4_bomb")
+
+[node name="BombShape" type="CollisionShape3D" parent="AttackerArea/Bomb_2" unique_id=2126211691]
+shape = SubResource("Shape_BombBodyB")
+
+[node name="BombMesh" type="MeshInstance3D" parent="AttackerArea/Bomb_2" unique_id=952812692]
+mesh = SubResource("Mesh_Bomb")
+surface_material_override/0 = SubResource("Mat_Bomb")
+
+[node name="Bomb_3" type="RigidBody3D" parent="AttackerArea" unique_id=56345853]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.35, 36)
+script = ExtResource("4_bomb")
+
+[node name="BombShape" type="CollisionShape3D" parent="AttackerArea/Bomb_3" unique_id=995092363]
+shape = SubResource("Shape_BombBodyC")
+
+[node name="BombMesh" type="MeshInstance3D" parent="AttackerArea/Bomb_3" unique_id=1623254641]
+mesh = SubResource("Mesh_Bomb")
+surface_material_override/0 = SubResource("Mat_Bomb")
+
+[node name="SpawnPoints" type="Node3D" parent="AttackerArea" unique_id=638643505]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 18)
+
+[node name="SpawnPoint1" type="Node3D" parent="AttackerArea/SpawnPoints" unique_id=121740798]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 24)
+
+[node name="SpawnPoint2" type="Node3D" parent="AttackerArea/SpawnPoints" unique_id=397950954]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 24)
+
+[node name="SpawnPoint3" type="Node3D" parent="AttackerArea/SpawnPoints" unique_id=1809687431]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 24)
+
+[node name="SpawnPoint4" type="Node3D" parent="AttackerArea/SpawnPoints" unique_id=131719029]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 24)
+
+[node name="GameoverUI" type="CanvasLayer" parent="." unique_id=1505173331]
+process_mode = 3
+
+[node name="GameoverPanel" type="Panel" parent="GameoverUI" unique_id=1331467529]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -150.0
+offset_right = 250.0
+offset_bottom = 150.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameoverUI/GameoverPanel" unique_id=129981223]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+
+[node name="GameoverLabel" type="Label" parent="GameoverUI/GameoverPanel/VBoxContainer" unique_id=2120906320]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Game Over"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MenuButton" type="Button" parent="GameoverUI/GameoverPanel/VBoxContainer" unique_id=850276619]
+layout_mode = 2
+text = "Main Menu"
+
+[node name="RestartButton" type="Button" parent="GameoverUI/GameoverPanel/VBoxContainer" unique_id=1475122634]
+layout_mode = 2
+text = "Restart"
+
+[editable path="VRSpace"]
+[editable path="VRSpace/StartXR"]
+[editable path="VRSpace/SubViewport/XRPlayer/PlayerBody/Body/characterMedium"]
+[editable path="VRSpace/SubViewport/XRPlayer/LeftHand/LeftHand"]
+[editable path="VRSpace/SubViewport/XRPlayer/LeftHand/LeftHand/Hand_Nails_low_L"]
+[editable path="VRSpace/SubViewport/XRPlayer/RightHand/RightHand"]
+[editable path="VRSpace/SubViewport/XRPlayer/RightHand/RightHand/Hand_Nails_low_R"]
+[editable path="VRSpace/BowGrip"]

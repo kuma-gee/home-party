@@ -19,7 +19,7 @@ text = "Start in 1s"
 font_size = 16
 
 [node name="StartTimer" type="Timer" parent="." unique_id=629465546]
-wait_time = 6.0
+wait_time = 3.0
 one_shot = true
 
 [node name="InteractArea" type="Area3D" parent="." unique_id=1428854167]

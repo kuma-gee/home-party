@@ -20,10 +20,8 @@
         "vite"
     ],
     "scripts": {
-        "dev": "node log.js dev & vite --config vite/config.dev.mjs",
-        "build": "node log.js build & vite build --config vite/config.prod.mjs && cp build ../build/web -r",
-        "dev-nolog": "vite --config vite/config.dev.mjs",
-        "build-nolog": "vite build --config vite/config.prod.mjs",
+        "dev": "vite --config vite/config.dev.mjs",
+        "build": "vite build --config vite/config.prod.mjs && cp build ../build/web -r",
         "preview": "vite preview --outDir build"
     },
     "devDependencies": {

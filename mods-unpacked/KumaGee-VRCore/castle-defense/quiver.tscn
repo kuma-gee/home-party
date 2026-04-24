@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://djoi8xbts60su"]
+
+[ext_resource type="PackedScene" uid="uid://ctj6x7rjrba72" path="res://mods-unpacked/KumaGee-VRCore/assets/skeletons/Skeleton_Quiver.gltf" id="1_rc1oh"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_e25wy"]
+radius = 0.3
+
+[node name="Quiver" type="Node3D" unique_id=832813409]
+
+[node name="Skeleton_Quiver2" parent="." unique_id=645743129 instance=ExtResource("1_rc1oh")]
+
+[node name="PickupArea" type="Area3D" parent="." unique_id=67548017]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.32661417, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PickupArea" unique_id=1205125084]
+shape = SubResource("SphereShape3D_e25wy")
