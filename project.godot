@@ -39,6 +39,10 @@ window/size/viewport_height=1080
 
 enabled=PackedStringArray("res://addons/barcode/plugin.cfg", "res://addons/godot-css-theme/plugin.cfg", "res://addons/godot-xr-tools/plugin.cfg", "res://addons/qr_code/plugin.cfg")
 
+[global_group]
+
+arrow=""
+
 [input]
 
 move_down={

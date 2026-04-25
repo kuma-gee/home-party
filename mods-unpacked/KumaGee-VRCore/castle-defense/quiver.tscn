@@ -1,16 +1,28 @@
 [gd_scene format=3 uid="uid://djoi8xbts60su"]
 
+[ext_resource type="Script" uid="uid://d1rjv6k45kah" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/quiver.gd" id="1_1t41b"]
 [ext_resource type="PackedScene" uid="uid://ctj6x7rjrba72" path="res://mods-unpacked/KumaGee-VRCore/assets/skeletons/Skeleton_Quiver.gltf" id="1_rc1oh"]
+[ext_resource type="PackedScene" uid="uid://dq1qe2qo3uiet" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/flying_arrow.tscn" id="2_1t41b"]
+[ext_resource type="PackedScene" uid="uid://ce7vysyvondf8" path="res://addons/godot-xr-tools/objects/snap_zone.tscn" id="4_1t41b"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_e25wy"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1t41b"]
 radius = 0.3
+height = 0.6872461
 
-[node name="Quiver" type="Node3D" unique_id=832813409]
+[node name="Quiver" type="Node3D" unique_id=832813409 node_paths=PackedStringArray("snap_zone")]
+script = ExtResource("1_1t41b")
+arrow_scene = ExtResource("2_1t41b")
+snap_zone = NodePath("SnapZone")
 
 [node name="Skeleton_Quiver2" parent="." unique_id=645743129 instance=ExtResource("1_rc1oh")]
 
-[node name="PickupArea" type="Area3D" parent="." unique_id=67548017]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.32661417, 0)
+[node name="SnapZone" parent="." unique_id=1883047161 instance=ExtResource("4_1t41b")]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.16510653, 0)
+snap_mode = 1
+snap_require = "arrow"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PickupArea" unique_id=1205125084]
-shape = SubResource("SphereShape3D_e25wy")
+[node name="CollisionShape3D" parent="SnapZone" index="0" unique_id=1451983608]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.007159335, 0.0016079247)
+shape = SubResource("CapsuleShape3D_1t41b")
+
+[editable path="SnapZone"]

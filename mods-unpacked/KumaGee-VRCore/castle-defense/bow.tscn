@@ -2,34 +2,27 @@
 
 [ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_mny1f"]
 [ext_resource type="Script" uid="uid://bky2ilv6su6ai" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/bow.gd" id="2_8s80g"]
-[ext_resource type="PackedScene" uid="uid://cdarrow00001" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrow.tscn" id="3_t4tkp"]
-[ext_resource type="PackedScene" uid="uid://b5jwtl04q7f1i" path="res://mods-unpacked/KumaGee-VRCore/assets/skeletons/Skeleton_Arrow.gltf" id="3_w87ky"]
 [ext_resource type="PackedScene" uid="uid://daucybh7twtqi" path="res://mods-unpacked/KumaGee-VRCore/assets/weapons/Assets/gltf/bow_B.gltf" id="4_k2jsv"]
 [ext_resource type="PackedScene" uid="uid://c25yxb0vt53vc" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_left.tscn" id="6_k2jsv"]
+[ext_resource type="PackedScene" uid="uid://ce7vysyvondf8" path="res://addons/godot-xr-tools/objects/snap_zone.tscn" id="7_7iw86"]
 [ext_resource type="PackedScene" uid="uid://ctw7nbntd5pcj" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_right.tscn" id="7_rvk8s"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_t4tkp"]
 size = Vector3(0.11743164, 0.7138672, 0.15917969)
 
-[sub_resource type="SphereMesh" id="SphereMesh_fes1g"]
-radius = 0.1
-height = 0.2
+[sub_resource type="SphereShape3D" id="SphereShape3D_k2jsv"]
+resource_local_to_scene = true
+radius = 0.3
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t4tkp"]
-albedo_color = Color(1, 0.4, 0, 1)
-emission_enabled = true
-emission = Color(1, 0.4, 0, 1)
-emission_energy_multiplier = 3.0
-
-[node name="Bow" unique_id=777328390 node_paths=PackedStringArray("arrow_pivot", "arrow_mesh", "string_top", "string_bottom", "grip_position") instance=ExtResource("1_mny1f")]
+[node name="Bow" unique_id=777328390 node_paths=PackedStringArray("arrow_pivot", "arrow_mesh", "arrow_snap", "string_top", "string_bottom", "grip_position") instance=ExtResource("1_mny1f")]
 script = ExtResource("2_8s80g")
-arrow_scene = ExtResource("3_t4tkp")
 arrow_speed = 22.0
 max_draw = 0.5
 min_draw = 0.3
 arrow_mesh_rest_offset = -0.35
 arrow_pivot = NodePath("ArrowPivot")
-arrow_mesh = NodePath("ArrowPivot/Skeleton_Arrow2")
+arrow_mesh = NodePath("ArrowPivot/ArrowMesh")
+arrow_snap = NodePath("ArrowPivot/ArrowMesh/SnapZone")
 string_top = NodePath("bow_B2/StringTop")
 string_bottom = NodePath("bow_B2/StringBottom")
 grip_position = NodePath("bow_B2/GripPosition")
@@ -54,14 +47,15 @@ transform = Transform3D(-1.3333334, 0, -1.165637e-07, 0, 1.3333334, 0, 1.165637e
 
 [node name="ArrowPivot" type="Node3D" parent="." index="2" unique_id=817822547]
 
-[node name="Skeleton_Arrow2" parent="ArrowPivot" index="0" unique_id=895236379 instance=ExtResource("3_w87ky")]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+[node name="ArrowMesh" type="Node3D" parent="ArrowPivot" index="0" unique_id=2075634195]
 
-[node name="ElementIndicator" type="MeshInstance3D" parent="ArrowPivot/Skeleton_Arrow2" index="1" unique_id=1178906261]
-transform = Transform3D(0.5, 0, 0, 0, -2.1855694e-08, 0.5, 0, -0.5, -2.1855694e-08, 0, -0.32829472, -0.0041855727)
-mesh = SubResource("SphereMesh_fes1g")
-skeleton = NodePath("../../..")
-surface_material_override/0 = SubResource("StandardMaterial3D_t4tkp")
+[node name="SnapZone" parent="ArrowPivot/ArrowMesh" index="0" unique_id=1883047161 instance=ExtResource("7_7iw86")]
+snap_mode = 1
+snap_require = "arrow"
+grab_exclude = "invalid"
+
+[node name="CollisionShape3D" parent="ArrowPivot/ArrowMesh/SnapZone" index="0" unique_id=1451983608]
+shape = SubResource("SphereShape3D_k2jsv")
 
 [node name="GrabPointHandRight" parent="." index="3" unique_id=2131231232 instance=ExtResource("7_rvk8s")]
 transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0.016571045, 0, -0.10812378)
@@ -70,3 +64,4 @@ transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0.01
 transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0.02668086, 0.004076129, -0.106446266)
 
 [editable path="bow_B2"]
+[editable path="ArrowPivot/ArrowMesh/SnapZone"]

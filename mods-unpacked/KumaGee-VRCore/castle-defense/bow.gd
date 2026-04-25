@@ -2,15 +2,15 @@
 class_name Bow
 extends XRToolsPickable
 
-@export var arrow_scene: PackedScene
 @export var arrow_speed := 20.0
 @export var max_draw := 0.5
 @export var min_draw := 0.05
 
-@export_category("Arrow Visual")
+@export_category("Arrow")
 @export var arrow_mesh_rest_offset := -0.35
 @export var arrow_pivot: Node3D
 @export var arrow_mesh: Node3D
+@export var arrow_snap: XRToolsSnapZone
 
 @export_category("String")
 @export var bow_grip: XRToolsPickable
@@ -20,6 +20,7 @@ extends XRToolsPickable
 @export var string_thickness := 0.01
 
 var current_element := Arrow.Element.FIRE
+var arrow_body: Arrow
 
 var _grip_held := false
 
@@ -34,15 +35,17 @@ func _ready() -> void:
 	if bow_grip:
 		bow_grip.picked_up.connect(_on_grip_picked_up)
 		bow_grip.dropped.connect(_on_grip_dropped)
+		
+	arrow_snap.has_picked_up.connect(_on_arrow_placed)
 	
-	action_pressed.connect(func(_p): _prepare_arrow())
 	picked_up.connect(func(_p): bow_grip.enabled = true)
 	dropped.connect(func(_p): bow_grip.enabled = false)
 	_grip_held = false
 	bow_grip.enabled = false
 
-func _prepare_arrow():
-	var arrow = arrow_scene.instantiate()
+func _on_arrow_placed(arrow: XRToolsPickable) -> void:
+	arrow.enabled = false
+	arrow_body = arrow
 
 func _setup_string_visual() -> void:
 	var mat := StandardMaterial3D.new()
@@ -105,14 +108,11 @@ func _physics_process(_delta: float) -> void:
 		arrow_pivot.look_at(flip_target, Vector3.UP)
 
 func _fire(draw: float) -> void:
-	if not arrow_scene:
-		return
-	var arrow := arrow_scene.instantiate() as Arrow
-	arrow.element = current_element
-	get_tree().current_scene.add_child(arrow)
-	arrow.global_position = to_global(Vector3(0.0, 0.0, arrow_mesh_rest_offset + draw))
+	if arrow_body == null: return
+	arrow_snap.drop_object()
 	var speed := lerpf(5.0, arrow_speed, draw / max_draw)
-	arrow.linear_velocity = -global_transform.basis.z * speed
+	arrow_body.fire(-global_transform.basis.z * speed)
+	arrow_body = null
 
 func _update_arrow_draw(draw: float) -> void:
 	if is_instance_valid(arrow_mesh):
