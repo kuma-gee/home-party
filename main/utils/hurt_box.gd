@@ -4,7 +4,7 @@ extends Area3D
 signal health_changed()
 signal died()
 
-@export var health := 3:
+@export var health := 1:
 	set(v):
 		health = v
 		health_changed.emit()

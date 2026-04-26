@@ -10,7 +10,7 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_t4tkp"]
 size = Vector3(0.11743164, 0.7138672, 0.15917969)
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_k2jsv"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_yo5b1"]
 resource_local_to_scene = true
 radius = 0.3
 
@@ -55,7 +55,7 @@ snap_require = "arrow"
 grab_exclude = "invalid"
 
 [node name="CollisionShape3D" parent="ArrowPivot/ArrowMesh/SnapZone" index="0" unique_id=1451983608]
-shape = SubResource("SphereShape3D_k2jsv")
+shape = SubResource("SphereShape3D_yo5b1")
 
 [node name="GrabPointHandRight" parent="." index="3" unique_id=2131231232 instance=ExtResource("7_rvk8s")]
 transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0.016571045, 0, -0.10812378)

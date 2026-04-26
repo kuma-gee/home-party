@@ -1,0 +1,53 @@
+[gd_scene load_steps=9 format=3 uid="uid://cncpidtogjnp6"]
+
+[ext_resource type="Texture2D" uid="uid://ce37fcn8ptva0" path="res://assets/particles/course/Circle.png" id="1_p3155"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yokb4"]
+transparency = 1
+blend_mode = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_texture = ExtResource("1_p3155")
+
+[sub_resource type="Curve" id="Curve_35c7g"]
+_data = [Vector2(0, 0.5393259), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_n068f"]
+_limits = [0.0, 3.5, 0.0, 1.0]
+_data = [Vector2(0, 3.5), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_g8a64"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_uvldv"]
+curve_x = SubResource("Curve_35c7g")
+curve_y = SubResource("Curve_n068f")
+curve_z = SubResource("Curve_g8a64")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_yokb4"]
+particle_flag_align_y = true
+spread = 15.0
+initial_velocity_min = 5.0
+initial_velocity_max = 10.0
+scale_min = 0.049999997
+scale_max = 0.14999999
+scale_curve = SubResource("CurveXYZTexture_uvldv")
+color = Color(3.2944162, 1.987145, 1.3646345, 1)
+collision_mode = 1
+collision_friction = 0.0
+collision_bounce = 0.3
+collision_use_scale = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_yokb4"]
+
+[node name="Spark" type="GPUParticles3D"]
+material_override = SubResource("StandardMaterial3D_yokb4")
+amount = 40
+lifetime = 0.5
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_yokb4")
+draw_pass_1 = SubResource("QuadMesh_yokb4")

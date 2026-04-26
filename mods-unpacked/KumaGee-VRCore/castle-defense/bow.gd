@@ -37,6 +37,7 @@ func _ready() -> void:
 		bow_grip.dropped.connect(_on_grip_dropped)
 		
 	arrow_snap.has_picked_up.connect(_on_arrow_placed)
+	arrow_snap.has_dropped.connect(_on_arrow_dropped)
 	
 	picked_up.connect(func(_p): bow_grip.enabled = true)
 	dropped.connect(func(_p): bow_grip.enabled = false)
@@ -46,6 +47,10 @@ func _ready() -> void:
 func _on_arrow_placed(arrow: XRToolsPickable) -> void:
 	arrow.enabled = false
 	arrow_body = arrow
+	bow_grip.enabled = true
+
+func _on_arrow_dropped() -> void:
+	bow_grip.enabled = false
 
 func _setup_string_visual() -> void:
 	var mat := StandardMaterial3D.new()
@@ -97,8 +102,9 @@ func _physics_process(_delta: float) -> void:
 		_update_string_visual()
 		_update_arrow_draw(0.15)
 		return
-	var local_grip := to_local(bow_grip.global_position)
-	_draw_distance = clamp(local_grip.z, 0.0, max_draw)
+	
+	var draw := bow_grip.global_position.distance_to(arrow_pivot.global_position)
+	_draw_distance = clamp(draw, 0.0, max_draw)
 	_update_arrow_draw(_draw_distance)
 	_update_string_visual()
 
@@ -109,9 +115,11 @@ func _physics_process(_delta: float) -> void:
 
 func _fire(draw: float) -> void:
 	if arrow_body == null: return
+	var dir = bow_grip.global_position.direction_to(arrow_pivot.global_position)
+
 	arrow_snap.drop_object()
 	var speed := lerpf(5.0, arrow_speed, draw / max_draw)
-	arrow_body.fire(-global_transform.basis.z * speed)
+	arrow_body.fire(dir * speed)
 	arrow_body = null
 
 func _update_arrow_draw(draw: float) -> void:

@@ -1,6 +1,8 @@
 class_name FPSPlayer
 extends CharacterBody3D
 
+signal died()
+
 @export var speed := 1.0
 @export var push_force = 2.0
 
@@ -10,6 +12,7 @@ extends CharacterBody3D
 @export var hand: PickupHand3D
 
 @onready var ground_spring_cast: GroundSpringCast = $GroundSpringCast
+@onready var hurtbox: HurtBox = $Hurtbox
 
 var game_client: GameClient
 var player_num := 0
@@ -17,7 +20,8 @@ var player_num := 0
 func _ready():
 	#reset()
 	color_ring.color = colors[player_num % colors.size()]
-	game_client.input_received.connect(func(input, value):
+	hurtbox.died.connect(func(): died.emit())
+	game_client.input_received.connect(func(input, _value):
 		if input == "action":
 			hand.action()
 	)
