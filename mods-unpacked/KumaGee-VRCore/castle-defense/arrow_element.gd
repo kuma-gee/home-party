@@ -2,7 +2,8 @@ class_name ArrowElement
 extends Area3D
 
 const ELEMENT_SCENE = {
-	Arrow.Element.FIRE: preload("uid://bnh078xxhjtqf")
+	Arrow.Element.FIRE: preload("uid://bnh078xxhjtqf"),
+	Arrow.Element.ICE: preload("uid://c684oj6gh0t68"),
 }
 
 @export var visual: MeshInstance3D

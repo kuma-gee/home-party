@@ -10,15 +10,33 @@ signal started_game(game: GameResource)
 @onready var game_loader: GameLoader = $GameLoader
 @onready var game_details: Sprite3D = $GameDetails
 
+var games = []
+var logger := KumaLog.new("GameShelve")
+
 func _ready() -> void:
 	_populate()
+	for game in games:
+		if game:
+			logger.info("Game: %s" % game.name)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		var key = event as InputEventKey
+		if key.shift_pressed:
+			var code = key.keycode
+			if code >= KEY_1 and code <= KEY_9:
+				var idx = code - KEY_1
+				if idx < games.size():
+					var g = games[idx]
+					if g:
+						started_game.emit(g)
 
 func _populate() -> void:
 	for child in get_children():
 		if typeof(child) == TYPE_OBJECT and child.name.begins_with("game_icon_"):
 			child.queue_free()
 
-	var games: Array = []
+	games = []
 	if game_loader:
 		games = game_loader.list_games()
 

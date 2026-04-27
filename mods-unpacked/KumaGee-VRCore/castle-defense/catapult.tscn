@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://cvpfijeg6ambj"]
+
+[ext_resource type="Script" uid="uid://clgft3mio2mex" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/catapult.gd" id="1_r51br"]
+[ext_resource type="PackedScene" uid="uid://cdboulder001" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/boulder.tscn" id="2_k01xs"]
+[ext_resource type="PackedScene" uid="uid://burfl5ip86htg" path="res://mods-unpacked/KumaGee-VRCore/assets/castle/Models/GLB format/siege-catapult.glb" id="3_sea00"]
+
+[sub_resource type="SphereShape3D" id="Shape_OpZone"]
+radius = 2.0
+
+[node name="Catapult" type="Node3D" unique_id=188247881 node_paths=PackedStringArray("gate_target")]
+script = ExtResource("1_r51br")
+gate_target = NodePath("")
+boulder_scene = ExtResource("2_k01xs")
+
+[node name="siege-catapult2" parent="." unique_id=1026443418 instance=ExtResource("3_sea00")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
+
+[node name="OperatingZone" type="Area3D" parent="." unique_id=1954401998]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.002678156, 0)
+
+[node name="OperatingShape" type="CollisionShape3D" parent="OperatingZone" unique_id=1726657920]
+shape = SubResource("Shape_OpZone")
+debug_color = Color(0.82435143, 0.0016524249, 0.9585865, 0.41960785)
+
+[node name="Cooldown" type="Timer" parent="." unique_id=1044956707]
+wait_time = 5.0
+one_shot = true

@@ -33,7 +33,7 @@ var lerp_time : float = 0.0
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta : float) -> void:
 	# Skip if no primary node
-	if not is_instance_valid(primary):
+	if not is_instance_valid(primary) or not is_instance_valid(primary.by):
 		return
 
 	# Set destination from primary grab

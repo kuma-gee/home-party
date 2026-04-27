@@ -43,7 +43,17 @@ signal request_quit
 
 @export var xr_player: VRSpace
 
+var escape_timer := 0.0
+
 ## Interface
+
+func _process(delta: float) -> void:
+	if Input.is_key_pressed(Key.KEY_ESCAPE):
+		escape_timer += delta
+		if escape_timer >= 5.0:
+			exit_to_main_menu()
+	else:
+		escape_timer = 0.0
 
 # Add support for is_xr_class on XRTools classes
 func is_xr_class(xr_name:  String) -> bool:

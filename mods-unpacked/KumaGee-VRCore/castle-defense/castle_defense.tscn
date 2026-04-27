@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cdcastle0001"]
 
 [ext_resource type="Script" uid="uid://bo8dkp1wvefbu" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/castle_defense.gd" id="1_cdef"]
-[ext_resource type="Script" uid="uid://clgft3mio2mex" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/catapult.gd" id="3_cat"]
+[ext_resource type="PackedScene" uid="uid://cdd6171l52vtj" path="res://mods-unpacked/KumaGee-VRCore/assets/castle/Models/GLB format/siege-trebuchet.glb" id="3_iwc37"]
 [ext_resource type="Script" uid="uid://8p0xhl610wdb" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/bomb.gd" id="4_bomb"]
 [ext_resource type="PackedScene" uid="uid://djoi8xbts60su" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/quiver.tscn" id="5_5cd4w"]
 [ext_resource type="PackedScene" uid="uid://dvcr7erf7sa4h" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/fire_orb.tscn" id="5_a14ph"]
@@ -10,105 +10,87 @@
 [ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="6_5cd4w"]
 [ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="6_a14ph"]
 [ext_resource type="PackedScene" uid="uid://bkh78koqbpbod" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/bow.tscn" id="6_rjw0b"]
-[ext_resource type="PackedScene" uid="uid://cdboulder001" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/boulder.tscn" id="7_boulder"]
 [ext_resource type="Script" uid="uid://crtkl6ldhona6" path="res://main/utils/hurt_box.gd" id="9_hurtbox"]
 [ext_resource type="PackedScene" uid="uid://btlljhtniv3dr" path="res://main/vr/vr_space.tscn" id="10_a14ph"]
 [ext_resource type="Script" uid="uid://b1f1y52jugtns" path="res://mods-unpacked/KumaGee-VRCore/player/player_spawner.gd" id="14_jv2d0"]
+[ext_resource type="PackedScene" uid="uid://rhhi8qthwtiy" path="res://mods-unpacked/KumaGee-VRCore/assets/castle/Models/GLB format/gate.glb" id="15_fh86t"]
+[ext_resource type="PackedScene" uid="uid://cvpfijeg6ambj" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/catapult.tscn" id="15_ka738"]
+[ext_resource type="PackedScene" uid="uid://c0cmbpfpgdlpu" path="res://mods-unpacked/KumaGee-VRCore/assets/castle/Models/GLB format/wall-corner-half-tower.glb" id="18_iwc37"]
+[ext_resource type="PackedScene" uid="uid://dtwqu5m4nsy5r" path="res://mods-unpacked/KumaGee-VRCore/assets/castle/Models/GLB format/wall-half.glb" id="24_bm3dj"]
 
 [sub_resource type="StandardMaterial3D" id="Mat_Ground"]
 albedo_color = Color(0.35, 0.52, 0.28, 1)
 
-[sub_resource type="StandardMaterial3D" id="Mat_Castle"]
-albedo_color = Color(0.65, 0.62, 0.57, 1)
-roughness = 0.95
-
-[sub_resource type="StandardMaterial3D" id="Mat_Gate"]
-albedo_color = Color(0.42, 0.27, 0.13, 1)
-roughness = 0.85
-
 [sub_resource type="BoxShape3D" id="Shape_GateHurt"]
-size = Vector3(4.5, 5, 0.6)
-
-[sub_resource type="BoxShape3D" id="Shape_GateZone"]
-size = Vector3(5, 4, 2)
+size = Vector3(2.2001953, 2.074707, 0.6)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_a14ph"]
-size = Vector3(14.886963, 1, 3.2265625)
+size = Vector3(14.886963, 1, 1.5740967)
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jv2d0"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_iwc37"]
 animation = &"Grip"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fh86t"]
-animation = &"Grip"
-
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_areys"]
-filter_enabled = true
-filters = ["Armature/Skeleton3D:Little_Distal_L", "Armature/Skeleton3D:Little_Intermediate_L", "Armature/Skeleton3D:Little_Metacarpal_L", "Armature/Skeleton3D:Little_Proximal_L", "Armature/Skeleton3D:Middle_Distal_L", "Armature/Skeleton3D:Middle_Intermediate_L", "Armature/Skeleton3D:Middle_Metacarpal_L", "Armature/Skeleton3D:Middle_Proximal_L", "Armature/Skeleton3D:Ring_Distal_L", "Armature/Skeleton3D:Ring_Intermediate_L", "Armature/Skeleton3D:Ring_Metacarpal_L", "Armature/Skeleton3D:Ring_Proximal_L", "Armature/Skeleton3D:Thumb_Distal_L", "Armature/Skeleton3D:Thumb_Metacarpal_L", "Armature/Skeleton3D:Thumb_Proximal_L", "Armature/Skeleton:Little_Distal_L", "Armature/Skeleton:Little_Intermediate_L", "Armature/Skeleton:Little_Proximal_L", "Armature/Skeleton:Middle_Distal_L", "Armature/Skeleton:Middle_Intermediate_L", "Armature/Skeleton:Middle_Proximal_L", "Armature/Skeleton:Ring_Distal_L", "Armature/Skeleton:Ring_Intermediate_L", "Armature/Skeleton:Ring_Proximal_L", "Armature/Skeleton:Thumb_Distal_L", "Armature/Skeleton:Thumb_Proximal_L"]
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ka738"]
-animation = &"Grip 5"
-
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_a11e3"]
-filter_enabled = true
-filters = ["Armature/Skeleton3D:Index_Distal_L", "Armature/Skeleton3D:Index_Intermediate_L", "Armature/Skeleton3D:Index_Metacarpal_L", "Armature/Skeleton3D:Index_Proximal_L", "Armature/Skeleton:Index_Distal_L", "Armature/Skeleton:Index_Intermediate_L", "Armature/Skeleton:Index_Proximal_L"]
-
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_iwc37"]
-graph_offset = Vector2(-536, 11)
-nodes/ClosedHand1/node = SubResource("AnimationNodeAnimation_jv2d0")
-nodes/ClosedHand1/position = Vector2(-600, 300)
-nodes/ClosedHand2/node = SubResource("AnimationNodeAnimation_fh86t")
-nodes/ClosedHand2/position = Vector2(-360, 300)
-nodes/Grip/node = SubResource("AnimationNodeBlend2_areys")
-nodes/Grip/position = Vector2(0, 20)
-nodes/OpenHand/node = SubResource("AnimationNodeAnimation_ka738")
-nodes/OpenHand/position = Vector2(-600, 100)
-nodes/Trigger/node = SubResource("AnimationNodeBlend2_a11e3")
-nodes/Trigger/position = Vector2(-360, 20)
-node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jsi8f"]
 animation = &"Grip"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_3sspo"]
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_3sspo"]
+filter_enabled = true
+filters = ["Armature/Skeleton3D:Little_Distal_L", "Armature/Skeleton3D:Little_Intermediate_L", "Armature/Skeleton3D:Little_Metacarpal_L", "Armature/Skeleton3D:Little_Proximal_L", "Armature/Skeleton3D:Middle_Distal_L", "Armature/Skeleton3D:Middle_Intermediate_L", "Armature/Skeleton3D:Middle_Metacarpal_L", "Armature/Skeleton3D:Middle_Proximal_L", "Armature/Skeleton3D:Ring_Distal_L", "Armature/Skeleton3D:Ring_Intermediate_L", "Armature/Skeleton3D:Ring_Metacarpal_L", "Armature/Skeleton3D:Ring_Proximal_L", "Armature/Skeleton3D:Thumb_Distal_L", "Armature/Skeleton3D:Thumb_Metacarpal_L", "Armature/Skeleton3D:Thumb_Proximal_L", "Armature/Skeleton:Little_Distal_L", "Armature/Skeleton:Little_Intermediate_L", "Armature/Skeleton:Little_Proximal_L", "Armature/Skeleton:Middle_Distal_L", "Armature/Skeleton:Middle_Intermediate_L", "Armature/Skeleton:Middle_Proximal_L", "Armature/Skeleton:Ring_Distal_L", "Armature/Skeleton:Ring_Intermediate_L", "Armature/Skeleton:Ring_Proximal_L", "Armature/Skeleton:Thumb_Distal_L", "Armature/Skeleton:Thumb_Proximal_L"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rtkkv"]
+animation = &"Grip 5"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_unmfg"]
+filter_enabled = true
+filters = ["Armature/Skeleton3D:Index_Distal_L", "Armature/Skeleton3D:Index_Intermediate_L", "Armature/Skeleton3D:Index_Metacarpal_L", "Armature/Skeleton3D:Index_Proximal_L", "Armature/Skeleton:Index_Distal_L", "Armature/Skeleton:Index_Intermediate_L", "Armature/Skeleton:Index_Proximal_L"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_g2kc1"]
+graph_offset = Vector2(-536, 11)
+nodes/ClosedHand1/node = SubResource("AnimationNodeAnimation_iwc37")
+nodes/ClosedHand1/position = Vector2(-600, 300)
+nodes/ClosedHand2/node = SubResource("AnimationNodeAnimation_jsi8f")
+nodes/ClosedHand2/position = Vector2(-360, 300)
+nodes/Grip/node = SubResource("AnimationNodeBlend2_3sspo")
+nodes/Grip/position = Vector2(0, 20)
+nodes/OpenHand/node = SubResource("AnimationNodeAnimation_rtkkv")
+nodes/OpenHand/position = Vector2(-600, 100)
+nodes/Trigger/node = SubResource("AnimationNodeBlend2_unmfg")
+nodes/Trigger/position = Vector2(-360, 20)
+node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_olop0"]
 animation = &"Grip"
 
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_rtkkv"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_aphlo"]
+animation = &"Grip"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_l2bl0"]
 filter_enabled = true
 filters = ["Armature/Skeleton3D:Little_Distal_R", "Armature/Skeleton3D:Little_Intermediate_R", "Armature/Skeleton3D:Little_Metacarpal_R", "Armature/Skeleton3D:Little_Proximal_R", "Armature/Skeleton3D:Middle_Distal_R", "Armature/Skeleton3D:Middle_Intermediate_R", "Armature/Skeleton3D:Middle_Metacarpal_R", "Armature/Skeleton3D:Middle_Proximal_R", "Armature/Skeleton3D:Ring_Distal_R", "Armature/Skeleton3D:Ring_Intermediate_R", "Armature/Skeleton3D:Ring_Metacarpal_R", "Armature/Skeleton3D:Ring_Proximal_R", "Armature/Skeleton3D:Thumb_Distal_R", "Armature/Skeleton3D:Thumb_Metacarpal_R", "Armature/Skeleton3D:Thumb_Proximal_R", "Armature/Skeleton:Little_Distal_R", "Armature/Skeleton:Little_Intermediate_R", "Armature/Skeleton:Little_Proximal_R", "Armature/Skeleton:Middle_Distal_R", "Armature/Skeleton:Middle_Intermediate_R", "Armature/Skeleton:Middle_Proximal_R", "Armature/Skeleton:Ring_Distal_R", "Armature/Skeleton:Ring_Intermediate_R", "Armature/Skeleton:Ring_Proximal_R", "Armature/Skeleton:Thumb_Distal_R", "Armature/Skeleton:Thumb_Proximal_R"]
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_unmfg"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_bm3dj"]
 animation = &"Grip 5"
 
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_g2kc1"]
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_lt420"]
 filter_enabled = true
 filters = ["Armature/Skeleton3D:Index_Distal_R", "Armature/Skeleton3D:Index_Intermediate_R", "Armature/Skeleton3D:Index_Metacarpal_R", "Armature/Skeleton3D:Index_Proximal_R", "Armature/Skeleton:Index_Distal_R", "Armature/Skeleton:Index_Intermediate_R", "Armature/Skeleton:Index_Proximal_R"]
 
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_olop0"]
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_h2716"]
 graph_offset = Vector2(-552.664, 107.301)
-nodes/ClosedHand1/node = SubResource("AnimationNodeAnimation_jsi8f")
+nodes/ClosedHand1/node = SubResource("AnimationNodeAnimation_olop0")
 nodes/ClosedHand1/position = Vector2(-600, 300)
-nodes/ClosedHand2/node = SubResource("AnimationNodeAnimation_3sspo")
+nodes/ClosedHand2/node = SubResource("AnimationNodeAnimation_aphlo")
 nodes/ClosedHand2/position = Vector2(-360, 300)
-nodes/Grip/node = SubResource("AnimationNodeBlend2_rtkkv")
+nodes/Grip/node = SubResource("AnimationNodeBlend2_l2bl0")
 nodes/Grip/position = Vector2(0, 40)
-nodes/OpenHand/node = SubResource("AnimationNodeAnimation_unmfg")
+nodes/OpenHand/node = SubResource("AnimationNodeAnimation_bm3dj")
 nodes/OpenHand/position = Vector2(-600, 100)
-nodes/Trigger/node = SubResource("AnimationNodeBlend2_g2kc1")
+nodes/Trigger/node = SubResource("AnimationNodeBlend2_lt420")
 nodes/Trigger/position = Vector2(-360, 40)
 node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_g2kc1"]
 radius = 0.067832924
-
-[sub_resource type="StandardMaterial3D" id="Mat_Catapult"]
-albedo_color = Color(0.38, 0.25, 0.12, 1)
-roughness = 0.9
-
-[sub_resource type="SphereShape3D" id="Shape_OpZone"]
-radius = 3.5
-
-[sub_resource type="SphereShape3D" id="Shape_OpZoneR"]
-radius = 3.5
 
 [sub_resource type="SphereShape3D" id="Shape_BombBody"]
 radius = 0.3
@@ -127,21 +109,18 @@ radius = 0.3
 [sub_resource type="SphereShape3D" id="Shape_BombBodyC"]
 radius = 0.3
 
-[node name="CastleDefense" type="Node3D" unique_id=1524346607 node_paths=PackedStringArray("menu_button", "restart_button", "gameover_ui", "gameover_label", "gate_hurtbox", "gate_zone", "gate_label", "spawn_points", "xr_player")]
+[node name="CastleDefense" type="Node3D" unique_id=1524346607 node_paths=PackedStringArray("menu_button", "restart_button", "gameover_ui", "gameover_label", "gate_hurtbox", "gate_label", "xr_player")]
 script = ExtResource("1_cdef")
 menu_button = NodePath("GameoverUI/GameoverPanel/VBoxContainer/MenuButton")
 restart_button = NodePath("GameoverUI/GameoverPanel/VBoxContainer/RestartButton")
 gameover_ui = NodePath("GameoverUI/GameoverPanel")
 gameover_label = NodePath("GameoverUI/GameoverPanel/VBoxContainer/GameoverLabel")
 gate_hurtbox = NodePath("Castle/Gate/GateHurtBox")
-gate_zone = NodePath("Castle/Gate/GateZone")
 gate_label = NodePath("Castle/Gate/GateHealthLabel")
-player_scene = ExtResource("5_fps")
-spawn_points = [NodePath("AttackerArea/SpawnPoints/SpawnPoint1"), NodePath("AttackerArea/SpawnPoints/SpawnPoint2"), NodePath("AttackerArea/SpawnPoints/SpawnPoint3"), NodePath("AttackerArea/SpawnPoints/SpawnPoint4")]
 xr_player = NodePath("VRSpace")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1645281176]
-transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+transform = Transform3D(-0.8660254, -0.43301278, 0.25000006, 0.36503947, -0.20587765, 0.90794307, -0.34168154, 0.87756157, 0.336362, 0, 64.29676, 0)
 shadow_enabled = true
 
 [node name="PlayTime" type="Timer" parent="." unique_id=96472218]
@@ -156,90 +135,126 @@ size = Vector3(60, 0.5, 60)
 material = SubResource("Mat_Ground")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1181458762]
-transform = Transform3D(1, 0, 0, 0, 0.50000006, 0.8660254, 0, -0.8660254, 0.50000006, 0, 21, 37)
+transform = Transform3D(0.99999607, -0.0027975373, 3.6160007e-05, 0.0012877852, 0.47172356, 0.8817456, -0.0024837735, -0.88174206, 0.47172534, 0, 44.123127, 44.494568)
+fov = 25.0
 
 [node name="Castle" type="Node3D" parent="." unique_id=775708432]
 
-[node name="Wall_North" type="CSGBox3D" parent="Castle" unique_id=1851813262]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -10)
-use_collision = true
-size = Vector3(20, 5, 1)
-material = SubResource("Mat_Castle")
+[node name="siege-trebuchet2" parent="Castle" unique_id=1537004139 instance=ExtResource("3_iwc37")]
+transform = Transform3D(-1.09278474e-07, 0, -2.5, 0, 2.5, 0, 2.5, 0, -1.09278474e-07, 0, 0, 1)
 
-[node name="Wall_East" type="CSGBox3D" parent="Castle" unique_id=601530386]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 2.5, 0)
-use_collision = true
-size = Vector3(1, 5, 20)
-material = SubResource("Mat_Castle")
+[node name="Meshes" type="Node3D" parent="Castle" unique_id=577322639]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 9)
 
-[node name="Wall_West" type="CSGBox3D" parent="Castle" unique_id=569239706]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 2.5, 0)
-use_collision = true
-size = Vector3(1, 5, 20)
-material = SubResource("Mat_Castle")
+[node name="wall-corner-half-tower2" parent="Castle/Meshes" unique_id=1432641288 instance=ExtResource("18_iwc37")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
 
-[node name="Wall_SE" type="CSGBox3D" parent="Castle" unique_id=873584814]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.75, 2.5, 10)
-use_collision = true
-size = Vector3(7.5, 5, 1)
-material = SubResource("Mat_Castle")
+[node name="wall-corner-half-tower3" parent="Castle/Meshes" unique_id=1007671777 instance=ExtResource("18_iwc37")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -4, 0, 0)
 
-[node name="Wall_SW" type="CSGBox3D" parent="Castle" unique_id=16729273]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.75, 2.5, 10)
-use_collision = true
-size = Vector3(7.5, 5, 1)
-material = SubResource("Mat_Castle")
+[node name="wall-half2" parent="Castle/Meshes" unique_id=1341513587 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 3, 0, 0)
 
-[node name="Tower_NE" type="CSGCylinder3D" parent="Castle" unique_id=2099955102]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 3.5, -10)
-use_collision = true
-radius = 1.5
-height = 7.0
-material = SubResource("Mat_Castle")
+[node name="wall-half4" parent="Castle/Meshes" unique_id=1995247260 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(0.0025481342, -1.11384395e-10, 0.9999968, 1.4068683e-13, 1, 1.11384395e-10, -0.9999968, -1.406917e-13, 0.0025481342, 2, 0, 0)
 
-[node name="Tower_NW" type="CSGCylinder3D" parent="Castle" unique_id=1605734821]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 3.5, -10)
-use_collision = true
-radius = 1.5
-height = 7.0
-material = SubResource("Mat_Castle")
+[node name="wall-half5" parent="Castle/Meshes" unique_id=927780497 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1, 0, 0)
 
-[node name="Tower_SE" type="CSGCylinder3D" parent="Castle" unique_id=654601994]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 3.5, 10)
-use_collision = true
-radius = 1.5
-height = 7.0
-material = SubResource("Mat_Castle")
+[node name="wall-half6" parent="Castle/Meshes" unique_id=1715298125 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
 
-[node name="Tower_SW" type="CSGCylinder3D" parent="Castle" unique_id=1471250362]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 3.5, 10)
-use_collision = true
-radius = 1.5
-height = 7.0
-material = SubResource("Mat_Castle")
+[node name="wall-half7" parent="Castle/Meshes" unique_id=756328910 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -1, 0, 0)
+
+[node name="wall-half8" parent="Castle/Meshes" unique_id=331618293 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2, 0, 0)
+
+[node name="wall-half9" parent="Castle/Meshes" unique_id=2036693317 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -3, 0, 0)
+
+[node name="wall-corner-half-tower4" parent="Castle/Meshes" unique_id=558853730 instance=ExtResource("18_iwc37")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -4, 0, -6.9999995)
+
+[node name="wall-corner-half-tower5" parent="Castle/Meshes" unique_id=1378508987 instance=ExtResource("18_iwc37")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 4, 0, -7.0000005)
+
+[node name="wall-half11" parent="Castle/Meshes" unique_id=261453659 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, -3, 0, -6.9999995)
+
+[node name="wall-half12" parent="Castle/Meshes" unique_id=1518495307 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(-0.0025480469, 1.113844e-10, -0.9999968, 1.4068683e-13, 1, 1.11384395e-10, 0.9999968, 1.4068195e-13, -0.0025480469, -2, 0, -7)
+
+[node name="wall-half13" parent="Castle/Meshes" unique_id=175800382 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, -1, 0, -7)
+
+[node name="wall-half14" parent="Castle/Meshes" unique_id=1164713432 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, 0, 0, -7)
+
+[node name="wall-half15" parent="Castle/Meshes" unique_id=1357019974 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, 1, 0, -7)
+
+[node name="wall-half16" parent="Castle/Meshes" unique_id=1726314052 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, 2, 0, -7)
+
+[node name="wall-half17" parent="Castle/Meshes" unique_id=678304852 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, 3, 0, -7.0000005)
+
+[node name="wall-half3" parent="Castle/Meshes" unique_id=585117030 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(-1, 0, -2.9802322e-08, 0, 1, 0, 2.9802322e-08, 0, -1, 4, 0, -1)
+
+[node name="wall-half10" parent="Castle/Meshes" unique_id=1596274740 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(-1, 0, -2.9802322e-08, 0, 1, 0, 2.9802322e-08, 0, -1, 4, 0, -2)
+
+[node name="wall-half18" parent="Castle/Meshes" unique_id=1945645124 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(-1, 0, -2.9802322e-08, 0, 1, 0, 2.9802322e-08, 0, -1, 4, 0, -3)
+
+[node name="wall-half19" parent="Castle/Meshes" unique_id=725932598 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(-1, 0, -2.9802322e-08, 0, 1, 0, 2.9802322e-08, 0, -1, 4, 0, -4)
+
+[node name="wall-half20" parent="Castle/Meshes" unique_id=1722384573 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(-1, 0, -2.9802322e-08, 0, 1, 0, 2.9802322e-08, 0, -1, 4, 0, -5)
+
+[node name="wall-half21" parent="Castle/Meshes" unique_id=333350501 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(-1, 0, -2.9802322e-08, 0, 1, 0, 2.9802322e-08, 0, -1, 4, 0, -5)
+
+[node name="wall-half22" parent="Castle/Meshes" unique_id=712217251 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(-1, 0, -2.9802322e-08, 0, 1, 0, 2.9802322e-08, 0, -1, 4, 0, -6)
+
+[node name="wall-half23" parent="Castle/Meshes" unique_id=1964721662 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(1, 0, 1.172251e-07, 0, 1, 0, -1.172251e-07, 0, 1, -4, 0, -6)
+
+[node name="wall-half24" parent="Castle/Meshes" unique_id=1478135920 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(1, 0, 1.172251e-07, 0, 1, 0, -1.172251e-07, 0, 1, -4, 0, -5)
+
+[node name="wall-half25" parent="Castle/Meshes" unique_id=237973198 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(1, 0, 1.172251e-07, 0, 1, 0, -1.172251e-07, 0, 1, -4, 0, -4)
+
+[node name="wall-half26" parent="Castle/Meshes" unique_id=228218021 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(1, 0, 1.172251e-07, 0, 1, 0, -1.172251e-07, 0, 1, -4, 0, -3)
+
+[node name="wall-half27" parent="Castle/Meshes" unique_id=882158614 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(1, 0, 1.172251e-07, 0, 1, 0, -1.172251e-07, 0, 1, -4, 0, -2)
+
+[node name="wall-half28" parent="Castle/Meshes" unique_id=625466168 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(1, 0, 1.172251e-07, 0, 1, 0, -1.172251e-07, 0, 1, -4, 0, -1)
+
+[node name="gate2" parent="Castle/Meshes" unique_id=1370933628 instance=ExtResource("15_fh86t")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0.5036373)
 
 [node name="Gate" type="Node3D" parent="Castle" unique_id=15485347]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
 
-[node name="GateDoor" type="CSGBox3D" parent="Castle/Gate" unique_id=301299451]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
-use_collision = true
-size = Vector3(4.5, 5, 0.6)
-material = SubResource("Mat_Gate")
-
 [node name="GateHurtBox" type="Area3D" parent="Castle/Gate" unique_id=1814912010]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+collision_layer = 64
+collision_mask = 0
 script = ExtResource("9_hurtbox")
-health = 10
+health = 100
 
 [node name="GateHitShape" type="CollisionShape3D" parent="Castle/Gate/GateHurtBox" unique_id=105378868]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.4626465, 0)
 shape = SubResource("Shape_GateHurt")
-
-[node name="GateZone" type="Area3D" parent="Castle/Gate" unique_id=627669205]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 1.2)
-
-[node name="GateZoneShape" type="CollisionShape3D" parent="Castle/Gate/GateZone" unique_id=1584439723]
-shape = SubResource("Shape_GateZone")
 
 [node name="GateHealthLabel" type="Label3D" parent="Castle/Gate" unique_id=640576236]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.8, 0)
@@ -249,44 +264,48 @@ text = "Gate: 10/10"
 font_size = 64
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Castle" unique_id=1078185124]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.489681, 8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.875063, 7.955576)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Castle/StaticBody3D" unique_id=679345197]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.8262329)
 shape = SubResource("BoxShape3D_a14ph")
+debug_color = Color(0.9933772, 0, 0.24780053, 1)
 
 [node name="VRSpace" parent="." unique_id=841158329 instance=ExtResource("10_a14ph")]
 
 [node name="XRPlayer" parent="VRSpace/SubViewport" parent_id_path=PackedInt32Array(841158329, 1709074553) index="1" unique_id=1404813673]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 8.760864)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4058523, 8.760864)
 
-[node name="Quiver" parent="VRSpace/SubViewport/XRPlayer/PlayerBody/Body" parent_id_path=PackedInt32Array(841158329, 1031441429) index="1" unique_id=832813409 instance=ExtResource("5_5cd4w")]
-transform = Transform3D(-2, 0, 1.7484555e-07, 0, 2, 0, -1.7484555e-07, 0, -2, 3.7826453e-08, 1.6969347, -0.43268394)
+[node name="Quiver" parent="VRSpace/SubViewport/XRPlayer/XRCamera3D" parent_id_path=PackedInt32Array(841158329, 227782039) index="0" unique_id=832813409 instance=ExtResource("5_5cd4w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0658141e-14, -0.85153246, 0.21634197)
 
 [node name="AnimationTree" parent="VRSpace/SubViewport/XRPlayer/LeftHand/LeftHand" parent_id_path=PackedInt32Array(841158329, 1600276417) index="1"]
-tree_root = SubResource("AnimationNodeBlendTree_iwc37")
+tree_root = SubResource("AnimationNodeBlendTree_g2kc1")
 
 [node name="FunctionPickup" parent="VRSpace/SubViewport/XRPlayer/LeftHand" parent_id_path=PackedInt32Array(841158329, 2106749189) index="1" unique_id=1924663514 instance=ExtResource("5_w0s4v")]
 
 [node name="AnimationTree" parent="VRSpace/SubViewport/XRPlayer/RightHand/RightHand" parent_id_path=PackedInt32Array(841158329, 40282269) index="1"]
-tree_root = SubResource("AnimationNodeBlendTree_olop0")
+tree_root = SubResource("AnimationNodeBlendTree_h2716")
 
 [node name="MovementTurn" parent="VRSpace/SubViewport/XRPlayer/RightHand" parent_id_path=PackedInt32Array(841158329, 1667605568) index="1" unique_id=2008313491 instance=ExtResource("6_5cd4w")]
 
 [node name="FunctionPickup2" parent="VRSpace/SubViewport/XRPlayer/RightHand" parent_id_path=PackedInt32Array(841158329, 1667605568) index="2" unique_id=1988130203 instance=ExtResource("5_w0s4v")]
 
-[node name="FireOrb" parent="VRSpace" unique_id=107013500 instance=ExtResource("5_a14ph")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.9025006, 10)
+[node name="ArrowTypes" type="Node3D" parent="VRSpace" unique_id=900118082]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8293202, 9.864026)
 
-[node name="EarthOrb" parent="VRSpace" unique_id=759223450 instance=ExtResource("5_a14ph")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 5.9025006, 10)
-element = 3
+[node name="FireOrb" parent="VRSpace/ArrowTypes" unique_id=107013500 instance=ExtResource("5_a14ph")]
 
-[node name="IceOrb" parent="VRSpace" unique_id=1158891516 instance=ExtResource("5_a14ph")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 5.9025006, 10)
+[node name="IceOrb" parent="VRSpace/ArrowTypes" unique_id=1158891516 instance=ExtResource("5_a14ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.0003528595, 0)
 element = 2
 
+[node name="EarthOrb" parent="VRSpace/ArrowTypes" unique_id=759223450 instance=ExtResource("5_a14ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, -0.0003528595, 0)
+element = 3
+
 [node name="BowGrip" parent="VRSpace" unique_id=777328390 instance=ExtResource("6_a14ph")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 5.9025006, 8.449216)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 3.308353, 8.449216)
 enabled = false
 
 [node name="CollisionShape3D" parent="VRSpace/BowGrip" index="0" unique_id=1198871219]
@@ -296,75 +315,21 @@ shape = SubResource("SphereShape3D_g2kc1")
 radius = 0.05
 
 [node name="Bow" parent="VRSpace" unique_id=1090233234 node_paths=PackedStringArray("bow_grip") instance=ExtResource("6_rjw0b")]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 1, 5.9025006, 8.926395)
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 1, 3.308353, 8.926395)
 bow_grip = NodePath("../BowGrip")
 
 [node name="VRArea" type="Node3D" parent="." unique_id=1226348335]
 
 [node name="AttackerArea" type="Node3D" parent="." unique_id=992782613]
 
-[node name="Catapult_Left" type="Node3D" parent="AttackerArea" unique_id=121794732 node_paths=PackedStringArray("gate_target")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 24)
-script = ExtResource("3_cat")
-gate_target = NodePath("../../Castle/Gate")
-boulder_scene = ExtResource("7_boulder")
+[node name="Catapult" parent="AttackerArea" unique_id=188247881 instance=ExtResource("15_ka738")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.096862, 0, 17.91023)
 
-[node name="Base" type="CSGBox3D" parent="AttackerArea/Catapult_Left" unique_id=348459334]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-use_collision = true
-size = Vector3(3, 1, 4)
-material = SubResource("Mat_Catapult")
-
-[node name="Arm" type="CSGBox3D" parent="AttackerArea/Catapult_Left" unique_id=1231273111]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -0.5)
-size = Vector3(0.4, 3, 0.4)
-material = SubResource("Mat_Catapult")
-
-[node name="LaunchPoint" type="Node3D" parent="AttackerArea/Catapult_Left/Arm" unique_id=1140309124]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
-
-[node name="OperatingZone" type="Area3D" parent="AttackerArea/Catapult_Left" unique_id=1997694]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-
-[node name="OperatingShape" type="CollisionShape3D" parent="AttackerArea/Catapult_Left/OperatingZone" unique_id=1145630682]
-shape = SubResource("Shape_OpZone")
-
-[node name="Cooldown" type="Timer" parent="AttackerArea/Catapult_Left" unique_id=1977081829]
-wait_time = 5.0
-one_shot = true
-
-[node name="Catapult_Right" type="Node3D" parent="AttackerArea" unique_id=1263149627 node_paths=PackedStringArray("gate_target")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, 24)
-script = ExtResource("3_cat")
-gate_target = NodePath("../../Castle/Gate")
-boulder_scene = ExtResource("7_boulder")
-
-[node name="Base" type="CSGBox3D" parent="AttackerArea/Catapult_Right" unique_id=244063937]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-use_collision = true
-size = Vector3(3, 1, 4)
-material = SubResource("Mat_Catapult")
-
-[node name="Arm" type="CSGBox3D" parent="AttackerArea/Catapult_Right" unique_id=292742461]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -0.5)
-size = Vector3(0.4, 3, 0.4)
-material = SubResource("Mat_Catapult")
-
-[node name="LaunchPoint" type="Node3D" parent="AttackerArea/Catapult_Right/Arm" unique_id=1597812344]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
-
-[node name="OperatingZone" type="Area3D" parent="AttackerArea/Catapult_Right" unique_id=1764173642]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-
-[node name="OperatingShape" type="CollisionShape3D" parent="AttackerArea/Catapult_Right/OperatingZone" unique_id=1036991555]
-shape = SubResource("Shape_OpZoneR")
-
-[node name="Cooldown" type="Timer" parent="AttackerArea/Catapult_Right" unique_id=50431761]
-wait_time = 5.0
-one_shot = true
+[node name="Catapult2" parent="AttackerArea" unique_id=372480386 instance=ExtResource("15_ka738")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.903138, 0, 17.91023)
 
 [node name="Bomb_1" type="RigidBody3D" parent="AttackerArea" unique_id=1536503701]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0.35, 34)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0.35, 26.759048)
 script = ExtResource("4_bomb")
 
 [node name="BombShape" type="CollisionShape3D" parent="AttackerArea/Bomb_1" unique_id=1914096248]
@@ -375,7 +340,7 @@ mesh = SubResource("Mesh_Bomb")
 surface_material_override/0 = SubResource("Mat_Bomb")
 
 [node name="Bomb_2" type="RigidBody3D" parent="AttackerArea" unique_id=1121278533]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 34)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 26.759048)
 script = ExtResource("4_bomb")
 
 [node name="BombShape" type="CollisionShape3D" parent="AttackerArea/Bomb_2" unique_id=2126211691]
@@ -386,7 +351,7 @@ mesh = SubResource("Mesh_Bomb")
 surface_material_override/0 = SubResource("Mat_Bomb")
 
 [node name="Bomb_3" type="RigidBody3D" parent="AttackerArea" unique_id=56345853]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.35, 34)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.35, 26.759048)
 script = ExtResource("4_bomb")
 
 [node name="BombShape" type="CollisionShape3D" parent="AttackerArea/Bomb_3" unique_id=995092363]
@@ -395,21 +360,6 @@ shape = SubResource("Shape_BombBodyC")
 [node name="BombMesh" type="MeshInstance3D" parent="AttackerArea/Bomb_3" unique_id=1623254641]
 mesh = SubResource("Mesh_Bomb")
 surface_material_override/0 = SubResource("Mat_Bomb")
-
-[node name="SpawnPoints" type="Node3D" parent="AttackerArea" unique_id=638643505]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 18)
-
-[node name="SpawnPoint1" type="Node3D" parent="AttackerArea/SpawnPoints" unique_id=121740798]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 24)
-
-[node name="SpawnPoint2" type="Node3D" parent="AttackerArea/SpawnPoints" unique_id=397950954]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 24)
-
-[node name="SpawnPoint3" type="Node3D" parent="AttackerArea/SpawnPoints" unique_id=1809687431]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 24)
-
-[node name="SpawnPoint4" type="Node3D" parent="AttackerArea/SpawnPoints" unique_id=131719029]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 24)
 
 [node name="GameoverUI" type="CanvasLayer" parent="." unique_id=1505173331]
 process_mode = 3
@@ -451,7 +401,7 @@ layout_mode = 2
 text = "Restart"
 
 [node name="PlayerSpawner" type="Node3D" parent="." unique_id=290112290]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 37.910812)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30.619122)
 script = ExtResource("14_jv2d0")
 player_scene = ExtResource("5_fps")
 metadata/_custom_type_script = "uid://b1f1y52jugtns"

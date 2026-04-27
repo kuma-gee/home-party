@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://c4y0mykjy4tl2" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/element_orb.gd" id="1_7bjo4"]
 
 [sub_resource type="SphereShape3D" id="Shape_OrbFire"]
-radius = 0.35
+radius = 0.2
 
 [sub_resource type="SphereMesh" id="Mesh_Orb"]
 radius = 0.25
@@ -26,5 +26,6 @@ visual = NodePath("OrbMesh")
 shape = SubResource("Shape_OrbFire")
 
 [node name="OrbMesh" type="MeshInstance3D" parent="." unique_id=1906309142]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 mesh = SubResource("Mesh_Orb")
 surface_material_override/0 = SubResource("Mat_FireOrb")

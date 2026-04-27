@@ -39,10 +39,12 @@ func _ready() -> void:
 	arrow_snap.has_picked_up.connect(_on_arrow_placed)
 	arrow_snap.has_dropped.connect(_on_arrow_dropped)
 	
-	picked_up.connect(func(_p): bow_grip.enabled = true)
-	dropped.connect(func(_p): bow_grip.enabled = false)
+	if bow_grip:
+		picked_up.connect(func(_p): bow_grip.enabled = true)
+		dropped.connect(func(_p): bow_grip.enabled = false)
+		bow_grip.enabled = false
+
 	_grip_held = false
-	bow_grip.enabled = false
 
 func _on_arrow_placed(arrow: XRToolsPickable) -> void:
 	arrow.enabled = false
