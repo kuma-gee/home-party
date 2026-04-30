@@ -160,7 +160,7 @@ func can_pick_up(by: Node3D) -> bool:
 		return false
 
 	# Fail if either pickup isn't by a hand
-	if not _grab_driver.primary.pickup or not by is XRToolsFunctionPickup:
+	if not _grab_driver.primary.pickup or (not by is XRToolsFunctionPickup and not by is XRToolsSnapZone):
 		return false
 
 	# Allow second hand grab

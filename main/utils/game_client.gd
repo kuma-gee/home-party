@@ -6,16 +6,15 @@ signal send_session(type: int, sdp: String)
 signal input_received(input: String, value)
 signal sent_text(text: String)
 
-var peer = WebRTCPeerConnection.new()
-var channel = peer.create_data_channel("inputs", {"negotiated": true, "id": 1})
+var peer: WebRTCPeerConnection
+var channel: WebRTCDataChannel
 var logger = KumaLog.new("GameClient")
 
 var inputs = {}
 var uuid: String
 
 func _ready():
-	peer.ice_candidate_created.connect(self._on_ice_candidate)
-	peer.session_description_created.connect(self._on_session)
+	initialize()
 
 func get_move():
 	return inputs["move"] if inputs.has("move") else Vector2.ZERO
@@ -30,8 +29,10 @@ func _on_session(type, sdp):
 	send_session.emit(type, sdp)
 
 func _process(_delta):
+	if not peer: return
+
 	peer.poll()
-	if channel.get_ready_state() == WebRTCDataChannel.STATE_OPEN:
+	if channel and channel.get_ready_state() == WebRTCDataChannel.STATE_OPEN:
 		while channel.get_available_packet_count() > 0:
 			var data = channel.get_packet().get_string_from_utf8()
 			logger.debug("Received input: %s" % data)
@@ -62,3 +63,10 @@ func send_text(text: String):
 func reset():
 	inputs = {}
 	send_text("")
+	peer.close()
+
+func initialize():
+	peer = WebRTCPeerConnection.new()
+	peer.ice_candidate_created.connect(self._on_ice_candidate)
+	peer.session_description_created.connect(self._on_session)
+	channel = peer.create_data_channel("inputs", {"negotiated": true, "id": 1})

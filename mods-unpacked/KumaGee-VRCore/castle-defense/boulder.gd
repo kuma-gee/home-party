@@ -2,7 +2,7 @@ class_name Boulder
 extends CharacterBody3D
 
 @export var launch_speed: float = 18.0
-@export var gravity: float = 9.8
+@export var gravity: float = 12.0
 @export var high_arc: bool = false
 
 @onready var hit_area: Area3D = $HitArea

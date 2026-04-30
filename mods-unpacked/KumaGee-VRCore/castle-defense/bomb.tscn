@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://bltu6pp2q0a8y"]
+
+[ext_resource type="Script" uid="uid://8p0xhl610wdb" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/bomb.gd" id="1_p6dde"]
+[ext_resource type="PackedScene" uid="uid://dh8grd7s3n8kg" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_snap.tscn" id="2_o4xnu"]
+[ext_resource type="Script" uid="uid://cfqyv12dohlh7" path="res://main/utils/hit_box.gd" id="3_4h28i"]
+
+[sub_resource type="SphereShape3D" id="Shape_BombBody"]
+radius = 0.3
+
+[sub_resource type="SphereMesh" id="Mesh_Bomb"]
+radius = 0.2
+height = 0.4
+
+[sub_resource type="StandardMaterial3D" id="Mat_Bomb"]
+albedo_color = Color(0.15, 0.15, 0.15, 1)
+roughness = 0.6
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_4h28i"]
+radius = 1.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_4q7qu"]
+radius = 0.4
+
+[node name="Bomb" type="RigidBody3D" unique_id=2006338049 groups=["bomb"]]
+collision_layer = 4
+collision_mask = 196615
+script = ExtResource("1_p6dde")
+second_hand_grab = 1
+
+[node name="BombShape" type="CollisionShape3D" parent="." unique_id=1788901368]
+shape = SubResource("Shape_BombBody")
+
+[node name="BombMesh" type="MeshInstance3D" parent="." unique_id=1923419919]
+mesh = SubResource("Mesh_Bomb")
+surface_material_override/0 = SubResource("Mat_Bomb")
+
+[node name="GrabPointSnap" parent="." unique_id=347841878 instance=ExtResource("2_o4xnu")]
+
+[node name="HitBox" type="Area3D" parent="." unique_id=1945639331]
+collision_layer = 0
+collision_mask = 96
+script = ExtResource("3_4h28i")
+damage = 10
+hit_on_enter = false
+metadata/_custom_type_script = "uid://cfqyv12dohlh7"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox" unique_id=1656931795]
+shape = SubResource("SphereShape3D_4h28i")
+
+[node name="ExplodeTrigger" type="Area3D" parent="." unique_id=364277741]
+collision_layer = 0
+collision_mask = 64
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ExplodeTrigger" unique_id=1128553557]
+shape = SubResource("SphereShape3D_4q7qu")

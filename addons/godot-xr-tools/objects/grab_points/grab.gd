@@ -154,8 +154,10 @@ func release() -> void:
 				.bind(collision_hand.get_rid()))
 
 	# Report the release
-	print_verbose("%s> released by %s", [what.name, by.name])
-	what.released.emit(what, by)
+	if is_instance_valid(what):
+		var from = by if is_instance_valid(by) else null
+		print_verbose("%s> released by %s", [what.name, from])
+		what.released.emit(what, from)
 
 
 # Hand has moved too far away from object, can no longer hold on to it.

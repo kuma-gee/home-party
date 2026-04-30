@@ -5,61 +5,54 @@ enum State { EMPTY, LOADED }
 
 @export var gate_target: Node3D
 @export var boulder_scene: PackedScene
-
-var state := State.EMPTY
-var _players_in_zone: Dictionary = {}
+@export var charge_time := 4.0
+@export var charge_speed := 10.0
+@export var launch_speed := 40.0
+@export var decharge_speed := 0.7
+@export var boulder_spawn: Node3D
+@export var catapult_arm: Node3D
+@export var catapult_start_rot := -60.0
 
 @onready var operating_zone: Area3D = $OperatingZone
-@onready var cooldown: Timer = $Cooldown
-@onready var arm: Node3D = $Arm
+@onready var cooldown_timer: Timer = $CooldownTimer
+
+var charge := 0.0:
+	set(v):
+		charge = clamp(v, 0.0, charge_time)
+		_set_arm_load(charge / charge_time)
 
 func _ready() -> void:
-	cooldown.wait_time = 5.0
-	cooldown.one_shot = true
-	operating_zone.body_entered.connect(_on_body_entered)
-	operating_zone.body_exited.connect(_on_body_exited)
+	charge = 0.0
 
-func _on_body_entered(body: Node3D) -> void:
-	if not body is FPSPlayer:
-		return
-	var player := body as FPSPlayer
-	var callable := func(input: String, value: Variant): _on_player_input(input, value, player)
-	_players_in_zone[player] = callable
-	player.game_client.input_received.connect(callable)
+func get_player_count():
+	return operating_zone.get_overlapping_areas().size()
 
-func _on_body_exited(body: Node3D) -> void:
-	if not body is FPSPlayer:
-		return
-	var player := body as FPSPlayer
-	if player in _players_in_zone:
-		player.game_client.input_received.disconnect(_players_in_zone[player])
-		_players_in_zone.erase(player)
-
-func _on_player_input(input: String, value: Variant, _player: FPSPlayer) -> void:
-	if input != "action" or value != true:
-		return
-	if not cooldown.is_stopped():
-		return
-	match state:
-		State.EMPTY:
-			state = State.LOADED
-			_set_arm_loaded(true)
-		State.LOADED:
+func _process(delta: float) -> void:
+	var player_count = get_player_count()
+	if player_count > 0 and cooldown_timer.is_stopped():
+		print("Player count %s" % player_count)
+		if charge < charge_time:
+			charge += delta * log(player_count * charge_speed) / log(10)
+		else:
 			_fire()
-			state = State.EMPTY
-			_set_arm_loaded(false)
-			cooldown.start()
+	elif charge > 0.0:
+		var t := charge / charge_time
+		var speed_factor = lerp(0.3, 1.0, t)
+		var speed = decharge_speed if cooldown_timer.is_stopped() else launch_speed
+		charge -= delta * speed * speed_factor
+		# if cooldown timer is running, preserve current charge until cooldown ends
+
 
 func _fire() -> void:
 	if not boulder_scene or not gate_target:
 		return
-	var launch_pos = $Arm/LaunchPoint.global_position if has_node("Arm/LaunchPoint") else global_position + Vector3.UP * 2.0
+	
+	cooldown_timer.start()
+	var launch_pos = boulder_spawn.global_position
 	var boulder := boulder_scene.instantiate()
 	boulder.position = launch_pos
 	get_tree().current_scene.add_child(boulder)
-	boulder.global_position = launch_pos
-	boulder.throw_to(gate_target.global_position + Vector3.UP * 2.5)
+	boulder.throw_to(gate_target.global_position + Vector3.UP)
 
-func _set_arm_loaded(loaded: bool) -> void:
-	if is_instance_valid(arm):
-		arm.rotation_degrees.x = -80.0 if loaded else 0.0
+func _set_arm_load(p: float) -> void:
+	catapult_arm.rotation_degrees.z = lerp(catapult_start_rot, 0.0, p)

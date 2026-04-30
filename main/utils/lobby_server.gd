@@ -1,11 +1,11 @@
 extends Node
 
 signal player_connected(data: Dictionary)
-signal player_disconnected(peer_id: int)
+signal player_disconnected(client_id: String)
 signal updated_players_list(players: Array)
 
-signal received_candidate(peer_id: int, mid: String, index: int, sdp: String)
-signal received_session(peer_id: int, type: String, sdp: String)
+signal received_candidate(client_id: String, mid: String, index: int, sdp: String)
+signal received_session(client_id: String, type: String, sdp: String)
 
 enum Message {
 	Id,
@@ -58,7 +58,7 @@ func _peer_disconnected(id: int):
 		players.erase(uuid)
 		update_players_list()
 		
-	player_disconnected.emit(id)
+	player_disconnected.emit(uuid)
 	peer_to_uuid.erase(id)
 
 func _send_to_peer(id: int, data: Dictionary):
@@ -76,16 +76,24 @@ func _process(_delta: float) -> void:
 		_on_message_received(data)
 
 func _on_message_received(data: Dictionary):
-	if data.has("msg"):
-		match int(data.msg):
-			Message.Id:
-				_on_id_message(data)
-			Message.GameClientSession:
-				var peer_id = int(data.peer_id)
-				received_session.emit(peer_id, data.type, data.sdp)
-			Message.GameClientIceCandidate:
-				var peer_id = int(data.peer_id)
-				received_candidate.emit(peer_id, data.mid, int(data.index), data.sdp)
+	if not data.has("msg"): return
+
+	var peer = int(data.get("peer_id", -1))
+	match int(data.msg):
+		Message.Id:
+			_on_id_message(data)
+		Message.GameClientSession:
+			var client_id = peer_to_uuid.get(peer, "")
+			if client_id == "":
+				logger.error("Received session message from unknown peer %d" % peer)
+				return
+			received_session.emit(client_id, data.type, data.sdp)
+		Message.GameClientIceCandidate:
+			var client_id = peer_to_uuid.get(peer, "")
+			if client_id == "":
+				logger.error("Received ICE candidate message from unknown peer %d" % peer)
+				return
+			received_candidate.emit(client_id, data.mid, int(data.index), data.sdp)
 
 func _on_id_message(data: Dictionary):
 	var peer_id = int(data.peer_id)
@@ -118,15 +126,15 @@ func get_peer_id_from_uuid(uuid: String) -> int:
 			return peer_id
 	return -1
 
-func send_session(path, type, sdp):
-	_send_to_peer(int(path), {
+func send_session(client_id: String, type, sdp):
+	_send_to_peer(get_peer_id_from_uuid(client_id), {
 		"msg": Message.GameClientSession,
 		"type": type,
 		"sdp": sdp,
 	})
 
-func send_candidate(path, mid, index, sdp):
-	_send_to_peer(int(path), {
+func send_candidate(client_id: String, mid, index, sdp):
+	_send_to_peer(get_peer_id_from_uuid(client_id), {
 		"msg": Message.GameClientIceCandidate,
 		"mid": mid,
 		"index": index,

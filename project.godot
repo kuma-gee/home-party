@@ -42,6 +42,7 @@ enabled=PackedStringArray("res://addons/barcode/plugin.cfg", "res://addons/godot
 [global_group]
 
 arrow=""
+bomb=""
 
 [input]
 

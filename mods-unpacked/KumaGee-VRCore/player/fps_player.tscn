@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://oabojy0uqucd" path="res://mods-unpacked/KumaGee-VRCore/assets/characters/Model/characterMedium.fbx" id="2_ka8gu"]
 [ext_resource type="Script" uid="uid://beia3uc5guc8d" path="res://mods-unpacked/KumaGee-VRCore/player/pickup_hand_3d.gd" id="3_dxdo2"]
 [ext_resource type="Script" uid="uid://crtkl6ldhona6" path="res://main/utils/hurt_box.gd" id="6_3dsh6"]
+[ext_resource type="PackedScene" uid="uid://ce7vysyvondf8" path="res://addons/godot-xr-tools/objects/snap_zone.tscn" id="7_irk2m"]
 [ext_resource type="Script" uid="uid://r2ip3x3bxw0i" path="res://mods-unpacked/KumaGee-VRCore/player/ground_spring_cast.gd" id="8_ffq0p"]
 [ext_resource type="Shader" uid="uid://cdfjqx6ei5653" path="res://shader/circle_inner.gdshader" id="14_we0o2"]
 
@@ -44,6 +45,11 @@ hand = NodePath("CollisionShape3D/Hand")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=992237309]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6461112, 0)
 shape = SubResource("CapsuleShape3D_ka8gu")
+
+[node name="SnapZone" parent="CollisionShape3D" unique_id=1883047161 instance=ExtResource("7_irk2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.08730608, 0.18821836)
+snap_mode = 1
+snap_require = "bomb"
 
 [node name="characterMedium" parent="CollisionShape3D" unique_id=608236063 instance=ExtResource("2_ka8gu")]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, -0.6461112, 0)
