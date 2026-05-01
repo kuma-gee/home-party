@@ -19,7 +19,7 @@
 [ext_resource type="Script" uid="uid://54ff6uyo8677" path="res://mods-unpacked/KumaGee-VRCore/whack-a-mole/time.gd" id="12_s4ws1"]
 [ext_resource type="Script" uid="uid://bw36fn1jy1q51" path="res://mods-unpacked/KumaGee-VRCore/pirate/health_bar.gd" id="13_2tdr6"]
 [ext_resource type="Texture2D" uid="uid://dppjsb1nftth5" path="res://icon.svg" id="13_08wrx"]
-[ext_resource type="Texture2D" uid="uid://mvptv2yf3vd4" path="res://mods-unpacked/KumaGee-VRCore/pirate/Sky_Anime_03_Day_a.png" id="16_w56sk"]
+[ext_resource type="Texture2D" uid="uid://mvptv2yf3vd4" path="res://assets/Sky_Anime_03_Day_a.png" id="16_w56sk"]
 [ext_resource type="Script" uid="uid://1mour1glexh2" path="res://mods-unpacked/KumaGee-VRCore/pirate/power_up_spawner.gd" id="20_xqvi7"]
 [ext_resource type="PackedScene" uid="uid://do3l6ysp22o14" path="res://mods-unpacked/KumaGee-VRCore/pirate/power_up.tscn" id="21_bxdu4"]
 [ext_resource type="Script" uid="uid://83bhx62u4d7k" path="res://main/utils/random_timer.gd" id="22_gksw4"]

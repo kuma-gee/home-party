@@ -141,15 +141,26 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("4_5dw5n")
 
-[node name="GameDetailsUI" type="PanelContainer" parent="CanvasLayer/Control" unique_id=1318531361 node_paths=PackedStringArray("name_label", "desc_label")]
-custom_minimum_size = Vector2(600, 0)
+[node name="PlayerList" type="VBoxContainer" parent="CanvasLayer/Control" unique_id=1419819672]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -600.0
-offset_bottom = 193.0
 grow_horizontal = 0
+
+[node name="GameDetailsUI" type="PanelContainer" parent="CanvasLayer/Control" unique_id=1318531361 node_paths=PackedStringArray("name_label", "desc_label")]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -193.0
+offset_right = 300.0
+grow_horizontal = 2
+grow_vertical = 0
 script = ExtResource("4_sxu1o")
 name_label = NodePath("MarginContainer/VBoxContainer/Label")
 desc_label = NodePath("MarginContainer/VBoxContainer/Label2")

@@ -34,10 +34,12 @@ AudioManager="*uid://ewg3o036k8yw"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep_width"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/barcode/plugin.cfg", "res://addons/godot-css-theme/plugin.cfg", "res://addons/godot-xr-tools/plugin.cfg", "res://addons/qr_code/plugin.cfg")
+enabled=PackedStringArray("res://addons/barcode/plugin.cfg", "res://addons/godot-css-theme/plugin.cfg", "res://addons/godot-xr-tools/plugin.cfg", "res://addons/proton_scatter/plugin.cfg", "res://addons/qr_code/plugin.cfg")
 
 [global_group]
 
@@ -89,7 +91,6 @@ pause={
 
 [rendering]
 
-renderer/rendering_method="mobile"
 environment/defaults/default_clear_color=Color(0, 0, 0, 1)
 
 [xr]

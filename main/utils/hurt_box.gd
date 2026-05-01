@@ -4,13 +4,14 @@ extends Area3D
 signal health_changed()
 signal died()
 
-@export var health := 1:
+@export var health := 1
+@onready var current_health := health:
 	set(v):
-		health = v
+		current_health = v
 		health_changed.emit()
 		
-		if health <= 0:
+		if current_health <= 0:
 			died.emit()
 
 func hit(dmg = 1):
-	health -= dmg
+	current_health -= dmg

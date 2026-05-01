@@ -5,9 +5,10 @@
 [ext_resource type="Texture2D" uid="uid://dppjsb1nftth5" path="res://icon.svg" id="2_244wn"]
 
 [node name="JoinedPlayer" type="Control" unique_id=1251273663 node_paths=PackedStringArray("container", "texture", "name_label")]
-custom_minimum_size = Vector2(0, 90)
+custom_minimum_size = Vector2(320, 90)
 layout_mode = 3
 anchors_preset = 0
+offset_bottom = 90.0
 size_flags_horizontal = 8
 theme = ExtResource("1_y8o30")
 script = ExtResource("1_7ry4l")
@@ -18,23 +19,20 @@ name_label = NodePath("HBoxContainer/Name")
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=2030705900]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
+anchors_preset = 15
 anchor_right = 1.0
-anchor_bottom = 0.5
-offset_top = -32.0
-offset_right = 300.0
-offset_bottom = 32.0
-grow_horizontal = 0
+anchor_bottom = 1.0
+grow_horizontal = 2
 grow_vertical = 2
 alignment = 2
 
 [node name="Name" type="Label" parent="HBoxContainer" unique_id=1331900333]
 layout_mode = 2
-text = "Test"
+size_flags_horizontal = 3
+text = "Testasdasdasdasda"
 horizontal_alignment = 2
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="TextureRect" type="TextureRect" parent="HBoxContainer" unique_id=233856017]
 custom_minimum_size = Vector2(64, 64)

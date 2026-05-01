@@ -33,7 +33,7 @@ height = 1.2519531
 
 [node name="FPSPlayer" type="CharacterBody3D" unique_id=1756570454 node_paths=PackedStringArray("body", "color_ring", "hand") groups=["resetable"]]
 collision_layer = 2
-collision_mask = 16391
+collision_mask = 3
 script = ExtResource("1_krq8x")
 speed = 3.0
 push_force = 1.0
@@ -48,6 +48,7 @@ shape = SubResource("CapsuleShape3D_ka8gu")
 
 [node name="SnapZone" parent="CollisionShape3D" unique_id=1883047161 instance=ExtResource("7_irk2m")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.08730608, 0.18821836)
+grab_distance = 0.5
 snap_mode = 1
 snap_require = "bomb"
 

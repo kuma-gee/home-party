@@ -5,8 +5,8 @@ enum State { EMPTY, LOADED }
 
 @export var gate_target: Node3D
 @export var boulder_scene: PackedScene
-@export var charge_time := 4.0
-@export var charge_speed := 10.0
+@export var charge_time := 5.0
+@export var charge_speed := 8.0
 @export var launch_speed := 40.0
 @export var decharge_speed := 0.7
 @export var boulder_spawn: Node3D

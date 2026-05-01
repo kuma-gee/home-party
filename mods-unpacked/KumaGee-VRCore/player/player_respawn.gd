@@ -1,7 +1,7 @@
 class_name PlayerRespawn
 extends Node3D
 
-@export var respawn_time := 6.0
+@export var respawn_time := 4.0
 @export var game_client: GameClient
 @export var pos := Vector3.ZERO
 @export var idx := 0

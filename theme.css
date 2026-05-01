@@ -27,3 +27,10 @@ PanelContainer {
   border-radius: 12;
   background: #111111;
 }
+
+ProgressBar:background {
+  background: #000000;
+}
+ProgressBar:fill {
+  background: #ffffff;
+}

@@ -1,3 +1,4 @@
+class_name PlayerList
 extends Control
 
 @export var player_scene: PackedScene
@@ -9,9 +10,9 @@ func _ready() -> void:
 
 func _on_update_players_list(players: Array) -> void:
 	# Example: [{ "msg": 0.0, "peer_id": 1392038853.0, "client_id": "21f81607-24c5-4cac-917f-e61835a63d2b", "name": "asd" }]
-	var current_playesr = []
+	var current_players = []
 	for player_data in players:
-		current_playesr.append(player_data.client_id)
+		current_players.append(player_data.client_id)
 		var existing = _find_existing_node(player_data.client_id)
 		if existing:
 			existing.update_data(player_data)
@@ -23,7 +24,7 @@ func _on_update_players_list(players: Array) -> void:
 	
 	# Remove players that left
 	for child in get_children():
-		if child is JoinedPlayer and child.uuid not in current_playesr:
+		if child is JoinedPlayer and child.uuid not in current_players:
 			child.move_out()
 
 func _find_existing_node(uuid: String):
