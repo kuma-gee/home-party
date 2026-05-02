@@ -6,6 +6,12 @@ const ELEMENT_SCENE = {
 	Arrow.Element.ICE: preload("uid://c684oj6gh0t68"),
 }
 
+const ELEMENT_COLOR := {
+	Arrow.Element.FIRE: Color(1.0, 0.4, 0.0),
+	Arrow.Element.ICE: Color(0.3, 0.8, 1.0),
+	Arrow.Element.EARTH: Color(0.4, 0.25, 0.1),
+}
+
 @export var visual: MeshInstance3D
 
 var element := Arrow.Element.FIRE:
@@ -37,13 +43,8 @@ static func update_visual(visual: MeshInstance3D, element: Arrow.Element) -> voi
 	if not mat:
 		return
 	
-	match element:
-		Arrow.Element.FIRE:
-			mat.albedo_color = Color(1.0, 0.4, 0.0)
-			mat.emission = Color(1.0, 0.4, 0.0)
-		Arrow.Element.ICE:
-			mat.albedo_color = Color(0.3, 0.8, 1.0)
-			mat.emission = Color(0.3, 0.8, 1.0)
-		Arrow.Element.EARTH:
-			mat.albedo_color = Color(0.4, 0.25, 0.1)
-			mat.emission = Color(0.4, 0.25, 0.1)
+	if element not in ELEMENT_COLOR:
+		return
+	var color := ELEMENT_COLOR[element] as Color
+	mat.albedo_color = color
+	mat.emission = color
