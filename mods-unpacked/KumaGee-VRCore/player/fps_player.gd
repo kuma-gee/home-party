@@ -11,6 +11,11 @@ signal died()
 @export var color_ring: ColorRect
 @export var hand: PickupHand3D
 
+@export_category("Animation")
+@export var animation: AnimationPlayer
+@export var idle_anim := "Idle_B"
+@export var running_anim := "Running_A"
+
 @onready var ground_spring_cast: GroundSpringCast = $GroundSpringCast
 @onready var hurtbox: HurtBox = $Hurtbox
 
@@ -45,6 +50,7 @@ func _physics_process(delta):
 		var dir = Vector3(direction.x, 0, direction.y)
 		body.look_at(body.global_position + dir, Vector3.UP, true)
 
+	animation.play(idle_anim if direction == Vector2.ZERO else running_anim)
 	ground_spring_cast.apply_gravity(self, delta)
 	move_and_slide()
 
