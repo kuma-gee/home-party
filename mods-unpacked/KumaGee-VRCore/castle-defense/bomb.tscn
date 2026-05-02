@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://8p0xhl610wdb" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/bomb.gd" id="1_p6dde"]
 [ext_resource type="PackedScene" uid="uid://dh8grd7s3n8kg" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_snap.tscn" id="2_o4xnu"]
 [ext_resource type="Script" uid="uid://cfqyv12dohlh7" path="res://main/utils/hit_box.gd" id="3_4h28i"]
+[ext_resource type="AudioStream" uid="uid://c5rxm1rbcobqx" path="res://assets/sound/sfx/Lighting Fuse.wav" id="4_4q7qu"]
 
 [sub_resource type="SphereShape3D" id="Shape_BombBody"]
 radius = 0.3
@@ -53,3 +54,7 @@ collision_mask = 64
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ExplodeTrigger" unique_id=1128553557]
 shape = SubResource("SphereShape3D_4q7qu")
+
+[node name="LightingFuse" type="AudioStreamPlayer" parent="." unique_id=157487948]
+stream = ExtResource("4_4q7qu")
+volume_db = -10.0

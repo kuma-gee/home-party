@@ -19,6 +19,14 @@ extends XRToolsPickable
 @export var grip_position: Node3D
 @export var string_thickness := 0.01
 
+@export_category("Audio")
+@export var pull_min_db := -40.0
+@export var pull_max_db := 0.0
+@export var pull_pitch_max := 1.1
+
+@onready var shot_sound: AudioStreamPlayer3D = $ShotSound
+@onready var pull_sound: AudioStreamPlayer3D = $PullSound
+
 var current_element := Arrow.Element.FIRE
 var arrow_body: Arrow
 
@@ -83,6 +91,7 @@ func _setup_string_visual() -> void:
 
 func _on_grip_picked_up(_pickable: XRToolsPickable) -> void:
 	_grip_held = true
+	pull_sound.playing = true
 
 func _on_grip_dropped(_pickable: XRToolsPickable) -> void:
 	var draw := _draw_distance
@@ -92,6 +101,8 @@ func _on_grip_dropped(_pickable: XRToolsPickable) -> void:
 	_update_string_visual()
 	if draw >= min_draw:
 		_fire(draw)
+	
+	pull_sound.playing = false
 
 func _physics_process(_delta: float) -> void:
 	if Engine.is_editor_hint():
@@ -110,6 +121,19 @@ func _physics_process(_delta: float) -> void:
 	_update_arrow_draw(_draw_distance)
 	_update_string_visual()
 
+	# Map draw distance -> perceptual (quadratic) dB and slight pitch increase
+	if is_instance_valid(pull_sound) and pull_sound.playing:
+		var draw_norm := 0.0
+		if max_draw > 0.0001:
+			draw_norm = clamp(_draw_distance / max_draw, 0.0, 1.0)
+		var t := pow(draw_norm, 2.0)
+		pull_sound.volume_db = lerp(pull_min_db, pull_max_db, t)
+		pull_sound.pitch_scale = lerp(1.0, pull_pitch_max, t)
+	else:
+		# keep a quiet baseline when not actively pulling
+		pull_sound.volume_db = pull_min_db
+		pull_sound.pitch_scale = 1.0
+
 	# Rotate the arrow pivot to face the grip while the grip is held
 	if is_instance_valid(arrow_pivot) and is_instance_valid(bow_grip):
 		var flip_target := arrow_pivot.global_position * 2.0 - bow_grip.global_position
@@ -119,6 +143,7 @@ func _fire(draw: float) -> void:
 	if arrow_body == null: return
 	var dir = bow_grip.global_position.direction_to(arrow_pivot.global_position)
 
+	shot_sound.play()
 	arrow_snap.drop_object()
 	var speed := lerpf(5.0, arrow_speed, draw / max_draw)
 	arrow_body.fire(dir * speed)

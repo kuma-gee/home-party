@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://c58odbpnd0cpn"]
+
+[ext_resource type="PackedScene" uid="uid://buvr2a1asydbl" path="res://assets/KayKit_DungeonRemastered_1.1_FREE/Assets/gltf/torch_mounted.gltf" id="1_3qmyh"]
+
+[node name="Torch" type="Node3D" unique_id=1449723109]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1895877593]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.30724216, 0.18128777)
+light_color = Color(0.67058825, 0.4862745, 0.43529412, 1)
+light_energy = 0.5
+omni_range = 3.0
+omni_attenuation = 0.5
+
+[node name="torch_mounted2" parent="." unique_id=537140901 instance=ExtResource("1_3qmyh")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)

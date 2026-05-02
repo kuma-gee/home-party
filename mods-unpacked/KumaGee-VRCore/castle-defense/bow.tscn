@@ -5,12 +5,14 @@
 [ext_resource type="PackedScene" uid="uid://daucybh7twtqi" path="res://mods-unpacked/KumaGee-VRCore/assets/weapons/Assets/gltf/bow_B.gltf" id="4_k2jsv"]
 [ext_resource type="PackedScene" uid="uid://c25yxb0vt53vc" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_left.tscn" id="6_k2jsv"]
 [ext_resource type="PackedScene" uid="uid://ce7vysyvondf8" path="res://addons/godot-xr-tools/objects/snap_zone.tscn" id="7_7iw86"]
+[ext_resource type="AudioStream" uid="uid://cqelolqme460j" path="res://assets/sound/sfx/弓矢を放つ.mp3" id="7_k2jsv"]
 [ext_resource type="PackedScene" uid="uid://ctw7nbntd5pcj" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_right.tscn" id="7_rvk8s"]
+[ext_resource type="AudioStream" uid="uid://4ir85xo53b5y" path="res://assets/sound/sfx/弓を引き絞る2.mp3" id="8_7iw86"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_t4tkp"]
 size = Vector3(0.11743164, 0.7138672, 0.15917969)
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_yo5b1"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_a8cgm"]
 resource_local_to_scene = true
 radius = 0.3
 
@@ -27,6 +29,9 @@ string_top = NodePath("bow_B2/StringTop")
 string_bottom = NodePath("bow_B2/StringBottom")
 grip_position = NodePath("bow_B2/GripPosition")
 string_thickness = 0.01
+pull_min_db = null
+pull_max_db = null
+pull_pitch_max = null
 release_mode = 1
 
 [node name="CollisionShape3D" parent="." index="0" unique_id=1198871219]
@@ -55,13 +60,19 @@ snap_require = "arrow"
 grab_exclude = "invalid"
 
 [node name="CollisionShape3D" parent="ArrowPivot/ArrowMesh/SnapZone" index="0" unique_id=1451983608]
-shape = SubResource("SphereShape3D_yo5b1")
+shape = SubResource("SphereShape3D_a8cgm")
 
 [node name="GrabPointHandRight" parent="." index="3" unique_id=2131231232 instance=ExtResource("7_rvk8s")]
 transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0.016571045, 0, -0.10812378)
 
 [node name="GrabPointHandLeft" parent="." index="4" unique_id=1044959149 instance=ExtResource("6_k2jsv")]
 transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0.02668086, 0.004076129, -0.106446266)
+
+[node name="ShotSound" type="AudioStreamPlayer3D" parent="." index="5" unique_id=1544673079]
+stream = ExtResource("7_k2jsv")
+
+[node name="PullSound" type="AudioStreamPlayer3D" parent="." index="6" unique_id=1785372075]
+stream = ExtResource("8_7iw86")
 
 [editable path="bow_B2"]
 [editable path="ArrowPivot/ArrowMesh/SnapZone"]

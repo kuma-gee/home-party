@@ -5,7 +5,6 @@ extends XRToolsSceneBase
 @export var gameover_ui: Control
 @export var gameover_label: Label
 @export var gate_hurtbox: HurtBox
-@export var gate_label: Label3D
 
 @onready var play_time: Timer = $PlayTime
 @onready var player_spawner: PlayerSpawner = $PlayerSpawner
@@ -15,7 +14,6 @@ var logger := KumaLog.new("CastleDefense")
 func _ready() -> void:
 	play_time.timeout.connect(_on_play_time_timeout)
 	gate_hurtbox.died.connect(_on_gate_died)
-	gate_hurtbox.health_changed.connect(_on_gate_health_changed)
 	menu_button.pressed.connect(func(): exit_to_main_menu())
 	restart_button.pressed.connect(func(): reset_scene())
 	gameover_ui.hide()
@@ -26,16 +24,7 @@ func scene_loaded(_user_data = null) -> void:
 
 	player_spawner.init_players()
 	play_time.start()
-	_update_gate_label()
 	logger.info("Game started — %.0f seconds to survive" % play_time.wait_time)
-
-func _on_gate_health_changed() -> void:
-	_update_gate_label()
-	logger.debug("Gate health: %d" % gate_hurtbox.health)
-
-func _update_gate_label() -> void:
-	if is_instance_valid(gate_label):
-		gate_label.text = "Gate: %d" % [gate_hurtbox.health]
 
 func _on_gate_died() -> void:
 	_finish_game("Attackers stormed the gate!")

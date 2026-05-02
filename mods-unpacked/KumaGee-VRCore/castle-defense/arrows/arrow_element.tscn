@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dmrtyxsttqwve"]
 
-[ext_resource type="Script" uid="uid://bw8hl7j3crysb" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrow_element.gd" id="1_mncll"]
+[ext_resource type="Script" uid="uid://bw8hl7j3crysb" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/arrow_element.gd" id="1_mncll"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_me75u"]
 radius = 0.1
