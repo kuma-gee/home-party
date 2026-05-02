@@ -6,7 +6,12 @@
 [ext_resource type="Script" uid="uid://crtkl6ldhona6" path="res://main/utils/hurt_box.gd" id="6_3dsh6"]
 [ext_resource type="PackedScene" uid="uid://ce7vysyvondf8" path="res://addons/godot-xr-tools/objects/snap_zone.tscn" id="7_irk2m"]
 [ext_resource type="Script" uid="uid://r2ip3x3bxw0i" path="res://mods-unpacked/KumaGee-VRCore/player/ground_spring_cast.gd" id="8_ffq0p"]
+[ext_resource type="Script" uid="uid://bwv8523h7jgf4" path="res://main/utils/client_controller.gd" id="8_yjct3"]
 [ext_resource type="Shader" uid="uid://cdfjqx6ei5653" path="res://shader/circle_inner.gdshader" id="14_we0o2"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dxdo2"]
+radius = 0.2524414
+height = 1.2519531
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ka8gu"]
 radius = 0.16796875
@@ -27,11 +32,7 @@ shader_parameter/blur = 0.009999999747
 shader_parameter/bg_color = Color(0, 0, 0, 1)
 shader_parameter/inner_color = Color(0, 0, 0, 0)
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dxdo2"]
-radius = 0.2524414
-height = 1.2519531
-
-[node name="FPSPlayer" type="CharacterBody3D" unique_id=1756570454 node_paths=PackedStringArray("body", "color_ring", "hand", "animation") groups=["resetable"]]
+[node name="FPSPlayer" type="CharacterBody3D" unique_id=1756570454 node_paths=PackedStringArray("body", "color_ring", "animation") groups=["resetable"]]
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("1_krq8x")
@@ -40,48 +41,29 @@ push_force = 1.0
 body = NodePath("CollisionShape3D")
 colors = Array[Color]([Color(1, 0, 0, 1), Color(0.10830901, 0.44832176, 0.90811163, 1), Color(0.14999998, 1, 0, 1), Color(1, 0.9607843, 0.2509804, 1), Color(0.4000001, 0, 1, 1), Color(1, 0.61960787, 0.011764706, 1), Color(0, 0.93333334, 1, 1), Color(0.9019608, 0.27058825, 1, 1)])
 color_ring = NodePath("ColorRing/SubViewport/Ring")
-hand = NodePath("CollisionShape3D/Hand")
 animation = NodePath("CollisionShape3D/skeleton/AnimationPlayer")
+
+[node name="Hurtbox" type="Area3D" parent="." unique_id=1131967096]
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("6_3dsh6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox" unique_id=1562464606]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.54981625, 0)
+shape = SubResource("CapsuleShape3D_dxdo2")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=992237309]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6461112, 0)
 shape = SubResource("CapsuleShape3D_ka8gu")
 
-[node name="skeleton" parent="CollisionShape3D" unique_id=1284248289 instance=ExtResource("2_yjct3")]
+[node name="skeleton" parent="CollisionShape3D" unique_id=411829480 instance=ExtResource("2_yjct3")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, -0.64262736, 0)
 
-[node name="Skeleton3D" parent="CollisionShape3D/skeleton/Rig_Medium_002" parent_id_path=PackedInt32Array(1284248289, 1762171211) index="0" unique_id=1199686955]
-bones/1/position = Vector3(-2.8726737e-22, 0.39206377, 8.881784e-16)
-bones/1/rotation = Quaternion(-6.181375e-16, 0.043157768, 1.8626456e-09, 0.9990683)
-bones/2/position = Vector3(-0.17094508, 0.11358734, 3.3676066e-09)
-bones/2/rotation = Quaternion(0.9973222, -0.02945736, 0.03152928, 0.05904828)
-bones/3/rotation = Quaternion(0.2740081, -7.208485e-08, 1.9092425e-07, 0.96172744)
-bones/4/rotation = Quaternion(-0.55903924, 0.11451283, -0.008627658, 0.82115006)
-bones/5/rotation = Quaternion(-8.931782e-05, 0.9202216, -0.39139768, 2.040913e-05)
-bones/6/position = Vector3(0.17094508, 0.11358722, 2.4869003e-08)
-bones/6/rotation = Quaternion(0.9937152, 0.08371458, 0.0735038, 0.010918558)
-bones/7/rotation = Quaternion(0.19560221, 7.079181e-08, -1.3610575e-07, 0.9806834)
-bones/8/rotation = Quaternion(-0.5175639, -0.20949666, 0.043654826, 0.8284522)
-bones/9/rotation = Quaternion(0.000111783775, 0.92025787, -0.39131272, -2.5140187e-05)
-bones/10/rotation = Quaternion(-2.1591907e-15, -3.725288e-09, 6.22332e-17, 1)
-bones/11/rotation = Quaternion(0.04639841, 9.2432195e-09, 0.004016135, 0.99891496)
-bones/12/rotation = Quaternion(0.06722665, -0.04391859, 0.047025964, 0.9956607)
-bones/13/position = Vector3(0.21200737, 0.13413204, 8.405577e-08)
-bones/13/rotation = Quaternion(-0.55467385, -0.19844301, -0.73473555, 0.3363347)
-bones/14/rotation = Quaternion(3.3203466e-07, 2.0774815e-09, -0.2991362, 0.95421046)
-bones/16/rotation = Quaternion(-0.2272563, -0.25134227, -0.14045879, 0.93029726)
-bones/17/rotation = Quaternion(-0.025259119, -0.00061362935, -0.5007621, 0.8652162)
-bones/18/position = Vector3(-0.21200739, 0.13413218, 6.6317504e-08)
-bones/18/rotation = Quaternion(-0.62623674, 0.12887855, 0.67894024, 0.3609129)
-bones/19/rotation = Quaternion(2.1062002e-07, -5.5233336e-08, 0.305242, 0.9522748)
-bones/21/rotation = Quaternion(-0.16609937, 0.23908538, -0.07152499, 0.9540091)
-bones/22/rotation = Quaternion(1.1529228e-07, 4.801178e-08, 0.7071067, 0.7071068)
-
-[node name="AnimationPlayer" parent="CollisionShape3D/skeleton" index="1" unique_id=270125802]
+[node name="AnimationPlayer" parent="CollisionShape3D/skeleton" index="1" unique_id=432445355]
 autoplay = &"Idle_B"
 
 [node name="SnapZone" parent="CollisionShape3D" unique_id=1883047161 instance=ExtResource("7_irk2m")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.08730608, 0.18821836)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.17137635, 0.2707718)
 grab_distance = 0.5
 snap_mode = 1
 snap_require = "bomb"
@@ -121,13 +103,7 @@ color = Color(0, 0, 0, 1)
 volume_db = -15.0
 pitch_scale = 1.5
 
-[node name="Hurtbox" type="Area3D" parent="." unique_id=1131967096]
-collision_layer = 32
-collision_mask = 0
-script = ExtResource("6_3dsh6")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox" unique_id=1562464606]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.54981625, 0)
-shape = SubResource("CapsuleShape3D_dxdo2")
+[node name="TopDownClientMove" type="Node" parent="." unique_id=943158393]
+script = ExtResource("8_yjct3")
 
 [editable path="CollisionShape3D/skeleton"]

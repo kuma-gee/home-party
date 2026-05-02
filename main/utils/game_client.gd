@@ -1,5 +1,5 @@
 class_name GameClient
-extends Node
+extends ClientController
 
 signal send_candidate(mid: String, index: int, sdp: String)
 signal send_session(type: int, sdp: String)

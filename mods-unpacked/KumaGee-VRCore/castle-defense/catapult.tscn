@@ -10,7 +10,7 @@ radius = 2.0
 [sub_resource type="BoxShape3D" id="BoxShape3D_r51br"]
 size = Vector3(1.0556641, 0.29211426, 1.125)
 
-[node name="Catapult" type="Node3D" unique_id=188247881 node_paths=PackedStringArray("boulder_spawn", "catapult_arm")]
+[node name="Catapult" type="Node3D" unique_id=188247881 node_paths=PackedStringArray("boulder_spawn", "catapult_arm") groups=["catapult"]]
 script = ExtResource("1_r51br")
 boulder_scene = ExtResource("2_k01xs")
 boulder_spawn = NodePath("siege-catapult2/siege-catapult/catapult/BoulderPosition")

@@ -9,7 +9,6 @@ signal died()
 @export var body: Node3D
 @export var colors: Array[Color] = []
 @export var color_ring: ColorRect
-@export var hand: PickupHand3D
 
 @export_category("Animation")
 @export var animation: AnimationPlayer
@@ -19,17 +18,12 @@ signal died()
 @onready var ground_spring_cast: GroundSpringCast = $GroundSpringCast
 @onready var hurtbox: HurtBox = $Hurtbox
 
-var game_client: GameClient
+var game_client: ClientController
 var player_num := 0
 
 func _ready():
-	#reset()
 	color_ring.color = colors[player_num % colors.size()]
 	hurtbox.died.connect(func(): died.emit())
-	game_client.input_received.connect(func(input, _value):
-		if input == "action":
-			hand.action()
-	)
 
 func _physics_process(delta):
 	var direction = game_client.get_move()
@@ -68,6 +62,3 @@ func push_other_player(other_player: FPSPlayer) -> void:
 	if velocity.length() > 0 and other_player.velocity.length() < 0.1:
 		other_player.velocity.x = push_direction.x * push_force
 		other_player.velocity.z = push_direction.z * push_force
-
-#func reset(_restore = false):
-	#hand.release(self)
