@@ -41,7 +41,6 @@ shape = SubResource("SphereShape3D_llgkl")
 collision_layer = 64
 collision_mask = 0
 script = ExtResource("4_niq6i")
-health = 1
 metadata/_custom_type_script = "uid://crtkl6ldhona6"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HurtBox" unique_id=202025330]
@@ -51,7 +50,6 @@ shape = SubResource("SphereShape3D_niq6i")
 collision_layer = 0
 collision_mask = 128
 script = ExtResource("4_niq6i")
-health = 1
 metadata/_custom_type_script = "uid://crtkl6ldhona6"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PowerUpArea" unique_id=460909716]

@@ -17,16 +17,16 @@ func deactivate():
 	if fade_tw:
 		fade_tw.kill()
 	fade_tw = create_tween()
-	fade_tw.tween_method(set_fade, 0.0, 1.0, 0.5)
+	fade_tw.tween_method(set_fade, 0.0, 1.0, 0.2)
 	await fade_tw.finished
 
 func activate():
 	if fade_tw:
 		fade_tw.kill()
 	fade_tw = create_tween()
-	fade_tw.tween_method(set_fade, 1.0, 0.0, 0.5)
+	fade_tw.tween_method(set_fade, 1.0, 0.0, 0.2)
 	await fade_tw.finished
-	await get_tree().create_timer(0.2).timeout
+	# await get_tree().create_timer(0.1).timeout
 	
 	origin.current = true
 	camera.current = true

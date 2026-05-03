@@ -5,13 +5,13 @@
 [ext_resource type="Script" uid="uid://cfqyv12dohlh7" path="res://main/utils/hit_box.gd" id="2_cloi0"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_body"]
-radius = 0.20445481
+radius = 0.21401803
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_hit"]
 radius = 0.2866052
 
 [node name="Boulder" type="CharacterBody3D" unique_id=29135178]
-collision_layer = 0
+collision_layer = 2
 script = ExtResource("1_boulder")
 high_arc = true
 

@@ -16,6 +16,9 @@ func _ready() -> void:
 	free_timer.one_shot = true
 	free_timer.timeout.connect(queue_free)
 
+func on_hit():
+	queue_free()
+
 func _on_hit_area_area_entered(area: Area3D) -> void:
 	if _broken:
 		return

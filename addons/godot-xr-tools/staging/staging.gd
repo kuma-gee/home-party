@@ -145,7 +145,7 @@ func load_scene(p_scene_path : String, user_data = null) -> void:
 		if _tween:
 			_tween.kill()
 		_tween = get_tree().create_tween()
-		_tween.tween_method(set_fade, 0.0, 1.0, 0.5)
+		_tween.tween_method(set_fade, 0.0, 1.0, 0.2)
 		
 		# Report pre-exiting and remove the scene signals
 		current_scene.scene_pre_exiting(user_data)
@@ -179,7 +179,7 @@ func load_scene(p_scene_path : String, user_data = null) -> void:
 		if _tween:
 			_tween.kill()
 		_tween = get_tree().create_tween()
-		_tween.tween_method(set_fade, 1.0, 0.0, 0.5)
+		_tween.tween_method(set_fade, 1.0, 0.0, 0.2)
 		await _tween.finished
 
 	# If the loading screen is visible then show the progress and optionally
@@ -217,9 +217,9 @@ func load_scene(p_scene_path : String, user_data = null) -> void:
 		if _tween:
 			_tween.kill()
 		_tween = get_tree().create_tween()
-		_tween.tween_method(set_fade, 0.0, 1.0, 1.0)
+		_tween.tween_method(set_fade, 0.0, 1.0, 0.2)
 		await _tween.finished
-		await get_tree().create_timer(0.1).timeout
+		# await get_tree().create_timer(0.1).timeout
 
 		# Hide our loading screen
 		loading.follow_camera = false
@@ -245,9 +245,9 @@ func load_scene(p_scene_path : String, user_data = null) -> void:
 	if _tween:
 		_tween.kill()
 	_tween = get_tree().create_tween()
-	_tween.tween_method(set_fade, 1.0, 0.0, 1.0)
+	_tween.tween_method(set_fade, 1.0, 0.0, 0.2)
 	await _tween.finished
-	await get_tree().create_timer(0.2).timeout
+	# await get_tree().create_timer(0.1).timeout
 
 	# Report new scene visible
 	current_scene.scene_visible(user_data)

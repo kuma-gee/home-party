@@ -9,6 +9,7 @@ signal died()
 @export var body: Node3D
 @export var colors: Array[Color] = []
 @export var color_ring: ColorRect
+@export var snap_zone: XRToolsSnapZone
 
 @export_category("Animation")
 @export var animation: AnimationPlayer
@@ -17,17 +18,37 @@ signal died()
 
 @onready var ground_spring_cast: GroundSpringCast = $GroundSpringCast
 @onready var hurtbox: HurtBox = $Hurtbox
+@onready var freeze_timer: Timer = $FreezeTimer
+@onready var slow_restore_timer: Timer = $SlowRestoreTimer
 
 var game_client: ClientController
 var player_num := 0
+var slow := 0.0
 
 func _ready():
 	color_ring.color = colors[player_num % colors.size()]
-	hurtbox.died.connect(func(): died.emit())
+	hurtbox.died.connect(on_hurtbox_died)
+	slow_restore_timer.timeout.connect(func(): slow = 0.0)
+
+func on_hurtbox_died():
+	snap_zone.drop_object()
+	died.emit()
+
+func freeze(time: float):
+	freeze_timer.start(time)
+	velocity = Vector3.ZERO
+	animation.pause()
+
+func apply_slow(slow_amount: float):
+	slow = slow_amount
+	slow_restore_timer.start()
 
 func _physics_process(delta):
+	if not freeze_timer.is_stopped():
+		return
+	
 	var direction = game_client.get_move()
-	var _speed = speed
+	var _speed = speed * (1.0 - slow)
 
 	if ground_spring_cast.is_grounded():
 		if direction:

@@ -14,7 +14,9 @@ const ELEMENT_COLOR := {
 
 @export var visual: MeshInstance3D
 
-var element := Arrow.Element.FIRE:
+var is_fired := false
+var orb: ElementOrb
+var element := Arrow.Element.NONE:
 	set(v):
 		element = v
 		visible = element != Arrow.Element.NONE
@@ -24,8 +26,8 @@ func _ready() -> void:
 	area_entered.connect(_on_area_entered)
 
 func _on_area_entered(area: Area3D) -> void:
-	if area is ElementOrb:
-		var orb := area as ElementOrb
+	if area is ElementOrb and not is_fired:
+		orb = area
 		element = orb.element
 
 func activate_effect():
@@ -33,9 +35,17 @@ func activate_effect():
 	var scene = ELEMENT_SCENE[element].instantiate()
 	scene.position = global_position
 	get_tree().current_scene.add_child(scene)
+	
+func fired():
+	if orb:
+		orb.fired()
+	is_fired = true
 
-static func update_visual(visual: MeshInstance3D, element: Arrow.Element) -> void:
-	var indicator := visual
+static func get_element_color(elem: Arrow.Element) -> Color:
+	return ELEMENT_COLOR[elem] as Color
+
+static func update_visual(mesh: MeshInstance3D, elem: Arrow.Element) -> void:
+	var indicator := mesh
 	if not indicator:
 		return
 		
@@ -43,8 +53,9 @@ static func update_visual(visual: MeshInstance3D, element: Arrow.Element) -> voi
 	if not mat:
 		return
 	
-	if element not in ELEMENT_COLOR:
+	if elem not in ELEMENT_COLOR:
 		return
-	var color := ELEMENT_COLOR[element] as Color
+	
+	var color := get_element_color(elem)
 	mat.albedo_color = color
 	mat.emission = color

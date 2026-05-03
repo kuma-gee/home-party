@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://dvcr7erf7sa4h"]
 
 [ext_resource type="Script" uid="uid://c4y0mykjy4tl2" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/element_orb.gd" id="1_7bjo4"]
+[ext_resource type="Shader" uid="uid://cdfjqx6ei5653" path="res://shader/circle_inner.gdshader" id="2_ljjn1"]
+[ext_resource type="Script" uid="uid://b6t5ttmc37k1r" path="res://main/utils/circle_timer.gd" id="3_h6mlr"]
 
 [sub_resource type="SphereShape3D" id="Shape_OrbFire"]
 radius = 0.2
@@ -16,11 +18,24 @@ emission_enabled = true
 emission = Color(1, 0.35, 0, 1)
 emission_energy_multiplier = 2.0
 
-[node name="FireOrb" type="Area3D" unique_id=107013500 node_paths=PackedStringArray("visual")]
+[sub_resource type="ViewportTexture" id="ViewportTexture_ljjn1"]
+viewport_path = NodePath("Sprite3D/SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h6mlr"]
+shader = ExtResource("2_ljjn1")
+shader_parameter/radius = 0.800000038
+shader_parameter/inner_radius = 0.6000000285
+shader_parameter/fill = 1.0
+shader_parameter/blur = 0.0001
+shader_parameter/bg_color = Color(0, 0, 0, 1)
+shader_parameter/inner_color = Color(0, 0, 0, 0)
+
+[node name="FireOrb" type="Area3D" unique_id=107013500 node_paths=PackedStringArray("visual", "color_rect")]
 collision_layer = 128
 collision_mask = 0
 script = ExtResource("1_7bjo4")
 visual = NodePath("OrbMesh")
+color_rect = NodePath("Sprite3D/SubViewport/ColorRect")
 
 [node name="OrbShape" type="CollisionShape3D" parent="." unique_id=305172659]
 shape = SubResource("Shape_OrbFire")
@@ -29,3 +44,26 @@ shape = SubResource("Shape_OrbFire")
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 mesh = SubResource("Mesh_Orb")
 surface_material_override/0 = SubResource("Mat_FireOrb")
+
+[node name="CooldownTimer" type="Timer" parent="." unique_id=1983703085]
+one_shot = true
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=1331204660]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+billboard = 1
+texture = SubResource("ViewportTexture_ljjn1")
+
+[node name="SubViewport" type="SubViewport" parent="Sprite3D" unique_id=1347263593]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(256, 256)
+
+[node name="ColorRect" type="ColorRect" parent="Sprite3D/SubViewport" unique_id=1894593873 node_paths=PackedStringArray("timer")]
+material = SubResource("ShaderMaterial_h6mlr")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_h6mlr")
+timer = NodePath("../../../CooldownTimer")

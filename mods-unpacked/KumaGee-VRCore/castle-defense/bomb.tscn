@@ -4,7 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://dh8grd7s3n8kg" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_snap.tscn" id="2_o4xnu"]
 [ext_resource type="Script" uid="uid://cfqyv12dohlh7" path="res://main/utils/hit_box.gd" id="3_4h28i"]
 [ext_resource type="AudioStream" uid="uid://c5rxm1rbcobqx" path="res://assets/sound/sfx/Lighting Fuse.wav" id="4_4q7qu"]
-[ext_resource type="Script" uid="uid://crtkl6ldhona6" path="res://main/utils/hurt_box.gd" id="5_t6gc0"]
 
 [sub_resource type="SphereShape3D" id="Shape_BombBody"]
 radius = 0.3
@@ -23,12 +22,10 @@ radius = 1.0
 [sub_resource type="SphereShape3D" id="SphereShape3D_4q7qu"]
 radius = 0.4
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_t6gc0"]
-radius = 0.32337588
-
 [node name="Bomb" type="RigidBody3D" unique_id=2006338049 groups=["bomb"]]
 collision_layer = 4
 collision_mask = 196615
+freeze = true
 script = ExtResource("1_p6dde")
 second_hand_grab = 1
 
@@ -62,12 +59,3 @@ shape = SubResource("SphereShape3D_4q7qu")
 [node name="LightingFuse" type="AudioStreamPlayer" parent="." unique_id=157487948]
 stream = ExtResource("4_4q7qu")
 volume_db = -10.0
-
-[node name="HurtBox" type="Area3D" parent="." unique_id=657613853]
-collision_layer = 32
-collision_mask = 0
-script = ExtResource("5_t6gc0")
-metadata/_custom_type_script = "uid://crtkl6ldhona6"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtBox" unique_id=1103788757]
-shape = SubResource("SphereShape3D_t6gc0")

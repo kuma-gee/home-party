@@ -77,6 +77,8 @@ func _ready():
 	if not body_exited.is_connected(_on_snap_zone_body_exited):
 		body_exited.connect(_on_snap_zone_body_exited)
 
+	tree_exiting.connect(func(): drop_object())
+
 	# Perform updates
 	_update_snap_mode()
 

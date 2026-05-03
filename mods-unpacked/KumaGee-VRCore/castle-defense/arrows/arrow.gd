@@ -22,6 +22,7 @@ func fire(force: Vector3):
 	freeze = false
 	linear_velocity = force
 	fired = true
+	element_area.fired()
 
 func _physics_process(_delta: float) -> void:
 	if linear_velocity.length() > 0.5 and fired:
@@ -31,6 +32,8 @@ func _on_body_entered(body: Node3D) -> void:
 	if _hit or not fired or body is XRToolsPickable:
 		return
 	_on_hit()
+	if body.has_method("on_hit"):
+		body.on_hit()
 
 func _on_hit() -> void:
 	_hit = true
