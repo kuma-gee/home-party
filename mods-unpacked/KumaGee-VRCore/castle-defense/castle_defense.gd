@@ -7,7 +7,6 @@ extends XRToolsSceneBase
 @export var gate_hurtbox: HurtBox
 
 @onready var play_time: Timer = $PlayTime
-@onready var player_spawner: PlayerSpawner = $PlayerSpawner
 
 var logger := KumaLog.new("CastleDefense")
 
@@ -22,7 +21,6 @@ func scene_loaded(_user_data = null) -> void:
 	get_tree().paused = false
 	LobbyServer.send_layout("joystick")
 
-	player_spawner.init_players()
 	play_time.start()
 	logger.info("Game started — %.0f seconds to survive" % play_time.wait_time)
 

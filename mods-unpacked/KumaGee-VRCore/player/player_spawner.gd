@@ -4,20 +4,15 @@ extends Node3D
 @export var player_scene: PackedScene
 @export var offset = 0.5
 
-var clients: Array
-var alive := {}
-var center := 0.0
+func get_spawn_position(player_num: int):
+	var count = PlayerManager.playing_clients.size()
+	var center = (count - 1) / 2.0
+	return Vector3.RIGHT * ((player_num - center) * offset)
 
-func init_players():
-	clients = PlayerManager.playing_clients
-	var count = clients.size()
-	if count == 0:
-		return
-
-	center = (count - 1) / 2.0
-	for i in count:
-		var spawner = PlayerRespawn.new()
-		spawner.game_client = clients[i]
-		spawner.player_scene = player_scene
-		spawner.pos = Vector3.RIGHT * ((i - center) * offset)
-		add_child(spawner)
+func create_player(game_client: GameClient):
+	var player = player_scene.instantiate() as FPSPlayer
+	player.game_client = game_client
+	player.player_num = LobbyServer.get_player_idx(game_client.uuid)
+	add_child(player)
+	player.position = get_spawn_position(player.player_num)
+	return player

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cvpfijeg6ambj"]
 
-[ext_resource type="Script" uid="uid://clgft3mio2mex" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/catapult.gd" id="1_r51br"]
-[ext_resource type="PackedScene" uid="uid://cdboulder001" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/boulder.tscn" id="2_k01xs"]
+[ext_resource type="Script" uid="uid://clgft3mio2mex" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/attacker/catapult.gd" id="1_r51br"]
+[ext_resource type="PackedScene" uid="uid://cdboulder001" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/attacker/boulder.tscn" id="2_k01xs"]
 [ext_resource type="PackedScene" uid="uid://burfl5ip86htg" path="res://mods-unpacked/KumaGee-VRCore/assets/castle/Models/GLB format/siege-catapult.glb" id="3_sea00"]
 
 [sub_resource type="SphereShape3D" id="Shape_OpZone"]

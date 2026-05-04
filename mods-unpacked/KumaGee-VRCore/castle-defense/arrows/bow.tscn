@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bkh78koqbpbod"]
 
 [ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_mny1f"]
-[ext_resource type="Script" uid="uid://bky2ilv6su6ai" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/bow.gd" id="2_8s80g"]
+[ext_resource type="Script" uid="uid://bky2ilv6su6ai" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/bow.gd" id="2_8s80g"]
 [ext_resource type="PackedScene" uid="uid://daucybh7twtqi" path="res://mods-unpacked/KumaGee-VRCore/assets/weapons/Assets/gltf/bow_B.gltf" id="4_k2jsv"]
 [ext_resource type="PackedScene" uid="uid://c25yxb0vt53vc" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_left.tscn" id="6_k2jsv"]
 [ext_resource type="PackedScene" uid="uid://ce7vysyvondf8" path="res://addons/godot-xr-tools/objects/snap_zone.tscn" id="7_7iw86"]

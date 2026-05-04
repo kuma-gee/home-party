@@ -5,8 +5,8 @@ enum _State { IDLE, MOVE_TO_CATAPULT, AT_CATAPULT, MOVE_TO_BOMB, CARRY_BOMB, DEA
 
 var logger := KumaLog.new("AISpawner")
 
+@export var player_spawner: PlayerSpawner
 @export var ai_player_count: int = 2
-@export var player_scene: PackedScene
 @export var catapult_wait_min: float = 5.0
 @export var catapult_wait_max: float = 15.0
 @export var respawn_delay: float = 3.0
@@ -61,21 +61,11 @@ func _init_agents(scene: PackedScene):
 		_agent_timers.append(i * 0.5)  # stagger initial decisions
 		_spawn_positions.append(spawn_pos)
 
-
 func _resolve_player_scene() -> PackedScene:
-	if player_scene:
-		return player_scene
-	var ps := get_parent().get_node_or_null("PlayerSpawner") as PlayerSpawner
-	if ps and ps.player_scene:
-		return ps.player_scene
-	return null
-
+	return player_spawner.player_scene
 
 func _get_spawn_origin() -> Vector3:
-	var player_spawner := get_parent().get_node_or_null("PlayerSpawner") as Node3D
-	if is_instance_valid(player_spawner):
-		return player_spawner.global_position
-	return Vector3(0.0, 0.0, 22.0)
+	return player_spawner.global_position
 
 
 func _connect_died(player: FPSPlayer, i: int) -> void:

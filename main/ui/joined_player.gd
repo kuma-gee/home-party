@@ -20,6 +20,7 @@ var player_name: String:
 @onready var in_pos := 0
 
 var tw: Tween
+var game_client: GameClient
 
 func _ready() -> void:
 	container.position.x = -container.custom_minimum_size.x
@@ -27,11 +28,13 @@ func _ready() -> void:
 
 func update_data(data: Dictionary):
 	uuid = data.client_id
+	game_client = PlayerManager.find_player(uuid)
 	player_name = data.name.substr(0, max_length) # TODO: limit on client side
-	color_rect.color = PlayerList.get_color(data.number)
-	icon.code = data.icon
 	if data.name.length() > max_length:
 		player_name += "..."
+	
+	color_rect.color = PlayerList.get_color(data.number)
+	icon.code = data.icon
 
 func move_in():
 	if tw:

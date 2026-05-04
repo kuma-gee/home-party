@@ -47,6 +47,7 @@ enabled=PackedStringArray("res://addons/barcode/plugin.cfg", "res://addons/godot
 arrow=""
 bomb=""
 catapult=""
+player_spawner=""
 
 [input]
 

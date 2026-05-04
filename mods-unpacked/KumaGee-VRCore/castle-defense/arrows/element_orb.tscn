@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dvcr7erf7sa4h"]
 
-[ext_resource type="Script" uid="uid://c4y0mykjy4tl2" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/element_orb.gd" id="1_7bjo4"]
+[ext_resource type="Script" uid="uid://c4y0mykjy4tl2" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/element_orb.gd" id="1_7bjo4"]
 [ext_resource type="Shader" uid="uid://cdfjqx6ei5653" path="res://shader/circle_inner.gdshader" id="2_ljjn1"]
 [ext_resource type="Script" uid="uid://b6t5ttmc37k1r" path="res://main/utils/circle_timer.gd" id="3_h6mlr"]
 

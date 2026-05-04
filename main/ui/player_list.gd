@@ -1,5 +1,5 @@
 class_name PlayerList
-extends Control
+extends VBoxContainer
 
 const COLORS = [
 	Color(1, 0, 0, 1),
@@ -16,10 +16,12 @@ static func get_color(idx: int) -> Color:
 	return COLORS[idx % COLORS.size()]
 
 @export var player_scene: PackedScene
+@export var initial_delay := 2.0
+@export var create_delay := 0.1
 
 func _ready() -> void:
 	LobbyServer.updated_players_list.connect(_on_update_players_list)
-	await get_tree().create_timer(2.0).timeout
+	await get_tree().create_timer(initial_delay).timeout
 	LobbyServer.update_players_list()
 
 func _on_update_players_list(players: Array) -> void:
@@ -36,7 +38,7 @@ func _on_update_players_list(players: Array) -> void:
 			add_child(new_node)
 			new_node.move_in()
 		
-		await get_tree().create_timer(0.1).timeout
+		await get_tree().create_timer(create_delay).timeout
 	
 	# Remove players that left
 	for child in get_children():

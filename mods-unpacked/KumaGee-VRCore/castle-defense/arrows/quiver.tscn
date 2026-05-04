@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://djoi8xbts60su"]
 
-[ext_resource type="Script" uid="uid://d1rjv6k45kah" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/quiver.gd" id="1_1t41b"]
+[ext_resource type="Script" uid="uid://d1rjv6k45kah" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/quiver.gd" id="1_1t41b"]
 [ext_resource type="PackedScene" uid="uid://ctj6x7rjrba72" path="res://mods-unpacked/KumaGee-VRCore/assets/skeletons/Skeleton_Quiver.gltf" id="1_rc1oh"]
 [ext_resource type="PackedScene" uid="uid://dq1qe2qo3uiet" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/flying_arrow.tscn" id="2_1t41b"]
 [ext_resource type="PackedScene" uid="uid://ce7vysyvondf8" path="res://addons/godot-xr-tools/objects/snap_zone.tscn" id="4_1t41b"]

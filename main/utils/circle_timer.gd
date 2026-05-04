@@ -5,9 +5,11 @@ extends ColorRect
 func _process(_delta: float) -> void:
 	if timer.is_stopped():
 		set_fill(0.0)
-	
-	var v = timer.time_left / timer.wait_time
-	set_fill(v)
+		hide()
+	else:
+		var v = timer.time_left / timer.wait_time
+		set_fill(v)
+		show()
 
 func set_fill(v: float):
 	var mat = material as ShaderMaterial

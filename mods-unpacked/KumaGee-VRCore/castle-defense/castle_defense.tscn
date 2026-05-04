@@ -6,25 +6,24 @@
 [ext_resource type="PackedScene" uid="uid://cdd6171l52vtj" path="res://mods-unpacked/KumaGee-VRCore/assets/castle/Models/GLB format/siege-trebuchet.glb" id="3_iwc37"]
 [ext_resource type="Texture2D" uid="uid://df1ngmp3ihrbs" path="res://assets/sky_24_2k.png" id="3_r4ttt"]
 [ext_resource type="Texture2D" uid="uid://c2hm78gfyf65l" path="res://mods-unpacked/KumaGee-VRCore/assets/grass/grass_01_color_1k.png" id="4_lhggn"]
-[ext_resource type="PackedScene" uid="uid://djoi8xbts60su" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/quiver.tscn" id="5_5cd4w"]
+[ext_resource type="PackedScene" uid="uid://djoi8xbts60su" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/quiver.tscn" id="5_5cd4w"]
 [ext_resource type="Texture2D" uid="uid://baho3q0vs3ino" path="res://mods-unpacked/KumaGee-VRCore/assets/grass/grass_04_normal_dx_1k.png" id="5_41gkt"]
-[ext_resource type="PackedScene" uid="uid://dvcr7erf7sa4h" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/fire_orb.tscn" id="5_a14ph"]
+[ext_resource type="PackedScene" uid="uid://dvcr7erf7sa4h" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/element_orb.tscn" id="5_a14ph"]
 [ext_resource type="PackedScene" uid="uid://bjemhxyjs5ne6" path="res://mods-unpacked/KumaGee-VRCore/player/fps_player.tscn" id="5_fps"]
 [ext_resource type="PackedScene" uid="uid://b4ysuy43poobf" path="res://addons/godot-xr-tools/functions/function_pickup.tscn" id="5_w0s4v"]
 [ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="6_5cd4w"]
 [ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="6_a14ph"]
-[ext_resource type="PackedScene" uid="uid://bkh78koqbpbod" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/bow.tscn" id="6_rjw0b"]
+[ext_resource type="PackedScene" uid="uid://bkh78koqbpbod" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/bow.tscn" id="6_rjw0b"]
 [ext_resource type="Script" uid="uid://crtkl6ldhona6" path="res://main/utils/hurt_box.gd" id="9_hurtbox"]
 [ext_resource type="PackedScene" uid="uid://btlljhtniv3dr" path="res://main/vr/vr_space.tscn" id="10_a14ph"]
 [ext_resource type="Script" uid="uid://b1f1y52jugtns" path="res://mods-unpacked/KumaGee-VRCore/player/player_spawner.gd" id="14_jv2d0"]
-[ext_resource type="Script" uid="uid://qmupmxnwmrv0" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/bomb_spawner.gd" id="15_a11e3"]
+[ext_resource type="Script" uid="uid://qmupmxnwmrv0" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/attacker/bomb_spawner.gd" id="15_a11e3"]
 [ext_resource type="PackedScene" uid="uid://rhhi8qthwtiy" path="res://mods-unpacked/KumaGee-VRCore/assets/castle/Models/GLB format/gate.glb" id="15_fh86t"]
-[ext_resource type="PackedScene" uid="uid://cvpfijeg6ambj" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/catapult.tscn" id="15_ka738"]
-[ext_resource type="PackedScene" uid="uid://bltu6pp2q0a8y" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/bomb.tscn" id="16_a11e3"]
+[ext_resource type="PackedScene" uid="uid://cvpfijeg6ambj" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/attacker/catapult.tscn" id="15_ka738"]
+[ext_resource type="PackedScene" uid="uid://bltu6pp2q0a8y" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/attacker/bomb.tscn" id="16_a11e3"]
 [ext_resource type="Script" uid="uid://bkptmydk5lvou" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/health_bar.gd" id="17_iwc37"]
 [ext_resource type="Script" uid="uid://cc66tdjlk8c2n" path="res://addons/proton_scatter/src/shapes/sphere_shape.gd" id="17_se6x7"]
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme.css" id="18_3sspo"]
-[ext_resource type="PackedScene" uid="uid://c58odbpnd0cpn" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/torch.tscn" id="18_fkt18"]
 [ext_resource type="PackedScene" uid="uid://c0cmbpfpgdlpu" path="res://mods-unpacked/KumaGee-VRCore/assets/castle/Models/GLB format/wall-corner-half-tower.glb" id="18_iwc37"]
 [ext_resource type="Script" uid="uid://3jl51qajvpsq" path="res://addons/proton_scatter/src/scatter.gd" id="24_0cjve"]
 [ext_resource type="PackedScene" uid="uid://dtwqu5m4nsy5r" path="res://mods-unpacked/KumaGee-VRCore/assets/castle/Models/GLB format/wall-half.glb" id="24_bm3dj"]
@@ -39,8 +38,10 @@
 [ext_resource type="Script" uid="uid://ca371rsy4x4ya" path="res://addons/proton_scatter/src/shapes/box_shape.gd" id="34_lhggn"]
 [ext_resource type="Shader" uid="uid://dwsq4ngfokby6" path="res://shader/edge.gdshader" id="38_r4ttt"]
 [ext_resource type="Script" uid="uid://54ff6uyo8677" path="res://main/utils/time_label.gd" id="39_88pht"]
-[ext_resource type="Script" uid="uid://bs1qu2rv1mdyb" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/ai_spawner.gd" id="39_ofmg5"]
-[ext_resource type="Script" uid="uid://nxdpp3mdtdtw" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrow_spawner.gd" id="40_bd7o1"]
+[ext_resource type="Script" uid="uid://bs1qu2rv1mdyb" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/attacker/ai_spawner.gd" id="39_ofmg5"]
+[ext_resource type="Script" uid="uid://nxdpp3mdtdtw" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/arrow_spawner.gd" id="40_bd7o1"]
+[ext_resource type="PackedScene" uid="uid://dc0o0lteyonsm" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/castle_player_ui.tscn" id="40_bl5ky"]
+[ext_resource type="Script" uid="uid://dgfn4nv7yxows" path="res://main/ui/player_list.gd" id="40_vf04h"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_3sspo"]
 panorama = ExtResource("3_r4ttt")
@@ -311,14 +312,6 @@ visible = false
 [node name="weight2" parent="Castle/siege-trebuchet2/siege-trebuchet" parent_id_path=PackedInt32Array(1537004139, 131552585) index="2" unique_id=844804451]
 visible = false
 
-[node name="Torch" parent="Castle" unique_id=1449723109 instance=ExtResource("18_fkt18")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1.709, 10.01)
-visible = false
-
-[node name="Torch2" parent="Castle" unique_id=98434541 instance=ExtResource("18_fkt18")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1.709, 10.01)
-visible = false
-
 [node name="Meshes" type="Node3D" parent="Castle" unique_id=577322639]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 9)
 
@@ -546,7 +539,7 @@ light_energy = 0.5
 omni_range = 8.0
 omni_attenuation = 0.3
 
-[node name="PlayerSpawner" type="Node3D" parent="." unique_id=290112290]
+[node name="PlayerSpawner" type="Node3D" parent="." unique_id=290112290 groups=["player_spawner"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 22.68351)
 script = ExtResource("14_jv2d0")
 player_scene = ExtResource("5_fps")
@@ -610,9 +603,19 @@ text = "00:00"
 script = ExtResource("39_88pht")
 timer = NodePath("../../../../PlayTime")
 
-[node name="AISpawner" type="Node" parent="." unique_id=1649809598]
+[node name="PlayerList" type="VBoxContainer" parent="UI/Control" unique_id=370788784]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
+mouse_filter = 0
+script = ExtResource("40_vf04h")
+player_scene = ExtResource("40_bl5ky")
+
+[node name="AISpawner" type="Node" parent="." unique_id=1649809598 node_paths=PackedStringArray("player_spawner")]
 script = ExtResource("39_ofmg5")
-player_scene = ExtResource("5_fps")
+player_spawner = NodePath("../PlayerSpawner")
 
 [node name="ArrowSpawner" type="Node" parent="." unique_id=1097483256]
 script = ExtResource("40_bd7o1")
