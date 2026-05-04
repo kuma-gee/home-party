@@ -13,8 +13,9 @@ signal died()
 
 @export_category("Animation")
 @export var animation: AnimationPlayer
-@export var idle_anim := "Idle_B"
+@export var idle_anim := "Idle_B" 
 @export var running_anim := "Running_A"
+@export var spawn_anim := "Spawn_Ground"
 
 @onready var ground_spring_cast: GroundSpringCast = $GroundSpringCast
 @onready var hurtbox: HurtBox = $Hurtbox
@@ -24,17 +25,26 @@ signal died()
 var game_client: ClientController
 var player_num := 0
 var slow := 0.0
+var is_spawning := true
 
 func _ready():
 	color_ring.color = colors[player_num % colors.size()]
 	hurtbox.died.connect(on_hurtbox_died)
 	slow_restore_timer.timeout.connect(func(): slow = 0.0)
+	animation.animation_finished.connect(func(anim):
+		if anim == spawn_anim:
+			is_spawning = false
+			hurtbox.enabled = true
+	)
+	
+	animation.play(spawn_anim)
 
 func on_hurtbox_died():
 	snap_zone.drop_object()
 	died.emit()
 
 func freeze(time: float):
+	if is_spawning: return
 	freeze_timer.start(time)
 	velocity = Vector3.ZERO
 	animation.pause()
@@ -44,7 +54,7 @@ func apply_slow(slow_amount: float):
 	slow_restore_timer.start()
 
 func _physics_process(delta):
-	if not freeze_timer.is_stopped():
+	if not freeze_timer.is_stopped() or is_spawning:
 		return
 	
 	var direction = game_client.get_move()

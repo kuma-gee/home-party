@@ -10,7 +10,7 @@ extends Area3D
 
 func _ready() -> void:
 	ArrowElement.update_visual(visual, element)
-	color_rect.color = ArrowElement.get_element_color(element)
+	#color_rect.color = ArrowElement.get_element_color(element)
 
 func is_loaded():
 	return cooldown_timer.is_stopped()

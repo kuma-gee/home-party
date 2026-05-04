@@ -37,6 +37,10 @@ func _start_ai() -> void:
 	if catapults.size() > 0:
 		_gate = (catapults[0] as Catapult).gate_target
 
+	await get_tree().create_timer(4.0).timeout
+	_init_agents(scene)
+
+func _init_agents(scene: PackedScene):
 	var spawn_origin := _get_spawn_origin()
 	for i in ai_player_count:
 		var spawn_pos := spawn_origin + Vector3.RIGHT * ((i - (ai_player_count - 1) / 2.0) * 1.5)

@@ -11,7 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://ce7vysyvondf8" path="res://addons/godot-xr-tools/objects/snap_zone.tscn" id="5_vp8d5"]
 [ext_resource type="PackedScene" uid="uid://cme66uldrjl2i" path="res://addons/godot-xr-tools/interactables/interactable_area_button.tscn" id="8_qx34d"]
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme.css" id="10_3uit5"]
-[ext_resource type="Script" uid="uid://54ff6uyo8677" path="res://mods-unpacked/KumaGee-VRCore/whack-a-mole/time.gd" id="10_s2wpt"]
+[ext_resource type="Script" uid="uid://54ff6uyo8677" path="res://main/utils/time_label.gd" id="10_s2wpt"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qu0bq"]
 albedo_color = Color(0.4045111, 0.40451115, 0.4045111, 1)

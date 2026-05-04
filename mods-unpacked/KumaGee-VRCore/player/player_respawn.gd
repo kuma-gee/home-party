@@ -34,6 +34,7 @@ func spawn_player():
 	player.game_client = game_client
 	player.player_num = idx
 	player.position = pos
+	player.rotation.y = PI
 	player.died.connect(func():
 		alive = false
 		respawn_timer = respawn_time

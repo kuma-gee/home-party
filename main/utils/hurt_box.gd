@@ -13,5 +13,8 @@ signal died()
 		if current_health <= 0:
 			died.emit()
 
+@export var enabled := true
+
 func hit(dmg = 1):
+	if not enabled: return
 	current_health -= dmg
