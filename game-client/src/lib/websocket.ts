@@ -1,3 +1,4 @@
+import { getIconForPlayer } from "./icons";
 import { WebRTCClient, type WebRTCConfig } from "./webrtc";
 
 // Fallback UUID generator for browsers that don't support crypto.randomUUID()
@@ -61,6 +62,7 @@ export interface Message {
 export interface IdMessage extends Message {
   msg: MessageType.Id;
   id: number;
+  number: number;
 }
 
 export interface SessionMessage extends Message {
@@ -180,7 +182,8 @@ export class WebSocketClient {
   private handleMessage(message: Message) {
     switch (message.msg) {
       case MessageType.Id:
-        this.peerId = (message as IdMessage).id;
+        var msg = message as IdMessage;
+        this.peerId = msg.id;
         console.log(`Received peer ID: ${this.peerId}`);
         this.onIdReceived?.(this.peerId);
 
@@ -200,6 +203,8 @@ export class WebSocketClient {
           peer_id: this.peerId,
           client_id: clientId,
           name: this.playerName || "Player " + this.peerId,
+          number: msg.number,
+          icon: getIconForPlayer(msg.number),
         });
 
         this.initializeWebRTC();

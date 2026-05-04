@@ -17,7 +17,6 @@ func init_players():
 	center = (count - 1) / 2.0
 	for i in count:
 		var spawner = PlayerRespawn.new()
-		spawner.idx = i
 		spawner.game_client = clients[i]
 		spawner.player_scene = player_scene
 		spawner.pos = Vector3.RIGHT * ((i - center) * offset)

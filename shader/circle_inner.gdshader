@@ -7,6 +7,8 @@ uniform float blur : hint_range(0., 0.2, .0001) = 0.0001;
 
 uniform vec4 bg_color: source_color = vec4(0., 0., 0., 1.);
 uniform vec4 inner_color: source_color = vec4(0., 0., 0., 0.);
+uniform float outline_width : hint_range(0.0, 0.5) = 0.0;
+uniform vec4 outline_color: source_color = vec4(1., 1., 1., 1.);
 
 float remap(float i_min, float i_max, float o_min, float o_max, float val) {
 	float t = (val - i_min) / (i_max - i_min);
@@ -36,4 +38,8 @@ void fragment() {
 	float inside_circle = smoothstep(r + blur, r - blur, dist);
 	COLOR.a *= inside_circle;
 
+	float outline_inner = r - outline_width;
+	float in_outline = smoothstep(outline_inner + blur, outline_inner - blur, dist);
+	float outline_mask = inside_circle * (1.0 - in_outline);
+	COLOR.rgb = mix(COLOR.rgb, outline_color.rgb, outline_mask * outline_color.a);
 }

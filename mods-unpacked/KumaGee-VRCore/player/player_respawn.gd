@@ -4,7 +4,6 @@ extends Node3D
 @export var respawn_time := 3.0
 @export var game_client: GameClient
 @export var pos := Vector3.ZERO
-@export var idx := 0
 @export var player_scene: PackedScene
 
 var alive := false
@@ -32,7 +31,7 @@ func spawn_player():
 
 	var player = player_scene.instantiate() as FPSPlayer
 	player.game_client = game_client
-	player.player_num = idx
+	player.player_num = LobbyServer.get_player_idx(game_client.uuid)
 	player.position = pos
 	player.rotation.y = PI
 	player.died.connect(func():

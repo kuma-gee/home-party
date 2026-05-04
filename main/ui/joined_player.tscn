@@ -2,9 +2,21 @@
 
 [ext_resource type="Script" uid="uid://cnp5iifs6k3xy" path="res://main/ui/joined_player.gd" id="1_7ry4l"]
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme.css" id="1_y8o30"]
-[ext_resource type="Texture2D" uid="uid://dppjsb1nftth5" path="res://icon.svg" id="2_244wn"]
+[ext_resource type="Shader" uid="uid://cdfjqx6ei5653" path="res://shader/circle_inner.gdshader" id="4_3qhur"]
+[ext_resource type="PackedScene" uid="uid://c6c5h3ccruc3o" path="res://main/ui/material_icon.tscn" id="4_e3ope"]
 
-[node name="JoinedPlayer" type="Control" unique_id=1251273663 node_paths=PackedStringArray("container", "texture", "name_label")]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1tk02"]
+shader = ExtResource("4_3qhur")
+shader_parameter/radius = 0.90000004275
+shader_parameter/inner_radius = 0.0
+shader_parameter/fill = 1.0
+shader_parameter/blur = 0.0049999998734999995
+shader_parameter/bg_color = Color(0, 0, 0, 1)
+shader_parameter/inner_color = Color(0, 0, 0, 0)
+shader_parameter/outline_width = 0.050000002375
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+
+[node name="JoinedPlayer" type="Control" unique_id=1251273663 node_paths=PackedStringArray("container", "name_label", "color_rect", "icon")]
 custom_minimum_size = Vector2(320, 90)
 layout_mode = 3
 anchors_preset = 0
@@ -13,8 +25,10 @@ size_flags_horizontal = 8
 theme = ExtResource("1_y8o30")
 script = ExtResource("1_7ry4l")
 container = NodePath("HBoxContainer")
-texture = NodePath("HBoxContainer/TextureRect")
 name_label = NodePath("HBoxContainer/Name")
+max_length = 16
+color_rect = NodePath("HBoxContainer/ColorRect")
+icon = NodePath("HBoxContainer/ColorRect/MaterialIcon")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=2030705900]
 custom_minimum_size = Vector2(300, 0)
@@ -34,9 +48,15 @@ horizontal_alignment = 2
 vertical_alignment = 1
 text_overrun_behavior = 3
 
-[node name="TextureRect" type="TextureRect" parent="HBoxContainer" unique_id=233856017]
-custom_minimum_size = Vector2(64, 64)
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer" unique_id=857185436]
+material = SubResource("ShaderMaterial_1tk02")
+custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
-texture = ExtResource("2_244wn")
-expand_mode = 3
-stretch_mode = 5
+size_flags_horizontal = 4
+size_flags_vertical = 4
+color = Color(0.32915837, 0.3291584, 0.3291584, 1)
+
+[node name="MaterialIcon" parent="HBoxContainer/ColorRect" unique_id=2057638828 instance=ExtResource("4_e3ope")]
+layout_mode = 1
+text = "[center][char=e838][/center]"
+code = "e838"

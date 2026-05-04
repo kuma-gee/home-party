@@ -26,6 +26,8 @@ shader_parameter/fill = 1.0
 shader_parameter/blur = 0.009999999747
 shader_parameter/bg_color = Color(0, 0, 0, 1)
 shader_parameter/inner_color = Color(0, 0, 0, 0)
+shader_parameter/outline_width = 0.0
+shader_parameter/outline_color = Color(1, 1, 1, 1)
 
 [node name="FPSPlayer" type="CharacterBody3D" unique_id=1756570454 node_paths=PackedStringArray("body", "color_ring", "snap_zone", "animation") groups=["resetable"]]
 collision_layer = 524288

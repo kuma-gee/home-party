@@ -44,6 +44,7 @@ func _peer_connected(id: int):
 	_send_to_peer(id, {
 		"msg": Message.Id,
 		"id": id,
+		"number": peer_to_uuid.size() - 1,
 	})
 
 	_send_to_peer(id, {
@@ -103,13 +104,17 @@ func _on_id_message(data: Dictionary):
 		logger.error("Received Id message without client_id from peer %d" % peer_id)
 		return
 	
-	# Store the peer_id -> UUID mapping
 	peer_to_uuid[peer_id] = uuid
-	
-	# Store player data by UUID
 	players[uuid] = data
 	player_connected.emit(data)
 	update_players_list()
+
+func get_player_idx(uuid: String) -> int:
+	var data = players.get(uuid, null)
+	if data == null:
+		logger.error("get_player_idx: No player data found for UUID %s" % uuid)
+		return -1
+	return data.number
 
 func update_players_list():
 	var players_list = []

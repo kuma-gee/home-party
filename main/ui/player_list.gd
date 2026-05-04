@@ -1,6 +1,20 @@
 class_name PlayerList
 extends Control
 
+const COLORS = [
+	Color(1, 0, 0, 1),
+	Color(0.10830901, 0.44832176, 0.90811163, 1),
+	Color(0.14999998, 1, 0, 1),
+	Color(1, 0.9607843, 0.2509804, 1),
+	Color(0.4000001, 0, 1, 1),
+	Color(1, 0.61960787, 0.011764706, 1),
+	Color(0, 0.93333334, 1, 1),
+	Color(0.9019608, 0.27058825, 1, 1)
+]
+
+static func get_color(idx: int) -> Color:
+	return COLORS[idx % COLORS.size()]
+
 @export var player_scene: PackedScene
 
 func _ready() -> void:
