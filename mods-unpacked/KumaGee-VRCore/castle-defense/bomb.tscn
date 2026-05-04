@@ -58,4 +58,4 @@ shape = SubResource("SphereShape3D_4q7qu")
 
 [node name="LightingFuse" type="AudioStreamPlayer" parent="." unique_id=157487948]
 stream = ExtResource("4_4q7qu")
-volume_db = -10.0
+volume_db = -20.0

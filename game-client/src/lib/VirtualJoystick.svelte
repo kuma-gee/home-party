@@ -125,10 +125,11 @@
 			const effectiveDistance = distance - deadzone;
 			const effectiveMax = maxDistance - deadzone;
 			const normalizedDistance = Math.min(effectiveDistance / effectiveMax, 1);
-			
+			const clampedDistance = Math.min(distance, maxDistance);
+
 			output = {
-				x: (deltaX / distance) * normalizedDistance,
-				y: (deltaY / distance) * normalizedDistance
+				x: (deltaX / clampedDistance) * normalizedDistance,
+				y: (deltaY / clampedDistance) * normalizedDistance
 			};
 			
 			dispatchMove(output);

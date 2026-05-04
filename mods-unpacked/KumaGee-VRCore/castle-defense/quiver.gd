@@ -13,6 +13,8 @@ func _ready() -> void:
 	_check_snap_object()
 
 func _check_snap_object():
+	await get_tree().create_timer(0.1).timeout # wait for is_exiting?
+	
 	if is_exiting or not snap_zone.is_inside_tree() or not is_inside_tree(): return
 	
 	if snap_zone.has_snapped_object():

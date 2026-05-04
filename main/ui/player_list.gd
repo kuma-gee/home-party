@@ -35,6 +35,8 @@ func _on_update_players_list(players: Array) -> void:
 			new_node.update_data(player_data)
 			add_child(new_node)
 			new_node.move_in()
+		
+		await get_tree().create_timer(0.1).timeout
 	
 	# Remove players that left
 	for child in get_children():
