@@ -1,6 +1,7 @@
 class_name Boulder
 extends CharacterBody3D
 
+@export var base_damage: int = 2
 @export var launch_speed: float = 18.0
 @export var gravity: float = 12.0
 @export var high_arc: bool = false
@@ -8,9 +9,9 @@ extends CharacterBody3D
 @onready var hit_area: Area3D = $HitArea
 @onready var free_timer: Timer = $FreeTimer
 
+var power := 0
 var active := false
-var _broken := false
-
+	
 func _ready() -> void:
 	hit_area.area_entered.connect(_on_hit_area_area_entered)
 	free_timer.one_shot = true
@@ -20,16 +21,15 @@ func on_hit():
 	queue_free()
 
 func _on_hit_area_area_entered(area: Area3D) -> void:
-	if _broken:
+	if not active:
 		return
 	if area is HurtBox:
-		area.hit(3)
+		area.hit(base_damage * power)
 		_break()
 
 func _break() -> void:
-	if _broken:
+	if not active:
 		return
-	_broken = true
 	active = false
 	hide()
 	set_collision_layer_value(1, false)

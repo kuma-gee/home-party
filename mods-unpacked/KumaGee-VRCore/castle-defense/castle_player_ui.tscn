@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://f8e1u58jvfd1" path="res://main/ui/joined_player.tscn" id="1_cf4xi"]
 [ext_resource type="Script" uid="uid://d2ump4paj0a02" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/castle_player_ui.gd" id="2_oafew"]
 [ext_resource type="Shader" uid="uid://cdfjqx6ei5653" path="res://shader/circle_inner.gdshader" id="2_sn2ke"]
+[ext_resource type="Texture2D" uid="uid://dppjsb1nftth5" path="res://icon.svg" id="3_pqlag"]
 [ext_resource type="Script" uid="uid://b6t5ttmc37k1r" path="res://main/utils/circle_timer.gd" id="4_lkh84"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_oafew"]
@@ -16,11 +17,30 @@ shader_parameter/inner_color = Color(0, 0, 0, 0)
 shader_parameter/outline_width = 0.0
 shader_parameter/outline_color = Color(1, 1, 1, 1)
 
-[node name="CastlePlayerUI" unique_id=1251273663 instance=ExtResource("1_cf4xi")]
+[node name="CastlePlayerUI" unique_id=1251273663 node_paths=PackedStringArray("firepower_label") instance=ExtResource("1_cf4xi")]
 script = ExtResource("2_oafew")
+firepower_label = NodePath("HBoxContainer/HBoxContainer/Label")
+firepower = 1
 
-[node name="Name" parent="HBoxContainer" parent_id_path=PackedInt32Array(2030705900) index="0" unique_id=1331900333]
+[node name="HBoxContainer" parent="." index="0" unique_id=2030705900]
+theme_override_constants/separation = 16
+
+[node name="Name" parent="HBoxContainer" index="0" unique_id=1331900333]
 visible = false
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer" index="1" unique_id=2084408162]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/HBoxContainer" index="0" unique_id=1062392852]
+layout_mode = 2
+text = "10"
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/HBoxContainer" index="1" unique_id=486480224]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("3_pqlag")
+expand_mode = 5
+stretch_mode = 5
 
 [node name="RespawnTime" type="ColorRect" parent="HBoxContainer/ColorRect" parent_id_path=PackedInt32Array(857185436) index="0" unique_id=1998324057 node_paths=PackedStringArray("timer")]
 material = SubResource("ShaderMaterial_oafew")

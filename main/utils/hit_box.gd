@@ -11,7 +11,7 @@ func _ready() -> void:
 				a.hit(damage)
 		)
 
-func hit():
+func hit(dmg = damage):
 	for area in get_overlapping_areas():
 		if area is HurtBox:
-			area.hit(damage)
+			area.hit(dmg)

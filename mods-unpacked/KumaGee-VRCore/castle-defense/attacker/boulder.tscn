@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://dv3hkf3b1gmsh" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/attacker/boulder.gd" id="1_boulder"]
 [ext_resource type="PackedScene" uid="uid://dbmt2cjyth8a4" path="res://assets/KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/neutral/projectile_catapult.gltf" id="2_a3hix"]
-[ext_resource type="Script" uid="uid://cfqyv12dohlh7" path="res://main/utils/hit_box.gd" id="2_cloi0"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_body"]
 radius = 0.21401803
@@ -24,8 +23,6 @@ transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
 [node name="HitArea" type="Area3D" parent="." unique_id=1657186976]
 collision_layer = 0
 collision_mask = 64
-script = ExtResource("2_cloi0")
-damage = 5
 
 [node name="HitShape" type="CollisionShape3D" parent="HitArea" unique_id=728666122]
 shape = SubResource("SphereShape3D_hit")

@@ -62,7 +62,7 @@ tracks/3/keys = {
 
 [sub_resource type="Animation" id="Animation_6bwcj"]
 resource_name = "start"
-length = 1.5
+length = 10.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -343,7 +343,7 @@ size = Vector3(2.5, 2.5, 2.5)
 texture_albedo = ExtResource("6_met35")
 texture_emission = ExtResource("6_met35")
 modulate = Color(0.5411765, 1, 0.8784314, 0)
-cull_mask = 524288
+cull_mask = 1
 
 [node name="Decal2" type="Decal" parent="PlayParticleSystems" unique_id=427597862]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.024628937, 0)
@@ -351,7 +351,7 @@ size = Vector3(2.5, 2.5, 2.5)
 texture_albedo = ExtResource("7_oii60")
 texture_emission = ExtResource("7_oii60")
 modulate = Color(0.5411765, 1, 0.8784314, 0)
-cull_mask = 524288
+cull_mask = 1
 
 [node name="CenterSphere" type="GPUParticles3D" parent="PlayParticleSystems" unique_id=1134179429]
 material_override = SubResource("StandardMaterial3D_bubsx")

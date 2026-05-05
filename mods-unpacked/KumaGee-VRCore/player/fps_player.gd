@@ -1,6 +1,7 @@
 class_name FPSPlayer
 extends CharacterBody3D
 
+signal reached_gate()
 signal died()
 
 @export var speed := 1.0
@@ -25,6 +26,7 @@ var game_client: ClientController
 var player_num := 0
 var slow := 0.0
 var is_spawning := true
+var firepower := 1
 
 func _ready():
 	color_ring.color = PlayerList.get_color(player_num)
@@ -35,12 +37,18 @@ func _ready():
 			is_spawning = false
 			hurtbox.enabled = true
 	)
-	
+	snap_zone.has_picked_up.connect(_on_pickup)
 	animation.play(spawn_anim)
 
 func on_hurtbox_died():
 	snap_zone.drop_object()
 	died.emit()
+
+func _on_pickup(obj: XRToolsPickable):
+	if obj is Bomb:
+		var bomb = obj as Bomb
+		bomb.firepower = firepower
+		bomb.exploded.connect(func(): reached_gate.emit())
 
 func freeze(time: float):
 	if is_spawning: return

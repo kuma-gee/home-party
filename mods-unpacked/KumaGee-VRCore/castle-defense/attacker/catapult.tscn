@@ -3,18 +3,24 @@
 [ext_resource type="Script" uid="uid://clgft3mio2mex" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/attacker/catapult.gd" id="1_r51br"]
 [ext_resource type="PackedScene" uid="uid://cdboulder001" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/attacker/boulder.tscn" id="2_k01xs"]
 [ext_resource type="PackedScene" uid="uid://burfl5ip86htg" path="res://mods-unpacked/KumaGee-VRCore/assets/castle/Models/GLB format/siege-catapult.glb" id="3_sea00"]
+[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme.css" id="4_7ty7v"]
 
 [sub_resource type="SphereShape3D" id="Shape_OpZone"]
 radius = 2.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_r51br"]
-size = Vector3(1.0556641, 0.29211426, 1.125)
+size = Vector3(1.0556641, 0.41629028, 1.125)
 
-[node name="Catapult" type="Node3D" unique_id=188247881 node_paths=PackedStringArray("boulder_spawn", "catapult_arm") groups=["catapult"]]
+[sub_resource type="ViewportTexture" id="ViewportTexture_6l0n1"]
+viewport_path = NodePath("Sprite3D/SubViewport")
+
+[node name="Catapult" type="Node3D" unique_id=188247881 node_paths=PackedStringArray("boulder_spawn", "catapult_arm", "power_label", "power_sprite") groups=["catapult"]]
 script = ExtResource("1_r51br")
 boulder_scene = ExtResource("2_k01xs")
 boulder_spawn = NodePath("siege-catapult2/siege-catapult/catapult/BoulderPosition")
 catapult_arm = NodePath("siege-catapult2/siege-catapult/catapult")
+power_label = NodePath("Sprite3D/SubViewport/CenterContainer/Label")
+power_sprite = NodePath("Sprite3D")
 
 [node name="siege-catapult2" parent="." unique_id=1026443418 instance=ExtResource("3_sea00")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0.15576398, 0)
@@ -25,7 +31,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2760618, 0.20694196, -5.57
 [node name="OperatingZone" type="Area3D" parent="." unique_id=1954401998]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.002678156, 0)
 collision_layer = 0
-collision_mask = 32
+collision_mask = 524288
 
 [node name="OperatingShape" type="CollisionShape3D" parent="OperatingZone" unique_id=1726657920]
 shape = SubResource("Shape_OpZone")
@@ -36,11 +42,34 @@ collision_layer = 2
 collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1930942722]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1576648, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.21975282, 0)
 shape = SubResource("BoxShape3D_r51br")
 
 [node name="CooldownTimer" type="Timer" parent="." unique_id=432873110]
 wait_time = 3.0
 one_shot = true
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=1785271328]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+billboard = 1
+double_sided = false
+texture = SubResource("ViewportTexture_6l0n1")
+
+[node name="SubViewport" type="SubViewport" parent="Sprite3D" unique_id=1964240078]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(128, 128)
+
+[node name="CenterContainer" type="CenterContainer" parent="Sprite3D/SubViewport" unique_id=2000540497]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_7ty7v")
+
+[node name="Label" type="Label" parent="Sprite3D/SubViewport/CenterContainer" unique_id=485012114]
+layout_mode = 2
+text = "10"
 
 [editable path="siege-catapult2"]
