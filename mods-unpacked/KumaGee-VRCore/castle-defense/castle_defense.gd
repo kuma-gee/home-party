@@ -5,6 +5,7 @@ extends XRToolsSceneBase
 @export var gameover_ui: Control
 @export var gameover_label: Label
 @export var gate_hurtbox: HurtBox
+@export var vr_gameover: XRToolsViewport2DIn3D
 
 @onready var play_time: Timer = $PlayTime
 
@@ -16,6 +17,7 @@ func _ready() -> void:
 	menu_button.pressed.connect(func(): exit_to_main_menu())
 	restart_button.pressed.connect(func(): reset_scene())
 	gameover_ui.hide()
+	vr_gameover.hide()
 
 func scene_loaded(_user_data = null) -> void:
 	get_tree().paused = false
@@ -35,4 +37,5 @@ func _finish_game(message: String) -> void:
 	get_tree().paused = true
 	gameover_label.text = message
 	gameover_ui.show()
+	vr_gameover.show()
 	play_time.stop()
