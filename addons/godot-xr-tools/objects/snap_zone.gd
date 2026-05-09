@@ -35,6 +35,8 @@ enum SnapMode {
 ## Snap mode
 @export var snap_mode : SnapMode = SnapMode.DROPPED: set = _set_snap_mode
 
+@export var snap_on_dropped := false
+
 ## Require snap items to be in specified group
 @export var snap_require : String = ""
 
@@ -171,7 +173,6 @@ func drop_object() -> void:
 	has_dropped.emit()
 	highlight_updated.emit(self, enabled)
 
-
 # Check for an initial object pickup
 func _initial_object_check() -> void:
 	# Check for an initial object
@@ -219,6 +220,8 @@ func _on_snap_zone_body_entered(target: Node3D) -> void:
 	# start listening for the objects dropped signal
 	if snap_mode == SnapMode.DROPPED and target.has_signal("dropped"):
 		target.connect("dropped", _on_target_dropped, CONNECT_DEFERRED)
+		if not target.is_picked_up() and snap_on_dropped:
+			_on_target_dropped(target)
 
 	# Show highlight when something could be snapped
 	if not is_instance_valid(picked_up_object):
@@ -238,6 +241,8 @@ func _on_snap_zone_body_exited(target: Node3D) -> void:
 	if _object_in_grab_area.is_empty():
 		close_highlight_updated.emit(self, false)
 
+	if picked_up_object == target:
+		drop_object()
 
 # Test if this snap zone has a picked up object
 func has_snapped_object() -> bool:
@@ -260,6 +265,7 @@ func pick_up_object(target: Node3D) -> void:
 
 	# Pick up our target. Note, target may do instant drop_and_free
 	picked_up_object = target
+	
 	if has_node("AudioStreamPlayer3D"):
 		var player = get_node("AudioStreamPlayer3D")
 		if is_instance_valid(player):

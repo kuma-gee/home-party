@@ -12,6 +12,11 @@ Label.Large {
   --const-outline-size: 16;
 }
 
+Label.Small {
+  font-size: 24;
+  --const-outline-size: 16;
+}
+
 MarginContainer {
   --const-margin-left: var(--default-margin);
   --const-margin-right: var(--default-margin);
@@ -24,7 +29,6 @@ VBoxContainer, HBoxContainer {
 }
 
 PanelContainer {
-  border-radius: 12;
   background: #111111;
 }
 

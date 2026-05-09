@@ -12,6 +12,7 @@ signal started_game(game: GameResource)
 @onready var game_details: Sprite3D = $GameDetails
 @onready var game_select_zone: GameSelectZone = $GameSelectZone
 @onready var games_root: Node3D = $GamesRoot
+@onready var tv_remote: XRToolsPickable = $TVRemote
 
 var selected_game: GameResource
 var games = []
@@ -19,9 +20,9 @@ var logger := KumaLog.new("GameShelve")
 
 func _ready() -> void:
 	game_select_zone.selected_game.connect(_on_game_selected)
-	game_select_zone.start_game.connect(func():
+	tv_remote.action_pressed.connect(func(_p):
 		if selected_game:
-			started_game.emit()
+			started_game.emit(selected_game)
 	)
 	
 	_populate()
