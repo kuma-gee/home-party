@@ -6,18 +6,25 @@ signal started_game(game: GameResource)
 @export var game_details_ui: GameDetailsUI
 @export var scene: PackedScene
 @export var radius := 0.85
+@export_range(1, 90, 1, "degrees") var item_spacing := 20.0
 
 @onready var game_loader: GameLoader = $GameLoader
 @onready var game_details: Sprite3D = $GameDetails
+@onready var game_select_zone: GameSelectZone = $GameSelectZone
+@onready var games_root: Node3D = $GamesRoot
 
+var selected_game: GameResource
 var games = []
 var logger := KumaLog.new("GameShelve")
 
 func _ready() -> void:
+	game_select_zone.selected_game.connect(_on_game_selected)
+	game_select_zone.start_game.connect(func():
+		if selected_game:
+			started_game.emit()
+	)
+	
 	_populate()
-	for game in games:
-		if game:
-			logger.info("Game: %s" % game.name)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey:
@@ -32,7 +39,7 @@ func _unhandled_input(event: InputEvent) -> void:
 						started_game.emit(g)
 
 func _populate() -> void:
-	for child in get_children():
+	for child in games_root.get_children():
 		if typeof(child) == TYPE_OBJECT and child.name.begins_with("game_icon_"):
 			child.queue_free()
 
@@ -46,25 +53,22 @@ func _populate() -> void:
 
 	for i in range(n):
 		var g = games[i]
-		if not g:
-			continue
-		if not g.icon:
+		if not g or not g.icon:
 			continue
 
 		var inst = scene.instantiate() as GameSelectArea
 		inst.name = "game_icon_%d" % i
 		inst.game = g
-		inst.hovered.connect(func(): _on_hovered(inst))
-		inst.start_game.connect(func(): started_game.emit(g))
-		add_child(inst)
+		games_root.add_child(inst)
 
-		# Place on circle in XZ plane
-		var angle = TAU * float(i) / float(n)
+		# Place on arc in XZ plane with fixed spacing
+		var step = deg_to_rad(item_spacing)
+		var angle = step * (float(i) - float(n - 1) / 2.0)
 		var local_pos = Vector3(sin(angle) * radius, 0.0, cos(angle) * radius)
 		inst.transform.origin = local_pos
 
 		# Make the instance look toward the shelf's global center
-		var center_global = global_transform.origin
+		var center_global = games_root.global_transform.origin
 		inst.look_at(center_global, Vector3.UP)
 
 		# Keep object upright: zero X/Z rotation components
@@ -73,7 +77,7 @@ func _populate() -> void:
 		rot.z = 0
 		inst.rotation_degrees = rot
 
-func _on_hovered(select: GameSelectArea) -> void:
-	game_details_ui.update_details(select.game)
-	game_details.update_details(select.game)
-	game_details.global_transform.origin = select.global_transform.origin + Vector3(0, 0.5, 0)
+func _on_game_selected(game: GameResource) -> void:
+	selected_game = game
+	game_details_ui.update_details(game)
+	game_details.update_details(game)

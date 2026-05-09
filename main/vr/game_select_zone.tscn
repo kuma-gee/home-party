@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://btho7coc5b1sq"]
+
+[ext_resource type="Script" uid="uid://ckoy4mkplkm7o" path="res://main/vr/game_select_zone.gd" id="1_iak6b"]
+[ext_resource type="Script" uid="uid://cquqe4f1m1sw6" path="res://addons/godot-xr-tools/objects/snap_zone.gd" id="2_qmqi3"]
+[ext_resource type="PackedScene" uid="uid://cme66uldrjl2i" path="res://addons/godot-xr-tools/interactables/interactable_area_button.tscn" id="3_qmqi3"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_iyrrj"]
+radius = 0.16551463
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_qmqi3"]
+radius = 0.020597216
+
+[node name="GameSelectZone" type="Node3D" unique_id=318897250]
+script = ExtResource("1_iak6b")
+
+[node name="XRToolsSnapZone" type="Area3D" parent="." unique_id=1388285901 groups=["game_select"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005936779, 0)
+script = ExtResource("2_qmqi3")
+metadata/_custom_type_script = "uid://cquqe4f1m1sw6"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XRToolsSnapZone" unique_id=1440442232]
+shape = SubResource("SphereShape3D_iyrrj")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="." unique_id=83522275]
+use_collision = true
+radius = 0.15
+height = 0.01
+sides = 32
+
+[node name="InteractableAreaButton" parent="." unique_id=1839413331 instance=ExtResource("3_qmqi3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.12770508)
+button = NodePath("CSGCylinder3D")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractableAreaButton" unique_id=608898130]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.033324532, 0.0039654374)
+shape = SubResource("SphereShape3D_qmqi3")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="InteractableAreaButton" unique_id=2055034491]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0.009234372, 0.0749097)
+use_collision = true
+size = Vector3(0.0625, 0.022070313, 0.044677734)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="InteractableAreaButton/CSGBox3D" unique_id=1210137063]
+transform = Transform3D(1, 0, 0, 0, 0.25881898, 0.9659258, 0, -0.9659258, 0.25881898, 0, 0.019623876, 0.0067201555)
+operation = 2
+size = Vector3(0.091552734, 0.06640625, 0.03)
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="InteractableAreaButton" unique_id=939901283]
+transform = Transform3D(1, 0, 0, 0, 0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, 0, 0.021911059, 0.07762095)
+radius = 0.028320313
+height = 0.01
+sides = 16

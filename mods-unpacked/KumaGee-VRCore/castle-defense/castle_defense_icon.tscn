@@ -3,10 +3,10 @@
 [ext_resource type="PackedScene" uid="uid://burfl5ip86htg" path="res://mods-unpacked/KumaGee-VRCore/assets/castle/Models/GLB format/siege-catapult.glb" id="1_hjkdp"]
 [ext_resource type="PackedScene" uid="uid://yjav0atkkgkf" path="res://mods-unpacked/KumaGee-VRCore/assets/weapons/Assets/gltf/bow_B_withString.gltf" id="2_r3078"]
 
-[node name="PirateGameIcon" type="Node3D" unique_id=1393413089]
+[node name="CastleDefenseIcon" type="Node3D" unique_id=1393413089]
 
 [node name="siege-catapult2" parent="." unique_id=1026443418 instance=ExtResource("1_hjkdp")]
-transform = Transform3D(0.08660254, 0, 0.05, 0, 0.1, 0, -0.05, 0, 0.08660254, -0.022604108, 0, -0.010839935)
+transform = Transform3D(0.06928203, 0, 0.04, 0, 0.08, 0, -0.04, 0, 0.06928203, -0.020066112, 0.016496893, -0.015915912)
 
 [node name="bow_B_withString2" parent="." unique_id=64388565 instance=ExtResource("2_r3078")]
-transform = Transform3D(-0.07735091, -0.018676613, -0.008247494, 0.019340996, -0.0566801, -0.053040467, 0.006539337, -0.053278048, 0.059318494, 0.025293231, 0.018596604, 0.05043936)
+transform = Transform3D(-0.074309416, -0.025716139, -0.014723856, 0.029471368, -0.06828111, -0.029480971, -0.0030903183, -0.03280806, 0.072897725, 0.011757314, 0.024518572, 0.045786396)

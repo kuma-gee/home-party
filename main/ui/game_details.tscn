@@ -6,8 +6,6 @@
 viewport_path = NodePath("SubViewport")
 
 [node name="GameDetails" type="Sprite3D" unique_id=40414504 node_paths=PackedStringArray("name_label", "desc_label")]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
-billboard = 2
 texture = SubResource("ViewportTexture_esfgy")
 script = ExtResource("1_esfgy")
 name_label = NodePath("SubViewport/PanelContainer/VBoxContainer/Name")

@@ -47,6 +47,7 @@ arrow=""
 bomb=""
 catapult=""
 player_spawner=""
+game_select=""
 
 [input]
 
@@ -90,6 +91,10 @@ pause={
 3d_physics/layer_21="Pointable Objects"
 3d_physics/layer_22="Hand Pose Areas"
 3d_physics/layer_23="UI Objects"
+
+[physics]
+
+3d/physics_engine="Jolt Physics"
 
 [rendering]
 
