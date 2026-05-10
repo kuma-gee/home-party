@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://clgft3mio2mex" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/attacker/catapult.gd" id="1_r51br"]
 [ext_resource type="PackedScene" uid="uid://cdboulder001" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/attacker/boulder.tscn" id="2_k01xs"]
-[ext_resource type="PackedScene" uid="uid://burfl5ip86htg" path="res://mods-unpacked/KumaGee-VRCore/assets/castle/Models/GLB format/siege-catapult.glb" id="3_sea00"]
+[ext_resource type="PackedScene" uid="uid://burfl5ip86htg" path="res://assets/castle-defense/castle/siege-catapult.glb" id="3_sea00"]
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme.css" id="4_7ty7v"]
 
 [sub_resource type="SphereShape3D" id="Shape_OpZone"]
@@ -11,7 +11,7 @@ radius = 2.0
 [sub_resource type="BoxShape3D" id="BoxShape3D_r51br"]
 size = Vector3(1.0556641, 0.41629028, 1.125)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_6l0n1"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_7ty7v"]
 viewport_path = NodePath("Sprite3D/SubViewport")
 
 [node name="Catapult" type="Node3D" unique_id=188247881 node_paths=PackedStringArray("boulder_spawn", "catapult_arm", "power_label", "power_sprite") groups=["catapult"]]
@@ -22,10 +22,10 @@ catapult_arm = NodePath("siege-catapult2/siege-catapult/catapult")
 power_label = NodePath("Sprite3D/SubViewport/CenterContainer/Label")
 power_sprite = NodePath("Sprite3D")
 
-[node name="siege-catapult2" parent="." unique_id=1026443418 instance=ExtResource("3_sea00")]
+[node name="siege-catapult2" parent="." unique_id=1062364731 instance=ExtResource("3_sea00")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0.15576398, 0)
 
-[node name="BoulderPosition" type="Marker3D" parent="siege-catapult2/siege-catapult/catapult" parent_id_path=PackedInt32Array(1026443418, 140671846) index="0" unique_id=1840264127]
+[node name="BoulderPosition" type="Marker3D" parent="siege-catapult2/siege-catapult/catapult" parent_id_path=PackedInt32Array(1062364731, 441999163) index="0" unique_id=1840264127]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2760618, 0.20694196, -5.577843e-08)
 
 [node name="OperatingZone" type="Area3D" parent="." unique_id=1954401998]
@@ -53,7 +53,7 @@ one_shot = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 billboard = 1
 double_sided = false
-texture = SubResource("ViewportTexture_6l0n1")
+texture = SubResource("ViewportTexture_7ty7v")
 
 [node name="SubViewport" type="SubViewport" parent="Sprite3D" unique_id=1964240078]
 disable_3d = true

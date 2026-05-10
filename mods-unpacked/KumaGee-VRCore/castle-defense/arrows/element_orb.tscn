@@ -22,6 +22,7 @@ emission_energy_multiplier = 2.0
 viewport_path = NodePath("Sprite3D/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_h6mlr"]
+resource_local_to_scene = true
 shader = ExtResource("2_ljjn1")
 shader_parameter/radius = 0.800000038
 shader_parameter/inner_radius = 0.6000000285
@@ -29,6 +30,8 @@ shader_parameter/fill = 1.0
 shader_parameter/blur = 0.0001
 shader_parameter/bg_color = Color(0, 0, 0, 1)
 shader_parameter/inner_color = Color(0, 0, 0, 0)
+shader_parameter/outline_width = 0.0
+shader_parameter/outline_color = Color(1, 1, 1, 1)
 
 [node name="FireOrb" type="Area3D" unique_id=107013500 node_paths=PackedStringArray("visual", "color_rect")]
 collision_layer = 128

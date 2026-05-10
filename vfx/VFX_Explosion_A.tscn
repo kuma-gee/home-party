@@ -1,4 +1,4 @@
-[gd_scene load_steps=291 format=3 uid="uid://d2wccndn1if2p"]
+[gd_scene format=3 uid="uid://d2wccndn1if2p"]
 
 [ext_resource type="Texture2D" uid="uid://d0wnxm0dha821" path="res://assets/particles/T_big_sparks.jpg" id="1_jgdco"]
 [ext_resource type="Texture2D" uid="uid://vj1fkfmxlojo" path="res://assets/particles/T_FogSheetCloud.PNG" id="1_xokal"]
@@ -222,238 +222,6 @@ function = 31
 operator = 2
 
 [sub_resource type="VisualShader" id="VisualShader_3yq41"]
-code = "shader_type spatial;
-render_mode blend_mix, depth_draw_always, depth_test_default, cull_back, diffuse_lambert, specular_schlick_ggx;
-
-uniform float normal_Scale;
-uniform vec2 Displacement_Speed;
-uniform sampler2D Dissplacement_texture : source_color, filter_linear;
-uniform vec2 Cloud_Color_Scale = vec2(1.000000, 1.000000);
-uniform sampler2D Dark_variation : source_color, filter_linear;
-uniform sampler2D Dark_Color_Gradient_1D : source_color, filter_linear;
-uniform vec2 Dissapear_scale = vec2(1.000000, 1.000000);
-uniform sampler2D Disapear_Noise : source_color, filter_linear;
-uniform sampler2D Gradient_1D : source_color, hint_default_black, repeat_disable;
-uniform float ProximityFade = 0.5;
-uniform sampler2D depth_tex_frg_47 : hint_depth_texture;
-uniform vec4 Bright_Color : source_color;
-uniform float Color_Intensity : hint_range(0.0, 1.0);
-uniform float Color_max;
-uniform vec2 Noise_color_scale = vec2(1.000000, 1.000000);
-uniform sampler2D Noise_Color : source_color;
-
-
-
-void vertex() {
-// Input:2
-	vec3 n_out2p0 = VERTEX;
-
-
-// Input:4
-	vec3 n_out4p0 = NORMAL;
-
-
-// FloatParameter:6
-	float n_out6p0 = normal_Scale;
-
-
-// Input:13
-	float n_out13p0 = TIME;
-
-
-// Vector2Parameter:15
-	vec2 n_out15p0 = Displacement_Speed;
-
-
-// VectorOp:14
-	vec2 n_out14p0 = vec2(n_out13p0) * n_out15p0;
-
-
-// UVFunc:12
-	vec2 n_in12p1 = vec2(1.00000, 1.00000);
-	vec2 n_out12p0 = n_out14p0 * n_in12p1 + UV;
-
-
-	vec4 n_out11p0;
-// Texture2D:11
-	n_out11p0 = texture(Dissplacement_texture, n_out12p0);
-	float n_out11p1 = n_out11p0.r;
-
-
-// FloatFunc:8
-	float n_out8p0 = 1.0 - n_out11p1;
-
-
-// FloatOp:9
-	float n_out9p0 = n_out6p0 * n_out8p0;
-
-
-// VectorOp:5
-	vec3 n_out5p0 = n_out4p0 * vec3(n_out9p0);
-
-
-// VectorOp:3
-	vec3 n_out3p0 = n_out2p0 + n_out5p0;
-
-
-// Output:0
-	VERTEX = n_out3p0;
-
-
-}
-
-void fragment() {
-// Vector2Parameter:50
-	vec2 n_out50p0 = Cloud_Color_Scale;
-
-
-// UVFunc:49
-	vec2 n_in49p2 = vec2(0.00000, 0.00000);
-	vec2 n_out49p0 = (UV - n_in49p2) * n_out50p0 + n_in49p2;
-
-
-	vec4 n_out43p0;
-// Texture2D:43
-	n_out43p0 = texture(Dark_variation, n_out49p0);
-	float n_out43p1 = n_out43p0.r;
-
-
-	vec4 n_out45p0;
-// Texture2D:45
-	n_out45p0 = texture(Dark_Color_Gradient_1D, vec2(n_out43p1));
-
-
-// Input:33
-	vec4 n_out33p0 = COLOR;
-	float n_out33p4 = n_out33p0.a;
-
-
-// Input:18
-	vec3 n_out18p0 = NORMAL;
-
-
-// Vector2Parameter:51
-	vec2 n_out51p0 = Dissapear_scale;
-
-
-// UVFunc:52
-	vec2 n_in52p2 = vec2(0.00000, 0.00000);
-	vec2 n_out52p0 = (UV - n_in52p2) * n_out51p0 + n_in52p2;
-
-
-	vec4 n_out38p0;
-// Texture2D:38
-	n_out38p0 = texture(Disapear_Noise, n_out52p0);
-	float n_out38p1 = n_out38p0.r;
-
-
-// FloatFunc:39
-	float n_out39p0 = 1.0 - n_out38p1;
-
-
-// VectorOp:27
-	vec3 n_out27p0 = n_out18p0 * vec3(n_out39p0);
-
-
-// Fresnel:16
-	float n_in16p3 = 0.10000;
-	float n_out16p0 = pow(1.0 - clamp(dot(n_out27p0, VIEW), 0.0, 1.0), n_in16p3);
-
-
-// SmoothStep:20
-	float n_in20p1 = 1.00000;
-	float n_out20p0 = smoothstep(n_out33p4, n_in20p1, n_out16p0);
-
-
-	vec4 n_out29p0;
-// Texture2D:29
-	n_out29p0 = texture(Gradient_1D, vec2(n_out20p0));
-	float n_out29p1 = n_out29p0.r;
-
-
-// FloatParameter:48
-	float n_out48p0 = ProximityFade;
-
-
-	float n_out47p0;
-// ProximityFade:47
-	{
-		float __depth_tex = texture(depth_tex_frg_47, SCREEN_UV).r;
-		vec4 __depth_world_pos = INV_PROJECTION_MATRIX * vec4(SCREEN_UV * 2.0 - 1.0, __depth_tex, 1.0);
-		__depth_world_pos.xyz /= __depth_world_pos.w;
-		n_out47p0 = clamp(1.0 - smoothstep(__depth_world_pos.z + n_out48p0, __depth_world_pos.z, VERTEX.z), 0.0, 1.0);
-	}
-
-
-// FloatOp:46
-	float n_out46p0 = n_out29p1 * n_out47p0;
-
-
-// ColorParameter:3
-	vec4 n_out3p0 = Bright_Color;
-
-
-// FloatParameter:15
-	float n_out15p0 = Color_Intensity;
-
-
-// FloatParameter:35
-	float n_out35p0 = Color_max;
-
-
-	float n_out34p0;
-// Remap:34
-	float n_in34p1 = 0.00000;
-	float n_in34p2 = 1.00000;
-	float n_in34p3 = 0.00000;
-	{
-		float __input_range = n_in34p2 - n_in34p1;
-		float __output_range = n_out35p0 - n_in34p3;
-		n_out34p0 = n_in34p3 + __output_range * ((n_out15p0 - n_in34p1) / __input_range);
-	}
-
-
-// VectorOp:14
-	vec3 n_out14p0 = vec3(n_out3p0.xyz) * vec3(n_out34p0);
-
-
-// Input:36
-	vec4 n_out36p0 = COLOR;
-	float n_out36p1 = n_out36p0.r;
-
-
-// Vector2Parameter:53
-	vec2 n_out53p0 = Noise_color_scale;
-
-
-// UVFunc:54
-	vec2 n_in54p2 = vec2(0.00000, 0.00000);
-	vec2 n_out54p0 = (UV - n_in54p2) * n_out53p0 + n_in54p2;
-
-
-	vec4 n_out9p0;
-// Texture2D:9
-	n_out9p0 = texture(Noise_Color, n_out54p0);
-	float n_out9p1 = n_out9p0.r;
-
-
-// SmoothStep:10
-	float n_in10p1 = 1.00000;
-	float n_out10p0 = smoothstep(n_out36p1, n_in10p1, n_out9p1);
-
-
-// VectorOp:13
-	vec4 n_out13p0 = vec4(n_out14p0, 0.0) * vec4(n_out10p0);
-
-
-// Output:0
-	ALBEDO = vec3(n_out45p0.xyz);
-	ALPHA = n_out46p0;
-	EMISSION = vec3(n_out13p0.xyz);
-
-
-}
-"
 modes/depth_draw = 1
 nodes/vertex/0/position = Vector2(480, 180)
 nodes/vertex/2/node = SubResource("VisualShaderNodeInput_efwy0")
@@ -769,95 +537,6 @@ linked_parent_graph_frame = 24
 op_type = 1
 
 [sub_resource type="VisualShader" id="VisualShader_w04f1"]
-code = "shader_type spatial;
-render_mode blend_mix, depth_draw_opaque, depth_test_default, cull_disabled, diffuse_lambert, specular_schlick_ggx, unshaded;
-
-uniform bool Use_Texture_color = false;
-uniform sampler2D Texture_1D : source_color, repeat_disable;
-uniform sampler2D Gradient_1D_Color : source_color, repeat_disable;
-uniform vec4 Color : source_color;
-uniform sampler2D Texture_Disolver : source_color;
-uniform sampler2D curve_frg_13 : repeat_disable;
-uniform sampler2D tex_frg_15 : source_color;
-
-
-
-void fragment() {
-// BooleanParameter:20
-	bool n_out20p0 = Use_Texture_color;
-
-
-	vec4 n_out17p0;
-// Texture2D:17
-	n_out17p0 = texture(Texture_1D, UV);
-	float n_out17p1 = n_out17p0.r;
-
-
-	vec4 n_out22p0;
-// Texture2D:22
-	n_out22p0 = texture(Gradient_1D_Color, vec2(n_out17p1));
-
-
-// ColorParameter:14
-	vec4 n_out14p0 = Color;
-
-
-	vec3 n_out19p0;
-// Switch:19
-	n_out19p0 = mix(vec3(n_out14p0.xyz), vec3(n_out22p0.xyz), float(n_out20p0));
-
-
-// Input:3
-	vec4 n_out3p0 = COLOR;
-	float n_out3p1 = n_out3p0.r;
-	float n_out3p4 = n_out3p0.a;
-
-
-	vec4 n_out26p0;
-// Texture2D:26
-	n_out26p0 = texture(Texture_Disolver, UV);
-	float n_out26p1 = n_out26p0.r;
-
-
-// SmoothStep:5
-	float n_in5p1 = 1.00000;
-	float n_out5p0 = smoothstep(n_out3p4, n_in5p1, n_out26p1);
-
-
-// Input:8
-	vec2 n_out8p0 = UV;
-
-
-// CurveTexture:13
-	float n_out13p0 = texture(curve_frg_13, vec2(n_out3p1)).r;
-
-
-// VectorCompose:12
-	float n_in12p1 = 0.00000;
-	vec2 n_out12p0 = vec2(n_out13p0, n_in12p1);
-
-
-// MultiplyAdd:9
-	vec2 n_in9p1 = vec2(0.25000, 1.00000);
-	vec2 n_out9p0 = fma(n_out8p0, n_in9p1, n_out12p0);
-
-
-// Texture2D:15
-	vec4 n_out15p0 = texture(tex_frg_15, n_out9p0);
-	float n_out15p1 = n_out15p0.r;
-
-
-// FloatOp:7
-	float n_out7p0 = n_out5p0 * n_out15p1;
-
-
-// Output:0
-	ALBEDO = n_out19p0;
-	ALPHA = n_out7p0;
-
-
-}
-"
 modes/cull = 2
 flags/unshaded = true
 nodes/fragment/0/position = Vector2(340, 360)
@@ -1046,73 +725,6 @@ billboard_type = 3
 keep_scale = true
 
 [sub_resource type="VisualShader" id="VisualShader_nfach"]
-code = "shader_type spatial;
-render_mode blend_mix, depth_draw_opaque, depth_test_default, cull_back, diffuse_lambert, specular_schlick_ggx, unshaded, shadows_disabled, ambient_light_disabled, fog_disabled;
-
-uniform sampler2D Alpha_Texture : source_color, filter_linear;
-uniform float ProximityFade = 0.5;
-uniform sampler2D depth_tex_frg_6 : hint_depth_texture;
-
-
-
-void vertex() {
-	mat4 n_out2p0;
-// GetBillboardMatrix:2
-	{
-		mat4 __wm = mat4(normalize(INV_VIEW_MATRIX[0]), normalize(INV_VIEW_MATRIX[1]), normalize(INV_VIEW_MATRIX[2]), MODEL_MATRIX[3]);
-		__wm = __wm * mat4(vec4(cos(INSTANCE_CUSTOM.x), -sin(INSTANCE_CUSTOM.x), 0.0, 0.0), vec4(sin(INSTANCE_CUSTOM.x), cos(INSTANCE_CUSTOM.x), 0.0, 0.0), vec4(0.0, 0.0, 1.0, 0.0), vec4(0.0, 0.0, 0.0, 1.0));
-		__wm = __wm * mat4(vec4(length(MODEL_MATRIX[0].xyz), 0.0, 0.0, 0.0), vec4(0.0, length(MODEL_MATRIX[1].xyz), 0.0, 0.0), vec4(0.0, 0.0, length(MODEL_MATRIX[2].xyz), 0.0), vec4(0.0, 0.0, 0.0, 1.0));
-		n_out2p0 = VIEW_MATRIX * __wm;
-	}
-
-
-// Output:0
-	MODELVIEW_MATRIX = n_out2p0;
-
-
-}
-
-void fragment() {
-// Input:4
-	vec4 n_out4p0 = COLOR;
-	float n_out4p4 = n_out4p0.a;
-
-
-	vec4 n_out3p0;
-// Texture2D:3
-	n_out3p0 = texture(Alpha_Texture, UV);
-	float n_out3p1 = n_out3p0.r;
-
-
-// FloatOp:8
-	float n_out8p0 = n_out4p4 * n_out3p1;
-
-
-// FloatParameter:7
-	float n_out7p0 = ProximityFade;
-
-
-	float n_out6p0;
-// ProximityFade:6
-	{
-		float __depth_tex = texture(depth_tex_frg_6, SCREEN_UV).r;
-		vec4 __depth_world_pos = INV_PROJECTION_MATRIX * vec4(SCREEN_UV * 2.0 - 1.0, __depth_tex, 1.0);
-		__depth_world_pos.xyz /= __depth_world_pos.w;
-		n_out6p0 = clamp(1.0 - smoothstep(__depth_world_pos.z + n_out7p0, __depth_world_pos.z, VERTEX.z), 0.0, 1.0);
-	}
-
-
-// FloatOp:5
-	float n_out5p0 = n_out8p0 * n_out6p0;
-
-
-// Output:0
-	ALBEDO = vec3(n_out4p0.xyz);
-	ALPHA = n_out5p0;
-
-
-}
-"
 flags/unshaded = true
 flags/shadows_disabled = true
 flags/ambient_light_disabled = true
@@ -1229,56 +841,6 @@ default_value = 0.5
 operator = 2
 
 [sub_resource type="VisualShader" id="VisualShader_yy4ni"]
-code = "shader_type spatial;
-render_mode blend_mix, depth_draw_opaque, depth_test_default, cull_disabled, diffuse_lambert, specular_schlick_ggx, unshaded, shadows_disabled, fog_disabled;
-
-uniform sampler2D Alpha_Texture : source_color, filter_linear;
-uniform float ProximityFade = 0.5;
-uniform sampler2D depth_tex_frg_6 : hint_depth_texture;
-
-
-
-void fragment() {
-// Input:4
-	vec4 n_out4p0 = COLOR;
-	float n_out4p4 = n_out4p0.a;
-
-
-	vec4 n_out3p0;
-// Texture2D:3
-	n_out3p0 = texture(Alpha_Texture, UV);
-	float n_out3p1 = n_out3p0.r;
-
-
-// FloatOp:8
-	float n_out8p0 = n_out4p4 * n_out3p1;
-
-
-// FloatParameter:7
-	float n_out7p0 = ProximityFade;
-
-
-	float n_out6p0;
-// ProximityFade:6
-	{
-		float __depth_tex = texture(depth_tex_frg_6, SCREEN_UV).r;
-		vec4 __depth_world_pos = INV_PROJECTION_MATRIX * vec4(SCREEN_UV * 2.0 - 1.0, __depth_tex, 1.0);
-		__depth_world_pos.xyz /= __depth_world_pos.w;
-		n_out6p0 = clamp(1.0 - smoothstep(__depth_world_pos.z + n_out7p0, __depth_world_pos.z, VERTEX.z), 0.0, 1.0);
-	}
-
-
-// FloatOp:5
-	float n_out5p0 = n_out8p0 * n_out6p0;
-
-
-// Output:0
-	ALBEDO = vec3(n_out4p0.xyz);
-	ALPHA = n_out5p0;
-
-
-}
-"
 modes/cull = 2
 flags/unshaded = true
 flags/shadows_disabled = true
@@ -1540,211 +1102,6 @@ billboard_type = 3
 keep_scale = true
 
 [sub_resource type="VisualShader" id="VisualShader_gkba1"]
-code = "shader_type spatial;
-render_mode blend_mix, depth_draw_opaque, depth_test_default, cull_back, diffuse_lambert, specular_schlick_ggx, unshaded, shadows_disabled, ambient_light_disabled, fog_disabled;
-
-uniform bool dissolver_radial_uv = false;
-uniform float Dissolver_Zoom_Strenght = 1.0;
-uniform float Dissolver_repeat = 1.0;
-uniform vec2 Dissolver_Scale2 = vec2(1.000000, 1.000000);
-uniform vec2 Dissolver_pivot2 = vec2(1.000000, 1.000000);
-uniform vec2 Speed_disolver = vec2(0.000000, 0.000000);
-uniform sampler2D dissolver_texture : source_color, filter_linear;
-uniform bool texture2_radial_uv = false;
-uniform float Texture2_Zoom_Strenght2 = 1.0;
-uniform float Texture2_repeat2 = 1.0;
-uniform vec2 Texture2_Scale = vec2(1.000000, 1.000000);
-uniform vec2 Texture2_pivot = vec2(1.000000, 1.000000);
-uniform vec2 Speed_texture = vec2(0.000000, 0.000000);
-uniform sampler2D Alpha_Texture : source_color, filter_linear;
-uniform float ProximityFade = 1.0;
-uniform sampler2D depth_tex_frg_44 : hint_depth_texture;
-
-
-
-void vertex() {
-	mat4 n_out2p0;
-// GetBillboardMatrix:2
-	{
-		mat4 __wm = mat4(normalize(INV_VIEW_MATRIX[0]), normalize(INV_VIEW_MATRIX[1]), normalize(INV_VIEW_MATRIX[2]), MODEL_MATRIX[3]);
-		__wm = __wm * mat4(vec4(cos(INSTANCE_CUSTOM.x), -sin(INSTANCE_CUSTOM.x), 0.0, 0.0), vec4(sin(INSTANCE_CUSTOM.x), cos(INSTANCE_CUSTOM.x), 0.0, 0.0), vec4(0.0, 0.0, 1.0, 0.0), vec4(0.0, 0.0, 0.0, 1.0));
-		__wm = __wm * mat4(vec4(length(MODEL_MATRIX[0].xyz), 0.0, 0.0, 0.0), vec4(0.0, length(MODEL_MATRIX[1].xyz), 0.0, 0.0), vec4(0.0, 0.0, length(MODEL_MATRIX[2].xyz), 0.0), vec4(0.0, 0.0, 0.0, 1.0));
-		n_out2p0 = VIEW_MATRIX * __wm;
-	}
-
-
-// Output:0
-	MODELVIEW_MATRIX = n_out2p0;
-
-
-}
-
-void fragment() {
-// Input:3
-	vec4 n_out3p0 = COLOR;
-	float n_out3p4 = n_out3p0.a;
-
-
-// BooleanParameter:40
-	bool n_out40p0 = dissolver_radial_uv;
-
-
-// FloatParameter:32
-	float n_out32p0 = Dissolver_Zoom_Strenght;
-
-
-// FloatParameter:33
-	float n_out33p0 = Dissolver_repeat;
-
-
-	vec2 n_out27p0;
-// UVPolarCoord:27
-	vec2 n_in27p1 = vec2(0.50000, 0.50000);
-	{
-		vec2 __dir = UV - n_in27p1;
-		float __radius = length(__dir) * 2.0;
-		float __angle = atan(__dir.y, __dir.x) * 1.0 / (PI * 2.0);
-		n_out27p0 = vec2(__radius * n_out32p0, __angle * n_out33p0);
-	}
-
-
-// Vector2Parameter:39
-	vec2 n_out39p0 = Dissolver_Scale2;
-
-
-// Vector2Parameter:38
-	vec2 n_out38p0 = Dissolver_pivot2;
-
-
-// UVFunc:31
-	vec2 n_out31p0 = (UV - n_out38p0) * n_out39p0 + n_out38p0;
-
-
-	vec2 n_out41p0;
-// Switch:41
-	n_out41p0 = mix(n_out31p0, n_out27p0, float(n_out40p0));
-
-
-// Input:25
-	float n_out25p0 = TIME;
-
-
-// Vector2Parameter:26
-	vec2 n_out26p0 = Speed_disolver;
-
-
-// VectorOp:29
-	vec2 n_out29p0 = vec2(n_out25p0) * n_out26p0;
-
-
-// UVFunc:28
-	vec2 n_in28p1 = vec2(1.00000, 1.00000);
-	vec2 n_out28p0 = n_out29p0 * n_in28p1 + n_out41p0;
-
-
-	vec4 n_out17p0;
-// Texture2D:17
-	n_out17p0 = texture(dissolver_texture, n_out28p0);
-	float n_out17p1 = n_out17p0.r;
-
-
-// SmoothStep:5
-	float n_in5p1 = 1.00000;
-	float n_out5p0 = smoothstep(n_out3p4, n_in5p1, n_out17p1);
-
-
-// BooleanParameter:42
-	bool n_out42p0 = texture2_radial_uv;
-
-
-// FloatParameter:34
-	float n_out34p0 = Texture2_Zoom_Strenght2;
-
-
-// FloatParameter:35
-	float n_out35p0 = Texture2_repeat2;
-
-
-	vec2 n_out20p0;
-// UVPolarCoord:20
-	vec2 n_in20p1 = vec2(0.50000, 0.50000);
-	{
-		vec2 __dir = UV - n_in20p1;
-		float __radius = length(__dir) * 2.0;
-		float __angle = atan(__dir.y, __dir.x) * 1.0 / (PI * 2.0);
-		n_out20p0 = vec2(__radius * n_out34p0, __angle * n_out35p0);
-	}
-
-
-// Vector2Parameter:36
-	vec2 n_out36p0 = Texture2_Scale;
-
-
-// Vector2Parameter:37
-	vec2 n_out37p0 = Texture2_pivot;
-
-
-// UVFunc:30
-	vec2 n_out30p0 = (UV - n_out37p0) * n_out36p0 + n_out37p0;
-
-
-	vec2 n_out43p0;
-// Switch:43
-	n_out43p0 = mix(n_out30p0, n_out20p0, float(n_out42p0));
-
-
-// Input:22
-	float n_out22p0 = TIME;
-
-
-// Vector2Parameter:23
-	vec2 n_out23p0 = Speed_texture;
-
-
-// VectorOp:24
-	vec2 n_out24p0 = vec2(n_out22p0) * n_out23p0;
-
-
-// UVFunc:21
-	vec2 n_in21p1 = vec2(1.00000, 1.00000);
-	vec2 n_out21p0 = n_out24p0 * n_in21p1 + n_out43p0;
-
-
-	vec4 n_out19p0;
-// Texture2D:19
-	n_out19p0 = texture(Alpha_Texture, n_out21p0);
-	float n_out19p1 = n_out19p0.r;
-
-
-// FloatOp:7
-	float n_out7p0 = n_out5p0 * n_out19p1;
-
-
-// FloatParameter:46
-	float n_out46p0 = ProximityFade;
-
-
-	float n_out44p0;
-// ProximityFade:44
-	{
-		float __depth_tex = texture(depth_tex_frg_44, SCREEN_UV).r;
-		vec4 __depth_world_pos = INV_PROJECTION_MATRIX * vec4(SCREEN_UV * 2.0 - 1.0, __depth_tex, 1.0);
-		__depth_world_pos.xyz /= __depth_world_pos.w;
-		n_out44p0 = clamp(1.0 - smoothstep(__depth_world_pos.z + n_out46p0, __depth_world_pos.z, VERTEX.z), 0.0, 1.0);
-	}
-
-
-// FloatOp:45
-	float n_out45p0 = n_out7p0 * n_out44p0;
-
-
-// Output:0
-	ALBEDO = vec3(n_out3p0.xyz);
-	ALPHA = n_out45p0;
-
-
-}
-"
 flags/unshaded = true
 flags/shadows_disabled = true
 flags/ambient_light_disabled = true
@@ -2136,238 +1493,6 @@ function = 31
 operator = 2
 
 [sub_resource type="VisualShader" id="VisualShader_uaf2n"]
-code = "shader_type spatial;
-render_mode blend_mix, depth_draw_always, depth_test_default, cull_back, diffuse_lambert, specular_schlick_ggx;
-
-uniform float normal_Scale;
-uniform vec2 Displacement_Speed;
-uniform sampler2D Dissplacement_texture : source_color, filter_linear;
-uniform vec2 Cloud_Color_Scale = vec2(1.000000, 1.000000);
-uniform sampler2D Dark_variation : source_color, filter_linear;
-uniform sampler2D Dark_Color_Gradient_1D : source_color, filter_linear;
-uniform vec2 Dissapear_scale = vec2(1.000000, 1.000000);
-uniform sampler2D Disapear_Noise : source_color, filter_linear;
-uniform sampler2D Gradient_1D : source_color, hint_default_black, repeat_disable;
-uniform float ProximityFade = 0.5;
-uniform sampler2D depth_tex_frg_47 : hint_depth_texture;
-uniform vec4 Bright_Color : source_color;
-uniform float Color_Intensity : hint_range(0.0, 1.0);
-uniform float Color_max;
-uniform vec2 Noise_color_scale = vec2(1.000000, 1.000000);
-uniform sampler2D Noise_Color : source_color;
-
-
-
-void vertex() {
-// Input:2
-	vec3 n_out2p0 = VERTEX;
-
-
-// Input:4
-	vec3 n_out4p0 = NORMAL;
-
-
-// FloatParameter:6
-	float n_out6p0 = normal_Scale;
-
-
-// Input:13
-	float n_out13p0 = TIME;
-
-
-// Vector2Parameter:15
-	vec2 n_out15p0 = Displacement_Speed;
-
-
-// VectorOp:14
-	vec2 n_out14p0 = vec2(n_out13p0) * n_out15p0;
-
-
-// UVFunc:12
-	vec2 n_in12p1 = vec2(1.00000, 1.00000);
-	vec2 n_out12p0 = n_out14p0 * n_in12p1 + UV;
-
-
-	vec4 n_out11p0;
-// Texture2D:11
-	n_out11p0 = texture(Dissplacement_texture, n_out12p0);
-	float n_out11p1 = n_out11p0.r;
-
-
-// FloatFunc:8
-	float n_out8p0 = 1.0 - n_out11p1;
-
-
-// FloatOp:9
-	float n_out9p0 = n_out6p0 * n_out8p0;
-
-
-// VectorOp:5
-	vec3 n_out5p0 = n_out4p0 * vec3(n_out9p0);
-
-
-// VectorOp:3
-	vec3 n_out3p0 = n_out2p0 + n_out5p0;
-
-
-// Output:0
-	VERTEX = n_out3p0;
-
-
-}
-
-void fragment() {
-// Vector2Parameter:50
-	vec2 n_out50p0 = Cloud_Color_Scale;
-
-
-// UVFunc:49
-	vec2 n_in49p2 = vec2(0.00000, 0.00000);
-	vec2 n_out49p0 = (UV - n_in49p2) * n_out50p0 + n_in49p2;
-
-
-	vec4 n_out43p0;
-// Texture2D:43
-	n_out43p0 = texture(Dark_variation, n_out49p0);
-	float n_out43p1 = n_out43p0.r;
-
-
-	vec4 n_out45p0;
-// Texture2D:45
-	n_out45p0 = texture(Dark_Color_Gradient_1D, vec2(n_out43p1));
-
-
-// Input:33
-	vec4 n_out33p0 = COLOR;
-	float n_out33p4 = n_out33p0.a;
-
-
-// Input:18
-	vec3 n_out18p0 = NORMAL;
-
-
-// Vector2Parameter:51
-	vec2 n_out51p0 = Dissapear_scale;
-
-
-// UVFunc:52
-	vec2 n_in52p2 = vec2(0.00000, 0.00000);
-	vec2 n_out52p0 = (UV - n_in52p2) * n_out51p0 + n_in52p2;
-
-
-	vec4 n_out38p0;
-// Texture2D:38
-	n_out38p0 = texture(Disapear_Noise, n_out52p0);
-	float n_out38p1 = n_out38p0.r;
-
-
-// FloatFunc:39
-	float n_out39p0 = 1.0 - n_out38p1;
-
-
-// VectorOp:27
-	vec3 n_out27p0 = n_out18p0 * vec3(n_out39p0);
-
-
-// Fresnel:16
-	float n_in16p3 = 0.10000;
-	float n_out16p0 = pow(1.0 - clamp(dot(n_out27p0, VIEW), 0.0, 1.0), n_in16p3);
-
-
-// SmoothStep:20
-	float n_in20p1 = 1.00000;
-	float n_out20p0 = smoothstep(n_out33p4, n_in20p1, n_out16p0);
-
-
-	vec4 n_out29p0;
-// Texture2D:29
-	n_out29p0 = texture(Gradient_1D, vec2(n_out20p0));
-	float n_out29p1 = n_out29p0.r;
-
-
-// FloatParameter:48
-	float n_out48p0 = ProximityFade;
-
-
-	float n_out47p0;
-// ProximityFade:47
-	{
-		float __depth_tex = texture(depth_tex_frg_47, SCREEN_UV).r;
-		vec4 __depth_world_pos = INV_PROJECTION_MATRIX * vec4(SCREEN_UV * 2.0 - 1.0, __depth_tex, 1.0);
-		__depth_world_pos.xyz /= __depth_world_pos.w;
-		n_out47p0 = clamp(1.0 - smoothstep(__depth_world_pos.z + n_out48p0, __depth_world_pos.z, VERTEX.z), 0.0, 1.0);
-	}
-
-
-// FloatOp:46
-	float n_out46p0 = n_out29p1 * n_out47p0;
-
-
-// ColorParameter:3
-	vec4 n_out3p0 = Bright_Color;
-
-
-// FloatParameter:15
-	float n_out15p0 = Color_Intensity;
-
-
-// FloatParameter:35
-	float n_out35p0 = Color_max;
-
-
-	float n_out34p0;
-// Remap:34
-	float n_in34p1 = 0.00000;
-	float n_in34p2 = 1.00000;
-	float n_in34p3 = 0.00000;
-	{
-		float __input_range = n_in34p2 - n_in34p1;
-		float __output_range = n_out35p0 - n_in34p3;
-		n_out34p0 = n_in34p3 + __output_range * ((n_out15p0 - n_in34p1) / __input_range);
-	}
-
-
-// VectorOp:14
-	vec3 n_out14p0 = vec3(n_out3p0.xyz) * vec3(n_out34p0);
-
-
-// Input:36
-	vec4 n_out36p0 = COLOR;
-	float n_out36p1 = n_out36p0.r;
-
-
-// Vector2Parameter:53
-	vec2 n_out53p0 = Noise_color_scale;
-
-
-// UVFunc:54
-	vec2 n_in54p2 = vec2(0.00000, 0.00000);
-	vec2 n_out54p0 = (UV - n_in54p2) * n_out53p0 + n_in54p2;
-
-
-	vec4 n_out9p0;
-// Texture2D:9
-	n_out9p0 = texture(Noise_Color, n_out54p0);
-	float n_out9p1 = n_out9p0.r;
-
-
-// SmoothStep:10
-	float n_in10p1 = 1.00000;
-	float n_out10p0 = smoothstep(n_out36p1, n_in10p1, n_out9p1);
-
-
-// VectorOp:13
-	vec4 n_out13p0 = vec4(n_out14p0, 0.0) * vec4(n_out10p0);
-
-
-// Output:0
-	ALBEDO = vec3(n_out45p0.xyz);
-	ALPHA = n_out46p0;
-	EMISSION = vec3(n_out13p0.xyz);
-
-
-}
-"
 modes/depth_draw = 1
 nodes/vertex/0/position = Vector2(480, 180)
 nodes/vertex/2/node = SubResource("VisualShaderNodeInput_2fkg7")
@@ -2750,9 +1875,9 @@ _data = {
 &"RESET": SubResource("Animation_7sor3")
 }
 
-[node name="explosion_A" type="Node3D"]
+[node name="explosion_A" type="Node3D" unique_id=555496659]
 
-[node name="smokeball" type="GPUParticles3D" parent="."]
+[node name="smokeball" type="GPUParticles3D" parent="." unique_id=1655831149]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.141615, 0.769579, 0)
 material_override = SubResource("ShaderMaterial_2ve7r")
 cast_shadow = 0
@@ -2766,7 +1891,7 @@ fixed_fps = 60
 process_material = SubResource("ParticleProcessMaterial_s4j82")
 draw_pass_1 = SubResource("SphereMesh_e1r87")
 
-[node name="streaks" type="GPUParticles3D" parent="."]
+[node name="streaks" type="GPUParticles3D" parent="." unique_id=1247059558]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.297088, 0.461811, 0.847101)
 material_override = SubResource("ShaderMaterial_ir6cv")
 cast_shadow = 0
@@ -2779,7 +1904,7 @@ fixed_fps = 60
 process_material = SubResource("ParticleProcessMaterial_smwtc")
 draw_pass_1 = SubResource("QuadMesh_abex7")
 
-[node name="Ribbon_trails" type="GPUParticles3D" parent="."]
+[node name="Ribbon_trails" type="GPUParticles3D" parent="." unique_id=1484280955]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.345786, 0)
 visible = false
 material_override = SubResource("StandardMaterial3D_4s1js")
@@ -2793,11 +1918,11 @@ trail_lifetime = 0.7
 process_material = SubResource("ParticleProcessMaterial_7fm8h")
 draw_pass_1 = SubResource("TubeTrailMesh_7rkrx")
 
-[node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="."]
+[node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="." unique_id=272661524]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.162491, -0.5, 0.0147095)
 size = Vector3(16.5018, 1, 15.9865)
 
-[node name="muzzle" type="GPUParticles3D" parent="."]
+[node name="muzzle" type="GPUParticles3D" parent="." unique_id=85506837]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.471835, 0)
 material_override = SubResource("ShaderMaterial_fiffy")
 cast_shadow = 0
@@ -2810,7 +1935,7 @@ fixed_fps = 60
 process_material = SubResource("ParticleProcessMaterial_0qx22")
 draw_pass_1 = SubResource("QuadMesh_7rclw")
 
-[node name="ground_shockwave" type="GPUParticles3D" parent="."]
+[node name="ground_shockwave" type="GPUParticles3D" parent="." unique_id=2017747364]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.163944, 0)
 material_override = SubResource("StandardMaterial3D_ipwgw")
 cast_shadow = 0
@@ -2823,7 +1948,7 @@ fixed_fps = 60
 process_material = SubResource("ParticleProcessMaterial_w6y85")
 draw_pass_1 = SubResource("PlaneMesh_im46t")
 
-[node name="little_sparks" type="GPUParticles3D" parent="."]
+[node name="little_sparks" type="GPUParticles3D" parent="." unique_id=230919448]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.968545, 0)
 material_override = SubResource("ShaderMaterial_3jcqb")
 cast_shadow = 0
@@ -2835,7 +1960,7 @@ fixed_fps = 60
 process_material = SubResource("ParticleProcessMaterial_6byyd")
 draw_pass_1 = SubResource("QuadMesh_54qqo")
 
-[node name="debirs" type="GPUParticles3D" parent="."]
+[node name="debirs" type="GPUParticles3D" parent="." unique_id=354751971]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.405283, 0)
 material_override = SubResource("StandardMaterial3D_fjaia")
 emitting = false
@@ -2847,7 +1972,7 @@ fixed_fps = 60
 process_material = SubResource("ParticleProcessMaterial_vvfyb")
 draw_pass_1 = ExtResource("2_b2wxb")
 
-[node name="shockwave_fc" type="GPUParticles3D" parent="."]
+[node name="shockwave_fc" type="GPUParticles3D" parent="." unique_id=1321240765]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.739645, 0)
 material_override = SubResource("ShaderMaterial_jt0wr")
 cast_shadow = 0
@@ -2861,7 +1986,7 @@ fixed_fps = 60
 process_material = SubResource("ParticleProcessMaterial_f4hv0")
 draw_pass_1 = SubResource("QuadMesh_b86f8")
 
-[node name="Ribbon_trails_C" type="GPUParticles3D" parent="."]
+[node name="Ribbon_trails_C" type="GPUParticles3D" parent="." unique_id=1414460742]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.113388, 0)
 visible = false
 material_override = SubResource("StandardMaterial3D_hwjlv")
@@ -2876,7 +2001,7 @@ trail_lifetime = 0.2
 process_material = SubResource("ParticleProcessMaterial_0wm6c")
 draw_pass_1 = SubResource("SphereMesh_k6k3r")
 
-[node name="sub_Ribbon_trails_C" type="GPUParticles3D" parent="."]
+[node name="sub_Ribbon_trails_C" type="GPUParticles3D" parent="." unique_id=1809101554]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.141615, 0.608479, 0)
 visible = false
 material_override = SubResource("ShaderMaterial_8rbma")
@@ -2889,7 +2014,7 @@ fixed_fps = 60
 process_material = SubResource("ParticleProcessMaterial_omsf4")
 draw_pass_1 = SubResource("SphereMesh_qv17p")
 
-[node name="Decal" type="Decal" parent="."]
+[node name="Decal" type="Decal" parent="." unique_id=395403749]
 size = Vector3(5, 0.5, 5)
 texture_albedo = ExtResource("3_xdl50")
 texture_emission = ExtResource("4_bijyl")
@@ -2898,15 +2023,13 @@ modulate = Color(2, 0.6, 0.3, 1)
 upper_fade = 0.0294219
 lower_fade = 0.014711
 
-[node name="OmniLight3D" type="OmniLight3D" parent="."]
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=314608006]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.18451, 0)
 light_color = Color(1, 0.593744, 0.233858, 1)
 light_energy = 5.0
 shadow_enabled = true
 omni_range = 10.0
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_7yhr6")
-}
-autoplay = "Init"
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1205830271]
+libraries/ = SubResource("AnimationLibrary_7yhr6")
+autoplay = &"Init"

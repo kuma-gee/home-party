@@ -1,15 +1,17 @@
 [gd_scene format=3 uid="uid://cfkaaf5hagfis"]
 
 [ext_resource type="Script" uid="uid://c52vk877urogd" path="res://mods-unpacked/KumaGee-VRCore/pirate/player_shoot_point.gd" id="1_rjxo5"]
-[ext_resource type="PackedScene" uid="uid://b55so4qv83nwa" path="res://mods-unpacked/KumaGee-VRCore/assets/prototyping/indicator-round-d.glb" id="2_x3jma"]
+[ext_resource type="PackedScene" uid="uid://c8e4jfkpl4tn0" path="res://mods-unpacked/KumaGee-VRCore/player/color_ring.tscn" id="3_8rlud"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_8rlud"]
+viewport_path = NodePath("SubViewport")
 
 [node name="PlayerShoot" type="Node3D" unique_id=571802471 node_paths=PackedStringArray("visuals")]
 script = ExtResource("1_rjxo5")
-visuals = NodePath("indicator-round-d2")
+visuals = NodePath("")
 
-[node name="indicator-round-d2" parent="." unique_id=1409446682 instance=ExtResource("2_x3jma")]
+[node name="ColorRing" parent="." unique_id=1233288472 instance=ExtResource("3_8rlud")]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.031019151, 0)
+texture = SubResource("ViewportTexture_8rlud")
 
-[node name="rotate-y" parent="indicator-round-d2/indicator-round-d" parent_id_path=PackedInt32Array(1409446682, 1475134011) index="0" unique_id=223993230]
-layers = 524288
-
-[editable path="indicator-round-d2"]
+[editable path="ColorRing"]

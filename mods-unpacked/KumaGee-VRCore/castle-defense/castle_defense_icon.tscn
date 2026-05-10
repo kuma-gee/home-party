@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bm3cgsjmba0yd"]
 
-[ext_resource type="PackedScene" uid="uid://burfl5ip86htg" path="res://mods-unpacked/KumaGee-VRCore/assets/castle/Models/GLB format/siege-catapult.glb" id="1_hjkdp"]
-[ext_resource type="PackedScene" uid="uid://yjav0atkkgkf" path="res://mods-unpacked/KumaGee-VRCore/assets/weapons/Assets/gltf/bow_B_withString.gltf" id="2_r3078"]
+[ext_resource type="PackedScene" uid="uid://burfl5ip86htg" path="res://assets/castle-defense/castle/siege-catapult.glb" id="1_hjkdp"]
+[ext_resource type="PackedScene" uid="uid://yjav0atkkgkf" path="res://assets/castle-defense/weapons/bow_B_withString.gltf" id="2_r3078"]
 
 [node name="CastleDefenseIcon" type="Node3D" unique_id=1393413089]
 

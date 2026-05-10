@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dxa8mvr5m0qdx"]
 
-[ext_resource type="PackedScene" uid="uid://b04c0irdp3hbi" path="res://mods-unpacked/KumaGee-VRCore/assets/blunderbuss/scene.gltf" id="1_0qaw1"]
-[ext_resource type="PackedScene" uid="uid://jrxr4c37stf1" path="res://mods-unpacked/KumaGee-VRCore/assets/pirate/barrel.glb" id="2_7nt2m"]
+[ext_resource type="PackedScene" uid="uid://b04c0irdp3hbi" path="res://assets/pirate/scene.gltf" id="1_0qaw1"]
+[ext_resource type="PackedScene" uid="uid://jrxr4c37stf1" path="res://assets/pirate/barrel.glb" id="2_7nt2m"]
 
 [node name="PirateGameIcon" type="Node3D" unique_id=1393413089]
 

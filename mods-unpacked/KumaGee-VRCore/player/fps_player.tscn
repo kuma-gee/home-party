@@ -1,11 +1,12 @@
 [gd_scene format=3 uid="uid://bjemhxyjs5ne6"]
 
 [ext_resource type="Script" uid="uid://0l06iplwx2uw" path="res://mods-unpacked/KumaGee-VRCore/player/fps_player.gd" id="1_krq8x"]
-[ext_resource type="PackedScene" uid="uid://b6rtcjea56cep" path="res://assets/KayKit_Skeletons_1.1_FREE/characters/skeleton.glb" id="2_yjct3"]
+[ext_resource type="PackedScene" uid="uid://b6rtcjea56cep" path="res://assets/castle-defense/weapons/skeleton.glb" id="2_yjct3"]
+[ext_resource type="Material" uid="uid://diugqkkrrruk7" path="res://assets/castle-defense/weapons/skeleton_mat.tres" id="4_irk2m"]
 [ext_resource type="Script" uid="uid://crtkl6ldhona6" path="res://main/utils/hurt_box.gd" id="6_3dsh6"]
+[ext_resource type="PackedScene" uid="uid://c8e4jfkpl4tn0" path="res://mods-unpacked/KumaGee-VRCore/player/color_ring.tscn" id="6_irk2m"]
 [ext_resource type="PackedScene" uid="uid://ce7vysyvondf8" path="res://addons/godot-xr-tools/objects/snap_zone.tscn" id="7_irk2m"]
 [ext_resource type="Script" uid="uid://r2ip3x3bxw0i" path="res://mods-unpacked/KumaGee-VRCore/player/ground_spring_cast.gd" id="8_ffq0p"]
-[ext_resource type="Shader" uid="uid://cdfjqx6ei5653" path="res://shader/circle_inner.gdshader" id="14_we0o2"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dxdo2"]
 radius = 0.2524414
@@ -15,28 +16,16 @@ height = 1.2519531
 radius = 0.16796875
 height = 0.9785156
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_we0o2"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_3dsh6"]
 viewport_path = NodePath("ColorRing/SubViewport")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_l7of8"]
-shader = ExtResource("14_we0o2")
-shader_parameter/radius = 0.550000026125
-shader_parameter/inner_radius = 0.350000016625
-shader_parameter/fill = 1.0
-shader_parameter/blur = 0.009999999747
-shader_parameter/bg_color = Color(0, 0, 0, 1)
-shader_parameter/inner_color = Color(0, 0, 0, 0)
-shader_parameter/outline_width = 0.0
-shader_parameter/outline_color = Color(1, 1, 1, 1)
-
-[node name="FPSPlayer" type="CharacterBody3D" unique_id=1756570454 node_paths=PackedStringArray("body", "color_ring", "snap_zone", "animation") groups=["resetable"]]
+[node name="FPSPlayer" type="CharacterBody3D" unique_id=1756570454 node_paths=PackedStringArray("body", "snap_zone", "animation") groups=["resetable"]]
 collision_layer = 524288
 collision_mask = 3
 script = ExtResource("1_krq8x")
 speed = 2.0
 push_force = 1.0
 body = NodePath("CollisionShape3D")
-color_ring = NodePath("ColorRing/SubViewport/Ring")
 snap_zone = NodePath("CollisionShape3D/SnapZone")
 animation = NodePath("CollisionShape3D/skeleton/AnimationPlayer")
 
@@ -54,76 +43,13 @@ shape = SubResource("CapsuleShape3D_dxdo2")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6461112, 0)
 shape = SubResource("CapsuleShape3D_ka8gu")
 
-[node name="skeleton" parent="CollisionShape3D" unique_id=1446120979 instance=ExtResource("2_yjct3")]
+[node name="skeleton" parent="CollisionShape3D" unique_id=1551884384 instance=ExtResource("2_yjct3")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, -0.64262736, 0)
 
-[node name="Skeleton3D" parent="CollisionShape3D/skeleton/Rig_Medium_002" parent_id_path=PackedInt32Array(1446120979, 1119224205) index="0" unique_id=525970692]
-bones/0/scale = Vector3(0, 0, 0)
-bones/1/position = Vector3(0, 0, 0)
-bones/1/scale = Vector3(0, 0, 0)
-bones/2/position = Vector3(0, 0, 5.1845195e-11)
-bones/2/rotation = Quaternion(0.99984914, 6.7372056e-08, 1.0017321e-07, 0.017373912)
-bones/2/scale = Vector3(0, 0, 0)
-bones/3/position = Vector3(1.7763568e-15, 0, -8.557475e-10)
-bones/3/rotation = Quaternion(0.106227145, -7.671461e-08, 7.478844e-08, 0.99434197)
-bones/3/scale = Vector3(0, 0, 0)
-bones/4/position = Vector3(1.7763568e-15, 0, 1.1176169e-08)
-bones/4/rotation = Quaternion(-0.45523992, 7.505244e-08, -3.8373877e-08, 0.89036894)
-bones/4/scale = Vector3(0, 0, 0)
-bones/5/position = Vector3(-4.440892e-16, 0, 2.846041e-09)
-bones/5/rotation = Quaternion(4.8837023e-08, 0.9203548, -0.3910845, 4.022998e-08)
-bones/5/scale = Vector3(0, 0, 0)
-bones/6/position = Vector3(0, 0, -3.9962345e-10)
-bones/6/rotation = Quaternion(0.9998491, -6.677772e-08, -6.597082e-08, 0.017373914)
-bones/6/scale = Vector3(0, 0, 0)
-bones/7/position = Vector3(1.7763568e-15, 0, -8.558221e-10)
-bones/7/rotation = Quaternion(0.10622713, 7.684137e-08, -7.3606e-08, 0.99434197)
-bones/7/scale = Vector3(0, 0, 0)
-bones/8/position = Vector3(2.6645353e-15, 0, 1.1176237e-08)
-bones/8/rotation = Quaternion(-0.45523992, 7.505249e-08, -3.8373827e-08, 0.89036894)
-bones/8/scale = Vector3(0, 0, 0)
-bones/9/position = Vector3(-5.107026e-15, 0, 8.797554e-10)
-bones/9/rotation = Quaternion(-1.0215063e-08, 0.9203548, -0.3910845, 1.7919967e-07)
-bones/9/scale = Vector3(0, 0, 0)
-bones/10/position = Vector3(0, 0, 0)
-bones/10/rotation = Quaternion(-2.0724546e-15, 1.7763568e-15, -1.4606424e-23, 1)
-bones/10/scale = Vector3(0, 0, 0)
-bones/11/position = Vector3(0, 0, 0)
-bones/11/rotation = Quaternion(5.5826735e-15, -8.881784e-15, 1.1222097e-22, 1)
-bones/11/scale = Vector3(0, 0, 0)
-bones/12/position = Vector3(3.1554436e-30, 0, 0)
-bones/12/scale = Vector3(0, 0, 0)
-bones/13/position = Vector3(0, -1.4901161e-08, 1.128754e-09)
-bones/13/rotation = Quaternion(-0.51412433, -0.48546478, -0.48546502, 0.51412445)
-bones/13/scale = Vector3(0, 0, 0)
-bones/14/position = Vector3(4.1232107e-10, 1.4901161e-08, 9.769963e-15)
-bones/14/rotation = Quaternion(2.454846e-07, -8.0715274e-08, -0.05529647, 0.99847007)
-bones/14/scale = Vector3(0, 0, 0)
-bones/15/position = Vector3(1.4002413e-09, -2.9802322e-08, 1.4210855e-14)
-bones/15/rotation = Quaternion(-2.352867e-07, 4.60797e-09, 0.026658092, 0.99964464)
-bones/15/scale = Vector3(0, 0, 0)
-bones/16/position = Vector3(0, 0, 0)
-bones/16/scale = Vector3(0, 0, 0)
-bones/17/position = Vector3(7.771561e-16, 0, 0)
-bones/17/rotation = Quaternion(1.0644985e-07, -5.8171313e-08, -0.7071068, 0.7071068)
-bones/17/scale = Vector3(0, 0, 0)
-bones/18/position = Vector3(0, -1.4901161e-08, 7.6594375e-10)
-bones/18/rotation = Quaternion(-0.51412433, 0.48546484, 0.48546496, 0.51412433)
-bones/18/scale = Vector3(0, 0, 0)
-bones/19/position = Vector3(-6.2588956e-10, 1.4901161e-08, 7.1054274e-15)
-bones/19/rotation = Quaternion(2.435314e-07, 4.531242e-08, 0.05529647, 0.99847007)
-bones/19/scale = Vector3(0, 0, 0)
-bones/20/position = Vector3(-1.400227e-09, -2.9802322e-08, 2.842171e-14)
-bones/20/rotation = Quaternion(-2.3529012e-07, -4.5992383e-09, -0.026658092, 0.99964464)
-bones/20/scale = Vector3(0, 0, 0)
-bones/21/position = Vector3(0, 0, 0)
-bones/21/rotation = Quaternion(-1.3271096e-17, 1.0624607e-14, 3.9451278e-14, 1)
-bones/21/scale = Vector3(0, 0, 0)
-bones/22/position = Vector3(-7.771561e-16, 0, 0)
-bones/22/rotation = Quaternion(1.0656658e-07, 5.805459e-08, 0.7071068, 0.7071068)
-bones/22/scale = Vector3(0, 0, 0)
+[node name="Skeleton_Minion_ArmLeft" parent="CollisionShape3D/skeleton/Rig_Medium_002/Skeleton3D" parent_id_path=PackedInt32Array(1551884384, 310867640) index="0" unique_id=2044073021]
+surface_material_override/0 = ExtResource("4_irk2m")
 
-[node name="AnimationPlayer" parent="CollisionShape3D/skeleton" index="1" unique_id=149342349]
+[node name="AnimationPlayer" parent="CollisionShape3D/skeleton" index="1" unique_id=210611160]
 autoplay = &"Idle_B"
 
 [node name="SnapZone" parent="CollisionShape3D" unique_id=1883047161 instance=ExtResource("7_irk2m")]
@@ -136,22 +62,9 @@ snap_require = "bomb"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.36215165, 0)
 script = ExtResource("8_ffq0p")
 
-[node name="ColorRing" type="Sprite3D" parent="." unique_id=1098146893]
+[node name="ColorRing" parent="." unique_id=1233288472 instance=ExtResource("6_irk2m")]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.057024956, 0)
-texture = SubResource("ViewportTexture_we0o2")
-
-[node name="SubViewport" type="SubViewport" parent="ColorRing" unique_id=2021832964]
-transparent_bg = true
-size = Vector2i(160, 160)
-
-[node name="Ring" type="ColorRect" parent="ColorRing/SubViewport" unique_id=724713833]
-material = SubResource("ShaderMaterial_l7of8")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 1)
+texture = SubResource("ViewportTexture_3dsh6")
 
 [node name="DashSound" type="AudioStreamPlayer" parent="." unique_id=1002373996]
 volume_db = -15.0

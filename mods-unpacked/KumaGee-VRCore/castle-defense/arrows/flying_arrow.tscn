@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_7uchs"]
 [ext_resource type="Script" uid="uid://ba35ke2bowbbn" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/arrow.gd" id="2_lvm8s"]
-[ext_resource type="PackedScene" uid="uid://b5jwtl04q7f1i" path="res://mods-unpacked/KumaGee-VRCore/assets/skeletons/Skeleton_Arrow.gltf" id="3_2ua0v"]
+[ext_resource type="PackedScene" uid="uid://c4fl64o0u67fi" path="res://assets/castle-defense/weapons/arrow_A.gltf" id="3_lvm8s"]
 [ext_resource type="PackedScene" uid="uid://dmrtyxsttqwve" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/arrow_element.tscn" id="4_466jn"]
 [ext_resource type="PackedScene" uid="uid://dh8grd7s3n8kg" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_snap.tscn" id="5_g64f4"]
 [ext_resource type="PackedScene" uid="uid://ctw7nbntd5pcj" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_right.tscn" id="6_3c1o0"]
@@ -25,15 +25,15 @@ damage = 1
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_ul88r")
 
-[node name="Skeleton_Arrow2" parent="." index="1" unique_id=895236379 instance=ExtResource("3_2ua0v")]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+[node name="arrow_A2" type="Node3D" parent="." index="1" unique_id=1135044444 instance=ExtResource("3_lvm8s")]
+transform = Transform3D(-0.7, 0, 1.0569706e-07, 0, 0.7, 0, -1.0569706e-07, 0, -0.7, 0, 0, -0.096922114)
 
 [node name="LifetimeTimer" type="Timer" parent="." index="2" unique_id=507691472]
 wait_time = 6.0
 one_shot = true
 
 [node name="ElementArea" parent="." index="3" unique_id=1447031381 instance=ExtResource("4_466jn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.32852173)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.42510515)
 
 [node name="GrabPointSnap" parent="." index="4" unique_id=1692852419 groups=["arrow"] instance=ExtResource("5_g64f4")]
 
