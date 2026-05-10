@@ -23,6 +23,7 @@ var element := Arrow.Element.NONE:
 		update_visual(visual, element)
 
 func _ready() -> void:
+	self.element = element
 	area_entered.connect(_on_area_entered)
 
 func _on_area_entered(area: Area3D) -> void:
@@ -54,8 +55,10 @@ static func update_visual(mesh: MeshInstance3D, elem: Arrow.Element) -> void:
 		return
 	
 	if elem not in ELEMENT_COLOR:
+		mesh.hide()
 		return
 	
 	var color := get_element_color(elem)
 	mat.albedo_color = color
 	mat.emission = color
+	mesh.show()

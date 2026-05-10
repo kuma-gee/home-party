@@ -61,7 +61,7 @@ func apply_slow(slow_amount: float):
 	slow_restore_timer.start()
 
 func _physics_process(delta):
-	if not freeze_timer.is_stopped() or is_spawning:
+	if not freeze_timer.is_stopped() or is_spawning or not is_instance_valid(game_client):
 		return
 	
 	var direction = game_client.get_move()

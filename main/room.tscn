@@ -68,28 +68,28 @@ environment = ExtResource("1_02r63")
 
 [node name="room" parent="." unique_id=898383879 instance=ExtResource("2_02r63")]
 
-[node name="StaticBody3D" type="StaticBody3D" parent="room/Table" parent_id_path=PackedInt32Array(898383879, 1841818499) index="0" unique_id=1220997989]
+[node name="StaticBody3D" type="StaticBody3D" parent="room/Table" parent_id_path=PackedInt32Array(898383879, 4864654) index="0" unique_id=1220997989]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="room/Table/StaticBody3D" unique_id=153892589]
 shape = SubResource("ConcavePolygonShape3D_8bwq7")
 
-[node name="wall_lamp" parent="room" index="9" unique_id=1282906795]
+[node name="wall_lamp" parent="room" index="9" unique_id=1846019631]
 layers = 2
 
-[node name="window" parent="room" index="10" unique_id=118811092]
+[node name="window" parent="room" index="10" unique_id=1181405574]
 layers = 2
 surface_material_override/1 = SubResource("StandardMaterial3D_pa738")
 
-[node name="Wall_004" parent="room" index="13" unique_id=767483894]
+[node name="Wall_004" parent="room" index="13" unique_id=208738098]
 layers = 262144
 
-[node name="Floor" parent="room" index="16" unique_id=798815892]
+[node name="Floor" parent="room" index="16" unique_id=916616134]
 surface_material_override/1 = ExtResource("2_6tfwr")
 
-[node name="Top" parent="room" index="17" unique_id=1157273665]
+[node name="Top" parent="room" index="17" unique_id=789740830]
 layers = 262144
 
-[node name="Wall_002" parent="room" index="18" unique_id=1083067987]
+[node name="Wall_002" parent="room" index="18" unique_id=2120780861]
 layers = 262144
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=844598181]

@@ -374,15 +374,9 @@ nodes/Trigger/node = SubResource("AnimationNodeBlend2_dpx8h")
 nodes/Trigger/position = Vector2(-360, 40)
 node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_vf04h"]
-viewport_path = NodePath("UI/SubViewportContainer/SubViewport")
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_g2kc1"]
-radius = 0.067832924
-
 [sub_resource type="QuadMesh" id="QuadMesh_1ilsd"]
 resource_local_to_scene = true
-size = Vector2(3, 2)
+size = Vector2(3, 3)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_v278o"]
 viewport_path = NodePath("UI/SubViewportContainer/SubViewport")
@@ -395,7 +389,10 @@ texture_filter = 1
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_f8wa5"]
 resource_local_to_scene = true
-size = Vector3(3, 2, 0.02)
+size = Vector3(3, 3, 0.02)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_g2kc1"]
+radius = 0.067832924
 
 [node name="CastleDefense" type="Node3D" unique_id=1524346607 node_paths=PackedStringArray("menu_button", "restart_button", "gameover_ui", "gameover_label", "gate_hurtbox", "vr_gameover", "xr_player")]
 script = ExtResource("1_cdef")
@@ -470,7 +467,7 @@ metadata/_custom_type_script = "uid://4f6ju7rd45me"
 [node name="ground2" parent="." unique_id=1645877463 instance=ExtResource("3_6gm0b")]
 transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 9.613975)
 
-[node name="ground" parent="ground2" index="0" unique_id=1954588785]
+[node name="ground" parent="ground2" index="0" unique_id=1190436037]
 layers = 524289
 surface_material_override/0 = SubResource("StandardMaterial3D_lhggn")
 
@@ -489,6 +486,7 @@ fov = 25.0
 
 [node name="FogVolume" type="FogVolume" parent="Camera3D" unique_id=275233354]
 transform = Transform3D(0.9999963, -0.00012663205, -0.0027949044, -0.002797538, -0.032346398, -0.99947315, 3.616007e-05, 0.999477, -0.032346725, 0.00395428, 1.1856079, -17.629673)
+visible = false
 size = Vector3(21.246094, 37.39, 21.28)
 material = SubResource("FogMaterial_r4ttt")
 
@@ -497,10 +495,10 @@ material = SubResource("FogMaterial_r4ttt")
 [node name="siege-trebuchet2" parent="Castle" unique_id=1073313458 instance=ExtResource("3_iwc37")]
 transform = Transform3D(-8.742278e-08, 0, -2, 0, 2, 0, 2, 0, -8.742278e-08, 0, 0, -0.40574336)
 
-[node name="catapult2" parent="Castle/siege-trebuchet2/siege-trebuchet" parent_id_path=PackedInt32Array(1073313458, 194517721) index="1" unique_id=1592164245]
+[node name="catapult2" parent="Castle/siege-trebuchet2/siege-trebuchet" parent_id_path=PackedInt32Array(1073313458, 243991180) index="1" unique_id=739386098]
 visible = false
 
-[node name="weight2" parent="Castle/siege-trebuchet2/siege-trebuchet" parent_id_path=PackedInt32Array(1073313458, 194517721) index="2" unique_id=1924940734]
+[node name="weight2" parent="Castle/siege-trebuchet2/siege-trebuchet" parent_id_path=PackedInt32Array(1073313458, 243991180) index="2" unique_id=1533004889]
 visible = false
 
 [node name="Meshes" type="Node3D" parent="Castle" unique_id=577322639]
@@ -624,7 +622,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
 collision_layer = 64
 collision_mask = 0
 script = ExtResource("9_hurtbox")
-health = 100
+health = 10
 
 [node name="GateHitShape" type="CollisionShape3D" parent="Castle/Gate/GateHurtBox" unique_id=105378868]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.4626465, 0)
@@ -644,10 +642,9 @@ debug_color = Color(0.9933772, 0, 0.24780053, 1)
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 2.4058523, 8.760864)
 
 [node name="PlayerBody" parent="VRSpace/SubViewport/XRPlayer" index="0" unique_id=1745649098]
-visible = false
 collision_mask = 1
 
-[node name="characterMedium" parent="VRSpace/SubViewport/XRPlayer/PlayerBody/Body/characterMedium/Root/Skeleton3D" parent_id_path=PackedInt32Array(841158329, 1814812252, 891456317) index="0" unique_id=1485792681]
+[node name="characterMedium" parent="VRSpace/SubViewport/XRPlayer/PlayerBody/Body/characterMedium/Root/Skeleton3D" parent_id_path=PackedInt32Array(841158329, 1814812252, 588746209) index="0" unique_id=1147260388]
 mesh = SubResource("ArrayMesh_5bpps")
 skin = SubResource("Skin_eknec")
 surface_material_override/0 = null
@@ -661,7 +658,7 @@ tree_root = SubResource("AnimationNodeBlendTree_dwc66")
 
 [node name="FunctionPickup" parent="VRSpace/SubViewport/XRPlayer/LeftHand" parent_id_path=PackedInt32Array(841158329, 2106749189) index="1" unique_id=1924663514 instance=ExtResource("5_w0s4v")]
 
-[node name="mesh_Hand_Nails_low_R" parent="VRSpace/SubViewport/XRPlayer/RightHand/RightHand/Hand_Nails_low_R/Armature/Skeleton3D" index="0" unique_id=131217711]
+[node name="mesh_Hand_Nails_low_R" parent="VRSpace/SubViewport/XRPlayer/RightHand/RightHand/Hand_Nails_low_R/Armature/Skeleton3D" index="0" unique_id=1142305627]
 surface_material_override/0 = null
 
 [node name="AnimationTree" parent="VRSpace/SubViewport/XRPlayer/RightHand/RightHand" parent_id_path=PackedInt32Array(841158329, 40282269) index="1"]
@@ -671,10 +668,25 @@ tree_root = SubResource("AnimationNodeBlendTree_l5702")
 
 [node name="FunctionPickup2" parent="VRSpace/SubViewport/XRPlayer/RightHand" parent_id_path=PackedInt32Array(841158329, 1667605568) index="2" unique_id=1988130203 instance=ExtResource("5_w0s4v")]
 
-[node name="Sprite3D" type="Sprite3D" parent="VRSpace" unique_id=1037593834]
-transform = Transform3D(-0.5, 0, 7.54979e-08, 0, 0.5, 0, -7.54979e-08, 0, -0.5, 0, 4.1959844, 10.421992)
-layers = 262144
-texture = SubResource("ViewportTexture_vf04h")
+[node name="Viewport2Din3D" parent="VRSpace" unique_id=913891834 node_paths=PackedStringArray("viewport") instance=ExtResource("33_bl5ky")]
+process_mode = 3
+transform = Transform3D(-1, 0, 1.509958e-07, 0, 1, 0, -1.509958e-07, 0, -1, 0, 4.1959844, 10.421992)
+screen_size = Vector2(3, 3)
+viewport = NodePath("../../UI/SubViewportContainer/SubViewport")
+viewport_size = Vector2(512, 512)
+transparent = 1
+scene_properties_keys = PackedStringArray()
+
+[node name="Screen" parent="VRSpace/Viewport2Din3D" index="1"]
+mesh = SubResource("QuadMesh_1ilsd")
+surface_material_override/0 = SubResource("StandardMaterial3D_ij2kk")
+
+[node name="StaticBody3D" parent="VRSpace/Viewport2Din3D" index="2"]
+screen_size = Vector2(3, 3)
+viewport_size = Vector2(512, 512)
+
+[node name="CollisionShape3D" parent="VRSpace/Viewport2Din3D/StaticBody3D" index="0"]
+shape = SubResource("BoxShape3D_f8wa5")
 
 [node name="ArrowTypes" type="Node3D" parent="VRSpace" unique_id=900118082]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.0878992, 9.864026)
@@ -702,25 +714,10 @@ shape = SubResource("SphereShape3D_g2kc1")
 [node name="CSGSphere3D" type="CSGSphere3D" parent="VRSpace/BowGrip" unique_id=1601548907]
 radius = 0.05
 
-[node name="Bow" parent="VRSpace" unique_id=2060416009 instance=ExtResource("6_rjw0b")]
+[node name="Bow" parent="VRSpace" unique_id=2060416009 node_paths=PackedStringArray("bow_grip") instance=ExtResource("6_rjw0b")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 3.308353, 9.482362)
 freeze = true
-
-[node name="Viewport2Din3D" parent="VRSpace" unique_id=913891834 node_paths=PackedStringArray("viewport") instance=ExtResource("33_bl5ky")]
-viewport = NodePath("../../UI/SubViewportContainer/SubViewport")
-viewport_size = Vector2(512, 512)
-transparent = 1
-scene_properties_keys = PackedStringArray()
-
-[node name="Screen" parent="VRSpace/Viewport2Din3D" index="1"]
-mesh = SubResource("QuadMesh_1ilsd")
-surface_material_override/0 = SubResource("StandardMaterial3D_ij2kk")
-
-[node name="StaticBody3D" parent="VRSpace/Viewport2Din3D" index="2"]
-viewport_size = Vector2(512, 512)
-
-[node name="CollisionShape3D" parent="VRSpace/Viewport2Din3D/StaticBody3D" index="0"]
-shape = SubResource("BoxShape3D_f8wa5")
+bow_grip = NodePath("../BowGrip")
 
 [node name="AttackerArea" type="Node3D" parent="." unique_id=992782613]
 
@@ -780,7 +777,7 @@ grow_vertical = 2
 disable_3d = true
 transparent_bg = true
 handle_input_locally = false
-render_target_update_mode = 1
+render_target_update_mode = 4
 
 [node name="GameoverPanel" type="Panel" parent="UI/SubViewportContainer/SubViewport" unique_id=1331467529]
 process_mode = 2
@@ -865,5 +862,5 @@ script = ExtResource("40_bd7o1")
 [editable path="VRSpace/SubViewport/XRPlayer/LeftHand/LeftHand/Hand_Nails_low_L"]
 [editable path="VRSpace/SubViewport/XRPlayer/RightHand/RightHand"]
 [editable path="VRSpace/SubViewport/XRPlayer/RightHand/RightHand/Hand_Nails_low_R"]
-[editable path="VRSpace/BowGrip"]
 [editable path="VRSpace/Viewport2Din3D"]
+[editable path="VRSpace/BowGrip"]

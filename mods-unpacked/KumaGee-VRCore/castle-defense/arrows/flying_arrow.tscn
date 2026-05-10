@@ -7,10 +7,14 @@
 [ext_resource type="PackedScene" uid="uid://dh8grd7s3n8kg" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_snap.tscn" id="5_g64f4"]
 [ext_resource type="PackedScene" uid="uid://ctw7nbntd5pcj" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_right.tscn" id="6_3c1o0"]
 [ext_resource type="PackedScene" uid="uid://c25yxb0vt53vc" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_left.tscn" id="7_tp382"]
+[ext_resource type="Script" uid="uid://cfqyv12dohlh7" path="res://main/utils/hit_box.gd" id="8_lvm8s"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ul88r"]
 radius = 0.04
 height = 0.75
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_lvm8s"]
+radius = 0.08345332
 
 [node name="FlyingArrow" unique_id=777328390 groups=["arrow"] instance=ExtResource("1_7uchs")]
 collision_mask = 3
@@ -25,7 +29,7 @@ damage = 1
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_ul88r")
 
-[node name="arrow_A2" type="Node3D" parent="." index="1" unique_id=1135044444 instance=ExtResource("3_lvm8s")]
+[node name="arrow_A2" parent="." index="1" unique_id=1135044444 instance=ExtResource("3_lvm8s")]
 transform = Transform3D(-0.7, 0, 1.0569706e-07, 0, 0.7, 0, -1.0569706e-07, 0, -0.7, 0, 0, -0.096922114)
 
 [node name="LifetimeTimer" type="Timer" parent="." index="2" unique_id=507691472]
@@ -42,3 +46,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.021294758, 0.029576316, 0.1
 
 [node name="GrabPointHandLeft" parent="." index="6" unique_id=163360132 instance=ExtResource("7_tp382")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.01873115, 0.039187804, 0.18301141)
+
+[node name="HitBox" type="Area3D" parent="." index="7" unique_id=1764972362]
+collision_layer = 0
+collision_mask = 32
+script = ExtResource("8_lvm8s")
+metadata/_custom_type_script = "uid://cfqyv12dohlh7"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox" index="0" unique_id=282219671]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.4184513)
+shape = SubResource("SphereShape3D_lvm8s")

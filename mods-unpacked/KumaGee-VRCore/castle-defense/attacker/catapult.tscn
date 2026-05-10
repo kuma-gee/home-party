@@ -25,7 +25,7 @@ power_sprite = NodePath("Sprite3D")
 [node name="siege-catapult2" parent="." unique_id=1062364731 instance=ExtResource("3_sea00")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0.15576398, 0)
 
-[node name="BoulderPosition" type="Marker3D" parent="siege-catapult2/siege-catapult/catapult" parent_id_path=PackedInt32Array(1062364731, 441999163) index="0" unique_id=1840264127]
+[node name="BoulderPosition" type="Marker3D" parent="siege-catapult2/siege-catapult/catapult" parent_id_path=PackedInt32Array(1062364731, 394545090) index="0" unique_id=1840264127]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2760618, 0.20694196, -5.577843e-08)
 
 [node name="OperatingZone" type="Area3D" parent="." unique_id=1954401998]

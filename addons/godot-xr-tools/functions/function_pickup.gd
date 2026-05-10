@@ -349,6 +349,7 @@ func _update_closest_object() -> void:
 	closest_object = new_closest_obj
 	if is_instance_valid(closest_object):
 		closest_object.request_highlight(self, true)
+	
 
 
 # Find the pickable object closest to our hand's grab location
@@ -388,7 +389,7 @@ func _get_closest_ranged() -> Node3D:
 		if angle_dp > new_closest_angle_dp:
 			new_closest_obj = o
 			new_closest_angle_dp = angle_dp
-
+	
 	# Return best object
 	return new_closest_obj
 

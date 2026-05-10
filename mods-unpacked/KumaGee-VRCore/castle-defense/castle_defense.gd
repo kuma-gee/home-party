@@ -19,7 +19,7 @@ func _ready() -> void:
 	gameover_ui.hide()
 	vr_gameover.hide()
 
-func scene_loaded(_user_data = null) -> void:
+func _on_game_start() -> void:
 	get_tree().paused = false
 	LobbyServer.send_layout("joystick")
 

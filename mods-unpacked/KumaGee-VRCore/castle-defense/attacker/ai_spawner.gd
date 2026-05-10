@@ -12,6 +12,7 @@ var logger := KumaLog.new("AISpawner")
 @export var respawn_delay: float = 3.0
 
 var _agents: Array[FPSPlayer] = []
+var _controllers: Array[AIClientController] = []
 var _agent_states: Array[int] = []
 var _agent_targets: Array[Vector3] = []
 var _agent_timers: Array[float] = []
@@ -44,16 +45,11 @@ func _init_agents(scene: PackedScene):
 	var spawn_origin := _get_spawn_origin()
 	for i in ai_player_count:
 		var spawn_pos := spawn_origin + Vector3.RIGHT * ((i - (ai_player_count - 1) / 2.0) * 1.5)
+		var controller := AIClientController.new()
+		add_child(controller)
+		var player := _spawn_agent(scene, i, spawn_pos, controller)
 
-		var controller = AIClientController.new()
-		var player := scene.instantiate() as FPSPlayer
-		controller._player = player
-		player.game_client = controller
-		player.player_num = i
-		player.position = spawn_pos
-		player.add_child(controller)
-		get_tree().current_scene.add_child(player)
-
+		_controllers.append(controller)
 		_connect_died(player, i)
 		_agents.append(player)
 		_agent_states.append(_State.IDLE)
@@ -72,7 +68,17 @@ func _connect_died(player: FPSPlayer, i: int) -> void:
 	player.died.connect(func(): _on_agent_died(i))
 
 
+func _spawn_agent(scene: PackedScene, i: int, spawn_pos: Vector3, controller: AIClientController) -> FPSPlayer:
+	var player := scene.instantiate() as FPSPlayer
+	player.player_num = i
+	player.position = spawn_pos
+	get_tree().current_scene.add_child(player)
+	controller.bind_player(player)
+	return player
+
+
 func _on_agent_died(i: int) -> void:
+	_controllers[i].clear_player()
 	_agents[i].queue_free()
 	_agent_states[i] = _State.DEAD
 	_agent_timers[i] = respawn_delay
@@ -83,14 +89,7 @@ func _respawn_agent(i: int) -> void:
 	if scene == null:
 		return
 	var spawn_pos := _spawn_positions[i]
-	var controller = AIClientController.new()
-	var player := scene.instantiate() as FPSPlayer
-	controller._player = player
-	player.game_client = controller
-	player.player_num = i
-	player.position = spawn_pos
-	player.add_child(controller)
-	get_tree().current_scene.add_child(player)
+	var player := _spawn_agent(scene, i, spawn_pos, _controllers[i])
 	_connect_died(player, i)
 	_agents[i] = player
 	_agent_states[i] = _State.IDLE

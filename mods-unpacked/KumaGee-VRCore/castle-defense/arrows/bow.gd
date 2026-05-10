@@ -196,7 +196,8 @@ func _update_trajectory() -> void:
 		c.a = 0.8
 		_trajectory_mat.albedo_color = c
 	if not _grip_held or _draw_distance < min_draw \
-			or not is_instance_valid(arrow_pivot) or not is_instance_valid(bow_grip):
+			or not is_instance_valid(arrow_pivot) or not is_instance_valid(bow_grip) \
+			or arrow_body == null or not is_instance_valid(arrow_body):
 		_trajectory_instance.visible = false
 		return
 

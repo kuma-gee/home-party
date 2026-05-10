@@ -16,6 +16,10 @@ func _ready() -> void:
 	super()
 	body_entered.connect(_on_body_entered)
 	lifetime_timer.timeout.connect(queue_free)
+	dropped.connect(func():
+		if not is_picked_up():
+			queue_free()
+	)
 	freeze = true
 
 func fire(force: Vector3):
@@ -37,7 +41,8 @@ func _on_body_entered(body: Node3D) -> void:
 
 func _on_hit() -> void:
 	_hit = true
-	freeze = true
-	linear_velocity = Vector3.ZERO
-	lifetime_timer.start()
+	#freeze = true
+	#linear_velocity = Vector3.ZERO
+	#lifetime_timer.start()
 	element_area.activate_effect()
+	queue_free()

@@ -65,27 +65,28 @@ func center_player_on(p_transform : Transform3D):
 	# In order to center our player so the players feet are at the location
 	# indicated by p_transform, and having our player looking in the required
 	# direction, we must offset this transform using the cameras transform.
-	pass
 	# So we get our current camera transform in local space
-	#var camera_transform = xr_origin.get_node("XRCamera3D").transform
-#
-	## We obtain our view direction and zero out our height
-	#var view_direction = camera_transform.basis.z
-	#view_direction.y = 0
-#
-	## Now create the transform that we will use to offset our input with
-	#var transform : Transform3D
-	#transform = transform.looking_at(-view_direction, Vector3.UP)
-	#transform.origin = camera_transform.origin
-	#transform.origin.y = 0
-#
-	## And now update our origin point
-	#xr_origin.global_transform = (p_transform * transform.inverse()).orthonormalized()
-#
-	## If we have a player body, we need to set its starting position too.
-	#var player_body : XRToolsPlayerBody = XRToolsPlayerBody.find_instance(xr_origin)
-	#if player_body:
-		#player_body.global_transform = p_transform
+	xr_player.camera.transform.origin.x = 0
+	xr_player.camera.transform.origin.z = 0
+	var camera_transform = xr_player.camera.transform
+
+	# We obtain our view direction and zero out our height
+	var view_direction = camera_transform.basis.z
+	view_direction.y = 0
+
+	# Now create the transform that we will use to offset our input with
+	var transform : Transform3D
+	transform = transform.looking_at(-view_direction, Vector3.UP)
+	transform.origin = camera_transform.origin
+	transform.origin.y = 0
+
+	# And now update our origin point
+	xr_player.origin.global_transform = (p_transform * transform.inverse()).orthonormalized()
+
+	# If we have a player body, we need to set its starting position too.
+	var player_body : XRToolsPlayerBody = XRToolsPlayerBody.find_instance(xr_player.origin)
+	if player_body:
+		player_body.global_transform = p_transform
 
 
 ## This method is called when the scene is loaded, but before it becomes visible.
@@ -106,7 +107,6 @@ func scene_loaded(user_data = null):
 	# Make sure our camera becomes the current camera
 	#xr_origin.get_node("XRCamera3D").current = true
 	#xr_origin.current = true
-	pass
 
 	# Start by assuming the user_data contains spawn position information.
 	#var spawn_position = user_data
@@ -123,7 +123,7 @@ func scene_loaded(user_data = null):
 	## - String name of a Node3D to spawn at
 	## - Vector3 to spawn at
 	## - Transform3D to spawn at
-	#var spawn_transform : Transform3D = xr_origin.global_transform
+	var spawn_transform : Transform3D = xr_player.origin.global_transform
 	#match typeof(spawn_position):
 		#TYPE_STRING: # Name of Node3D to spawn at
 			#var node = find_child(spawn_position)
@@ -135,9 +135,14 @@ func scene_loaded(user_data = null):
 #
 		#TYPE_TRANSFORM3D: # Transform3D spawn location
 			#spawn_transform = spawn_position
-#
-	## Center the player on the spawn location
-	#center_player_on(spawn_transform)
+
+	# Center the player on the spawn location
+	center_player_on(spawn_transform)
+	
+	_on_game_start()
+
+func _on_game_start():
+	pass
 
 
 ## This method is called when the scene becomes fully visible to the user.

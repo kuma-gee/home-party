@@ -14,7 +14,7 @@ emission = Color(1, 0.4, 0, 1)
 emission_energy_multiplier = 3.0
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_me75u"]
-radius = 0.2
+radius = 0.06317466
 
 [node name="ElementArea" type="Area3D" unique_id=1447031381 node_paths=PackedStringArray("visual")]
 collision_layer = 0
