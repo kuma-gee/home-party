@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://dsiqjnbjxbd68" path="res://mods-unpacked/KumaGee-VRCore/assets/characters/Skins/skaterMaleA.png" id="6_h8p7v"]
 [ext_resource type="PackedScene" uid="uid://b4kad2kuba1yn" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_hand_low.tscn" id="7_2gosq"]
 [ext_resource type="PackedScene" uid="uid://l2n30mpbkdyw" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/right_hand_low.tscn" id="8_0yltu"]
+[ext_resource type="Material" uid="uid://dy6nhifvvmm73" path="res://addons/godot-xr-tools/hands/materials/caucasian_hand.tres" id="8_ajv2u"]
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vx6d0"]
 
@@ -118,37 +119,15 @@ cull_mask = 524287
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1, -0.5)
 tracker = &"left_hand"
 
-[node name="LeftHand" parent="SubViewport/XRPlayer/LeftHand" unique_id=1600276417 instance=ExtResource("7_2gosq")]
+[node name="LeftHand" parent="SubViewport/XRPlayer/LeftHand" unique_id=801242371 instance=ExtResource("7_2gosq")]
 
-[node name="Hand_Nails_low_L" parent="SubViewport/XRPlayer/LeftHand/LeftHand" index="0"]
+[node name="Hand_Nails_low_L" parent="SubViewport/XRPlayer/LeftHand/LeftHand" index="0" unique_id=298943716]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.01, 0, 0.05)
 
-[node name="Skeleton3D" parent="SubViewport/XRPlayer/LeftHand/LeftHand/Hand_Nails_low_L/Armature" index="0" unique_id=31121596]
-bones/1/rotation = Quaternion(0.323537, -2.5658142e-05, -0.027220426, 0.9458239)
-bones/2/rotation = Quaternion(-0.09044407, -0.04151748, -0.16629349, 0.98104167)
-bones/3/rotation = Quaternion(-0.04661986, 0.02097099, 0.010327632, 0.9986392)
-bones/5/rotation = Quaternion(-0.0012845465, -0.011608094, -0.016825877, 0.99979025)
-bones/6/rotation = Quaternion(0.10292491, -0.009932083, -0.007944166, 0.9946078)
-bones/7/rotation = Quaternion(-0.012859, -0.023610815, -0.32325828, 0.9459289)
-bones/8/rotation = Quaternion(0.012057539, -0.009291937, -0.24747224, 0.96877545)
-bones/10/rotation = Quaternion(-0.035753887, -0.0004000325, 0.0063676415, 0.9993403)
-bones/11/rotation = Quaternion(-0.0026496367, -0.0011447113, -0.12599176, 0.9920271)
-bones/12/rotation = Quaternion(0.039422527, 0.0019339261, -0.22807404, 0.97284347)
-bones/13/rotation = Quaternion(-0.012339468, -0.008812943, -0.28066906, 0.9596848)
-bones/15/rotation = Quaternion(-0.070265576, 0.010190836, -0.024330735, 0.9971795)
-bones/16/rotation = Quaternion(-0.032063447, -0.002236244, -0.06863657, 0.99712384)
-bones/17/rotation = Quaternion(0.025345208, 0.008124622, -0.2490055, 0.9681363)
-bones/18/rotation = Quaternion(0.0025223217, 0.007880732, -0.2432038, 0.9699399)
-bones/20/rotation = Quaternion(-0.09173688, 0.020302717, -0.010182976, 0.9955242)
-bones/21/rotation = Quaternion(-0.06251818, -0.00022572002, -0.115392834, 0.99135065)
-bones/22/rotation = Quaternion(0.058578636, 0.021648303, -0.26990518, 0.9608596)
-bones/23/rotation = Quaternion(0.006871769, -0.0035727466, -0.21195254, 0.97724926)
+[node name="mesh_Hand_Nails_low_L" parent="SubViewport/XRPlayer/LeftHand/LeftHand/Hand_Nails_low_L/Armature/Skeleton3D" parent_id_path=PackedInt32Array(801242371, 298943716, 1628458697) index="0" unique_id=990298722]
+surface_material_override/0 = ExtResource("8_ajv2u")
 
-[node name="mesh_Hand_Nails_low_L" parent="SubViewport/XRPlayer/LeftHand/LeftHand/Hand_Nails_low_L/Armature/Skeleton3D" index="0" unique_id=516068796]
-layers = 262144
-
-[node name="AnimationTree" parent="SubViewport/XRPlayer/LeftHand/LeftHand" index="1"]
-root_node = NodePath("../Hand_Nails_low_L")
+[node name="AnimationTree" parent="SubViewport/XRPlayer/LeftHand/LeftHand" index="1" unique_id=1971929839]
 tree_root = SubResource("AnimationNodeBlendTree_h8p7v")
 
 [node name="RightHand" type="XRController3D" parent="SubViewport/XRPlayer" unique_id=1667605568]
@@ -177,9 +156,6 @@ bones/20/rotation = Quaternion(-0.09173688, -0.020302719, 0.010182976, 0.9955242
 bones/21/rotation = Quaternion(-0.06251817, 0.00022572096, 0.115392834, 0.99135065)
 bones/22/rotation = Quaternion(0.058578644, -0.021648303, 0.26990518, 0.9608596)
 bones/23/rotation = Quaternion(0.0068717655, 0.0035727452, 0.21195254, 0.97724926)
-
-[node name="mesh_Hand_Nails_low_R" parent="SubViewport/XRPlayer/RightHand/RightHand/Hand_Nails_low_R/Armature/Skeleton3D" index="0" unique_id=131217711]
-layers = 262144
 
 [node name="AnimationTree" parent="SubViewport/XRPlayer/RightHand/RightHand" index="1"]
 tree_root = SubResource("AnimationNodeBlendTree_icwxr")

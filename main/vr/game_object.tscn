@@ -11,6 +11,9 @@
 height = 0.14355469
 radius = 0.11230469
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kqex8"]
+albedo_color = Color(0.29954728, 0.2995475, 0.29954743, 1)
+
 [node name="GameObject" unique_id=777328390 groups=["game_select"] instance=ExtResource("1_u8ifv")]
 script = ExtResource("2_r842p")
 ranged_grab_method = 2
@@ -21,15 +24,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.07035574, 0)
 shape = SubResource("CylinderShape3D_piqj4")
 
 [node name="IconRoot" type="Node3D" parent="." index="1" unique_id=1477808711]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0112931505, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.018920764, 0)
 
 [node name="CastleDefenseIcon" parent="IconRoot" index="0" unique_id=814547270 instance=ExtResource("5_ul6vm")]
 
 [node name="CSGCylinder3D" type="CSGCylinder3D" parent="." index="2" unique_id=1541365418]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005341824, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.009892605, 0)
 radius = 0.11
-height = 0.01
+height = 0.02
 sides = 32
+material = SubResource("StandardMaterial3D_kqex8")
 
 [node name="GrabPointSnap" parent="." index="3" unique_id=1846373347 instance=ExtResource("2_piqj4")]
 

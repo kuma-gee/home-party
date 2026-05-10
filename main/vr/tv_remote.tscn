@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_dmn88"]
 [ext_resource type="PackedScene" uid="uid://c25yxb0vt53vc" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_left.tscn" id="2_nd755"]
 [ext_resource type="PackedScene" uid="uid://ctw7nbntd5pcj" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_right.tscn" id="3_0si2y"]
+[ext_resource type="PackedScene" uid="uid://dsqf4lwytprrk" path="res://assets/living_room/remote.glb" id="4_0si2y"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dmn88"]
 size = Vector3(0.16430664, 0.017578125, 0.07519531)
@@ -14,12 +15,11 @@ second_hand_grab = 1
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
 shape = SubResource("BoxShape3D_dmn88")
 
-[node name="CSGBox3D" type="CSGBox3D" parent="." index="1" unique_id=1410015932]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
-size = Vector3(0.16625977, 0.013671875, 0.075927734)
-
-[node name="GrabPointHandRight" parent="." index="2" unique_id=1609340727 instance=ExtResource("3_0si2y")]
+[node name="GrabPointHandRight" parent="." index="1" unique_id=1609340727 instance=ExtResource("3_0si2y")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.024955915, 0.027983576, -0.053389926)
 
-[node name="GrabPointHandLeft" parent="." index="3" unique_id=2049461586 instance=ExtResource("2_nd755")]
+[node name="GrabPointHandLeft" parent="." index="2" unique_id=2049461586 instance=ExtResource("2_nd755")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.024740903, 0.027983576, -0.053389926)
+
+[node name="remote" parent="." index="3" unique_id=1718433474 instance=ExtResource("4_0si2y")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, -0.00090548024)

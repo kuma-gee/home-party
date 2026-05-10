@@ -3,6 +3,9 @@
 [ext_resource type="Script" uid="uid://ckoy4mkplkm7o" path="res://main/vr/game_select_zone.gd" id="1_iak6b"]
 [ext_resource type="PackedScene" uid="uid://ce7vysyvondf8" path="res://addons/godot-xr-tools/objects/snap_zone.tscn" id="2_qmqi3"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iak6b"]
+albedo_color = Color(0.27058825, 0.30980393, 0.23921569, 1)
+
 [node name="GameSelectZone" type="Node3D" unique_id=318897250]
 script = ExtResource("1_iak6b")
 
@@ -16,3 +19,4 @@ use_collision = true
 radius = 0.15
 height = 0.01
 sides = 32
+material = SubResource("StandardMaterial3D_iak6b")
