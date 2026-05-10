@@ -4,4 +4,7 @@
 build/
 
 *.key
-assets
+assets/**/*.*
+!/assets/**/*.import
+!/assets/*.zip
+mods-unpacked/**/assets/*

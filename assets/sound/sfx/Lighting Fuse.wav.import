@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://c5rxm1rbcobqx"
+path="res://.godot/imported/Lighting Fuse.wav-bb226ea8a6b95d9dc589f0b239ad8096.sample"
+
+[deps]
+
+source_file="res://assets/sound/sfx/Lighting Fuse.wav"
+dest_files=["res://.godot/imported/Lighting Fuse.wav-bb226ea8a6b95d9dc589f0b239ad8096.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=2
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2
