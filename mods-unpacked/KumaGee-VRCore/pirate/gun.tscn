@@ -3,7 +3,6 @@
 [ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_onams"]
 [ext_resource type="PackedScene" uid="uid://b04c0irdp3hbi" path="res://assets/pirate/scene.gltf" id="2_mgj7y"]
 [ext_resource type="PackedScene" uid="uid://c25yxb0vt53vc" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_left.tscn" id="3_atjkv"]
-[ext_resource type="Texture2D" uid="uid://cmuoy747v47kl" path="res://assets/pirate/Textures/Material_baseColor.png" id="3_mgj7y"]
 [ext_resource type="PackedScene" uid="uid://ctw7nbntd5pcj" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_right.tscn" id="4_f35gx"]
 [ext_resource type="Script" uid="uid://6ro65chunt1m" path="res://mods-unpacked/KumaGee-VRCore/pirate/gun_cast.gd" id="5_c5un6"]
 [ext_resource type="PackedScene" uid="uid://dh8grd7s3n8kg" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_snap.tscn" id="6_7bp5g"]
@@ -15,11 +14,6 @@
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_nqqf4"]
 radius = 0.095703125
 height = 0.5332031
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gqua4"]
-diffuse_mode = 3
-specular_mode = 1
-albedo_texture = ExtResource("3_mgj7y")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_mgj7y"]
 viewport_path = NodePath("Sprite3D/SubViewport")
@@ -42,11 +36,8 @@ second_hand_grab = 1
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, -0.008135393, 0)
 shape = SubResource("CapsuleShape3D_nqqf4")
 
-[node name="Sketchfab_Scene2" parent="." index="1" unique_id=1192997662 instance=ExtResource("2_mgj7y")]
+[node name="Sketchfab_Scene2" parent="." index="1" unique_id=1992945852 instance=ExtResource("2_mgj7y")]
 transform = Transform3D(-4.371139e-09, 0, 0.1, 0, 0.1, 0, -0.1, 0, -4.371139e-09, 0, -0.06767129, 0.14090794)
-
-[node name="Blunderbuss_Material_0" parent="Sketchfab_Scene2/Sketchfab_model/395c7000627a48a793add01a067f95d7_fbx/RootNode/Blunderbuss" parent_id_path=PackedInt32Array(1192997662, 67602333) index="0" unique_id=2115461443]
-surface_material_override/0 = SubResource("StandardMaterial3D_gqua4")
 
 [node name="GrabPointHandLeft" parent="." index="2" unique_id=1688684482 instance=ExtResource("3_atjkv")]
 transform = Transform3D(1, 0, 0, 0, 0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, 0.004502572, 0.005983863, 0.036149457)

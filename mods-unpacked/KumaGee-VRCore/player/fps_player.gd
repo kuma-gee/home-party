@@ -8,7 +8,7 @@ signal died()
 @export var push_force = 2.0
 
 @export var body: Node3D
-@export var color_ring: ColorRect
+@export var color_ring: ColorRing
 @export var snap_zone: XRToolsSnapZone
 
 @export_category("Animation")
@@ -29,7 +29,7 @@ var is_spawning := true
 var firepower := 1
 
 func _ready():
-	color_ring.color = PlayerList.get_color(player_num)
+	color_ring.set_color(PlayerList.get_color(player_num))
 	hurtbox.died.connect(on_hurtbox_died)
 	slow_restore_timer.timeout.connect(func(): slow = 0.0)
 	animation.animation_finished.connect(func(anim):

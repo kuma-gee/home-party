@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://0l06iplwx2uw" path="res://mods-unpacked/KumaGee-VRCore/player/fps_player.gd" id="1_krq8x"]
 [ext_resource type="PackedScene" uid="uid://b6rtcjea56cep" path="res://assets/castle-defense/weapons/skeleton.glb" id="2_yjct3"]
-[ext_resource type="Material" uid="uid://diugqkkrrruk7" path="res://assets/castle-defense/weapons/skeleton_mat.tres" id="4_irk2m"]
 [ext_resource type="Script" uid="uid://crtkl6ldhona6" path="res://main/utils/hurt_box.gd" id="6_3dsh6"]
 [ext_resource type="PackedScene" uid="uid://c8e4jfkpl4tn0" path="res://mods-unpacked/KumaGee-VRCore/player/color_ring.tscn" id="6_irk2m"]
 [ext_resource type="PackedScene" uid="uid://ce7vysyvondf8" path="res://addons/godot-xr-tools/objects/snap_zone.tscn" id="7_irk2m"]
@@ -19,13 +18,14 @@ height = 0.9785156
 [sub_resource type="ViewportTexture" id="ViewportTexture_3dsh6"]
 viewport_path = NodePath("ColorRing/SubViewport")
 
-[node name="FPSPlayer" type="CharacterBody3D" unique_id=1756570454 node_paths=PackedStringArray("body", "snap_zone", "animation") groups=["resetable"]]
+[node name="FPSPlayer" type="CharacterBody3D" unique_id=1756570454 node_paths=PackedStringArray("body", "color_ring", "snap_zone", "animation") groups=["resetable"]]
 collision_layer = 524288
 collision_mask = 3
 script = ExtResource("1_krq8x")
 speed = 2.0
 push_force = 1.0
 body = NodePath("CollisionShape3D")
+color_ring = NodePath("ColorRing")
 snap_zone = NodePath("CollisionShape3D/SnapZone")
 animation = NodePath("CollisionShape3D/skeleton/AnimationPlayer")
 
@@ -46,10 +46,7 @@ shape = SubResource("CapsuleShape3D_ka8gu")
 [node name="skeleton" parent="CollisionShape3D" unique_id=1551884384 instance=ExtResource("2_yjct3")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, -0.64262736, 0)
 
-[node name="Skeleton_Minion_ArmLeft" parent="CollisionShape3D/skeleton/Rig_Medium_002/Skeleton3D" parent_id_path=PackedInt32Array(1551884384, 310867640) index="0" unique_id=2044073021]
-surface_material_override/0 = ExtResource("4_irk2m")
-
-[node name="AnimationPlayer" parent="CollisionShape3D/skeleton" index="1" unique_id=210611160]
+[node name="AnimationPlayer" parent="CollisionShape3D/skeleton" index="1" unique_id=773559798]
 autoplay = &"Idle_B"
 
 [node name="SnapZone" parent="CollisionShape3D" unique_id=1883047161 instance=ExtResource("7_irk2m")]
@@ -77,3 +74,4 @@ one_shot = true
 one_shot = true
 
 [editable path="CollisionShape3D/skeleton"]
+[editable path="ColorRing"]

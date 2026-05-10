@@ -1,13 +1,8 @@
 [gd_scene format=3 uid="uid://djoi8xbts60su"]
 
 [ext_resource type="Script" uid="uid://d1rjv6k45kah" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/quiver.gd" id="1_1t41b"]
-[ext_resource type="PackedScene" uid="uid://ctj6x7rjrba72" path="res://assets/castle-defense/weapons/Skeleton_Quiver.gltf" id="1_rc1oh"]
 [ext_resource type="PackedScene" uid="uid://dq1qe2qo3uiet" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/flying_arrow.tscn" id="2_1t41b"]
 [ext_resource type="PackedScene" uid="uid://ce7vysyvondf8" path="res://addons/godot-xr-tools/objects/snap_zone.tscn" id="4_1t41b"]
-[ext_resource type="Texture2D" uid="uid://mtkrddwqlqyd" path="res://assets/castle-defense/weapons/skeleton_texture.png" id="4_t5i08"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fswb3"]
-albedo_texture = ExtResource("4_t5i08")
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1t41b"]
 radius = 0.3
@@ -18,12 +13,6 @@ script = ExtResource("1_1t41b")
 arrow_scene = ExtResource("2_1t41b")
 snap_zone = NodePath("SnapZone")
 
-[node name="Skeleton_Quiver2" parent="." unique_id=12410530 instance=ExtResource("1_rc1oh")]
-visible = false
-
-[node name="Skeleton_Quiver" parent="Skeleton_Quiver2" index="0" unique_id=1585564016]
-surface_material_override/0 = SubResource("StandardMaterial3D_fswb3")
-
 [node name="SnapZone" parent="." unique_id=1883047161 instance=ExtResource("4_1t41b")]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.16510653, 0)
 snap_mode = 1
@@ -33,5 +22,4 @@ snap_require = "arrow"
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.007159335, 0.0016079247)
 shape = SubResource("CapsuleShape3D_1t41b")
 
-[editable path="Skeleton_Quiver2"]
 [editable path="SnapZone"]
