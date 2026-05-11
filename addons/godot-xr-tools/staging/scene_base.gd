@@ -1,7 +1,6 @@
 class_name XRToolsSceneBase
 extends Node3D
 
-
 ## XR Tools Scene Base Class
 ##
 ## This is our base scene for all our levels.  It ensures that we have all bits
@@ -9,43 +8,16 @@ extends Node3D
 ##
 ## Developers can customize scene transitions by extending from this class and
 ## overriding the [method scene_loaded] behavior.
-
-
-## This signal is used to request the staging transition to the main-menu
-## scene. Developers should use [method exit_to_main_menu] rather than
-## emitting this signal directly.
 signal request_exit_to_main_menu
-
-## This signal is used to request the staging transition to the specified
-## scene. Developers should use [method load_scene] rather than emitting
-## this signal directly.
-##
-## The [param user_data] parameter is passed through staging to the new scenes.
 signal request_load_scene(p_scene_path, user_data)
-
-## This signal is used to request the staging reload this scene. Developers
-## should use [method reset_scene] rather than emitting this signal directly.
-##
-## The [param user_data] parameter is passed through staging to the new scenes.
 signal request_reset_scene(user_data)
-
-## This signal is used to request the staging quit the XR experience. Developers
-## should use [method quit] rather than emitting this signal directly.
 signal request_quit
 
 
-# This file contains methods with parameters that are unused, however they are
-# documented and intended to be overridden in derived classes. As such unused
-# parameter warnings need to be disabled.
-#
-# warning-ignore:unused_parameter
-# gdlint:disable=unused-argument
-
 @export var xr_player: VRSpace
+@export var bgm_audio: AudioStream
 
 var escape_timer := 0.0
-
-## Interface
 
 func _process(delta: float) -> void:
 	if Input.is_key_pressed(Key.KEY_ESCAPE):
@@ -54,11 +26,6 @@ func _process(delta: float) -> void:
 			exit_to_main_menu()
 	else:
 		escape_timer = 0.0
-
-# Add support for is_xr_class on XRTools classes
-func is_xr_class(xr_name:  String) -> bool:
-	return xr_name == "XRToolsSceneBase"
-
 
 ## This method center the player on the [param p_transform] transform.
 func center_player_on(p_transform : Transform3D):

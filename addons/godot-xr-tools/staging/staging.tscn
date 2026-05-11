@@ -12,16 +12,17 @@ _limits = [0.0, 3.14, 0.0, 1.0]
 _data = [Vector2(0.00207039, 0), 0.0, 1.00884, 0, 0, Vector2(1, 3.14), 0.313348, 0.0, 0, 0]
 point_count = 2
 
-[node name="Staging" type="Node3D" unique_id=343982823 node_paths=PackedStringArray("fade", "desktop_fade", "start_xr", "xr_origin", "xr_camera", "loading", "scene")]
+[node name="Staging" type="Node3D" unique_id=343982823 node_paths=PackedStringArray("xr_origin", "xr_camera", "loading", "fade", "desktop_fade")]
 process_mode = 3
 script = ExtResource("1")
-fade = NodePath("SubViewport/StagingFade")
-desktop_fade = NodePath("CanvasLayer/ColorRect")
-start_xr = NodePath("StartXR")
 xr_origin = NodePath("SubViewport/XROrigin3D")
 xr_camera = NodePath("SubViewport/XROrigin3D/XRCamera3D")
 loading = NodePath("SubViewport/LoadingScreen")
-scene = NodePath("Scene")
+prompt_for_continue = false
+fade = NodePath("SubViewport/StagingFade")
+desktop_fade = NodePath("CanvasLayer/ColorRect")
+bgm_volume = -20
+fade_out_bgm_volume = -60
 
 [node name="StartXR" parent="." unique_id=2002817492 node_paths=PackedStringArray("viewport") instance=ExtResource("6_balvx")]
 viewport = NodePath("../SubViewport")
@@ -64,6 +65,8 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
+
+[node name="BGM" type="AudioStreamPlayer" parent="." unique_id=2068686766]
 
 [connection signal="xr_ended" from="StartXR" to="." method="_on_StartXR_xr_ended"]
 [connection signal="xr_started" from="StartXR" to="." method="_on_StartXR_xr_started"]

@@ -26,54 +26,34 @@ extends Node3D
 ## repository for the OpenXR plugin and then use the techniques
 ## explained in individual demos found here.
 
-
-## This signal is emitted when the current scene starts to be unloaded. The
-## [param scene] parameter is the path of the current scene, and the
-## [param user_data] parameter is the optional data passed from the
-## current scene to the next.
 signal scene_exiting(scene, user_data)
-
-## This signal is emitted when the old scene has been unloaded and the user
-## is fading into the loading scene. The [param user_data] parameter is the
-## optional data provided by the old scene.
 signal switching_to_loading_scene()
-
-## This signal is emitted when the new scene has been loaded before it becomes
-## visible. The [param scene] parameter is the path of the new scene, and the
-## [param user_data] parameter is the optional data passed from the old scene
-## to the new scene.
 signal scene_loaded(scene, user_data)
-
-## This signal is emitted when the new scene has become fully visible to the
-## player. The [param scene] parameter is the path of the new scene, and the
-## [param user_data] parameter is the optional data passed from the old scene
-## to the new scene.
 signal scene_visible(scene, user_data)
 
-## This signal is invoked when the XR experience starts.
 signal xr_started
-
-## This signal is invoked when the XR experience ends. This usually occurs when
-## the player removes the headset. The game may want to react by pausing until
-## the player puts the headset back on and the [signal xr_started] signal is
-## emitted.
 signal xr_ended
 
-
-## Main scene file
 @export_file('*.tscn') var main_scene : String
 
-## If true, the player is prompted to continue
-@export var prompt_for_continue : bool = true
-
-@export var fade: XRToolsFade
-@export var fade_time := 1.0
-@export var desktop_fade: Control
-@export var start_xr: XRToolsStartXR
 @export var xr_origin : XROrigin3D
 @export var xr_camera : XRCamera3D
 @export var loading: LoadingScreen
-@export var scene: Node3D
+@export var prompt_for_continue : bool = true
+
+@export_category("Fade")
+@export var fade: XRToolsFade
+@export var fade_time := 1.0
+@export var desktop_fade: Control
+
+@export_category("Audio")
+@export var bgm_volume := -10
+@export var fade_out_bgm_volume := -40
+@export var bgm_fade_time := 1.0
+
+@onready var start_xr: XRToolsStartXR = $StartXR
+@onready var scene: Node3D = $Scene
+@onready var bgm: AudioStreamPlayer = $BGM
 
 var current_scene : XRToolsSceneBase
 var current_scene_path : String
@@ -166,6 +146,7 @@ func setup_new_scene(p_scene_path : String, user_data):
 	current_scene_path = p_scene_path
 	scene.add_child(current_scene)
 	_add_signals(current_scene)
+	start_bgm(current_scene.bgm_audio)
 
 	current_scene.xr_player.activate()
 	current_scene.scene_loaded(user_data)
@@ -174,10 +155,29 @@ func setup_new_scene(p_scene_path : String, user_data):
 	# We create a small delay here to give tracking some time to update our nodes...
 	await get_tree().create_timer(0.2).timeout
 
+func start_bgm(source: AudioStream):
+	if not source: return
+	
+	bgm.volume_db = fade_out_bgm_volume
+	bgm.stream = source
+	bgm.play()
+	
+	var tw = create_tween()
+	tw.tween_property(bgm, "volume_db", bgm_volume, bgm_fade_time)
+
+func stop_bgm():
+	if not bgm.playing: return
+	
+	var tw = create_tween()
+	tw.tween_property(bgm, "volume_db", fade_out_bgm_volume, bgm_fade_time)
+	tw.finished.connect(func(): bgm.stop())
+	
+
 func clean_up_previous_scene(user_data):
 	if not current_scene: return
 	current_scene.scene_pre_exiting(user_data)
 	_remove_signals(current_scene)
+	stop_bgm()
 
 	# Now we remove our scene
 	emit_signal("scene_exiting", current_scene, user_data)
