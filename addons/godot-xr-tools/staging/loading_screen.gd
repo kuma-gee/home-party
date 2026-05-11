@@ -2,89 +2,62 @@
 class_name LoadingScreen
 extends CameraFollow3D
 
-
-## XR Tools Loading Screen
-##
-## The loading screen is shown while the player is waiting
-## while we load in a new scene.
-## As the player may start in any location and likely hasn't
-## put their HMD on yet when the game first starts, we place
-## our splash screen far away and make it over sized.
-##
-## Note that we made this a tool script so you can test the
-## progress bar. We show this at a different distance to create
-## a nice depth effect.
-##
-## Note also that our background is pitch black.
-
-
-## User pressed the continue
 signal continue_pressed
 
 
-## Splash screen texture
 @export var splash_screen : Texture2D: set = set_splash_screen
 
-## Progress bar
-@export_range(0.0, 1.0, 0.01) var progress : float = 0.5: set = set_progress_bar
+@export var loading_label: Label3D
+@export var ready_label: Label3D
 
-## If true, the contine message is shown, if false the progress bar is visible.
-@export var enable_press_to_continue : bool = false: set = set_enable_press_to_continue
+@export var press_to_continue: Node3D
+@export var hold_button: XRToolsHoldButton
 
+@onready var spinner: MeshInstance3D = $Spinner
 
-# Splash screen material
-var _splash_screen_material : StandardMaterial3D
-
-# Progress material
-var _progress_material : ShaderMaterial
-
+var _background_material : StandardMaterial3D
 
 func _ready():
-	# Get materials
-	_splash_screen_material = $SplashScreen.get_surface_override_material(0)
-	_progress_material = $ProgressBar.mesh.surface_get_material(0)
-
-	# Perform initial update
+	_background_material = $Background.get_surface_override_material(0)
+	set_loading_state(true)
 	_update_splash_screen()
-	_update_progress_bar()
-	_update_enable_press_to_continue()
 	super._ready()
 
 
-## Set the splash_screen texture property
 func set_splash_screen(p_splash_screen : Texture2D) -> void:
 	splash_screen = p_splash_screen
 	_update_splash_screen()
 
-
-## Set the progress property
-func set_progress_bar(p_progress : float) -> void:
-	progress = p_progress
-	_update_progress_bar()
+func _update_splash_screen() -> void:
+	if _background_material:
+		_background_material.albedo_texture = splash_screen
 
 
-## Set the enable_press_to_continue property
-func set_enable_press_to_continue(p_enable : bool) -> void:
-	enable_press_to_continue = p_enable
-	_update_enable_press_to_continue()
-
-
-func _update_splash_screen():
-	if _splash_screen_material:
-		_splash_screen_material.albedo_texture = splash_screen
-
-
-func _update_progress_bar():
-	if _progress_material:
-		_progress_material.set_shader_parameter("progress", progress)
-
-
-func _update_enable_press_to_continue():
+func set_loading_state(loading = false) -> void:
 	if is_inside_tree():
-		$ProgressBar.visible = !enable_press_to_continue
-		$PressToContinue.visible = enable_press_to_continue
-		$PressToContinue/HoldButton.enabled = enable_press_to_continue
-
+		spinner.visible = loading
+		loading_label.visible = loading
+		ready_label.visible = false
+		press_to_continue.visible = !loading
+		hold_button.enabled = !loading
 
 func _on_HoldButton_pressed():
-	emit_signal("continue_pressed")
+	continue_pressed.emit()
+
+func show_ready(wait_continue: bool, time = 1.0):
+	if wait_continue:
+		set_loading_state(false)
+		return
+
+	var mat = spinner.get_surface_override_material(0) as ShaderMaterial
+	var tw = create_tween().set_parallel()\
+		.set_ease(Tween.EASE_IN_OUT)\
+		.set_trans(Tween.TRANS_CUBIC)
+
+	mat.set_shader_parameter("speed", 0.0)
+	tw.tween_property(mat, "shader_parameter/fade_amount", 0.0, time)
+	tw.tween_property(mat, "shader_parameter/ring_width", 0.3, time)
+
+	loading_label.visible = false
+	ready_label.visible = true
+	await tw.finished

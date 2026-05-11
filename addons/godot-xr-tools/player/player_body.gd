@@ -733,30 +733,30 @@ func _update_body_under_camera(delta : float):
 				# Fade to black
 				fade = true
 
-	if fade:
-		if not _fade:
-			# Use global fade if we have one
-			_fade = XRToolsFade.get_fade_node()
-			if not _fade:
-				# Else create a local instance
-				var fade_scene : PackedScene = load("res://addons/godot-xr-tools/effects/fade.tscn")
-				_fade = fade_scene.instantiate()
-				add_child(_fade, false, Node.INTERNAL_MODE_BACK)
-
-		_fade_value = max(_fade_value + delta * 3.0, 0.0)
-
-		_fade.set_fade_level(self, Color(0, 0, 0, _fade_value))
-	elif _fade and _fade_value > 0.0:
-		_fade_value = max(_fade_value - delta * 3.0, 0.0)
-
-		_fade.set_fade_level(self, Color(0, 0, 0, _fade_value))
+	#if fade:
+		#if not _fade:
+			## Use global fade if we have one
+			#_fade = XRToolsFade.get_fade_node()
+			#if not _fade:
+				## Else create a local instance
+				#var fade_scene : PackedScene = load("res://addons/godot-xr-tools/effects/fade.tscn")
+				#_fade = fade_scene.instantiate()
+				#add_child(_fade, false, Node.INTERNAL_MODE_BACK)
+#
+		#_fade_value = max(_fade_value + delta * 3.0, 0.0)
+#
+		#_fade.set_fade_level(self, Color(0, 0, 0, _fade_value))
+	#elif _fade and _fade_value > 0.0:
+		#_fade_value = max(_fade_value - delta * 3.0, 0.0)
+#
+		#_fade.set_fade_level(self, Color(0, 0, 0, _fade_value))
 
 
 # Called when we're removed from the scene tree
-func _exit_tree():
-	if _fade:
-		# Just in case our fade was global, make sure we clean up.
-		_fade.set_fade_level(self, Color(0 ,0 ,0 ,0 ))
+#func _exit_tree():
+	#if _fade:
+		## Just in case our fade was global, make sure we clean up.
+		#_fade.set_fade_level(self, Color(0 ,0 ,0 ,0 ))
 
 
 # This method updates the information about the ground under the players feet

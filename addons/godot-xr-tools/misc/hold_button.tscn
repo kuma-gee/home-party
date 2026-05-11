@@ -1,23 +1,27 @@
-[gd_scene load_steps=5 format=3 uid="uid://cymteydkxagpp"]
+[gd_scene format=3 uid="uid://cymteydkxagpp"]
 
 [ext_resource type="Script" uid="uid://cwvolliuv8nuy" path="res://addons/godot-xr-tools/misc/hold_button.gd" id="1"]
-[ext_resource type="Shader" uid="uid://c6okm2ay0fkjf" path="res://addons/godot-xr-tools/misc/hold_button_visualshader.tres" id="2"]
+[ext_resource type="Shader" uid="uid://lyq4glvuj23f" path="res://addons/godot-xr-tools/staging/loading_spinner.gdshader" id="2_c718k"]
 
-[sub_resource type="QuadMesh" id="1"]
-resource_local_to_scene = true
+[sub_resource type="QuadMesh" id="QuadMesh_p4kr0"]
+size = Vector2(2, 2)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_tkbhq"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c718k"]
 render_priority = 0
-shader = ExtResource("2")
-shader_parameter/albedo = Color(1, 1, 1, 1)
-shader_parameter/value = 0.2
-shader_parameter/fade = 0.05
-shader_parameter/radius = 0.8
-shader_parameter/width = 0.2
+shader = ExtResource("2_c718k")
+shader_parameter/spinner_color = Color(1, 1, 1, 1)
+shader_parameter/ring_radius = 0.38
+shader_parameter/ring_width = 0.20000000298023
+shader_parameter/arc_fraction = 1.0
+shader_parameter/speed = 0.0
+shader_parameter/fill = 0.650000030875
+shader_parameter/fade_amount = 0.0
 
-[node name="HoldButton" type="Node3D"]
+[node name="HoldButton" type="Node3D" unique_id=1685178051]
 script = ExtResource("1")
+size = Vector2(2, 2)
 
-[node name="Visualise" type="MeshInstance3D" parent="."]
-mesh = SubResource("1")
-surface_material_override/0 = SubResource("ShaderMaterial_tkbhq")
+[node name="Spinner" type="MeshInstance3D" parent="." unique_id=266197614]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("QuadMesh_p4kr0")
+surface_material_override/0 = SubResource("ShaderMaterial_c718k")

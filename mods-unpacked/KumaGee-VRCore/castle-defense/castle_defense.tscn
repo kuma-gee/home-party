@@ -36,7 +36,6 @@
 [ext_resource type="Script" uid="uid://4f6ju7rd45me" path="res://addons/proton_scatter/src/scatter_shape.gd" id="32_88pht"]
 [ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="33_bl5ky"]
 [ext_resource type="Script" uid="uid://ca371rsy4x4ya" path="res://addons/proton_scatter/src/shapes/box_shape.gd" id="34_lhggn"]
-[ext_resource type="Shader" uid="uid://dwsq4ngfokby6" path="res://shader/edge.gdshader" id="38_r4ttt"]
 [ext_resource type="Script" uid="uid://54ff6uyo8677" path="res://main/utils/time_label.gd" id="39_88pht"]
 [ext_resource type="Script" uid="uid://bs1qu2rv1mdyb" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/attacker/ai_spawner.gd" id="39_ofmg5"]
 [ext_resource type="Script" uid="uid://nxdpp3mdtdtw" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/arrow_spawner.gd" id="40_bd7o1"]
@@ -62,19 +61,6 @@ volumetric_fog_density = 0.02
 volumetric_fog_albedo = Color(0.8509804, 0.9843137, 1, 1)
 adjustment_contrast = 1.1
 adjustment_saturation = 0.9
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_se6x7"]
-render_priority = 0
-shader = ExtResource("38_r4ttt")
-shader_parameter/colorCount = Vector3(64, 64, 64)
-shader_parameter/colorShift = Vector3(1, 1, 1)
-shader_parameter/doShiftFirst = false
-shader_parameter/includeAlpha = true
-
-[sub_resource type="QuadMesh" id="QuadMesh_se6x7"]
-lightmap_size_hint = Vector2i(12, 12)
-flip_faces = true
-size = Vector2(2, 2)
 
 [sub_resource type="Resource" id="Resource_bl5ky"]
 script = ExtResource("27_fkt18")
@@ -427,12 +413,6 @@ light_energy = 0.05
 wait_time = 300.0
 one_shot = true
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2010750017]
-visible = false
-material_override = SubResource("ShaderMaterial_se6x7")
-extra_cull_margin = 16384.0
-mesh = SubResource("QuadMesh_se6x7")
-
 [node name="ProtonScatter" type="Node3D" parent="." unique_id=1216591199]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 9.613975)
 script = ExtResource("24_0cjve")
@@ -638,6 +618,9 @@ debug_color = Color(0.9933772, 0, 0.24780053, 1)
 
 [node name="VRSpace" parent="." unique_id=841158329 instance=ExtResource("10_a14ph")]
 
+[node name="SpaceFade" parent="VRSpace/SubViewport" parent_id_path=PackedInt32Array(841158329, 1709074553) index="0" unique_id=639972210]
+visible = false
+
 [node name="XRPlayer" parent="VRSpace/SubViewport" parent_id_path=PackedInt32Array(841158329, 1709074553) index="1" unique_id=1404813673]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 2.4058523, 8.760864)
 
@@ -720,6 +703,7 @@ freeze = true
 bow_grip = NodePath("../BowGrip")
 
 [node name="AttackerArea" type="Node3D" parent="." unique_id=992782613]
+process_mode = 1
 
 [node name="Catapult" parent="AttackerArea" unique_id=188247881 node_paths=PackedStringArray("gate_target") instance=ExtResource("15_ka738")]
 transform = Transform3D(0.8660254, 0, -0.5, 0, 1, 0, 0.5, 0, 0.8660254, -6.096862, 0, 19.91023)

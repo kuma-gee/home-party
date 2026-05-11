@@ -16,7 +16,7 @@ func _ready() -> void:
 	super()
 	body_entered.connect(_on_body_entered)
 	lifetime_timer.timeout.connect(queue_free)
-	dropped.connect(func():
+	dropped.connect(func(_a):
 		if not is_picked_up():
 			queue_free()
 	)

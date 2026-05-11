@@ -53,14 +53,14 @@ func _physics_process(_delta : float) -> void:
 
 	# Find closest collision
 	var results = _space.get_rest_info(_collision_parameters)
-	if "point" in results:
-		# Collision detected, calculate distance to closet collision point
-		var delta_pos = global_transform.origin - results["point"]
-		var length = delta_pos.length()
-
-		# Fade based on distance
-		var alpha := inverse_lerp(fade_start_distance, fade_full_distance, length)
-		XRToolsFade.set_fade(self, Color(0, 0, 0, alpha))
-	else:
-		# No collision
-		XRToolsFade.set_fade(self, Color(0, 0, 0, 0))
+	#if "point" in results:
+		## Collision detected, calculate distance to closet collision point
+		#var delta_pos = global_transform.origin - results["point"]
+		#var length = delta_pos.length()
+#
+		## Fade based on distance
+		#var alpha := inverse_lerp(fade_start_distance, fade_full_distance, length)
+		#XRToolsFade.set_fade(self, Color(0, 0, 0, alpha))
+	#else:
+		## No collision
+		#XRToolsFade.set_fade(self, Color(0, 0, 0, 0))

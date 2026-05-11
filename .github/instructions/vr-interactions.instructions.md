@@ -6,7 +6,7 @@ applyTo: "mods-unpacked/KumaGee-VRCore/**"
 
 ## godot-xr-tools (addons/godot-xr-tools/)
 
-Read the addon for API details but never modify it. Key node types:
+Key node types:
 
 | Node | Purpose |
 |------|---------|

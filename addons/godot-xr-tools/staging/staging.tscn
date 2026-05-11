@@ -7,9 +7,15 @@
 [ext_resource type="PackedScene" uid="uid://btknduttnmoxf" path="res://addons/godot-xr-tools/misc/vr_common_shader_cache.tscn" id="5"]
 [ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="6_balvx"]
 
-[node name="Staging" type="Node3D" unique_id=343982823 node_paths=PackedStringArray("desktop_fade", "start_xr", "xr_origin", "xr_camera", "loading", "scene")]
+[sub_resource type="Curve" id="21"]
+_limits = [0.0, 3.14, 0.0, 1.0]
+_data = [Vector2(0.00207039, 0), 0.0, 1.00884, 0, 0, Vector2(1, 3.14), 0.313348, 0.0, 0, 0]
+point_count = 2
+
+[node name="Staging" type="Node3D" unique_id=343982823 node_paths=PackedStringArray("fade", "desktop_fade", "start_xr", "xr_origin", "xr_camera", "loading", "scene")]
+process_mode = 3
 script = ExtResource("1")
-prompt_for_continue = false
+fade = NodePath("SubViewport/StagingFade")
 desktop_fade = NodePath("CanvasLayer/ColorRect")
 start_xr = NodePath("StartXR")
 xr_origin = NodePath("SubViewport/XROrigin3D")
@@ -19,18 +25,16 @@ scene = NodePath("Scene")
 
 [node name="StartXR" parent="." unique_id=2002817492 node_paths=PackedStringArray("viewport") instance=ExtResource("6_balvx")]
 viewport = NodePath("../SubViewport")
-init = null
 
 [node name="Scene" type="Node3D" parent="." unique_id=1337958056]
 
 [node name="SubViewport" type="SubViewport" parent="." unique_id=1315696163]
 
-[node name="Fade" parent="SubViewport" unique_id=1431443523 instance=ExtResource("2_htugy")]
-visible = false
+[node name="StagingFade" parent="SubViewport" unique_id=1431443523 instance=ExtResource("2_htugy")]
 
 [node name="LoadingScreen" parent="SubViewport" unique_id=924912006 instance=ExtResource("2")]
-progress = 0.0
 follow_camera = true
+follow_speed = SubResource("21")
 
 [node name="XROrigin3D" type="XROrigin3D" parent="SubViewport" unique_id=612123133]
 current = true

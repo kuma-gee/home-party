@@ -57,5 +57,4 @@ Then wire it to a UI element in the appropriate Svelte component (e.g. a button 
 
 ## Constraints
 
-- Do not modify `addons/` or `mods-unpacked/KumaGee-Core/`.
 - Do not change the wire format or `GameClient` parsing logic.

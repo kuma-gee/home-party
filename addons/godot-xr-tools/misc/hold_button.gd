@@ -21,6 +21,7 @@ signal pressed
 # Size
 @export var size : Vector2 = Vector2(1.0, 1.0): set = set_size
 
+@onready var spinner: MeshInstance3D = $Spinner
 
 var time_held = 0.0
 var material : ShaderMaterial
@@ -34,7 +35,7 @@ func is_xr_class(xr_name:  String) -> bool:
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	material = $Visualise.get_surface_override_material(0)
+	material = spinner.get_surface_override_material(0)
 	xr_start_node = XRTools.find_xr_child(
 	XRTools.find_xr_ancestor(self,
 	"*Staging",
@@ -92,8 +93,8 @@ func _update_enabled():
 func _set_time_held(p_time_held):
 	time_held = p_time_held
 	if material:
-		$Visualise.visible = time_held > 0.0
-		material.set_shader_parameter("value", time_held/hold_time)
+		spinner.visible = time_held > 0.0
+		material.set_shader_parameter("fill", time_held/hold_time)
 
 
 func set_size(p_size: Vector2):
@@ -103,12 +104,12 @@ func set_size(p_size: Vector2):
 
 func _update_size():
 	if material: # Note, material won't be set until after we setup our scene
-		var mesh : QuadMesh = $Visualise.mesh
+		var mesh : QuadMesh = spinner.mesh
 		if mesh.size != size:
 			mesh.size = size
 
 			# updating the size will unset our material, so reset it
-			$Visualise.set_surface_override_material(0, material)
+			spinner.set_surface_override_material(0, material)
 
 
 func set_color(p_color: Color):

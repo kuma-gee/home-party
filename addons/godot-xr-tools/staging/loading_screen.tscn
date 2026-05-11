@@ -1,66 +1,80 @@
 [gd_scene format=3 uid="uid://bqumugyvkct4r"]
 
-[ext_resource type="Script" uid="uid://bhi5ee6eerov0" path="res://addons/godot-xr-tools/staging/loading_screen.gd" id="2"]
-[ext_resource type="Shader" uid="uid://4i0pwdtfmtsv" path="res://addons/godot-xr-tools/staging/loading_screen/loading_screen_shader.tres" id="3"]
-[ext_resource type="Texture2D" uid="uid://clbtsf0ahb3fm" path="res://addons/godot-xr-tools/assets/misc/progress_bar.png" id="4"]
-[ext_resource type="Texture2D" uid="uid://ocyj01x5mtt7" path="res://addons/godot-xr-tools/assets/misc/Hold trigger to continue.png" id="5"]
-[ext_resource type="PackedScene" uid="uid://cymteydkxagpp" path="res://addons/godot-xr-tools/misc/hold_button.tscn" id="6"]
+[ext_resource type="Script" uid="uid://bhi5ee6eerov0" path="res://addons/godot-xr-tools/staging/loading_screen.gd" id="1"]
+[ext_resource type="Shader" uid="uid://lyq4glvuj23f" path="res://addons/godot-xr-tools/staging/loading_spinner.gdshader" id="2"]
+[ext_resource type="PackedScene" uid="uid://cymteydkxagpp" path="res://addons/godot-xr-tools/misc/hold_button.tscn" id="3"]
 
-[sub_resource type="Curve" id="21"]
-_limits = [0.0, 3.14, 0.0, 1.0]
-_data = [Vector2(0.00207039, 0), 0.0, 1.00884, 0, 0, Vector2(1, 3.14), 0.313348, 0.0, 0, 0]
+[sub_resource type="Curve" id="Curve_8guob"]
+_data = [Vector2(0, 0), 0.0, 3.0485072, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="PlaneMesh" id="2"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_bg"]
 size = Vector2(80, 60)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1o2lp"]
-transparency = 1
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bg"]
 shading_mode = 0
-albedo_color = Color(0.14406255, 0.14406255, 0.14406255, 1)
+albedo_color = Color(0.04, 0.04, 0.05, 1)
 
-[sub_resource type="ShaderMaterial" id="18"]
+[sub_resource type="QuadMesh" id="QuadMesh_spinner"]
+size = Vector2(2, 2)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_spinner"]
 render_priority = 0
-shader = ExtResource("3")
-shader_parameter/bar_color = Color(1, 1, 1, 1)
-shader_parameter/bar_texture = ExtResource("4")
-shader_parameter/cutout = Vector3(4.85, 0.33, 0)
-shader_parameter/progress = 0.0
+shader = ExtResource("2")
+shader_parameter/spinner_color = Color(1, 1, 1, 1)
+shader_parameter/ring_radius = 0.70000003325
+shader_parameter/ring_width = 0.10000000475
+shader_parameter/arc_fraction = 1.0
+shader_parameter/speed = 1.00000004424012
+shader_parameter/fill = 1.0
+shader_parameter/fade_amount = 1.0
 
-[sub_resource type="PlaneMesh" id="3"]
-material = SubResource("18")
-size = Vector2(10, 1)
-
-[sub_resource type="QuadMesh" id="19"]
-size = Vector2(9.25, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k8dyo"]
-transparency = 1
-shading_mode = 0
-albedo_texture = ExtResource("5")
-
-[node name="LoadingScreen" type="Node3D" unique_id=1510406943]
-script = ExtResource("2")
+[node name="LoadingScreen" type="Node3D" unique_id=1510406943 node_paths=PackedStringArray("loading_label", "ready_label", "press_to_continue", "hold_button")]
+script = ExtResource("1")
+loading_label = NodePath("LoadingLabel")
+ready_label = NodePath("ReadyLabel")
+press_to_continue = NodePath("PressToContinue")
+hold_button = NodePath("PressToContinue/HoldButton")
 follow_camera = false
-follow_speed = SubResource("21")
+follow_speed = SubResource("Curve_8guob")
 
-[node name="SplashScreen" type="MeshInstance3D" parent="." unique_id=1833330729]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 15, -50)
-mesh = SubResource("2")
-surface_material_override/0 = SubResource("StandardMaterial3D_1o2lp")
-
-[node name="ProgressBar" type="MeshInstance3D" parent="." unique_id=960789810]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -10)
-mesh = SubResource("3")
-
-[node name="PressToContinue" type="MeshInstance3D" parent="." unique_id=751716933]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -10)
+[node name="Background" type="MeshInstance3D" parent="." unique_id=1000000002]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, -50)
 visible = false
-mesh = SubResource("19")
-surface_material_override/0 = SubResource("StandardMaterial3D_k8dyo")
+mesh = SubResource("PlaneMesh_bg")
+surface_material_override/0 = SubResource("StandardMaterial3D_bg")
 
-[node name="HoldButton" parent="PressToContinue" unique_id=431273430 instance=ExtResource("6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.55766, 0, 0)
+[node name="Spinner" type="MeshInstance3D" parent="." unique_id=1000000003]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8)
+mesh = SubResource("QuadMesh_spinner")
+surface_material_override/0 = SubResource("ShaderMaterial_spinner")
+
+[node name="LoadingLabel" type="Label3D" parent="." unique_id=1000000004]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.3754963, -8)
+no_depth_test = true
+modulate = Color(0.75, 0.75, 0.75, 1)
+text = "Loading..."
+font_size = 96
+
+[node name="ReadyLabel" type="Label3D" parent="." unique_id=48045220]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.3754963, -8)
+visible = false
+no_depth_test = true
+modulate = Color(0.75, 0.75, 0.75, 1)
+text = "Loading finished"
+font_size = 96
+
+[node name="PressToContinue" type="Node3D" parent="." unique_id=1000000005]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8)
+
+[node name="ContinueLabel" type="Label3D" parent="PressToContinue" unique_id=1000000006]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.3644253, 0)
+no_depth_test = true
+modulate = Color(0.9, 0.9, 0.9, 1)
+text = "Hold to Continue"
+font_size = 96
+
+[node name="HoldButton" parent="PressToContinue" unique_id=1000000007 instance=ExtResource("3")]
 hold_time = 0.5
 color = Color(0, 0.717647, 1, 1)
 

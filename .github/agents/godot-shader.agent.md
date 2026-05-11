@@ -148,6 +148,5 @@ logger.info("Shader parameter set")
 - DO NOT use deprecated Godot 3 shader syntax (e.g., `WORLD_MATRIX` → use `MODEL_MATRIX`).
 - DO NOT use `hint_screen_texture` or `hint_depth_texture` in shaders intended for VR/XR rendering without explicitly warning the user.
 - DO NOT add heavy per-fragment noise generation loops — prefer baked noise textures.
-- DO NOT modify files under `addons/` — treat them as read-only external dependencies.
 - ONLY write `.gdshader` files and the minimal GDScript needed to wire them to scene nodes.
 - When in doubt about a built-in name, search the project for existing shader files to confirm syntax.
