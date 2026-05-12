@@ -34,19 +34,24 @@
 		if (touchIndex !== null) return;
 		if (!baseElement) return;
 
-		const touch = event.touches[0];
 		const rect = baseElement.getBoundingClientRect();
 		
-		// Check if touch is within joystick area
-		if (
-			touch.clientX >= rect.left &&
-			touch.clientX <= rect.right &&
-			touch.clientY >= rect.top &&
-			touch.clientY <= rect.bottom
-		) {
-			touchIndex = touch.identifier;
-			updateJoystick(touch.clientX, touch.clientY);
-			event.preventDefault();
+		// Find the first touch that is within joystick area
+		for (let i = 0; i < event.touches.length; i++) {
+			const touch = event.touches[i];
+			
+			// Check if touch is within joystick area
+			if (
+				touch.clientX >= rect.left &&
+				touch.clientX <= rect.right &&
+				touch.clientY >= rect.top &&
+				touch.clientY <= rect.bottom
+			) {
+				touchIndex = touch.identifier;
+				updateJoystick(touch.clientX, touch.clientY);
+				event.preventDefault();
+				break;
+			}
 		}
 	}
 

@@ -9,6 +9,14 @@
 	let isFullscreen = $state(false);
 	let showFullscreenButton = $state(false);
 	let playerName = $state('');
+	
+	// Track button press state for animations
+	let primaryButtonPressed = $state(false);
+	let secondaryButtonPressed = $state(false);
+	
+	// Track touch identifiers for buttons
+	let primaryButtonTouchId: number | null = null;
+	let secondaryButtonTouchId: number | null = null;
 
 	// Request fullscreen
 	async function requestFullscreen() {
@@ -124,14 +132,68 @@
 		connectionStore.sendInput(input, pressed);
 	}
 
-	function handleButtonDown(input: string) {
-		sendButtonInput(input, true);
-        console.log('Button down', input)
+	// Touch event handlers for action buttons
+	function handleActionButtonTouchStart(event: TouchEvent, action: 'primary' | 'secondary') {
+		event.preventDefault();
+		const touch = event.changedTouches[0];
+		
+		if (action === 'primary' && primaryButtonTouchId === null) {
+			primaryButtonTouchId = touch.identifier;
+			primaryButtonPressed = true;
+			sendButtonInput('action', true);
+			console.log('Primary button down (touch)');
+		} else if (action === 'secondary' && secondaryButtonTouchId === null) {
+			secondaryButtonTouchId = touch.identifier;
+			secondaryButtonPressed = true;
+			sendButtonInput('secondary', true);
+			console.log('Secondary button down (touch)');
+		}
 	}
 
-	function handleButtonUp(input: string) {
-		sendButtonInput(input, false);
-        console.log('Button up', input)
+	function handleActionButtonTouchEnd(event: TouchEvent, action: 'primary' | 'secondary') {
+		event.preventDefault();
+		
+		// Check if any of the ended touches match our tracked touch
+		for (let i = 0; i < event.changedTouches.length; i++) {
+			const touch = event.changedTouches[i];
+			
+			if (action === 'primary' && touch.identifier === primaryButtonTouchId) {
+				primaryButtonTouchId = null;
+				primaryButtonPressed = false;
+				sendButtonInput('action', false);
+				console.log('Primary button up (touch)');
+			} else if (action === 'secondary' && touch.identifier === secondaryButtonTouchId) {
+				secondaryButtonTouchId = null;
+				secondaryButtonPressed = false;
+				sendButtonInput('secondary', false);
+				console.log('Secondary button up (touch)');
+			}
+		}
+	}
+
+	// Mouse event handlers for action buttons (desktop testing)
+	function handleActionButtonMouseDown(action: 'primary' | 'secondary') {
+		if (action === 'primary') {
+			primaryButtonPressed = true;
+			sendButtonInput('action', true);
+			console.log('Primary button down (mouse)');
+		} else {
+			secondaryButtonPressed = true;
+			sendButtonInput('secondary', true);
+			console.log('Secondary button down (mouse)');
+		}
+	}
+
+	function handleActionButtonMouseUp(action: 'primary' | 'secondary') {
+		if (action === 'primary') {
+			primaryButtonPressed = false;
+			sendButtonInput('action', false);
+			console.log('Primary button up (mouse)');
+		} else {
+			secondaryButtonPressed = false;
+			sendButtonInput('secondary', false);
+			console.log('Secondary button up (mouse)');
+		}
 	}
 
 	function handleJoystickMove(vector: { x: number; y: number }) {
@@ -217,19 +279,23 @@
 				<div class="action-buttons">
 					<button 
 						class="action-btn secondary-btn"
-						onmousedown={() => handleButtonDown('secondary')}
-						onmouseup={() => handleButtonUp('secondary')}
-						ontouchstart={() => handleButtonDown('secondary')}
-						ontouchend={() => handleButtonUp('secondary')}
+						class:pressed={secondaryButtonPressed}
+						onmousedown={() => handleActionButtonMouseDown('secondary')}
+						onmouseup={() => handleActionButtonMouseUp('secondary')}
+						ontouchstart={(e) => handleActionButtonTouchStart(e, 'secondary')}
+						ontouchend={(e) => handleActionButtonTouchEnd(e, 'secondary')}
+						ontouchcancel={(e) => handleActionButtonTouchEnd(e, 'secondary')}
 					>
 						B
 					</button>
 					<button 
 						class="action-btn primary-btn"
-						onmousedown={() => handleButtonDown('action')}
-						onmouseup={() => handleButtonUp('action')}
-						ontouchstart={() => handleButtonDown('action')}
-						ontouchend={() => handleButtonUp('action')}
+						class:pressed={primaryButtonPressed}
+						onmousedown={() => handleActionButtonMouseDown('primary')}
+						onmouseup={() => handleActionButtonMouseUp('primary')}
+						ontouchstart={(e) => handleActionButtonTouchStart(e, 'primary')}
+						ontouchend={(e) => handleActionButtonTouchEnd(e, 'primary')}
+						ontouchcancel={(e) => handleActionButtonTouchEnd(e, 'primary')}
 					>
 						A
 					</button>
@@ -598,6 +664,12 @@
 		touch-action: none;
 		user-select: none;
 		-webkit-tap-highlight-color: transparent;
+	}
+
+	.action-btn.pressed {
+		transform: scale(0.9);
+		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+		filter: brightness(1.2);
 	}
 
 	.action-btn:active {
