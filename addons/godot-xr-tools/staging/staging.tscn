@@ -21,8 +21,6 @@ loading = NodePath("SubViewport/LoadingScreen")
 prompt_for_continue = false
 fade = NodePath("SubViewport/StagingFade")
 desktop_fade = NodePath("CanvasLayer/ColorRect")
-bgm_volume = -20
-fade_out_bgm_volume = -60
 
 [node name="StartXR" parent="." unique_id=2002817492 node_paths=PackedStringArray("viewport") instance=ExtResource("6_balvx")]
 viewport = NodePath("../SubViewport")
@@ -65,8 +63,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
-
-[node name="BGM" type="AudioStreamPlayer" parent="." unique_id=2068686766]
 
 [connection signal="xr_ended" from="StartXR" to="." method="_on_StartXR_xr_ended"]
 [connection signal="xr_started" from="StartXR" to="." method="_on_StartXR_xr_started"]

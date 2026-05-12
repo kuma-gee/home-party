@@ -46,14 +46,8 @@ signal xr_ended
 @export var fade_time := 1.0
 @export var desktop_fade: Control
 
-@export_category("Audio")
-@export var bgm_volume := -10
-@export var fade_out_bgm_volume := -40
-@export var bgm_fade_time := 1.0
-
 @onready var start_xr: XRToolsStartXR = $StartXR
 @onready var scene: Node3D = $Scene
-@onready var bgm: AudioStreamPlayer = $BGM
 
 var current_scene : XRToolsSceneBase
 var current_scene_path : String
@@ -146,7 +140,7 @@ func setup_new_scene(p_scene_path : String, user_data):
 	current_scene_path = p_scene_path
 	scene.add_child(current_scene)
 	_add_signals(current_scene)
-	start_bgm(current_scene.bgm_audio)
+	BGMManager.start(current_scene.bgm_audio)
 
 	current_scene.xr_player.activate()
 	current_scene.scene_loaded(user_data)
@@ -155,29 +149,11 @@ func setup_new_scene(p_scene_path : String, user_data):
 	# We create a small delay here to give tracking some time to update our nodes...
 	await get_tree().create_timer(0.2).timeout
 
-func start_bgm(source: AudioStream):
-	if not source: return
-	
-	bgm.volume_db = fade_out_bgm_volume
-	bgm.stream = source
-	bgm.play()
-	
-	var tw = create_tween()
-	tw.tween_property(bgm, "volume_db", bgm_volume, bgm_fade_time)
-
-func stop_bgm():
-	if not bgm.playing: return
-	
-	var tw = create_tween()
-	tw.tween_property(bgm, "volume_db", fade_out_bgm_volume, bgm_fade_time)
-	tw.finished.connect(func(): bgm.stop())
-	
-
 func clean_up_previous_scene(user_data):
 	if not current_scene: return
 	current_scene.scene_pre_exiting(user_data)
 	_remove_signals(current_scene)
-	stop_bgm()
+	BGMManager.stop()
 
 	# Now we remove our scene
 	emit_signal("scene_exiting", current_scene, user_data)
