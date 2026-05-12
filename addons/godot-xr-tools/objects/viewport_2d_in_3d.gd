@@ -515,7 +515,7 @@ func _update_render() -> void:
 			_screen_material = StandardMaterial3D.new()
 
 			# Disable culling
-			_screen_material.params_cull_mode = StandardMaterial3D.CULL_DISABLED
+			_screen_material.cull_mode = StandardMaterial3D.CULL_DISABLED
 
 			# Ensure local material is configured
 			_dirty |= _DIRTY_TRANSPARENCY |	\
@@ -581,6 +581,7 @@ func _update_render() -> void:
 		# Set the screen material to use the viewport for the albedo channel
 		viewport_texture = get_viewport_node().get_texture()
 		_screen_material.albedo_texture = viewport_texture
+		$StaticBody3D.viewport = get_viewport_node()
 
 	# Handle update mode change
 	if _dirty & _DIRTY_UPDATE:

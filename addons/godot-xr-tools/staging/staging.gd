@@ -36,6 +36,7 @@ signal xr_ended
 
 @export_file('*.tscn') var main_scene : String
 
+@export var desktop_camera: Camera3D
 @export var xr_origin : XROrigin3D
 @export var xr_camera : XRCamera3D
 @export var loading: LoadingScreen
@@ -167,6 +168,7 @@ func should_show_loading(p_scene_path : String) -> bool:
 
 func enable_loading_screen():
 	start_xr._initialize()
+	desktop_camera.current = true
 	xr_origin.set_process_internal(true)
 	xr_origin.current = true
 	xr_camera.current = true
@@ -176,6 +178,7 @@ func enable_loading_screen():
 	switching_to_loading_scene.emit()
 
 func disable_loading_screen():
+	desktop_camera.current = false
 	loading.follow_camera = false
 	loading.visible = false
 	xr_origin.set_process_internal(false)

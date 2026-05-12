@@ -1,3 +1,4 @@
+@tool
 extends XRToolsInteractableBody
 
 
@@ -12,7 +13,7 @@ extends XRToolsInteractableBody
 var _mouse_mask := 0
 
 # Viewport node
-var _viewport : Viewport
+var viewport : SubViewport
 
 # Dictionary of pointers to touch-index
 var _touches := {}
@@ -31,9 +32,6 @@ var _mouse_last := Vector2.ZERO
 
 
 func _ready():
-	# Get viewport node
-	_viewport = get_node("../Viewport")
-
 	# Subscribe to pointer events
 	pointer_event.connect(_on_pointer_event)
 
@@ -53,7 +51,7 @@ func global_to_viewport(p_at : Vector3) -> Vector2:
 # Pointer event handler
 func _on_pointer_event(event : XRToolsPointerEvent) -> void:
 	# Ignore if we have no viewport
-	if not is_instance_valid(_viewport):
+	if not is_instance_valid(viewport):
 		return
 
 	# Get the pointer and event type
@@ -147,7 +145,7 @@ func _report_touch_down(index : int, at : Vector2) -> void:
 	event.index = index
 	event.position = at
 	event.pressed = true
-	_viewport.push_input(event)
+	viewport.push_input(event)
 
 
 # Report touch-up event
@@ -156,7 +154,7 @@ func _report_touch_up(index : int, at : Vector2) -> void:
 	event.index = index
 	event.position = at
 	event.pressed = false
-	_viewport.push_input(event)
+	viewport.push_input(event)
 
 
 # Report touch-move event
@@ -166,7 +164,7 @@ func _report_touch_move(index : int, pressed : bool, from : Vector2, to : Vector
 	event.position = to
 	event.pressure = 1.0 if pressed else 0.0
 	event.relative = to - from
-	_viewport.push_input(event)
+	viewport.push_input(event)
 
 
 # Report mouse-down event
@@ -177,7 +175,7 @@ func _report_mouse_down(at : Vector2) -> void:
 	event.position = at
 	event.global_position = at
 	event.button_mask = 1
-	_viewport.push_input(event)
+	viewport.push_input(event)
 
 
 # Report mouse-up event
@@ -188,7 +186,7 @@ func _report_mouse_up(at : Vector2) -> void:
 	event.position = at
 	event.global_position = at
 	event.button_mask = 0
-	_viewport.push_input(event)
+	viewport.push_input(event)
 
 
 # Report mouse-move event
@@ -199,7 +197,7 @@ func _report_mouse_move(pressed : bool, from : Vector2, to : Vector2) -> void:
 	event.relative = to - from
 	event.button_mask = 1 if pressed else 0
 	event.pressure = 1.0 if pressed else 0.0
-	_viewport.push_input(event)
+	viewport.push_input(event)
 
 
 # Find the next free touch index

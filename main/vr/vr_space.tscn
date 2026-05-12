@@ -95,6 +95,7 @@ size = Vector2i(0, 0)
 render_target_update_mode = 4
 
 [node name="SpaceFade" parent="SubViewport" unique_id=639972210 instance=ExtResource("3_wg2ng")]
+visible = false
 
 [node name="XRPlayer" type="XROrigin3D" parent="SubViewport" unique_id=1404813673]
 

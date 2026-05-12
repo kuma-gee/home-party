@@ -1,5 +1,5 @@
 class_name XRToolsInteractableBody
-extends Node3D
+extends PhysicsBody3D
 # This should extend from PhysicsBody3D but https://github.com/godotengine/godot/issues/46073
 
 

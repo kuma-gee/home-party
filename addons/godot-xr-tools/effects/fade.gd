@@ -31,6 +31,8 @@ func _ready() -> void:
 		_material = _mesh.get_surface_override_material(0)
 	
 	set_fade_level(Color(0, 0, 0, 1))
+	if Engine.is_editor_hint():
+		hide()
 
 static func fade_all(p_color : Color) -> void:
 	# In the future this use of groups should be replaced by static instances.
