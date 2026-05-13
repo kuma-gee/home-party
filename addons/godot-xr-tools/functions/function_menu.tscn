@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://bqm8xr5n3yvwh"]
+
+[ext_resource type="Script" uid="uid://dxvn5qkp4aqwb" path="res://addons/godot-xr-tools/functions/function_menu.gd" id="1"]
+[ext_resource type="Shader" uid="uid://cdfjqx6ei5653" path="res://shader/circle_inner.gdshader" id="3_ivmre"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_fdq8k"]
+viewport_path = NodePath("Sprite3D/SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_p2nju"]
+shader = ExtResource("3_ivmre")
+shader_parameter/radius = 0.90000004275
+shader_parameter/inner_radius = 0.50000002375
+shader_parameter/fill = 0.5870000278825
+shader_parameter/blur = 0.009999999747
+shader_parameter/bg_color = Color(0, 0, 0, 0)
+shader_parameter/inner_color = Color(0, 0, 0, 0)
+shader_parameter/outline_width = 0.0
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+
+[node name="FunctionMenu" type="Node3D" unique_id=1464073614 node_paths=PackedStringArray("open_indicator")]
+script = ExtResource("1")
+open_indicator = NodePath("Sprite3D/SubViewport/ColorRect")
+
+[node name="MenuAnchor" type="Node3D" parent="." unique_id=98110546]
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=1023181830]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
+billboard = 1
+double_sided = false
+no_depth_test = true
+texture = SubResource("ViewportTexture_fdq8k")
+
+[node name="SubViewport" type="SubViewport" parent="Sprite3D" unique_id=1044432622]
+transparent_bg = true
+size = Vector2i(128, 128)
+
+[node name="ColorRect" type="ColorRect" parent="Sprite3D/SubViewport" unique_id=809160844]
+material = SubResource("ShaderMaterial_p2nju")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

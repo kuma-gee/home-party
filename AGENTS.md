@@ -23,7 +23,6 @@
 cd game-client
 bun run dev      # Dev server on port 8080 (vite/config.dev.mjs)
 bun run build    # Builds to game-client/build, copies to ../build/web
-bun run preview  # Preview built output
 ```
 
 **Critical:** SvelteKit build uses `adapter-static` with `fallback: 'index.html'` for SPA mode. Build step copies output to `../build/web` where Godot's HttpServer (port 8484) serves it.
@@ -39,12 +38,10 @@ bun run preview  # Preview built output
 
 **Layer setup:** Custom 3D physics layers (project.godot:77-94) - PlayerHurtBox (6), EnemyHurtBox (7), Held Objects (17), Player Hands (18), etc.
 
-## Important Quirks
+## Guidelines
 
-- `game-client/` has `.gdignore` - Godot won't import SvelteKit source files
-- SvelteKit config uses base `'./'` for relative paths in production (vite/config.prod.mjs:18)
-- Godot export filter is `resources` mode with explicit export_files list (export_presets.cfg:9-10)
-- VR uses XRToolsUserSettings and XRToolsRumbleManager autoloads from godot-xr-tools addon
+- Don't create any documentation markdown files unless explicitly requested
+- Don't add comments unless it's really not clear why it's been done that way
 
 ## Testing
 

@@ -55,7 +55,7 @@ func show_ready(wait_continue: bool, time = 1.0):
 		.set_trans(Tween.TRANS_CUBIC)
 
 	tw.tween_property(mat, "shader_parameter/fade_amount", 0.0, time)
-	tw.tween_property(mat, "shader_parameter/ring_width", 0.3, time)
+	tw.tween_property(mat, "shader_parameter/ring_width", 0.4, time)
 
 	loading_label.visible = false
 	ready_label.visible = true

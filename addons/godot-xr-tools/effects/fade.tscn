@@ -13,6 +13,7 @@ shader = ExtResource("1_tjen8")
 shader_parameter/albedo = Color(0, 0, 0, 1)
 
 [node name="Fade" type="Node3D" unique_id=639972210]
+visible = false
 script = ExtResource("1_6667f")
 layers = 262144
 

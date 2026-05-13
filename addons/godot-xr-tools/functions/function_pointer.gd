@@ -97,39 +97,25 @@ const SUPPRESS_MASK := 0b0000_0000_0100_0000_0000_0000_0000_0000
 ## Suppress mask
 @export_flags_3d_physics var suppress_mask : int = SUPPRESS_MASK: set = set_suppress_mask
 
+@onready var ray_cast: RayCast3D = $RayCast
+@onready var suppress_area: Area3D = $SuppressArea
 
-## Current target node
 var target : Node3D = null
-
-## Last target node
 var last_target : Node3D = null
-
-## Last collision point
 var last_collided_at : Vector3 = Vector3.ZERO
-
-# World scale
 var _world_scale : float = 1.0
-
-# Left controller node
 var _controller_left_node : XRController3D
-
-# Right controller node
 var _controller_right_node : XRController3D
-
-# The currently active controller
 var _active_controller : XRController3D
 
 
-## Add support for is_xr_class on XRTools classes
 func is_xr_class(xr_name:  String) -> bool:
 	return xr_name == "XRToolsFunctionPointer"
 
 
-# Called when the node enters the scene tree for the first time.
 func _enter_tree():
 	super._enter_tree()
 
-	# Do not initialise if in the editor
 	if Engine.is_editor_hint():
 		return
 
@@ -227,18 +213,17 @@ func _process(delta):
 	# Find the new pointer target
 	var new_target : Node3D
 	var new_at : Vector3
-	var suppress_area := $SuppressArea
 	if (enabled and
-		not $SuppressArea.has_overlapping_bodies() and
-		not $SuppressArea.has_overlapping_areas() and
-		$RayCast.is_colliding()):
-		new_at = $RayCast.get_collision_point()
+		not suppress_area.has_overlapping_bodies() and
+		not suppress_area.has_overlapping_areas() and
+		ray_cast.is_colliding()):
+		new_at = ray_cast.get_collision_point()
 		if target:
 			# Locked to 'target' even if we're colliding with something else
 			new_target = target
 		else:
 			# Target is whatever the raycast is colliding with
-			new_target = $RayCast.get_collider()
+			new_target = ray_cast.get_collider()
 
 	# If no current or previous collisions then skip
 	if not new_target and not last_target:
@@ -246,94 +231,67 @@ func _process(delta):
 
 	# Handle pointer changes
 	if new_target and not last_target:
-		# Pointer entered new_target
 		XRToolsPointerEvent.entered(self, new_target, new_at)
-
-		# Pointer moved on new_target for the first time
 		XRToolsPointerEvent.moved(self, new_target, new_at, new_at)
-
-		# Update visible artifacts for hit
 		_visible_hit(new_at)
 	elif not new_target and last_target:
-		# Pointer exited last_target
 		XRToolsPointerEvent.exited(self, last_target, last_collided_at)
-
-		# Update visible artifacts for miss
 		_visible_miss()
 	elif new_target != last_target:
-		# Pointer exited last_target
 		XRToolsPointerEvent.exited(self, last_target, last_collided_at)
-
-		# Pointer entered new_target
 		XRToolsPointerEvent.entered(self, new_target, new_at)
-
-		# Pointer moved on new_target
 		XRToolsPointerEvent.moved(self, new_target, new_at, new_at)
-
-		# Move visible artifacts
 		_visible_move(new_at)
 	elif new_at != last_collided_at:
-		# Pointer moved on new_target
 		XRToolsPointerEvent.moved(self, new_target, new_at, last_collided_at)
-
-		# Move visible artifacts
 		_visible_move(new_at)
 
-	# Update last values
 	last_target = new_target
 	last_collided_at = new_at
 
 
-# Set pointer enabled property
 func set_enabled(p_enabled : bool) -> void:
 	enabled = p_enabled
 	if is_inside_tree():
 		_update_pointer()
 
 
-# Set pointer y_offset property
 func set_y_offset(p_offset : float) -> void:
 	y_offset = p_offset
 	if is_inside_tree():
 		_update_y_offset()
 
 
-# Set pointer distance property
 func set_distance(p_new_value : float) -> void:
 	distance = p_new_value
 	if is_inside_tree():
 		_update_distance()
 
 
-# Set pointer show_laser property
 func set_show_laser(p_show : LaserShow) -> void:
 	show_laser = p_show
 	if is_inside_tree():
 		_update_pointer()
 
 
-# Set pointer laser_length property
 func set_laser_length(p_laser_length : LaserLength) -> void:
 	laser_length = p_laser_length
 	if is_inside_tree():
 		_update_pointer()
 
 
-# Set pointer laser_material property
 func set_laser_material(p_laser_material : StandardMaterial3D) -> void:
 	laser_material = p_laser_material
 	if is_inside_tree():
 		_update_pointer()
 
 
-# Set pointer laser_hit_material property
 func set_laser_hit_material(p_laser_hit_material : StandardMaterial3D) -> void:
 	laser_hit_material = p_laser_hit_material
 	if is_inside_tree():
 		_update_pointer()
 
 
-# Set pointer show_target property
 func set_show_target(p_show_target : bool) -> void:
 	show_target = p_show_target
 	if is_inside_tree():
@@ -446,10 +404,10 @@ func _update_pointer() -> void:
 
 # Pointer-activation button pressed handler
 func _button_pressed() -> void:
-	if $RayCast.is_colliding():
+	if ray_cast.is_colliding():
 		# Report pressed
-		target = $RayCast.get_collider()
-		last_collided_at = $RayCast.get_collision_point()
+		target = ray_cast.get_collider()
+		last_collided_at = ray_cast.get_collision_point()
 		XRToolsPointerEvent.pressed(self, target, last_collided_at)
 
 

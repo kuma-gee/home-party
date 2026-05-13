@@ -199,14 +199,14 @@ func wait_for_scene_load(p_scene_path : String) -> ResourceLoader.ThreadLoadStat
 func fade_black():
 	if _tween:
 		_tween.kill()
-	_tween = get_tree().create_tween()
+	_tween = create_tween()
 	_tween.tween_method(set_fade, 0.0, 1.0, fade_time)
 	await _tween.finished
 
 func fade_visible():
 	if _tween:
 		_tween.kill()
-	_tween = get_tree().create_tween()
+	_tween = create_tween()
 	_tween.tween_method(set_fade, 1.0, 0.0, fade_time)
 	await _tween.finished
 
@@ -220,6 +220,7 @@ func _add_signals(p_scene : XRToolsSceneBase):
 	p_scene.connect("request_load_scene", _on_load_scene)
 	p_scene.connect("request_reset_scene", _on_reset_scene)
 	p_scene.connect("request_quit", _on_quit)
+	p_scene.xr_player.back_to_home.connect(_on_exit_to_main_menu)
 
 
 func _remove_signals(p_scene : XRToolsSceneBase):
@@ -227,6 +228,7 @@ func _remove_signals(p_scene : XRToolsSceneBase):
 	p_scene.disconnect("request_load_scene", _on_load_scene)
 	p_scene.disconnect("request_reset_scene", _on_reset_scene)
 	p_scene.disconnect("request_quit", _on_quit)
+	p_scene.xr_player.back_to_home.disconnect(_on_exit_to_main_menu)
 
 
 func _on_exit_to_main_menu():

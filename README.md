@@ -6,6 +6,7 @@
 - [Halloween](https://kaylousberg.itch.io/halloween-bits)
 - [Skeletons](https://kaylousberg.itch.io/kaykit-skeletons)
 
+- [Font](https://fonts.google.com/specimen/Luckiest+Guy?categoryFilters=Feeling:%2FExpressive%2FPlayful&preview.script=Latn&preview.lang=ace_Latn)
 
 ### BGM
 

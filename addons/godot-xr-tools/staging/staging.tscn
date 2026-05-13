@@ -27,11 +27,11 @@ desktop_fade = NodePath("CanvasLayer/ColorRect")
 viewport = NodePath("../SubViewport")
 
 [node name="Scene" type="Node3D" parent="." unique_id=1337958056]
+process_mode = 1
 
 [node name="SubViewport" type="SubViewport" parent="." unique_id=1315696163]
 
 [node name="StagingFade" parent="SubViewport" unique_id=1431443523 instance=ExtResource("2_htugy")]
-visible = false
 
 [node name="LoadingScreen" parent="SubViewport" unique_id=924912006 instance=ExtResource("2")]
 follow_camera = true

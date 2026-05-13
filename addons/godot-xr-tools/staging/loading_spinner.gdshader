@@ -3,7 +3,7 @@ render_mode unshaded, cull_disabled, blend_add, depth_draw_never;
 
 uniform vec4 spinner_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
 uniform float ring_radius : hint_range(0.0, 1.0) = 0.38;
-uniform float ring_width : hint_range(0.0, 0.2) = 0.07;
+uniform float ring_width : hint_range(0.0, 0.4) = 0.07;
 uniform float arc_fraction : hint_range(0.01, 1.0) = 0.75;
 uniform float speed : hint_range(0.0, 10.0) = 1.5;
 uniform float fill : hint_range(0.0, 1.0) = 1.0;
