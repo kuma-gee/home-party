@@ -70,7 +70,7 @@ shape = SubResource("BoxShape3D_t4tkp")
 [node name="bow_B2" parent="." index="1" unique_id=1247893556 instance=ExtResource("4_k2jsv")]
 transform = Transform3D(-0.75, 0, 6.556708e-08, 0, 0.75, 0, -6.556708e-08, 0, -0.75, 0, 0, 0)
 
-[node name="bow_B" parent="bow_B2" index="0" unique_id=1292897617]
+[node name="bow_B" parent="bow_B2" index="0" unique_id=1514773646]
 mesh = SubResource("ArrayMesh_2hlb6")
 
 [node name="StringTop" type="Marker3D" parent="bow_B2" index="1" unique_id=1234567890]

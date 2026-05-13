@@ -16,8 +16,9 @@ func _ready() -> void:
 	super()
 	body_entered.connect(_on_body_entered)
 	lifetime_timer.timeout.connect(queue_free)
-	dropped.connect(func(_a):
-		if not is_picked_up():
+	dropped.connect(func(a):
+		await get_tree().physics_frame
+		if not is_picked_up() and a is Arrow and not fired:
 			queue_free()
 	)
 	freeze = true

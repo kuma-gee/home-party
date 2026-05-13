@@ -615,7 +615,7 @@ debug_color = Color(0.9933772, 0, 0.24780053, 1)
 
 [node name="VRSpace" parent="." unique_id=841158329 instance=ExtResource("10_a14ph")]
 
-[node name="XRPlayer" parent="VRSpace/SubViewport" parent_id_path=PackedInt32Array(841158329, 1709074553) index="1" unique_id=1404813673]
+[node name="XRPlayer" parent="VRSpace/SubViewport" parent_id_path=PackedInt32Array(841158329, 1709074553) index="2" unique_id=1404813673]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 2.4058523, 8.760864)
 
 [node name="PlayerBody" parent="VRSpace/SubViewport/XRPlayer" index="0" unique_id=1745649098]
@@ -635,15 +635,17 @@ tree_root = SubResource("AnimationNodeBlendTree_dwc66")
 
 [node name="FunctionPickup" parent="VRSpace/SubViewport/XRPlayer/LeftHand" parent_id_path=PackedInt32Array(841158329, 2106749189) index="1" unique_id=1924663514 instance=ExtResource("5_w0s4v")]
 
+[node name="MovementTurn" parent="VRSpace/SubViewport/XRPlayer/LeftHand" parent_id_path=PackedInt32Array(841158329, 2106749189) index="4" unique_id=583574780 instance=ExtResource("6_5cd4w")]
+
 [node name="mesh_Hand_Nails_low_R" parent="VRSpace/SubViewport/XRPlayer/RightHand/RightHand/Hand_Nails_low_R/Armature/Skeleton3D" index="0" unique_id=1142305627]
 surface_material_override/0 = null
 
 [node name="AnimationTree" parent="VRSpace/SubViewport/XRPlayer/RightHand/RightHand" parent_id_path=PackedInt32Array(841158329, 40282269) index="1"]
 tree_root = SubResource("AnimationNodeBlendTree_l5702")
 
-[node name="MovementTurn" parent="VRSpace/SubViewport/XRPlayer/RightHand" parent_id_path=PackedInt32Array(841158329, 1667605568) index="1" unique_id=2008313491 instance=ExtResource("6_5cd4w")]
+[node name="FunctionPickup2" parent="VRSpace/SubViewport/XRPlayer/RightHand" parent_id_path=PackedInt32Array(841158329, 1667605568) index="1" unique_id=1988130203 instance=ExtResource("5_w0s4v")]
 
-[node name="FunctionPickup2" parent="VRSpace/SubViewport/XRPlayer/RightHand" parent_id_path=PackedInt32Array(841158329, 1667605568) index="2" unique_id=1988130203 instance=ExtResource("5_w0s4v")]
+[node name="MovementTurn" parent="VRSpace/SubViewport/XRPlayer/RightHand" parent_id_path=PackedInt32Array(841158329, 1667605568) index="2" unique_id=2008313491 instance=ExtResource("6_5cd4w")]
 
 [node name="Viewport2Din3D" parent="VRSpace" unique_id=913891834 node_paths=PackedStringArray("viewport") instance=ExtResource("33_bl5ky")]
 process_mode = 3
