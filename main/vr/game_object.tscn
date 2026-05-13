@@ -3,6 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_u8ifv"]
 [ext_resource type="PackedScene" uid="uid://dh8grd7s3n8kg" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_snap.tscn" id="2_piqj4"]
 [ext_resource type="Script" uid="uid://b37bxflp231tn" path="res://main/vr/game_select_area.gd" id="2_r842p"]
+[ext_resource type="Shader" uid="uid://d1cis0r7gi5pm" path="res://shader/outline_3d.gdshader" id="4_vkcnx"]
+[ext_resource type="Script" uid="uid://bi01qjf5sng7a" path="res://main/vr/highlight_object.gd" id="5_ul6vm"]
 [ext_resource type="PackedScene" uid="uid://c25yxb0vt53vc" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_left.tscn" id="5_vkcnx"]
 [ext_resource type="PackedScene" uid="uid://ctw7nbntd5pcj" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_right.tscn" id="6_ul6vm"]
 
@@ -12,6 +14,13 @@ radius = 0.11230469
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kqex8"]
 albedo_color = Color(0.29954728, 0.2995475, 0.29954743, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vkcnx"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("4_vkcnx")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/outline_size = 1.0
 
 [node name="GameObject" unique_id=777328390 groups=["game_select"] instance=ExtResource("1_u8ifv")]
 script = ExtResource("2_r842p")
@@ -25,12 +34,15 @@ shape = SubResource("CylinderShape3D_piqj4")
 [node name="IconRoot" type="Node3D" parent="." index="1" unique_id=1477808711]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.018920764, 0)
 
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="." index="2" unique_id=1541365418]
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="." index="2" unique_id=1541365418 node_paths=PackedStringArray("pickable")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.009892605, 0)
+material_override = SubResource("StandardMaterial3D_kqex8")
+material_overlay = SubResource("ShaderMaterial_vkcnx")
 radius = 0.11
 height = 0.02
 sides = 32
-material = SubResource("StandardMaterial3D_kqex8")
+script = ExtResource("5_ul6vm")
+pickable = NodePath("..")
 
 [node name="GrabPointSnap" parent="." index="3" unique_id=1846373347 instance=ExtResource("2_piqj4")]
 

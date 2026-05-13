@@ -20,3 +20,10 @@ radius = 0.15
 height = 0.01
 sides = 32
 material = SubResource("StandardMaterial3D_iak6b")
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="CSGCylinder3D" unique_id=1188793051]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.006641332, 0)
+operation = 2
+radius = 0.11
+height = 0.02
+sides = 32

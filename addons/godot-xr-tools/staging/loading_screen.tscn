@@ -52,7 +52,6 @@ surface_material_override/0 = SubResource("ShaderMaterial_spinner")
 
 [node name="LoadingLabel" type="Label3D" parent="." unique_id=1000000004]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.3754963, -8)
-visible = false
 no_depth_test = true
 modulate = Color(0.75, 0.75, 0.75, 1)
 text = "Loading..."

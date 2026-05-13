@@ -15,25 +15,12 @@ extends RigidBody3D
 ## child nodes controlling hand and snap-zone grab locations.
 
 
-# Signal emitted when this object is picked up (held by a player or snap-zone)
 signal picked_up(pickable)
-
-# Signal emitted when this object is dropped
 signal dropped(pickable)
-
-# Signal emitted when this object is grabbed (primary or secondary)
 signal grabbed(pickable, by)
-
-# Signal emitted when this object is released (primary or secondary)
 signal released(pickable, by)
-
-# Signal emitted when the user presses the action button while holding this object
 signal action_pressed(pickable)
-
-# Signal emitted when the user releases the action button while holding this object
 signal action_released(pickable)
-
-# Signal emitted when the highlight state changes
 signal highlight_updated(pickable, enable)
 
 
