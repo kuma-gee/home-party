@@ -143,6 +143,7 @@ func setup_new_scene(p_scene_path : String, user_data):
 	_add_signals(current_scene)
 	BGMManager.start(current_scene.bgm_audio)
 
+	get_tree().paused = false
 	current_scene.xr_player.activate()
 	current_scene.scene_loaded(user_data)
 	scene_loaded.emit(current_scene, user_data)
@@ -221,6 +222,7 @@ func _add_signals(p_scene : XRToolsSceneBase):
 	p_scene.connect("request_reset_scene", _on_reset_scene)
 	p_scene.connect("request_quit", _on_quit)
 	p_scene.xr_player.back_to_home.connect(_on_exit_to_main_menu)
+	p_scene.xr_player.restart_game.connect(_on_reset_scene)
 
 
 func _remove_signals(p_scene : XRToolsSceneBase):
@@ -229,6 +231,7 @@ func _remove_signals(p_scene : XRToolsSceneBase):
 	p_scene.disconnect("request_reset_scene", _on_reset_scene)
 	p_scene.disconnect("request_quit", _on_quit)
 	p_scene.xr_player.back_to_home.disconnect(_on_exit_to_main_menu)
+	p_scene.xr_player.restart_game.disconnect(_on_reset_scene)
 
 
 func _on_exit_to_main_menu():
@@ -239,8 +242,8 @@ func _on_load_scene(p_scene_path : String, user_data):
 	load_scene(p_scene_path, user_data)
 
 
-func _on_reset_scene(user_data):
-	load_scene(current_scene_path, user_data)
+func _on_reset_scene():
+	load_scene(current_scene_path)
 
 
 func _on_quit():

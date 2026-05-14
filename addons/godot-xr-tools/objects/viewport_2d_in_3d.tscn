@@ -22,6 +22,11 @@ size = Vector3(3, 2, 0.02)
 
 [node name="Viewport2Din3D" type="Node3D" unique_id=1231438571]
 script = ExtResource("1")
+transparent = 1
+alpha_scissor_threshold = 0.25
+unshaded = false
+filter = true
+scene_properties_keys = PackedStringArray()
 
 [node name="Viewport" type="SubViewport" parent="." unique_id=434808864]
 disable_3d = true

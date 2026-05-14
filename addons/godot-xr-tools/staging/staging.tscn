@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://ralokdfu8o3n" path="res://addons/godot-xr-tools/staging/staging.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://bqumugyvkct4r" path="res://addons/godot-xr-tools/staging/loading_screen.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://wtpox7m5vu2b" path="res://addons/godot-xr-tools/effects/fade.tscn" id="2_htugy"]
-[ext_resource type="Environment" uid="uid://ckiwtcdsam7ed" path="res://addons/godot-xr-tools/staging/staging_env.tres" id="3_40x3a"]
 [ext_resource type="PackedScene" uid="uid://btknduttnmoxf" path="res://addons/godot-xr-tools/misc/vr_common_shader_cache.tscn" id="5"]
 [ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="6_balvx"]
 
@@ -41,7 +40,6 @@ follow_speed = SubResource("21")
 current = true
 
 [node name="XRCamera3D" type="XRCamera3D" parent="SubViewport/XROrigin3D" unique_id=1264047006]
-environment = ExtResource("3_40x3a")
 current = true
 
 [node name="VRCommonShaderCache" parent="SubViewport/XROrigin3D/XRCamera3D" unique_id=480574796 instance=ExtResource("5")]

@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://dtik0q104occg"]
+
+[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme.css" id="1_7htws"]
+[ext_resource type="Script" uid="uid://84vm3ojuip7r" path="res://main/ui/gameover_screen.gd" id="2_qcyic"]
+
+[node name="GameoverPanel" type="Panel" unique_id=1565900216 node_paths=PackedStringArray("label", "menu_button", "restart_button")]
+process_mode = 2
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_7htws")
+script = ExtResource("2_qcyic")
+label = NodePath("VBoxContainer/GameoverLabel")
+menu_button = NodePath("VBoxContainer/MenuButton")
+restart_button = NodePath("VBoxContainer/RestartButton")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1056385446]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+
+[node name="GameoverLabel" type="Label" parent="VBoxContainer" unique_id=1679405526]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Game Over"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MenuButton" type="Button" parent="VBoxContainer" unique_id=1145879621]
+layout_mode = 2
+text = "Main Menu"
+
+[node name="RestartButton" type="Button" parent="VBoxContainer" unique_id=1159729685]
+layout_mode = 2
+text = "Restart"

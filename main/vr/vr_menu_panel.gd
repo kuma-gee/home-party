@@ -19,16 +19,7 @@ enum ButtonType {
 var _button_hover_states := {}
 var _button_materials := {}
 
-func _exit_tree() -> void:
-	if Engine.is_editor_hint():
-		return
-	get_tree().paused = false
-
 func _ready() -> void:
-	if Engine.is_editor_hint():
-		return
-	get_tree().paused = true
-
 	if _button_resume:
 		_button_resume.pointer_event.connect(_on_button_pointer_event.bind(ButtonType.RESUME))
 		_setup_button_visuals(_button_resume)

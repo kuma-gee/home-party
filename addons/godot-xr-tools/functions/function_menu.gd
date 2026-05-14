@@ -17,10 +17,6 @@ signal menu_closed
 @export var fade_duration: float = 0.15
 @export var open_indicator: ColorRect
 
-@export_category("Overlay")
-@export var overlay_alpha := 0.8
-@export var overlay_fade_duration := 0.5
-@export var overlay_mesh: MeshInstance3D
 
 @onready var _menu_anchor: Node3D = $MenuAnchor
 
@@ -50,7 +46,6 @@ func set_menu_enabled(enabled: bool) -> void:
 		close_menu()
 
 func _ready() -> void:
-	_set_overlay_alpha(0.0)
 	_is_holding = false
 	_hold_timer = 0.0
 	
@@ -129,7 +124,6 @@ func _open_menu() -> void:
 	_fade_tween.set_trans(Tween.TRANS_BACK)
 	_fade_tween.set_ease(Tween.EASE_OUT)
 	_fade_tween.tween_property(_menu_instance, "scale", Vector3.ONE * menu_scale, fade_duration)
-	_fade_tween.tween_method(_set_overlay_alpha, 0.0, overlay_alpha, overlay_fade_duration).set_trans(Tween.TRANS_CUBIC)
 	
 	menu_opened.emit(_menu_instance)
 
@@ -150,7 +144,6 @@ func close_menu() -> void:
 	_fade_tween.set_ease(Tween.EASE_IN)
 	_fade_tween.tween_property(_menu_instance, "scale", Vector3(0.01, 0.01, 0.01), fade_duration)
 	_fade_tween.tween_callback(func(): _menu_instance.hide()).set_delay(fade_duration)
-	_fade_tween.tween_method(_set_overlay_alpha, overlay_alpha, 0.0, overlay_fade_duration).set_trans(Tween.TRANS_CUBIC)
 	_fade_tween.finished.connect(_on_menu_close_finished)
 	
 	menu_closed.emit()
@@ -161,14 +154,6 @@ func _on_menu_close_finished() -> void:
 		_menu_instance = null
 	set_pointer(true)
 
-
-func _set_overlay_alpha(alpha: float) -> void:
-	if overlay_mesh:
-		var material := overlay_mesh.get_surface_override_material(0) as ShaderMaterial
-		if material:
-			material.set_shader_parameter("albedo", Color(0, 0, 0, alpha))
-
-		overlay_mesh.visible = alpha > 0.0
 
 func _update_menu_transform() -> void:
 	if not _menu_anchor:

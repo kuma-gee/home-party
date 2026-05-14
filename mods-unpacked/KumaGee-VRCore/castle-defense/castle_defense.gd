@@ -1,11 +1,6 @@
 extends XRToolsSceneBase
 
-@export var menu_button: Button
-@export var restart_button: Button
-@export var gameover_ui: Control
-@export var gameover_label: Label
 @export var gate_hurtbox: HurtBox
-@export var vr_gameover: XRToolsViewport2DIn3D
 
 @onready var play_time: Timer = $PlayTime
 
@@ -14,10 +9,6 @@ var logger := KumaLog.new("CastleDefense")
 func _ready() -> void:
 	play_time.timeout.connect(_on_play_time_timeout)
 	gate_hurtbox.died.connect(_on_gate_died)
-	menu_button.pressed.connect(func(): exit_to_main_menu())
-	restart_button.pressed.connect(func(): reset_scene())
-	gameover_ui.hide()
-	vr_gameover.hide()
 
 func _on_game_start() -> void:
 	get_tree().paused = false
@@ -34,8 +25,5 @@ func _on_play_time_timeout() -> void:
 
 func _finish_game(message: String) -> void:
 	logger.info("Game over: %s" % message)
-	get_tree().paused = true
-	gameover_label.text = message
-	gameover_ui.show()
-	vr_gameover.show()
+	xr_player.gameover(message)
 	play_time.stop()

@@ -105,7 +105,6 @@ func scene_loaded(user_data = null):
 
 	# Center the player on the spawn location
 	center_player_on(spawn_transform)
-	
 	_on_game_start()
 
 func _on_game_start():

@@ -344,8 +344,10 @@ func _process(delta):
 		if time_since_last_update > frame_time:
 			time_since_last_update = 0.0
 			# Trigger update
-			if viewport:
-				get_viewport_node().render_target_update_mode = SubViewport.UPDATE_ONCE
+			
+			var vp = get_viewport_node()
+			if vp:
+				vp.render_target_update_mode = SubViewport.UPDATE_ONCE
 	else:
 		# This is no longer needed
 		set_process(false)
