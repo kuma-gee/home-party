@@ -10,6 +10,7 @@ signal back_to_home()
 @export var overlay_mesh: OverlayMesh
 @export var menu_function: XRToolsFunctionMenu
 @export var gameover_vr_screen: XRToolsViewport2DIn3D
+@export var gameover_desktop_screen: Node3D
 
 var was_paused := false
 
@@ -25,6 +26,7 @@ func _setup_gameover_screen():
 	screen.back_to_menu.connect(func(): back_to_home.emit())
 	screen.restart_game.connect(func(): restart_game.emit())
 	gameover_vr_screen.hide()
+	gameover_desktop_screen.hide()
 
 func _connect_menu(menu: VRMenuPanel):
 	menu.quit_pressed.connect(func(): back_to_home.emit())
@@ -44,6 +46,7 @@ func gameover(msg: String):
 	var screen = gameover_vr_screen.get_scene_instance() as GameoverPanel
 	screen.set_title(msg)
 	gameover_vr_screen.show()
+	gameover_desktop_screen.show()
 
 func activate():
 	origin.current = true

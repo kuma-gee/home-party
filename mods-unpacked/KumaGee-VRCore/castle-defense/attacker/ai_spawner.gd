@@ -72,7 +72,7 @@ func _spawn_agent(scene: PackedScene, i: int, spawn_pos: Vector3, controller: AI
 	var player := scene.instantiate() as FPSPlayer
 	player.player_num = i
 	player.position = spawn_pos
-	get_tree().current_scene.add_child(player)
+	Staging.add_scene_child(player)
 	controller.bind_player(player)
 	return player
 

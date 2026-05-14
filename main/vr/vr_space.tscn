@@ -99,7 +99,27 @@ node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &
 _data = [Vector2(0, 0), 0.0, 3.043883, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[node name="VRSpace" type="Node3D" unique_id=841158329 node_paths=PackedStringArray("origin", "camera", "pause_menu", "overlay_mesh", "menu_function", "gameover_vr_screen")]
+[sub_resource type="QuadMesh" id="QuadMesh_qdapt"]
+resource_local_to_scene = true
+size = Vector2(3, 2)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_icwxr"]
+viewport_path = NodePath("SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2/Viewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lisjs"]
+cull_mode = 2
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_icwxr")
+texture_filter = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_eoj1g"]
+resource_local_to_scene = true
+size = Vector3(3, 2, 0.02)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_tic4c"]
+viewport_path = NodePath("SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2/Viewport")
+
+[node name="VRSpace" type="Node3D" unique_id=841158329 node_paths=PackedStringArray("origin", "camera", "pause_menu", "overlay_mesh", "menu_function", "gameover_vr_screen", "gameover_desktop_screen")]
 process_mode = 3
 script = ExtResource("1_2vxk7")
 origin = NodePath("SubViewport/XRPlayer")
@@ -108,6 +128,7 @@ pause_menu = NodePath("CanvasLayer/PauseMenu")
 overlay_mesh = NodePath("SubViewport/OverlayMesh")
 menu_function = NodePath("SubViewport/XRPlayer/LeftHand/FunctionMenu")
 gameover_vr_screen = NodePath("SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2")
+gameover_desktop_screen = NodePath("DesktopGameover")
 
 [node name="StartXR" parent="." unique_id=1916138429 node_paths=PackedStringArray("viewport") instance=ExtResource("2_ajv2u")]
 process_mode = 3
@@ -345,6 +366,21 @@ scene = ExtResource("18_icwxr")
 viewport_size = Vector2(400, 300)
 transparent = 0
 unshaded = true
+scene_properties_keys = PackedStringArray("gameover_screen.gd")
+
+[node name="Viewport" parent="SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2" index="0" unique_id=434808864]
+transparent_bg = false
+size = Vector2i(400, 300)
+
+[node name="Screen" parent="SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2" index="1" unique_id=1761931612]
+mesh = SubResource("QuadMesh_qdapt")
+surface_material_override/0 = SubResource("StandardMaterial3D_lisjs")
+
+[node name="StaticBody3D" parent="SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2" index="2" unique_id=1882660186]
+viewport_size = Vector2(400, 300)
+
+[node name="CollisionShape3D" parent="SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2/StaticBody3D" index="0" unique_id=507281989]
+shape = SubResource("BoxShape3D_eoj1g")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2119231864]
 
@@ -372,9 +408,16 @@ layout_mode = 2
 layout_mode = 2
 text = "Game Paused"
 
+[node name="DesktopGameover" type="Sprite3D" parent="." unique_id=841672726]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.225494, 0)
+layers = 524288
+billboard = 1
+texture = SubResource("ViewportTexture_tic4c")
+
 [editable path="StartXR"]
 [editable path="SubViewport/XRPlayer/PlayerBody/Body/characterMedium"]
 [editable path="SubViewport/XRPlayer/LeftHand/LeftHand"]
 [editable path="SubViewport/XRPlayer/LeftHand/LeftHand/Hand_Nails_low_L"]
 [editable path="SubViewport/XRPlayer/RightHand/RightHand"]
 [editable path="SubViewport/XRPlayer/RightHand/RightHand/Hand_Nails_low_R"]
+[editable path="SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2"]

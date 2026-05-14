@@ -17,16 +17,6 @@ signal request_quit
 @export var xr_player: VRSpace
 @export var bgm_audio: AudioStream
 
-var escape_timer := 0.0
-
-func _process(delta: float) -> void:
-	if Input.is_key_pressed(Key.KEY_ESCAPE):
-		escape_timer += delta
-		if escape_timer >= 5.0:
-			exit_to_main_menu()
-	else:
-		escape_timer = 0.0
-
 ## This method center the player on the [param p_transform] transform.
 func center_player_on(p_transform : Transform3D):
 	# In order to center our player so the players feet are at the location

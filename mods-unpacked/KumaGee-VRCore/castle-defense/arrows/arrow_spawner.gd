@@ -34,4 +34,4 @@ func _spawn_element_at_mouse(screen_pos: Vector2) -> void:
 
 	var scene = ArrowElement.ELEMENT_SCENE[element].instantiate()
 	scene.position = hit.position
-	get_tree().current_scene.add_child(scene)
+	Staging.add_scene_child(scene)

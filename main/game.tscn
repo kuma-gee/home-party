@@ -1,8 +1,3 @@
 [gd_scene format=3 uid="uid://dfokhnxe3wv3r"]
 
-[ext_resource type="PackedScene" uid="uid://bnqnnnet4dw12" path="res://addons/godot-xr-tools/staging/staging.tscn" id="3_46yon"]
-
 [node name="Game" type="Node" unique_id=421921579]
-
-[node name="Staging" parent="." unique_id=343982823 instance=ExtResource("3_46yon")]
-main_scene = "uid://cne8oxil0b4yy"

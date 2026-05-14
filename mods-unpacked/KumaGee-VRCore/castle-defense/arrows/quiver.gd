@@ -10,6 +10,8 @@ func _ready() -> void:
 	snap_zone.has_picked_up.connect(func(_p): _check_snap_object())
 	snap_zone.tree_exiting.connect(func(): is_exiting = true)
 	snap_zone.has_dropped.connect(func(): _check_snap_object())
+	
+	await get_tree().physics_frame
 	_check_snap_object()
 
 func _check_snap_object():
@@ -24,5 +26,5 @@ func _check_snap_object():
 		return
 	
 	arrow = arrow_scene.instantiate()
-	get_tree().current_scene.add_child(arrow)
+	Staging.add_scene_child(arrow)
 	snap_zone.pick_up_object(arrow)

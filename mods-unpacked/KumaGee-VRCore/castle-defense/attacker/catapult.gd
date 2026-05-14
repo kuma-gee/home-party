@@ -66,7 +66,7 @@ func _fire() -> void:
 	var boulder := boulder_scene.instantiate()
 	boulder.position = launch_pos
 	boulder.power = power
-	get_tree().current_scene.add_child(boulder)
+	Staging.add_scene_child(boulder)
 	boulder.throw_to(gate_target.global_position + Vector3.UP)
 
 func _set_arm_load(p: float) -> void:

@@ -22,4 +22,4 @@ func _spawn_bomb(pos: Vector3) -> void:
 		await get_tree().create_timer(3.0).timeout
 		_spawn_bomb(pos)
 	)
-	get_tree().current_scene.add_child(bomb)
+	Staging.add_scene_child(bomb)

@@ -46,7 +46,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.21975282, 0)
 shape = SubResource("BoxShape3D_r51br")
 
 [node name="CooldownTimer" type="Timer" parent="." unique_id=432873110]
-wait_time = 3.0
 one_shot = true
 
 [node name="Sprite3D" type="Sprite3D" parent="." unique_id=1785271328]

@@ -67,6 +67,17 @@ func _ready():
 	load_scene(main_scene)
 
 
+var escape_timer := 0.0
+
+func _process(delta: float) -> void:
+	if Input.is_key_pressed(Key.KEY_ESCAPE):
+		escape_timer += delta
+		if escape_timer >= 3.0:
+			_on_exit_to_main_menu()
+	else:
+		escape_timer = 0.0
+
+
 # Verifies our staging has a valid configuration.
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings := PackedStringArray()
@@ -88,13 +99,10 @@ func is_xr_class(xr_name:  String) -> bool:
 	return xr_name == "XRToolsStaging"
 
 
-## This function loads the [param p_scene_path] scene file.
-##
-## The [param user_data] parameter contains optional data passed from the old
-## scene to the new scene.
-##
-## See [method XRToolsSceneBase.scene_loaded] for details on how to implement
-## advanced scene-switching.
+func add_scene_child(node: Node):
+	scene.add_child(node)
+
+
 func load_scene(p_scene_path : String, user_data = null) -> void:
 	if Engine.is_editor_hint() or !xr_origin or !xr_camera:
 		return
@@ -143,6 +151,7 @@ func setup_new_scene(p_scene_path : String, user_data):
 	_add_signals(current_scene)
 	BGMManager.start(current_scene.bgm_audio)
 
+	await get_tree().physics_frame
 	get_tree().paused = false
 	current_scene.xr_player.activate()
 	current_scene.scene_loaded(user_data)
@@ -160,8 +169,8 @@ func clean_up_previous_scene(user_data):
 	# Now we remove our scene
 	emit_signal("scene_exiting", current_scene, user_data)
 	current_scene.scene_exiting(user_data)
-	scene.remove_child(current_scene)
-	current_scene.queue_free()
+	for child in scene.get_children():
+		child.queue_free()
 	current_scene = null
 
 func should_show_loading(p_scene_path : String) -> bool:

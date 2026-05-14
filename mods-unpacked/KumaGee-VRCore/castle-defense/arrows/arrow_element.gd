@@ -35,7 +35,7 @@ func activate_effect():
 	if element not in ELEMENT_SCENE: return
 	var scene = ELEMENT_SCENE[element].instantiate()
 	scene.position = global_position
-	get_tree().current_scene.add_child(scene)
+	Staging.add_scene_child(scene)
 	
 func fired():
 	if orb:

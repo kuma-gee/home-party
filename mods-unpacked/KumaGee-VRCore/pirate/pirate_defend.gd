@@ -56,5 +56,5 @@ func _spawn_barrel_at(player: PlayerShootPoint, target: Vector3):
 	barrel.speed_multiplier = player.get_speed_multiplier()
 	barrel.scale *= player.get_scale_multiplier()
 	barrel.picked_up.connect(func(power_up): player.add_power_up(power_up))
-	get_tree().current_scene.add_child(barrel)
+	Staging.add_scene_child(barrel)
 	barrel.throw_to(target)
