@@ -150,6 +150,9 @@ func can_pick_up(by: Node3D) -> bool:
 	if not _grab_driver.primary.pickup or (not by is XRToolsFunctionPickup and not by is XRToolsSnapZone):
 		return false
 
+	if get_tree().paused:
+		return false
+
 	# Allow second hand grab
 	return true
 

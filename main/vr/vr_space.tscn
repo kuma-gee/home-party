@@ -99,20 +99,20 @@ node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &
 _data = [Vector2(0, 0), 0.0, 3.043883, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="QuadMesh" id="QuadMesh_qdapt"]
+[sub_resource type="QuadMesh" id="QuadMesh_ojtvx"]
 resource_local_to_scene = true
 size = Vector2(3, 2)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_icwxr"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_vufdb"]
 viewport_path = NodePath("SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2/Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lisjs"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_83ac8"]
 cull_mode = 2
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_icwxr")
+albedo_texture = SubResource("ViewportTexture_vufdb")
 texture_filter = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_eoj1g"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_ussne"]
 resource_local_to_scene = true
 size = Vector3(3, 2, 0.02)
 
@@ -373,14 +373,14 @@ transparent_bg = false
 size = Vector2i(400, 300)
 
 [node name="Screen" parent="SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2" index="1" unique_id=1761931612]
-mesh = SubResource("QuadMesh_qdapt")
-surface_material_override/0 = SubResource("StandardMaterial3D_lisjs")
+mesh = SubResource("QuadMesh_ojtvx")
+surface_material_override/0 = SubResource("StandardMaterial3D_83ac8")
 
 [node name="StaticBody3D" parent="SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2" index="2" unique_id=1882660186]
 viewport_size = Vector2(400, 300)
 
 [node name="CollisionShape3D" parent="SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2/StaticBody3D" index="0" unique_id=507281989]
-shape = SubResource("BoxShape3D_eoj1g")
+shape = SubResource("BoxShape3D_ussne")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2119231864]
 

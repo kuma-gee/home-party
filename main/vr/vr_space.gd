@@ -37,6 +37,7 @@ func _connect_menu(menu: VRMenuPanel):
 
 func _on_menu_closed():
 	pause_menu.hide()
+	overlay_mesh.hide_overlay()
 	get_tree().paused = was_paused
 
 func gameover(msg: String):

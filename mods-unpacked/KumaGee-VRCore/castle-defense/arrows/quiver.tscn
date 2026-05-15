@@ -9,6 +9,7 @@ radius = 0.3
 height = 0.6872461
 
 [node name="Quiver" type="Node3D" unique_id=832813409 node_paths=PackedStringArray("snap_zone")]
+process_mode = 1
 script = ExtResource("1_1t41b")
 arrow_scene = ExtResource("2_1t41b")
 snap_zone = NodePath("SnapZone")

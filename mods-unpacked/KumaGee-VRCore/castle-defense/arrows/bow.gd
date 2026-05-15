@@ -49,22 +49,24 @@ func _ready() -> void:
 		bow_grip.dropped.connect(_on_grip_dropped)
 		
 	arrow_snap.has_picked_up.connect(_on_arrow_placed)
-	arrow_snap.has_dropped.connect(_on_arrow_dropped)
 	
 	if bow_grip:
-		picked_up.connect(func(_p): bow_grip.enabled = true)
-		dropped.connect(func(_p): bow_grip.enabled = false)
+		picked_up.connect(func(_p):
+			bow_grip.enabled = true
+			bow_grip.show()
+		)
+		dropped.connect(func(_p):
+			bow_grip.enabled = false
+			bow_grip.hide()
+		)
 		bow_grip.enabled = false
+		bow_grip.hide()
 
 	_grip_held = false
 
 func _on_arrow_placed(arrow: XRToolsPickable) -> void:
 	arrow.enabled = false
 	arrow_body = arrow
-	bow_grip.enabled = true
-
-func _on_arrow_dropped() -> void:
-	bow_grip.enabled = false
 
 func _setup_string_visual() -> void:
 	var mat := StandardMaterial3D.new()

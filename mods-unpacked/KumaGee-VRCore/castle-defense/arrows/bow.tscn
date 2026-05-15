@@ -19,7 +19,7 @@ size = Vector3(0.11743164, 0.7138672, 0.15917969)
 render_priority = 0
 shader = ExtResource("4_dmd4i")
 shader_parameter/color = Color(1, 1, 1, 1)
-shader_parameter/outline_size = 1.05
+shader_parameter/outline_size = 1.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vxmn7"]
 resource_name = "weapons"
