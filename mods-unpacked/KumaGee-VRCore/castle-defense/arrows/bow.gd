@@ -26,8 +26,8 @@ extends XRToolsPickable
 
 @onready var shot_sound: AudioStreamPlayer3D = $ShotSound
 @onready var pull_sound: AudioStreamPlayer3D = $PullSound
+@onready var trajectory_mesh: MeshInstance3D = $TrajectoryMesh
 
-var current_element := Arrow.Element.FIRE
 var arrow_body: Arrow
 
 var _grip_held := false
@@ -35,14 +35,10 @@ var _grip_held := false
 var _draw_distance := 0.0
 var _string_seg1: MeshInstance3D
 var _string_seg2: MeshInstance3D
-var _trajectory_mesh: ImmediateMesh
-var _trajectory_instance: MeshInstance3D
-var _trajectory_mat: StandardMaterial3D
 
 func _ready() -> void:
 	super()
 	_setup_string_visual()
-	_setup_trajectory_visual()
 	
 	if bow_grip:
 		bow_grip.picked_up.connect(_on_grip_picked_up)
@@ -177,33 +173,23 @@ func _update_string_visual() -> void:
 	_update_segment(_string_seg1, top_local, nock_local)
 	_update_segment(_string_seg2, nock_local, bottom_local)
 
-func _setup_trajectory_visual() -> void:
-	var mat := StandardMaterial3D.new()
-	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	mat.albedo_color = Color(1.0, 0.9, 0.3, 0.8)
-	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	_trajectory_mat = mat
-	_trajectory_mesh = ImmediateMesh.new()
-	_trajectory_instance = MeshInstance3D.new()
-	_trajectory_instance.mesh = _trajectory_mesh
-	_trajectory_instance.material_override = mat
-	_trajectory_instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	_trajectory_instance.visible = false
-	add_child(_trajectory_instance)
-
 func _update_trajectory() -> void:
-	_trajectory_mesh.clear_surfaces()
-	if _trajectory_mat and current_element in ArrowElement.ELEMENT_COLOR:
-		var c = ArrowElement.ELEMENT_COLOR[current_element]
+	trajectory_mesh.mesh.clear_surfaces()
+	
+	var obj = arrow_snap.picked_up_object
+	if obj and obj is Arrow:
+		var elem = obj.get_element()
+		var c = ArrowElement.ELEMENT_COLOR[elem]
 		c.a = 0.8
-		_trajectory_mat.albedo_color = c
+		trajectory_mesh.material_override.albedo_color = c
+	
 	if not _grip_held or _draw_distance < min_draw \
 			or not is_instance_valid(arrow_pivot) or not is_instance_valid(bow_grip) \
 			or arrow_body == null or not is_instance_valid(arrow_body):
-		_trajectory_instance.visible = false
+		trajectory_mesh.hide()
 		return
-
-	_trajectory_instance.visible = true
+		
+	trajectory_mesh.show()
 
 	var speed := lerpf(5.0, arrow_speed, _draw_distance / max_draw)
 	var dir := bow_grip.global_position.direction_to(arrow_pivot.global_position)
@@ -216,12 +202,12 @@ func _update_trajectory() -> void:
 	var pos := arrow_pivot.global_position
 	const DT := 0.05
 
-	_trajectory_mesh.surface_begin(Mesh.PRIMITIVE_LINE_STRIP)
+	trajectory_mesh.mesh.surface_begin(Mesh.PRIMITIVE_LINE_STRIP)
 	for i in range(40):
-		_trajectory_mesh.surface_add_vertex(to_local(pos))
+		trajectory_mesh.mesh.surface_add_vertex(to_local(pos))
 		velocity += gravity * DT
 		pos += velocity * DT
-	_trajectory_mesh.surface_end()
+	trajectory_mesh.mesh.surface_end()
 
 func _update_segment(mi: MeshInstance3D, a: Vector3, b: Vector3) -> void:
 	var dir := b - a

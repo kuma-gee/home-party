@@ -34,7 +34,7 @@ func spawn_player():
 	player.reached_gate.connect(func(): firepower += 1)
 	player.died.connect(func():
 		alive = false
-		respawn_timer.start()
+		respawn_timer.start(player.respawn_time)
 		player.queue_free()
 	)
 	alive = true

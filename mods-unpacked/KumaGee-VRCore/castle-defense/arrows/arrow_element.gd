@@ -9,7 +9,7 @@ const ELEMENT_SCENE = {
 const ELEMENT_COLOR := {
 	Arrow.Element.FIRE: Color(1.0, 0.4, 0.0),
 	Arrow.Element.ICE: Color(0.3, 0.8, 1.0),
-	Arrow.Element.EARTH: Color(0.4, 0.25, 0.1),
+	Arrow.Element.LIGHTNING: Color(0.9, 0.9, 0.4),
 }
 
 @export var visual: MeshInstance3D

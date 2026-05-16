@@ -4,9 +4,10 @@
 [ext_resource type="PackedScene" uid="uid://cdboulder001" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/attacker/boulder.tscn" id="2_k01xs"]
 [ext_resource type="PackedScene" uid="uid://burfl5ip86htg" path="res://assets/castle-defense/castle/siege-catapult.glb" id="3_sea00"]
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme.css" id="4_7ty7v"]
+[ext_resource type="Shader" uid="uid://cdfjqx6ei5653" path="res://shader/circle_inner.gdshader" id="5_2giw1"]
 
 [sub_resource type="SphereShape3D" id="Shape_OpZone"]
-radius = 2.0
+radius = 1.5
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_r51br"]
 size = Vector3(1.0556641, 0.41629028, 1.125)
@@ -14,9 +15,24 @@ size = Vector3(1.0556641, 0.41629028, 1.125)
 [sub_resource type="ViewportTexture" id="ViewportTexture_7ty7v"]
 viewport_path = NodePath("Sprite3D/SubViewport")
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_2giw1"]
+viewport_path = NodePath("PlayerArea/SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cafwo"]
+shader = ExtResource("5_2giw1")
+shader_parameter/radius = 0.6000000285
+shader_parameter/inner_radius = 0.0
+shader_parameter/fill = 1.0
+shader_parameter/blur = 0.0129999996711
+shader_parameter/bg_color = Color(0, 0, 0, 1)
+shader_parameter/inner_color = Color(0, 0, 0, 0)
+shader_parameter/outline_width = 0.0
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+
 [node name="Catapult" type="Node3D" unique_id=188247881 node_paths=PackedStringArray("boulder_spawn", "catapult_arm", "power_label", "power_sprite") groups=["catapult"]]
 script = ExtResource("1_r51br")
 boulder_scene = ExtResource("2_k01xs")
+charge_time = 4.0
 boulder_spawn = NodePath("siege-catapult2/siege-catapult/catapult/BoulderPosition")
 catapult_arm = NodePath("siege-catapult2/siege-catapult/catapult")
 power_label = NodePath("Sprite3D/SubViewport/CenterContainer/Label")
@@ -70,5 +86,22 @@ theme = ExtResource("4_7ty7v")
 [node name="Label" type="Label" parent="Sprite3D/SubViewport/CenterContainer" unique_id=485012114]
 layout_mode = 2
 text = "10"
+
+[node name="PlayerArea" type="Sprite3D" parent="." unique_id=153527297]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.045348823, 0)
+texture = SubResource("ViewportTexture_2giw1")
+
+[node name="SubViewport" type="SubViewport" parent="PlayerArea" unique_id=1047964041]
+disable_3d = true
+transparent_bg = true
+
+[node name="ColorRect" type="ColorRect" parent="PlayerArea/SubViewport" unique_id=1332498561]
+material = SubResource("ShaderMaterial_cafwo")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.72, 0.972, 1, 0.3137255)
 
 [editable path="siege-catapult2"]

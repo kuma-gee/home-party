@@ -18,7 +18,7 @@ albedo_color = Color(0.15, 0.15, 0.15, 1)
 roughness = 0.6
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_4h28i"]
-radius = 1.0
+radius = 0.76269895
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_4q7qu"]
 radius = 0.4
@@ -26,13 +26,18 @@ radius = 0.4
 [sub_resource type="ViewportTexture" id="ViewportTexture_vljp1"]
 viewport_path = NodePath("Sprite3D/SubViewport")
 
-[node name="Bomb" type="RigidBody3D" unique_id=2006338049 node_paths=PackedStringArray("firepower_label", "power_sprite") groups=["bomb"]]
+[sub_resource type="SphereShape3D" id="SphereShape3D_4a37y"]
+radius = 0.79229516
+
+[node name="Bomb" type="RigidBody3D" unique_id=2006338049 node_paths=PackedStringArray("firepower_label", "power_sprite", "explode_timer") groups=["bomb"]]
 collision_layer = 4
 collision_mask = 196615
 freeze = true
 script = ExtResource("1_p6dde")
+base_damage = 3
 firepower_label = NodePath("Sprite3D/SubViewport/CenterContainer/Label")
 power_sprite = NodePath("Sprite3D")
+explode_timer = NodePath("ExplodeTimer")
 second_hand_grab = 1
 
 [node name="BombShape" type="CollisionShape3D" parent="." unique_id=1788901368]
@@ -48,7 +53,7 @@ surface_material_override/0 = SubResource("Mat_Bomb")
 collision_layer = 0
 collision_mask = 96
 script = ExtResource("3_4h28i")
-damage = 10
+damage = 1000
 hit_on_enter = false
 metadata/_custom_type_script = "uid://cfqyv12dohlh7"
 
@@ -89,3 +94,14 @@ theme = ExtResource("5_4a37y")
 [node name="Label" type="Label" parent="Sprite3D/SubViewport/CenterContainer" unique_id=1428072052]
 layout_mode = 2
 text = "10"
+
+[node name="ExplodeTimer" type="Timer" parent="." unique_id=1854079034]
+wait_time = 8.0
+one_shot = true
+
+[node name="ExplosionHitTrigger" type="Area3D" parent="." unique_id=1029765113]
+collision_layer = 0
+collision_mask = 524292
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ExplosionHitTrigger" unique_id=91467105]
+shape = SubResource("SphereShape3D_4a37y")

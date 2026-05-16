@@ -392,7 +392,7 @@ radius = 0.067832924
 render_priority = 0
 shader = ExtResource("32_vf04h")
 shader_parameter/color = Color(1, 1, 1, 1)
-shader_parameter/outline_size = 1.0999999977648
+shader_parameter/outline_size = 1.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bl5ky"]
 albedo_color = Color(0.5686275, 0.3254902, 0.16470589, 1)
@@ -611,7 +611,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
 collision_layer = 64
 collision_mask = 0
 script = ExtResource("9_hurtbox")
-health = 10
+health = 50
 
 [node name="GateHitShape" type="CollisionShape3D" parent="Castle/Gate/GateHurtBox" unique_id=105378868]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.4626465, 0)
@@ -698,20 +698,20 @@ texture = SubResource("ViewportTexture_d36p2")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.0878992, 9.864026)
 
 [node name="FireOrb" parent="VRSpace/ArrowTypes" unique_id=107013500 instance=ExtResource("5_a14ph")]
-cooldown_time = 0.5
 
 [node name="IceOrb" parent="VRSpace/ArrowTypes" unique_id=1158891516 instance=ExtResource("5_a14ph")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.0003528595, 0)
 element = 2
-cooldown_time = 3.0
+cooldown_time = 2.0
 
-[node name="EarthOrb" parent="VRSpace/ArrowTypes" unique_id=759223450 instance=ExtResource("5_a14ph")]
+[node name="LightningOrb" parent="VRSpace/ArrowTypes" unique_id=759223450 instance=ExtResource("5_a14ph")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, -0.0003528595, 0)
 element = 3
 cooldown_time = 4.0
 
 [node name="BowGrip" parent="VRSpace" unique_id=777328390 instance=ExtResource("6_a14ph")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 3.308353, 8.449216)
+visible = false
 enabled = false
 
 [node name="CollisionShape3D" parent="VRSpace/BowGrip" index="0" unique_id=1198871219]

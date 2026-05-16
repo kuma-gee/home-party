@@ -18,3 +18,8 @@ signal died()
 func hit(dmg = 1):
 	if not enabled: return
 	current_health -= dmg
+
+func invulnerable(duration: float):
+	enabled = false
+	await get_tree().create_timer(duration).timeout
+	enabled = true

@@ -65,7 +65,7 @@ func _get_spawn_origin() -> Vector3:
 
 
 func _connect_died(player: FPSPlayer, i: int) -> void:
-	player.died.connect(func(): _on_agent_died(i))
+	player.died.connect(func(): _on_agent_died(i, player.respawn_time))
 
 
 func _spawn_agent(scene: PackedScene, i: int, spawn_pos: Vector3, controller: AIClientController) -> FPSPlayer:
@@ -77,11 +77,11 @@ func _spawn_agent(scene: PackedScene, i: int, spawn_pos: Vector3, controller: AI
 	return player
 
 
-func _on_agent_died(i: int) -> void:
+func _on_agent_died(i: int, respawn_time: float) -> void:
 	_controllers[i].clear_player()
 	_agents[i].queue_free()
 	_agent_states[i] = _State.DEAD
-	_agent_timers[i] = respawn_delay
+	_agent_timers[i] = respawn_time
 
 
 func _respawn_agent(i: int) -> void:

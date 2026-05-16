@@ -15,6 +15,12 @@ var uuid: String
 
 func _ready():
 	initialize()
+	input_received.connect(func(input, value):
+		if input == "action" and value:
+			primary_action_pressed.emit()
+		elif input == "secondary" and value:
+			secondary_action_pressed.emit()
+	)
 
 func get_move():
 	return inputs["move"] if inputs.has("move") else Vector2.ZERO

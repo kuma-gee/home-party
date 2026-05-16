@@ -1,7 +1,7 @@
 class_name Boulder
 extends CharacterBody3D
 
-@export var base_damage: int = 2
+@export var base_damage: int = 1
 @export var launch_speed: float = 18.0
 @export var gravity: float = 12.0
 @export var high_arc: bool = false

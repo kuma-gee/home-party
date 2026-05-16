@@ -2,7 +2,7 @@
 class_name Arrow
 extends XRToolsPickable
 
-enum Element { NONE, FIRE, ICE, EARTH }
+enum Element { NONE, FIRE, ICE, LIGHTNING }
 
 @export var damage := 1
 
@@ -47,3 +47,6 @@ func _on_hit() -> void:
 	#lifetime_timer.start()
 	element_area.activate_effect()
 	queue_free()
+
+func get_element():
+	return element_area.element
