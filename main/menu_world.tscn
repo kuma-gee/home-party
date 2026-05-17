@@ -92,7 +92,27 @@ nodes/Trigger/node = SubResource("AnimationNodeBlend2_7trad")
 nodes/Trigger/position = Vector2(-360, 40)
 node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_xe5fq"]
+[sub_resource type="QuadMesh" id="QuadMesh_xe5fq"]
+resource_local_to_scene = true
+size = Vector2(3, 2)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_7seay"]
+viewport_path = NodePath("VRSpace/SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2/Viewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g81n3"]
+cull_mode = 2
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_7seay")
+texture_filter = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_i6mv1"]
+resource_local_to_scene = true
+size = Vector3(3, 2, 0.02)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_b2vgm"]
+viewport_path = NodePath("SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2/Viewport")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_8ujs7"]
 viewport_path = NodePath("SubViewport")
 
 [node name="MenuWorld" type="Node3D" unique_id=1335721879 node_paths=PackedStringArray("xr_player")]
@@ -218,6 +238,16 @@ tree_root = SubResource("AnimationNodeBlendTree_3vnjw")
 [node name="MovementTurn" parent="VRSpace/SubViewport/XRPlayer/RightHand" parent_id_path=PackedInt32Array(841158329, 1667605568) index="2" unique_id=1768202485 instance=ExtResource("11_ve3ly")]
 transform = Transform3D(1, 0, 0, 0, 1, -1.6420282e-15, 0, -1.6420284e-15, 1, 0, 0, 0)
 
+[node name="Screen" parent="VRSpace/SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2" parent_id_path=PackedInt32Array(841158329, 553147920) index="1" unique_id=1761931612]
+mesh = SubResource("QuadMesh_xe5fq")
+surface_material_override/0 = SubResource("StandardMaterial3D_g81n3")
+
+[node name="CollisionShape3D" parent="VRSpace/SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2/StaticBody3D" parent_id_path=PackedInt32Array(841158329, 553147920, 1882660186) index="0" unique_id=507281989]
+shape = SubResource("BoxShape3D_i6mv1")
+
+[node name="DesktopGameover" parent="VRSpace" index="3" unique_id=841672726]
+texture = SubResource("ViewportTexture_b2vgm")
+
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1355722313]
 transform = Transform3D(0.7071068, -0.5, 0.49999994, 4.736145e-09, 0.7071067, 0.7071068, -0.70710677, -0.50000006, 0.49999997, 2, 3, -0.5)
 cull_mask = 262143
@@ -235,7 +265,7 @@ item_spacing = 25.0
 
 [node name="GameDetails" parent="GameShelve" unique_id=40414504 instance=ExtResource("11_88bul")]
 transform = Transform3D(-1.2457746e-08, 0, -0.285, 0, 0.285, 0, 0.285, 0, -1.2457746e-08, 1.8626821, 1.0531645, 0)
-texture = SubResource("ViewportTexture_xe5fq")
+texture = SubResource("ViewportTexture_8ujs7")
 
 [node name="GameLoader" type="Node" parent="GameShelve" unique_id=649126648]
 script = ExtResource("10_hi2v3")
@@ -259,4 +289,5 @@ transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.2
 [editable path="VRSpace/SubViewport/XRPlayer/LeftHand/LeftHand/Hand_Nails_low_L"]
 [editable path="VRSpace/SubViewport/XRPlayer/RightHand/RightHand"]
 [editable path="VRSpace/SubViewport/XRPlayer/RightHand/RightHand/Hand_Nails_low_R"]
+[editable path="VRSpace/SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2"]
 [editable path="GameShelve/GameDetails"]

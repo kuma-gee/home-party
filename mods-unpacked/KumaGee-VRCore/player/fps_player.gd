@@ -5,6 +5,7 @@ signal reached_gate()
 signal died()
 
 enum Skill {
+	NONE,
 	DASH,
 	SHIELD,
 }
@@ -16,12 +17,10 @@ enum Skill {
 @export var color_ring: ColorRing
 @export var snap_zone: XRToolsSnapZone
 
-@export_category("Dash")
+@export_category("Skills")
 @export var dash_speed := 8.0
 @export var dash_time := 0.15
-@export var dash_cooldown_timer: Timer
 @export var shield_duration := 1.0
-@export var shield_cooldown_timer: Timer
 
 @export_category("Death")
 @export var min_respawn_time := 3.0
@@ -48,7 +47,8 @@ var firepower := 1
 
 var is_dashing := false
 var is_shielded := false
-var skill = Skill.DASH
+var skill = Skill.NONE
+var skill_cooldown_timer: Timer
 
 func _ready():
 	color_ring.set_color(PlayerList.get_color(player_num))
@@ -61,7 +61,6 @@ func _ready():
 	)
 	snap_zone.has_picked_up.connect(_on_pickup)
 	animation.play(spawn_anim)
-
 	game_client.primary_action_pressed.connect(activate_skill)
 
 func trigger_explosion():
@@ -108,7 +107,6 @@ func _physics_process(delta):
 		if not is_dashing:
 			return
 
-	# handle active dash: keep current velocity and apply gravity until dash ends
 	if is_dashing:
 		ground_spring_cast.apply_gravity(self, delta)
 		move_and_slide()
@@ -166,7 +164,7 @@ func dash() -> void:
 	if direction == Vector2.ZERO:
 		return
 
-	if is_dashing or not dash_cooldown_timer.is_stopped():
+	if is_dashing or not skill_cooldown_timer.is_stopped():
 		return
 
 	is_dashing = true
@@ -180,16 +178,16 @@ func dash() -> void:
 	animation.play(running_anim)
 	await get_tree().create_timer(dash_time).timeout
 
-	dash_cooldown_timer.start()
+	skill_cooldown_timer.start()
 	is_dashing = false
 
 func shield() -> void:
-	if is_spawning or not is_instance_valid(hurtbox) or not shield_cooldown_timer.is_stopped():
+	if is_spawning or not is_instance_valid(hurtbox) or not skill_cooldown_timer.is_stopped():
 		return
 	
 	is_shielded = true
 	hurtbox.invulnerable(shield_duration)
 	await get_tree().create_timer(shield_duration).timeout
 	
-	shield_cooldown_timer.start()
+	skill_cooldown_timer.start()
 	is_shielded = false

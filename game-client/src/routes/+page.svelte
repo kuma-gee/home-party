@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-	import { connectionStore, isConnected, inputLayout, webrtcState, webrtcDataChannelOpen, dataChannelMessage, reconnecting, reconnectAttempts } from '../lib/store';
-	import VirtualJoystick from '../lib/VirtualJoystick.svelte';
+	import { connectionStore, isConnected, inputLayout, webrtcState, webrtcDataChannelOpen, reconnecting, reconnectAttempts } from '../lib/store';
+	import JoystickLayout from '../lib/layouts/JoystickLayout.svelte';
+	import SkillSelectLayout from '../lib/layouts/SkillSelectLayout.svelte';
 
 	let serverIp = $state('');
 	let connecting = $state(false);
@@ -9,16 +10,7 @@
 	let isFullscreen = $state(false);
 	let showFullscreenButton = $state(false);
 	let playerName = $state('');
-	
-	// Track button press state for animations
-	let primaryButtonPressed = $state(false);
-	let secondaryButtonPressed = $state(false);
-	
-	// Track touch identifiers for buttons
-	let primaryButtonTouchId: number | null = null;
-	let secondaryButtonTouchId: number | null = null;
 
-	// Request fullscreen
 	async function requestFullscreen() {
 		try {
 			const elem = document.documentElement;
@@ -39,44 +31,37 @@
 		}
 	}
 
-	// Handle fullscreen change
 	function handleFullscreenChange() {
-		isFullscreen = !!(document.fullscreenElement || 
-			(document as any).webkitFullscreenElement || 
-			(document as any).mozFullScreenElement || 
+		isFullscreen = !!(document.fullscreenElement ||
+			(document as any).webkitFullscreenElement ||
+			(document as any).mozFullScreenElement ||
 			(document as any).msFullscreenElement);
-		
+
 		if (!isFullscreen && $webrtcDataChannelOpen) {
 			showFullscreenButton = true;
 		}
 	}
 
 	onMount(() => {
-		// Get server IP from URL parameters
 		const urlParams = new URLSearchParams(window.location.search);
 		const ipParam = urlParams.get('ip');
 		if (ipParam) {
 			serverIp = ipParam;
-			// Auto-connect if IP is provided in URL
 			handleConnect();
 		} else {
-			// Prefill with current domain/hostname
 			serverIp = window.location.hostname || 'localhost';
 		}
 
-		// Load saved player name from localStorage
 		const savedName = localStorage.getItem('playerName');
 		if (savedName) {
 			playerName = savedName;
 		}
 
-		// Listen for fullscreen changes
 		document.addEventListener('fullscreenchange', handleFullscreenChange);
 		document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
 		document.addEventListener('mozfullscreenchange', handleFullscreenChange);
 		document.addEventListener('MSFullscreenChange', handleFullscreenChange);
 
-		// Try to lock orientation to landscape if supported
 		if (screen.orientation && (screen.orientation as any).lock) {
 			(screen.orientation as any).lock('landscape').catch((err: any) => {
 				console.log('Orientation lock not supported or failed:', err);
@@ -86,8 +71,7 @@
 
 	onDestroy(() => {
 		connectionStore.disconnect();
-		
-		// Remove fullscreen listeners
+
 		document.removeEventListener('fullscreenchange', handleFullscreenChange);
 		document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
 		document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
@@ -109,11 +93,8 @@
 		errorMessage = '';
 
 		try {
-			// Save player name to localStorage
 			localStorage.setItem('playerName', playerName.trim());
-			
 			await connectionStore.connect(serverIp, playerName.trim());
-			// Try to enter fullscreen after successful connection
 			await requestFullscreen();
 		} catch (error) {
 			errorMessage = 'Failed to connect to server';
@@ -127,81 +108,6 @@
 		connectionStore.disconnect();
 		errorMessage = '';
 	}
-
-	function sendButtonInput(input: string, pressed: boolean) {
-		connectionStore.sendInput(input, pressed);
-	}
-
-	// Touch event handlers for action buttons
-	function handleActionButtonTouchStart(event: TouchEvent, action: 'primary' | 'secondary') {
-		event.preventDefault();
-		const touch = event.changedTouches[0];
-		
-		if (action === 'primary' && primaryButtonTouchId === null) {
-			primaryButtonTouchId = touch.identifier;
-			primaryButtonPressed = true;
-			sendButtonInput('action', true);
-			console.log('Primary button down (touch)');
-		} else if (action === 'secondary' && secondaryButtonTouchId === null) {
-			secondaryButtonTouchId = touch.identifier;
-			secondaryButtonPressed = true;
-			sendButtonInput('secondary', true);
-			console.log('Secondary button down (touch)');
-		}
-	}
-
-	function handleActionButtonTouchEnd(event: TouchEvent, action: 'primary' | 'secondary') {
-		event.preventDefault();
-		
-		// Check if any of the ended touches match our tracked touch
-		for (let i = 0; i < event.changedTouches.length; i++) {
-			const touch = event.changedTouches[i];
-			
-			if (action === 'primary' && touch.identifier === primaryButtonTouchId) {
-				primaryButtonTouchId = null;
-				primaryButtonPressed = false;
-				sendButtonInput('action', false);
-				console.log('Primary button up (touch)');
-			} else if (action === 'secondary' && touch.identifier === secondaryButtonTouchId) {
-				secondaryButtonTouchId = null;
-				secondaryButtonPressed = false;
-				sendButtonInput('secondary', false);
-				console.log('Secondary button up (touch)');
-			}
-		}
-	}
-
-	// Mouse event handlers for action buttons (desktop testing)
-	function handleActionButtonMouseDown(action: 'primary' | 'secondary') {
-		if (action === 'primary') {
-			primaryButtonPressed = true;
-			sendButtonInput('action', true);
-			console.log('Primary button down (mouse)');
-		} else {
-			secondaryButtonPressed = true;
-			sendButtonInput('secondary', true);
-			console.log('Secondary button down (mouse)');
-		}
-	}
-
-	function handleActionButtonMouseUp(action: 'primary' | 'secondary') {
-		if (action === 'primary') {
-			primaryButtonPressed = false;
-			sendButtonInput('action', false);
-			console.log('Primary button up (mouse)');
-		} else {
-			secondaryButtonPressed = false;
-			sendButtonInput('secondary', false);
-			console.log('Secondary button up (mouse)');
-		}
-	}
-
-	function handleJoystickMove(vector: { x: number; y: number }) {
-		connectionStore.sendMove('move', vector);
-        console.log('Joystick move', vector);
-	}
-
-    
 </script>
 
 <div class="container">
@@ -249,7 +155,6 @@
 		</div>
 	{:else}
 		{#if $webrtcDataChannelOpen}
-			<!-- Connection Status Badge -->
 			<div class="status-corner">
 				<div class="status-indicator connected">
 					<span class="status-dot"></span>
@@ -261,48 +166,12 @@
 				{/if}
 			</div>
 
-			<!-- Game Controls -->
-			<div class="game-controls">
-				<!-- Joystick (Bottom Left) -->
-				<div class="joystick-container-wrapper">
-					<VirtualJoystick inputMode={$inputLayout} onmove={(e) => handleJoystickMove(e.detail)} />
-				</div>
-
-				<!-- Message Display (Center) -->
-				{#if $dataChannelMessage}
-					<div class="message-display">
-						<p>{$dataChannelMessage}</p>
-					</div>
-				{/if}
-
-				<!-- Action Buttons (Bottom Right) -->
-				<div class="action-buttons">
-					<button 
-						class="action-btn secondary-btn"
-						class:pressed={secondaryButtonPressed}
-						onmousedown={() => handleActionButtonMouseDown('secondary')}
-						onmouseup={() => handleActionButtonMouseUp('secondary')}
-						ontouchstart={(e) => handleActionButtonTouchStart(e, 'secondary')}
-						ontouchend={(e) => handleActionButtonTouchEnd(e, 'secondary')}
-						ontouchcancel={(e) => handleActionButtonTouchEnd(e, 'secondary')}
-					>
-						B
-					</button>
-					<button 
-						class="action-btn primary-btn"
-						class:pressed={primaryButtonPressed}
-						onmousedown={() => handleActionButtonMouseDown('primary')}
-						onmouseup={() => handleActionButtonMouseUp('primary')}
-						ontouchstart={(e) => handleActionButtonTouchStart(e, 'primary')}
-						ontouchend={(e) => handleActionButtonTouchEnd(e, 'primary')}
-						ontouchcancel={(e) => handleActionButtonTouchEnd(e, 'primary')}
-					>
-						A
-					</button>
-				</div>
-			</div>
+			{#if $inputLayout === 'skill_select'}
+				<SkillSelectLayout />
+			{:else}
+				<JoystickLayout inputLayout={$inputLayout} />
+			{/if}
 		{:else}
-			<!-- Connecting Status Screen -->
 			<div class="connecting-screen">
 				<div class="connecting-content">
 					<div class="spinner"></div>
@@ -350,7 +219,6 @@
 		margin-bottom: 1rem;
 	}
 
-	/* Connection Form Styles */
 	.connection-form {
 		max-width: 400px;
 		margin: 2rem auto;
@@ -421,7 +289,6 @@
 		text-align: center;
 	}
 
-	/* Connecting Screen */
 	.connecting-screen {
 		position: fixed;
 		top: 0;
@@ -534,24 +401,6 @@
 		background-color: #da190b;
 	}
 
-	/* Game Controls - Full Screen Layout */
-	.game-controls {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100vw;
-		height: 100vh;
-		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-		display: flex;
-		align-items: flex-end;
-		justify-content: space-between;
-		padding: 2rem;
-		box-sizing: border-box;
-		touch-action: none;
-		user-select: none;
-	}
-
-	/* Status Corner Badge */
 	.status-corner {
 		position: fixed;
 		top: 1rem;
@@ -588,12 +437,8 @@
 	}
 
 	@keyframes pulse {
-		0%, 100% {
-			opacity: 1;
-		}
-		50% {
-			opacity: 0.5;
-		}
+		0%, 100% { opacity: 1; }
+		50% { opacity: 0.5; }
 	}
 
 	.disconnect-icon {
@@ -634,167 +479,6 @@
 		transform: scale(1.1);
 	}
 
-	/* Joystick Container */
-	.joystick-container-wrapper {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding: 1rem;
-	}
-
-	/* Action Buttons */
-	.action-buttons {
-		display: flex;
-		gap: 1.5rem;
-		align-items: center;
-	}
-
-	.action-btn {
-		width: 80px;
-		height: 80px;
-		border-radius: 50%;
-		border: 4px solid rgba(255, 255, 255, 0.3);
-		font-size: 2rem;
-		font-weight: 700;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-		transition: all 0.15s ease;
-		touch-action: none;
-		user-select: none;
-		-webkit-tap-highlight-color: transparent;
-	}
-
-	.action-btn.pressed {
-		transform: scale(0.9);
-		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-		filter: brightness(1.2);
-	}
-
-	.action-btn:active {
-		transform: scale(0.9);
-		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-	}
-
-	.primary-btn {
-		background: linear-gradient(135deg, #FF6B6B 0%, #EE5A6F 100%);
-		width: 90px;
-		height: 90px;
-	}
-
-	.secondary-btn {
-		background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);
-	}
-
-	/* Message Display */
-	.message-display {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		background: rgba(0, 0, 0, 0.8);
-		backdrop-filter: blur(10px);
-		color: white;
-		padding: 1.5rem 2rem;
-		border-radius: 20px;
-		max-width: 80vw;
-		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-		text-align: center;
-		animation: fadeIn 0.3s ease-in;
-		z-index: 50;
-	}
-
-	.message-display p {
-		margin: 0;
-		font-size: 1.25rem;
-		font-weight: 500;
-		line-height: 1.5;
-	}
-
-	@keyframes fadeIn {
-		from {
-			opacity: 0;
-			transform: translate(-50%, -40%);
-		}
-		to {
-			opacity: 1;
-			transform: translate(-50%, -50%);
-		}
-	}
-
-	/* Mobile Optimizations */
-	@media (max-width: 768px), (max-height: 450px) {
-		.game-controls {
-			padding: 1.5rem;
-		}
-
-		.action-btn {
-			width: 70px;
-			height: 70px;
-			font-size: 1.75rem;
-		}
-
-		.primary-btn {
-			width: 80px;
-			height: 80px;
-		}
-
-		.status-corner {
-			top: 0.75rem;
-			right: 0.75rem;
-		}
-
-		.status-text {
-			display: none;
-		}
-
-		.status-indicator {
-			padding: 0.5rem;
-		}
-	}
-
-	/* Landscape mode optimizations */
-	@media (orientation: landscape) and (max-height: 500px) {
-		.game-controls {
-			padding: 1rem 2rem;
-		}
-
-		.action-btn {
-			width: 65px;
-			height: 65px;
-			font-size: 1.5rem;
-		}
-
-		.primary-btn {
-			width: 75px;
-			height: 75px;
-		}
-
-		.status-corner {
-			top: 0.5rem;
-			right: 0.5rem;
-		}
-	}
-
-	@media (max-height: 600px) {
-		.game-controls {
-			padding: 1rem;
-		}
-
-		.action-btn {
-			width: 60px;
-			height: 60px;
-			font-size: 1.5rem;
-		}
-
-		.primary-btn {
-			width: 70px;
-			height: 70px;
-		}
-	}
-
-	/* Reconnect Indicator Styles */
 	.reconnect-indicator {
 		display: flex;
 		align-items: center;
@@ -828,5 +512,27 @@
 		font-size: 1rem;
 		font-weight: 600;
 		margin: -0.5rem 0 1.5rem;
+	}
+
+	@media (max-width: 768px), (max-height: 450px) {
+		.status-corner {
+			top: 0.75rem;
+			right: 0.75rem;
+		}
+
+		.status-text {
+			display: none;
+		}
+
+		.status-indicator {
+			padding: 0.5rem;
+		}
+	}
+
+	@media (orientation: landscape) and (max-height: 500px) {
+		.status-corner {
+			top: 0.5rem;
+			right: 0.5rem;
+		}
 	}
 </style>

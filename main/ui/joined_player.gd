@@ -1,12 +1,19 @@
 class_name JoinedPlayer
 extends Control
 
+signal ready_updated()
+
 @export var container: Control
 @export var name_label: Label
 @export var max_length: int = 20
 @export var color_rect: ColorRect
 @export var icon: MaterialIcon
 
+var is_ready := false:
+	set(v):
+		is_ready = v
+		ready_updated.emit()
+	
 var uuid: String
 var player_name: String:
 	set(v):
@@ -25,6 +32,12 @@ var game_client: GameClient
 func _ready() -> void:
 	container.position.x = -container.custom_minimum_size.x
 	size.x = 0
+
+func set_ready():
+	is_ready = true
+
+func reset_ready():
+	is_ready = false
 
 func update_data(data: Dictionary):
 	uuid = data.client_id

@@ -43,6 +43,7 @@ func fired():
 	is_fired = true
 
 static func get_element_color(elem: Arrow.Element) -> Color:
+	if elem in ELEMENT_COLOR: return Color.WHITE
 	return ELEMENT_COLOR[elem] as Color
 
 static func update_visual(mesh: MeshInstance3D, elem: Arrow.Element) -> void:

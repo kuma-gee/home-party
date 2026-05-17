@@ -1,7 +1,5 @@
 extends Area3D
 
-signal hit()
-
 @export var damage := 1
 
 func _ready() -> void:

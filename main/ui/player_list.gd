@@ -1,6 +1,8 @@
 class_name PlayerList
 extends VBoxContainer
 
+signal ready_changed()
+
 const COLORS = [
 	Color(1, 0, 0, 1),
 	Color(0.10830901, 0.44832176, 0.90811163, 1),
@@ -16,7 +18,7 @@ static func get_color(idx: int) -> Color:
 	return COLORS[idx % COLORS.size()]
 
 @export var player_scene: PackedScene
-@export var initial_delay := 2.0
+@export var initial_delay := 1.0
 @export var create_delay := 0.1
 
 func _ready() -> void:
@@ -34,6 +36,7 @@ func _on_update_players_list(players: Array) -> void:
 			existing.update_data(player_data)
 		else:
 			var new_node = player_scene.instantiate() as JoinedPlayer
+			new_node.ready_updated.connect(func(): ready_changed.emit())
 			new_node.update_data(player_data)
 			add_child(new_node)
 			new_node.move_in()
@@ -50,3 +53,17 @@ func _find_existing_node(uuid: String):
 		if child is JoinedPlayer and child.uuid == uuid:
 			return child
 	return null
+
+func is_all_ready():
+	return get_ready_count() == get_player_count()
+
+func get_player_count():
+	return PlayerManager.playing_clients.size()
+
+func get_ready_count():
+	var count = 0
+	for child in get_children():
+		if child is JoinedPlayer:
+			if child.is_ready:
+				count += 1
+	return count

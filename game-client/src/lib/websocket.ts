@@ -80,7 +80,7 @@ export interface IceCandidateMessage extends Message {
 
 export interface InputLayoutMessage extends Message {
   msg: MessageType.InputLayout;
-  layout: "joystick" | "buttons";
+  layout: "joystick" | "buttons" | "skill_select";
 }
 
 export class WebSocketClient {
@@ -99,7 +99,7 @@ export class WebSocketClient {
   onError?: (error: Event) => void;
   onMessage?: (message: Message) => void;
   onIdReceived?: (id: number) => void;
-  onInputLayoutReceived?: (layout: "joystick" | "buttons") => void;
+  onInputLayoutReceived?: (layout: "joystick" | "buttons" | "skill_select") => void;
   onWebRTCStateChange?: (state: RTCPeerConnectionState) => void;
   onWebRTCDataChannelOpen?: () => void;
   onDataChannelMessage?: (data: string) => void;
@@ -227,7 +227,7 @@ export class WebSocketClient {
         break;
       case MessageType.InputLayout:
         const inputLayoutMsg = message as InputLayoutMessage;
-        if (inputLayoutMsg.layout === "joystick" || inputLayoutMsg.layout === "buttons") {
+        if (inputLayoutMsg.layout === "joystick" || inputLayoutMsg.layout === "buttons" || inputLayoutMsg.layout === "skill_select") {
           this.onInputLayoutReceived?.(inputLayoutMsg.layout);
         }
         break;

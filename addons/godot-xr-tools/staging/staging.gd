@@ -1,31 +1,6 @@
 class_name XRToolsStaging
 extends Node3D
 
-
-## XR Tools Staging Class
-##
-## When creating a game with multiple levels where you want to
-## make use of background loading and have some nice structure
-## in place, the Staging scene can be used as a base to handle
-## all the startup and scene switching code.
-## Just inherit this scene, set it up and make the resulting
-## scene your startup scene.
-##
-## As different XR runtimes need slightly different setups you'll
-## need to add the appropriate ARVROrigin setup to your scene.
-## When using the OpenXR plugin this is as simple as adding the
-## FPController script as a child node.
-##
-## Furthermore this scene has our loading screen and an anchor
-## point into which we load the actual scene we wish the user
-## to interact with. You can configure the first scene to load
-## and kick off your game by setting the Main Scene property.
-##
-## If you are creating a game with a single level you may wish to
-## simplify things. Check out the demo included in the source
-## repository for the OpenXR plugin and then use the techniques
-## explained in individual demos found here.
-
 signal scene_exiting(scene, user_data)
 signal switching_to_loading_scene()
 signal scene_loaded(scene, user_data)
@@ -55,17 +30,13 @@ var current_scene_path : String
 var _tween : Tween
 
 func _ready():
-	# Do not initialise if in the editor
 	if Engine.is_editor_hint():
 		return
 
-	# Specify the camera to track
 	if xr_camera:
 		loading.set_camera(xr_camera)
 
-	# We start by loading our main level scene
 	load_scene(main_scene)
-
 
 var escape_timer := 0.0
 

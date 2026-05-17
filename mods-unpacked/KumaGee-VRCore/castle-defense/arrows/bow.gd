@@ -176,19 +176,19 @@ func _update_string_visual() -> void:
 func _update_trajectory() -> void:
 	trajectory_mesh.mesh.clear_surfaces()
 	
-	var obj = arrow_snap.picked_up_object
-	if obj and obj is Arrow:
-		var elem = obj.get_element()
-		var c = ArrowElement.ELEMENT_COLOR[elem]
-		c.a = 0.8
-		trajectory_mesh.material_override.albedo_color = c
-	
 	if not _grip_held or _draw_distance < min_draw \
 			or not is_instance_valid(arrow_pivot) or not is_instance_valid(bow_grip) \
 			or arrow_body == null or not is_instance_valid(arrow_body):
 		trajectory_mesh.hide()
 		return
-		
+	
+	var obj = arrow_snap.picked_up_object
+	if obj and obj is Arrow:
+		var elem = obj.get_element()
+		var c = ArrowElement.get_element_color(elem)
+		c.a = 0.8
+		trajectory_mesh.material_override.albedo_color = c
+	
 	trajectory_mesh.show()
 
 	var speed := lerpf(5.0, arrow_speed, _draw_distance / max_draw)
@@ -211,8 +211,8 @@ func _update_trajectory() -> void:
 
 func _update_segment(mi: MeshInstance3D, a: Vector3, b: Vector3) -> void:
 	var dir := b - a
-	var len := dir.length()
-	if len < 0.001:
+	var length := dir.length()
+	if length < 0.001:
 		mi.visible = false
 		return
 	mi.visible = true
@@ -223,11 +223,11 @@ func _update_segment(mi: MeshInstance3D, a: Vector3, b: Vector3) -> void:
 		up = Vector3.FORWARD
 	var x := up.cross(y).normalized()
 	var z := y.cross(x).normalized()
-	var basis := Basis(x, y, z)
-	var t := Transform3D(basis, center)
+	var bas := Basis(x, y, z)
+	var t := Transform3D(bas, center)
 	mi.transform = t
 	var cyl := mi.mesh as CylinderMesh
 	if cyl:
-		cyl.height = len
+		cyl.height = length
 		cyl.top_radius = string_thickness
 		cyl.bottom_radius = string_thickness

@@ -18,7 +18,7 @@ var do_jump := false
 func _ready() -> void:
 	target_position = target_position.normalized() * ride_height
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if not is_colliding():
 		do_jump = false
 	

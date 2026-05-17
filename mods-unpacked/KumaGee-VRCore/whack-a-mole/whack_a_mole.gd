@@ -1,5 +1,5 @@
-#extends Node3D
-#
+extends Node3D
+
 #@export var score: Label
 #@export var whack_spawn: Node3D
 #@export var reset_whack_button: XRToolsInteractableAreaButton

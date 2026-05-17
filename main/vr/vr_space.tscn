@@ -119,7 +119,7 @@ size = Vector3(3, 2, 0.02)
 [sub_resource type="ViewportTexture" id="ViewportTexture_tic4c"]
 viewport_path = NodePath("SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2/Viewport")
 
-[node name="VRSpace" type="Node3D" unique_id=841158329 node_paths=PackedStringArray("origin", "camera", "pause_menu", "overlay_mesh", "menu_function", "gameover_vr_screen", "gameover_desktop_screen")]
+[node name="VRSpace" type="Node3D" unique_id=841158329 node_paths=PackedStringArray("origin", "camera", "pause_menu", "overlay_mesh", "menu_function", "vr_screen", "desktop_screen")]
 process_mode = 3
 script = ExtResource("1_2vxk7")
 origin = NodePath("SubViewport/XRPlayer")
@@ -127,8 +127,9 @@ camera = NodePath("SubViewport/XRPlayer/XRCamera3D")
 pause_menu = NodePath("CanvasLayer/PauseMenu")
 overlay_mesh = NodePath("SubViewport/OverlayMesh")
 menu_function = NodePath("SubViewport/XRPlayer/LeftHand/FunctionMenu")
-gameover_vr_screen = NodePath("SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2")
-gameover_desktop_screen = NodePath("DesktopGameover")
+vr_screen = NodePath("SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2")
+desktop_screen = NodePath("DesktopGameover")
+gameover_scene = ExtResource("18_icwxr")
 
 [node name="StartXR" parent="." unique_id=1916138429 node_paths=PackedStringArray("viewport") instance=ExtResource("2_ajv2u")]
 process_mode = 3
@@ -362,11 +363,9 @@ metadata/_custom_type_script = "uid://cjk3gsrbfomdh"
 
 [node name="Viewport2Din3D2" parent="SubViewport/XRPlayer/CameraFollow3D" unique_id=553147920 instance=ExtResource("15_f1ooe")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.5)
-scene = ExtResource("18_icwxr")
 viewport_size = Vector2(400, 300)
 transparent = 0
 unshaded = true
-scene_properties_keys = PackedStringArray("gameover_screen.gd")
 
 [node name="Viewport" parent="SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2" index="0" unique_id=434808864]
 transparent_bg = false
@@ -385,6 +384,7 @@ shape = SubResource("BoxShape3D_ussne")
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2119231864]
 
 [node name="PauseMenu" type="ColorRect" parent="CanvasLayer" unique_id=856227726]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

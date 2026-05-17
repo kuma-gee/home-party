@@ -6,7 +6,7 @@ export interface ConnectionState {
 	peerId: number | null;
 	serverIp: string | null;
 	error: string | null;
-	inputLayout: 'joystick' | 'buttons';
+	inputLayout: 'joystick' | 'buttons' | 'skill_select';
 	webrtcState: RTCPeerConnectionState | null;
 	webrtcDataChannelOpen: boolean;
 	dataChannelMessage: string | null;
@@ -63,7 +63,7 @@ function createConnectionStore() {
 				update(state => ({ ...state, peerId: id }));
 			};
 
-			client.onInputLayoutReceived = (layout: 'joystick' | 'buttons') => {
+			client.onInputLayoutReceived = (layout: 'joystick' | 'buttons' | 'skill_select') => {
 				update(state => ({ ...state, inputLayout: layout }));
 			};
 

@@ -5,13 +5,16 @@ extends Node3D
 
 var arrow: Node3D
 var is_exiting := false
+var initialized := false
 
 func _ready() -> void:
 	snap_zone.has_picked_up.connect(func(_p): _check_snap_object())
 	snap_zone.tree_exiting.connect(func(): is_exiting = true)
 	snap_zone.has_dropped.connect(func(): _check_snap_object())
-	
-	await get_tree().physics_frame
+
+func _process(_delta: float) -> void:
+	if initialized: return
+	initialized = true
 	_check_snap_object()
 
 func _check_snap_object():

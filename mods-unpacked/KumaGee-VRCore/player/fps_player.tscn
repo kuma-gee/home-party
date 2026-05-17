@@ -18,7 +18,7 @@ height = 0.9785156
 [sub_resource type="ViewportTexture" id="ViewportTexture_3dsh6"]
 viewport_path = NodePath("ColorRing/SubViewport")
 
-[node name="FPSPlayer" type="CharacterBody3D" unique_id=1756570454 node_paths=PackedStringArray("body", "color_ring", "snap_zone", "dash_cooldown_timer", "shield_cooldown_timer", "animation") groups=["resetable"]]
+[node name="FPSPlayer" type="CharacterBody3D" unique_id=1756570454 node_paths=PackedStringArray("body", "color_ring", "snap_zone", "animation") groups=["resetable"]]
 collision_layer = 524288
 collision_mask = 3
 script = ExtResource("1_krq8x")
@@ -27,8 +27,6 @@ push_force = 1.0
 body = NodePath("CollisionShape3D")
 color_ring = NodePath("ColorRing")
 snap_zone = NodePath("CollisionShape3D/SnapZone")
-dash_cooldown_timer = NodePath("DashTimer")
-shield_cooldown_timer = NodePath("ShieldTimer")
 animation = NodePath("CollisionShape3D/skeleton/AnimationPlayer")
 
 [node name="Hurtbox" type="Area3D" parent="." unique_id=1131967096]
@@ -73,14 +71,6 @@ pitch_scale = 1.5
 one_shot = true
 
 [node name="SlowRestoreTimer" type="Timer" parent="." unique_id=2025719972]
-one_shot = true
-
-[node name="DashTimer" type="Timer" parent="." unique_id=2019318553]
-wait_time = 3.0
-one_shot = true
-
-[node name="ShieldTimer" type="Timer" parent="." unique_id=1055849142]
-wait_time = 5.0
 one_shot = true
 
 [editable path="CollisionShape3D/skeleton"]

@@ -1,19 +1,46 @@
 extends XRToolsSceneBase
 
 @export var gate_hurtbox: HurtBox
+@export var element_select_scene: PackedScene
+@export var player_list: PlayerList
+@export var skill_select: Control
+@export var skill_label: Label
 
 @onready var play_time: Timer = $PlayTime
 
 var logger := KumaLog.new("CastleDefense")
 
+var _element_select: ElementSelect
+var _vr_ready := false
+var _vr_element: Arrow.Element = Arrow.Element.FIRE
+
 func _ready() -> void:
 	play_time.timeout.connect(_on_play_time_timeout)
 	gate_hurtbox.died.connect(_on_gate_died)
+	player_list.ready_changed.connect(_check_all_ready)
 
 func _on_game_start() -> void:
-	get_tree().paused = false
-	LobbyServer.send_layout("joystick")
+	LobbyServer.send_layout("skill_select")
+	_element_select = xr_player.show_screen(element_select_scene) as ElementSelect
+	_element_select.ready_pressed.connect(_on_vr_ready)
+	_check_all_ready()
+	skill_select.show()
 
+func _on_vr_ready(element: Arrow.Element) -> void:
+	_vr_ready = true
+	_vr_element = element
+	print("VR ready, starting game")
+	_start_game()
+
+func _check_all_ready() -> void:
+	if is_instance_valid(_element_select):
+		_element_select.update_ready(player_list.get_ready_count(), player_list.get_player_count())
+	skill_label.text = "Select your skill (%s/%s)" % [player_list.get_ready_count(), player_list.get_player_count()]
+
+func _start_game() -> void:
+	LobbyServer.send_layout("joystick")
+	xr_player.hide_screen()
+	skill_select.hide()
 	play_time.start()
 	logger.info("Game started — %.0f seconds to survive" % play_time.wait_time)
 
