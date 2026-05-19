@@ -2,7 +2,6 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { connectionStore, isConnected, inputLayout, webrtcState, webrtcDataChannelOpen, reconnecting, reconnectAttempts } from '../lib/store';
 	import JoystickLayout from '../lib/layouts/JoystickLayout.svelte';
-	import SkillSelectLayout from '../lib/layouts/SkillSelectLayout.svelte';
 
 	let serverIp = $state('');
 	let connecting = $state(false);
@@ -166,11 +165,7 @@
 				{/if}
 			</div>
 
-			{#if $inputLayout === 'skill_select'}
-				<SkillSelectLayout />
-			{:else}
-				<JoystickLayout inputLayout={$inputLayout} />
-			{/if}
+			<JoystickLayout inputLayout={$inputLayout} />
 		{:else}
 			<div class="connecting-screen">
 				<div class="connecting-content">

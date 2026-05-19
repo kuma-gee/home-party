@@ -2,7 +2,6 @@ extends Node
 
 signal player_connected(data: Dictionary)
 signal player_disconnected(client_id: String)
-signal updated_players_list(players: Array)
 
 signal received_candidate(client_id: String, mid: String, index: int, sdp: String)
 signal received_session(client_id: String, type: String, sdp: String)
@@ -17,7 +16,6 @@ enum Message {
 const PORT = 14412
 @export_enum("joystick", "buttons") var input_layout: String = "joystick"
 
-var players = {}  # Dictionary[String, Dictionary] - UUID -> player data
 var peer_to_uuid = {}  # Dictionary[int, String] - peer_id -> UUID mapping for WebRTC
 var socket = WebSocketMultiplayerPeer.new()
 var logger = KumaLog.new("LobbyServer")
@@ -55,10 +53,6 @@ func _peer_connected(id: int):
 func _peer_disconnected(id: int):
 	logger.info("Peer disconnected: %d" % id)
 	var uuid = peer_to_uuid.get(id, "")
-	if uuid != "":
-		players.erase(uuid)
-		update_players_list()
-		
 	player_disconnected.emit(uuid)
 	peer_to_uuid.erase(id)
 
@@ -105,25 +99,7 @@ func _on_id_message(data: Dictionary):
 		return
 	
 	peer_to_uuid[peer_id] = uuid
-	players[uuid] = data
 	player_connected.emit(data)
-	update_players_list()
-
-func get_player_idx(uuid: String) -> int:
-	var data = players.get(uuid, null)
-	if data == null:
-		logger.error("get_player_idx: No player data found for UUID %s" % uuid)
-		return -1
-	return data.number
-
-func update_players_list():
-	var players_list = []
-	for uuid in players.keys():
-		var player_data = players[uuid]
-		players_list.append(player_data)
-	
-	logger.info("Update players: %s" % [players.keys()])
-	updated_players_list.emit(players_list)
 
 func get_peer_id_from_uuid(uuid: String) -> int:
 	for peer_id in peer_to_uuid.keys():
@@ -145,6 +121,3 @@ func send_candidate(client_id: String, mid, index, sdp):
 		"index": index,
 		"sdp": sdp,
 	})
-
-func get_player_data(uuid: String) -> Dictionary:
-	return players.get(uuid, {})

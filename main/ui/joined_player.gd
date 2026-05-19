@@ -6,8 +6,7 @@ signal ready_updated()
 @export var container: Control
 @export var name_label: Label
 @export var max_length: int = 20
-@export var color_rect: ColorRect
-@export var icon: MaterialIcon
+@export var player_icon: PlayerIcon
 
 var is_ready := false:
 	set(v):
@@ -27,7 +26,7 @@ var player_name: String:
 @onready var in_pos := 0
 
 var tw: Tween
-var game_client: GameClient
+var game_client: ClientController
 
 func _ready() -> void:
 	container.position.x = -container.custom_minimum_size.x
@@ -41,13 +40,12 @@ func reset_ready():
 
 func update_data(data: Dictionary):
 	uuid = data.client_id
-	game_client = PlayerManager.find_player(uuid)
-	player_name = data.name.substr(0, max_length) # TODO: limit on client side
+	game_client = PlayerManager.find_player_by_uuid(uuid)
+	player_name = data.name.substr(0, max_length)
 	if data.name.length() > max_length:
 		player_name += "..."
 	
-	color_rect.color = PlayerList.get_color(data.number)
-	icon.code = data.icon
+	player_icon.update(data)
 
 func move_in():
 	if tw:

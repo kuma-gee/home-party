@@ -115,6 +115,7 @@ When a feature request arrives, follow this process:
    - Identify dependencies and sequence requirements
    - Define interfaces between components
    - Consider edge cases and error scenarios
+   - Ask the user for confirmations and if any changes are needed
 
 3. **Delegate & Coordinate**
    - Invoke appropriate subagents with clear, detailed prompts

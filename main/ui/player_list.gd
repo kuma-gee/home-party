@@ -1,6 +1,7 @@
 class_name PlayerList
 extends VBoxContainer
 
+signal list_ready()
 signal ready_changed()
 
 const COLORS = [
@@ -22,16 +23,20 @@ static func get_color(idx: int) -> Color:
 @export var create_delay := 0.1
 
 func _ready() -> void:
-	LobbyServer.updated_players_list.connect(_on_update_players_list)
+	PlayerManager.clients_changed.connect(_refresh_list)
 	await get_tree().create_timer(initial_delay).timeout
-	LobbyServer.update_players_list()
+	_refresh_list()
 
-func _on_update_players_list(players: Array) -> void:
-	# Example: [{ "msg": 0.0, "peer_id": 1392038853.0, "client_id": "21f81607-24c5-4cac-917f-e61835a63d2b", "name": "asd" }]
-	var current_players = []
-	for player_data in players:
-		current_players.append(player_data.client_id)
-		var existing = _find_existing_node(player_data.client_id)
+func _refresh_list() -> void:
+	var players_data: Array[Dictionary] = []
+	for child in PlayerManager.get_children():
+		if child is ClientController and child.active:
+			players_data.append(child.get_display_data())
+
+	var current_uuids: Array = []
+	for player_data in players_data:
+		current_uuids.append(player_data.client_id)
+		var existing = find_existing_node(player_data.client_id)
 		if existing:
 			existing.update_data(player_data)
 		else:
@@ -40,15 +45,16 @@ func _on_update_players_list(players: Array) -> void:
 			new_node.update_data(player_data)
 			add_child(new_node)
 			new_node.move_in()
-		
-		await get_tree().create_timer(create_delay).timeout
-	
-	# Remove players that left
-	for child in get_children():
-		if child is JoinedPlayer and child.uuid not in current_players:
-			child.move_out()
 
-func _find_existing_node(uuid: String):
+		await get_tree().create_timer(create_delay).timeout
+
+	for child in get_children():
+		if child is JoinedPlayer and child.uuid not in current_uuids:
+			child.move_out()
+	
+	list_ready.emit()
+
+func find_existing_node(uuid: String):
 	for child in get_children():
 		if child is JoinedPlayer and child.uuid == uuid:
 			return child

@@ -25,7 +25,15 @@ shield_cooldown = 5.0
 dash_icon = NodePath("HBoxContainer/TextureRect/DashIcon")
 shield_icon = NodePath("HBoxContainer/TextureRect/ShieldIcon")
 
-[node name="HBoxContainer" parent="." index="0" unique_id=2030705900]
+[node name="RespawnTimer" type="Timer" parent="." index="0" unique_id=1547610896]
+wait_time = 3.0
+one_shot = true
+
+[node name="SkillTimer" type="Timer" parent="." index="1" unique_id=1223965147]
+wait_time = 5.0
+one_shot = true
+
+[node name="HBoxContainer" parent="." index="2" unique_id=2030705900]
 theme_override_constants/separation = 20
 
 [node name="Name" parent="HBoxContainer" index="0" unique_id=1331900333]
@@ -114,7 +122,7 @@ grow_vertical = 0
 text = "10"
 horizontal_alignment = 2
 
-[node name="RespawnTime" type="ColorRect" parent="HBoxContainer/ColorRect" parent_id_path=PackedInt32Array(857185436) index="0" unique_id=1998324057 node_paths=PackedStringArray("timer")]
+[node name="RespawnTime" type="ColorRect" parent="HBoxContainer/PlayerIcon" parent_id_path=PackedInt32Array(115709656) index="1" unique_id=1998324057 node_paths=PackedStringArray("timer")]
 material = SubResource("ShaderMaterial_oafew")
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 1
@@ -125,11 +133,3 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("4_lkh84")
 timer = NodePath("../../../RespawnTimer")
-
-[node name="RespawnTimer" type="Timer" parent="." index="1" unique_id=1547610896]
-wait_time = 3.0
-one_shot = true
-
-[node name="SkillTimer" type="Timer" parent="." index="2" unique_id=1223965147]
-wait_time = 5.0
-one_shot = true

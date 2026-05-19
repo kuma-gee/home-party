@@ -4,7 +4,6 @@ extends XRToolsSceneBase
 @export var element_select_scene: PackedScene
 @export var player_list: PlayerList
 @export var skill_select: Control
-@export var skill_label: Label
 
 @onready var play_time: Timer = $PlayTime
 
@@ -12,6 +11,7 @@ var logger := KumaLog.new("CastleDefense")
 
 var _element_select: ElementSelect
 var _vr_ready := false
+var _players_ready := false
 var _vr_element: Arrow.Element = Arrow.Element.FIRE
 
 func _ready() -> void:
@@ -20,25 +20,25 @@ func _ready() -> void:
 	player_list.ready_changed.connect(_check_all_ready)
 
 func _on_game_start() -> void:
-	LobbyServer.send_layout("skill_select")
-	_element_select = xr_player.show_screen(element_select_scene) as ElementSelect
+	_element_select = xr_player.show_screen(element_select_scene, false) as ElementSelect
 	_element_select.ready_pressed.connect(_on_vr_ready)
-	_check_all_ready()
-	skill_select.show()
 
 func _on_vr_ready(element: Arrow.Element) -> void:
 	_vr_ready = true
 	_vr_element = element
-	print("VR ready, starting game")
-	_start_game()
+	_check_all_ready()
+
+func _on_all_players_ready() -> void:
+	_players_ready = true
+	_check_all_ready()
 
 func _check_all_ready() -> void:
 	if is_instance_valid(_element_select):
 		_element_select.update_ready(player_list.get_ready_count(), player_list.get_player_count())
-	skill_label.text = "Select your skill (%s/%s)" % [player_list.get_ready_count(), player_list.get_player_count()]
+	if _vr_ready and _players_ready:
+		_start_game()
 
 func _start_game() -> void:
-	LobbyServer.send_layout("joystick")
 	xr_player.hide_screen()
 	skill_select.hide()
 	play_time.start()
