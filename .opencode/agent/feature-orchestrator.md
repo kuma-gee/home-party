@@ -139,8 +139,6 @@ When a feature request arrives, follow this process:
 
 ## Output
 
-Structure your orchestration command line responses as:
-
 **Feature Summary**: Brief restatement of what's being built and why
 
 Your goal is to ensure features are implemented comprehensively, maintainably, and with proper

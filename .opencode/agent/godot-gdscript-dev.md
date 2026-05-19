@@ -29,6 +29,7 @@ Your core responsibilities:
 - Implement proper scene management with get_tree(), change_scene_to_file(), and scene instancing
 - Work with Godot 4.x input system: Input.is_action_pressed(), InputEvent handling
 - Use the new await keyword instead of yield
+- The color constructor uses 4 parameters, the last one for the alpha
 
 **Best Practices**
 - Prioritize readability and maintainability over clever code

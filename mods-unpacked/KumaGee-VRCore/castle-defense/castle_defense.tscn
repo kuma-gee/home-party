@@ -618,7 +618,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
 collision_layer = 64
 collision_mask = 0
 script = ExtResource("9_hurtbox")
-health = 50
+health = 200
 
 [node name="GateHitShape" type="CollisionShape3D" parent="Castle/Gate/GateHurtBox" unique_id=105378868]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.4626465, 0)

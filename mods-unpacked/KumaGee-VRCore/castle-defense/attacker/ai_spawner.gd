@@ -6,10 +6,12 @@ enum _State { IDLE, MOVE_TO_CATAPULT, AT_CATAPULT, MOVE_TO_BOMB, CARRY_BOMB, DEA
 var logger := KumaLog.new("AISpawner")
 
 @export var player_spawner: PlayerSpawner
-@export var ai_player_count: int = 2
+@export var ai_player_count: int = 3
 @export var catapult_wait_min: float = 5.0
 @export var catapult_wait_max: float = 15.0
 @export var respawn_delay: float = 3.0
+@export var skill_dodge_chance: float = 0.4
+@export var skill_check_radius: float = 5.0
 
 var _agents: Array[FPSPlayer] = []
 var _controllers: Array[AIClientController] = []
@@ -17,6 +19,7 @@ var _agent_states: Array[int] = []
 var _agent_targets: Array[Vector3] = []
 var _agent_timers: Array[float] = []
 var _spawn_positions: Array[Vector3] = []
+var _agent_skill_cooldowns: Array[float] = []
 
 var _gate: Node3D = null
 var _active := false
@@ -56,6 +59,7 @@ func _init_agents(scene: PackedScene):
 		_agent_targets.append(spawn_pos)
 		_agent_timers.append(i * 0.5)  # stagger initial decisions
 		_spawn_positions.append(spawn_pos)
+		_agent_skill_cooldowns.append(0.0)
 
 func _resolve_player_scene() -> PackedScene:
 	return player_spawner.player_scene
@@ -72,8 +76,18 @@ func _spawn_agent(scene: PackedScene, i: int, spawn_pos: Vector3, controller: AI
 	var player := scene.instantiate() as FPSPlayer
 	player.player_num = i
 	player.position = spawn_pos
-	Staging.add_scene_child(player)
+
+	var chosen_skill: FPSPlayer.Skill = FPSPlayer.Skill.DASH if randi() % 2 == 0 else FPSPlayer.Skill.SHIELD
+	player.skill = chosen_skill
+
+	var cooldown_timer := Timer.new()
+	cooldown_timer.one_shot = true
+	cooldown_timer.wait_time = 1.5 if chosen_skill == FPSPlayer.Skill.DASH else 3.0
+	player.add_child(cooldown_timer)
+	player.skill_cooldown_timer = cooldown_timer
+
 	controller.bind_player(player)
+	Staging.add_scene_child(player)
 	return player
 
 
@@ -94,6 +108,7 @@ func _respawn_agent(i: int) -> void:
 	_agents[i] = player
 	_agent_states[i] = _State.IDLE
 	_agent_timers[i] = randf_range(1.0, 2.0)
+	_agent_skill_cooldowns[i] = 0.0
 
 
 func _process(delta: float) -> void:
@@ -142,6 +157,37 @@ func _update_agent(i: int, delta: float) -> void:
 				_agent_timers[i] = randf_range(1.0, 3.0)
 		_State.DEAD:
 			pass  # handled in _process
+
+	_check_skill_dodge(i, delta)
+
+
+func _check_skill_dodge(i: int, delta: float) -> void:
+	_agent_skill_cooldowns[i] = maxf(_agent_skill_cooldowns[i] - delta, 0.0)
+	if _agent_skill_cooldowns[i] > 0.0:
+		return
+
+	var player := _agents[i]
+	if player.skill == FPSPlayer.Skill.NONE:
+		return
+
+	var player_pos := player.global_position
+	var radius_sq := skill_check_radius * skill_check_radius
+	var threat_found := false
+
+	for projectile in get_tree().get_nodes_in_group("arrow"):
+		if (projectile as Node3D).global_position.distance_squared_to(player_pos) < radius_sq:
+			threat_found = true
+			break
+
+	if not threat_found:
+		for projectile in get_tree().get_nodes_in_group("boulder"):
+			if (projectile as Node3D).global_position.distance_squared_to(player_pos) < radius_sq:
+				threat_found = true
+				break
+
+	if threat_found and randf() < skill_dodge_chance:
+		_controllers[i].trigger_skill()
+		_agent_skill_cooldowns[i] = 2.0
 
 
 func _on_arrived(i: int) -> void:

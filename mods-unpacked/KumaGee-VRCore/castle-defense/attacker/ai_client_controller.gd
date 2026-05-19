@@ -20,7 +20,7 @@ func bind_player(player: FPSPlayer) -> void:
 		return
 	_player.game_client = self
 	_player.firepower = firepower
-	target = _player.global_position
+	target = _player.position
 	if not _player.reached_gate.is_connected(_on_player_reached_gate):
 		_player.reached_gate.connect(_on_player_reached_gate)
 
@@ -43,3 +43,6 @@ func get_move() -> Vector2:
 		return Vector2.ZERO
 	var n := diff.normalized()
 	return Vector2(n.x, n.z)
+
+func trigger_skill() -> void:
+	primary_action_pressed.emit()

@@ -4,6 +4,7 @@ extends Area3D
 const ELEMENT_SCENE = {
 	Arrow.Element.FIRE: preload("uid://bnh078xxhjtqf"),
 	Arrow.Element.ICE: preload("uid://c684oj6gh0t68"),
+	Arrow.Element.LIGHTNING: preload("uid://bdkwolot88p0j"),
 }
 
 const ELEMENT_COLOR := {

@@ -18,11 +18,9 @@ func _ready() -> void:
 	_update_element_visuals()
 	ready_button.disabled = true
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventKey:
-		var key = event as InputEventKey
-		if key.shift_pressed and key.keycode == KEY_1:
-			ready_pressed.emit(Arrow.Element.FIRE)
+func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("debug_1"):
+		ready_pressed.emit(Arrow.Element.FIRE)
 
 func update_ready(ready_count: int, player_count: int):
 	if ready_count == player_count:

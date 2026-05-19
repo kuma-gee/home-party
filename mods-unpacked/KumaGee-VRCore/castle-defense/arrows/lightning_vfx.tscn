@@ -1,0 +1,442 @@
+[gd_scene format=3 uid="uid://wh6ia3jc5jdu"]
+
+[ext_resource type="Script" uid="uid://bkrembvwcg1br" path="res://vfx/PlayParticleSystems.gd" id="1_1lgyv"]
+[ext_resource type="Texture2D" uid="uid://dpy74naxllt47" path="res://assets/particles/flare_01.png" id="2_lv1ow"]
+[ext_resource type="Texture2D" uid="uid://ciespxrctvqsp" path="res://assets/particles/explosion_decal.png" id="3_ax7ia"]
+[ext_resource type="Texture2D" uid="uid://dbm5r0ya35uqy" path="res://assets/particles/explosion_decal_emission.png" id="4_7tf5t"]
+[ext_resource type="AudioStream" uid="uid://csjrfqny8hx0m" path="res://assets/sound/sfx/雷魔法4.wav" id="5_7ic8n"]
+[ext_resource type="Shader" uid="uid://kumhxcdqm0jv" path="res://shader/lightning.gdshader" id="6_8colo"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4die8"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_color = Color(1.5, 1.5, 4, 1)
+albedo_texture = ExtResource("2_lv1ow")
+billboard_keep_scale = true
+
+[sub_resource type="Curve" id="Curve_ilmcv"]
+_data = [Vector2(0, 0), 0.0, 3.5255783, 0, 0, Vector2(0.13031161, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -0.050957214, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_hh0db"]
+curve = SubResource("Curve_ilmcv")
+
+[sub_resource type="Curve" id="Curve_4die8"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_up1vs"]
+_limits = [1.0, 3.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 5.129898, 0, 0, Vector2(1, 3), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_wq075"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_ilmcv"]
+curve_x = SubResource("Curve_4die8")
+curve_y = SubResource("Curve_up1vs")
+curve_z = SubResource("Curve_wq075")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fihcr"]
+particle_flag_align_y = true
+direction = Vector3(0, 1, 0)
+spread = 90.0
+initial_velocity_min = 6.0
+initial_velocity_max = 8.0
+gravity = Vector3(0, 0, 0)
+damping_min = 16.0
+damping_max = 20.0
+scale_min = 0.29999998
+scale_max = 0.59999996
+scale_curve = SubResource("CurveXYZTexture_ilmcv")
+alpha_curve = SubResource("CurveTexture_hh0db")
+
+[sub_resource type="QuadMesh" id="QuadMesh_4die8"]
+size = Vector2(0.3, 1)
+
+[sub_resource type="Animation" id="Animation_reset"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LightningVFX/OmniLight3D:light_energy")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("LightningVFX/MeshInstance3D:material_override:shader_parameter/Emission_Power")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [20.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("LightningVFX/MeshInstance3D:material_override:shader_parameter/Effect_Color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("LightningVFX/MeshInstance3D:material_override:shader_parameter/X_Size")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("LightningVFX/AudioStreamPlayer:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("LightningVFX/MeshInstance3D:material_override:shader_parameter/Speed")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [6.0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("LightningVFX/Decal:albedo_mix")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("LightningVFX/Decal:emission_energy")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("LightningVFX:play_particles")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("LightningVFX/MeshInstance3D:visible")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("LightningVFX/MeshInstance3D:material_override:shader_parameter/Thickness")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+
+[sub_resource type="Animation" id="Animation_start"]
+resource_name = "start"
+length = 1.5
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LightningVFX")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"values": []
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("LightningVFX/OmniLight3D:light_energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [4.0, 0.0]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("LightningVFX/CleanupTimer")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(1.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [-1],
+"method": &"start"
+}]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("LightningVFX/MeshInstance3D:material_override:shader_parameter/Emission_Power")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.13333336, 0.56666666, 0.6666667),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 20.0, 20.0, 0.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("LightningVFX/MeshInstance3D:material_override:shader_parameter/Effect_Color")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.13333336, 0.49666667, 0.6466667),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0.3, 0.3, 1, 1), Color(0.3, 0.3, 1, 1), Color(0, 0, 0, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("LightningVFX/MeshInstance3D:material_override:shader_parameter/X_Size")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.6666667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.8, 0.8, 10.0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("LightningVFX/AudioStreamPlayer:playing")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("LightningVFX/MeshInstance3D:material_override:shader_parameter/Speed")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [6.0]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("LightningVFX/Decal:albedo_mix")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 0.22213577, 1, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 1.0, 1.0, 0.0]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("LightningVFX/Decal:emission_energy")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0, 0.26666668, 0.61390245),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 1.0, 0.0]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("LightningVFX:play_particles")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("LightningVFX/MeshInstance3D:visible")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0, 0.02),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("LightningVFX/MeshInstance3D:material_override:shader_parameter/Thickness")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [1.0, 3.00000014180148, 0.50000002305148]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_main"]
+_data = {
+&"RESET": SubResource("Animation_reset"),
+&"start": SubResource("Animation_start")
+}
+
+[sub_resource type="Gradient" id="Gradient_1lgyv"]
+offsets = PackedFloat32Array(0, 0.4660767)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_lv1ow"]
+gradient = SubResource("Gradient_1lgyv")
+fill_to = Vector2(0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ua8ms"]
+render_priority = 0
+shader = ExtResource("6_8colo")
+shader_parameter/Main_Color = Color(1, 1, 1, 1)
+shader_parameter/Effect_Color = Color(0, 0, 0, 1)
+shader_parameter/Octave_Count = 10
+shader_parameter/Amp_Start = 0.5
+shader_parameter/Amp_Coeff = 0.5
+shader_parameter/Freq_Coeff = 3.0
+shader_parameter/Speed = 6.0
+shader_parameter/Y_Size = 4.0
+shader_parameter/X_Size = 1.0
+shader_parameter/Thickness = 1.0
+shader_parameter/Rotation_Degrees = 0.0
+shader_parameter/Emission_Power = 20.0
+shader_parameter/y_billboard = true
+shader_parameter/x_billboard = false
+shader_parameter/gradient = SubResource("GradientTexture2D_lv1ow")
+
+[sub_resource type="QuadMesh" id="QuadMesh_fihcr"]
+size = Vector2(3, 6)
+
+[node name="LightningVFX" type="Node3D" unique_id=275729450]
+script = ExtResource("1_1lgyv")
+delays = {
+&"CleanupTimer": 0.0,
+&"GPUParticles3D": 0.0
+}
+metadata/_custom_type_script = "uid://bkrembvwcg1br"
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="." unique_id=2080696627]
+material_override = SubResource("StandardMaterial3D_4die8")
+emitting = false
+amount = 16
+lifetime = 0.3
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_fihcr")
+draw_pass_1 = SubResource("QuadMesh_4die8")
+
+[node name="Decal" type="Decal" parent="." unique_id=50870323]
+size = Vector3(1, 1, 1)
+texture_albedo = ExtResource("3_ax7ia")
+texture_emission = ExtResource("4_7tf5t")
+emission_energy = 0.0
+modulate = Color(1.502, 1.502, 4, 1)
+albedo_mix = 0.0
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=111388069]
+light_color = Color(0.5, 0.7, 1, 1)
+light_energy = 0.0
+omni_range = 3.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1853113074]
+root_node = NodePath("../..")
+libraries/ = SubResource("AnimationLibrary_main")
+autoplay = &"start"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1080640798]
+stream = ExtResource("5_7ic8n")
+volume_db = -5.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=811284996]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.0351243, 0)
+visible = false
+material_override = SubResource("ShaderMaterial_ua8ms")
+mesh = SubResource("QuadMesh_fihcr")
+skeleton = NodePath("../..")
+
+[node name="CleanupTimer" type="Timer" parent="." unique_id=1038396090]
+one_shot = true
