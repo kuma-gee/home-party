@@ -66,6 +66,7 @@ func spawn_player():
 	var player = player_spawner.create_player(game_client)
 	player.global_rotation.y = PI
 	player.firepower = firepower
+	player.skill = selected_skill
 	player.skill_cooldown_timer = skill_timer
 	player.reached_gate.connect(func(): firepower += 1)
 	player.died.connect(func():
@@ -73,6 +74,10 @@ func spawn_player():
 		StatsManager.record_death(game_client.uuid)
 		respawn_timer.start(player.respawn_time)
 		player.queue_free()
+	)
+	player.skill_activated.connect(func(): 
+		var cooldown = dash_cooldown if selected_skill == FPSPlayer.Skill.DASH else shield_cooldown
+		skill_timer.start(cooldown)
 	)
 	player.snap_zone.has_picked_up.connect(func(obj: XRToolsPickable):
 		if obj is Bomb:

@@ -6,6 +6,7 @@ signal secondary_action_pressed()
 signal moved(dir: Vector2)
 signal active_changed()
 
+var uuid: String
 var active := true:
 	set(v):
 		active = v

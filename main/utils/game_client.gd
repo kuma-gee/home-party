@@ -11,7 +11,6 @@ var channel: WebRTCDataChannel
 var logger = KumaLog.new("GameClient")
 
 var inputs = {}
-var uuid: String
 var data = {}
 
 func _ready():

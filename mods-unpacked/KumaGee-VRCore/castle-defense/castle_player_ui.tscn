@@ -6,6 +6,19 @@
 [ext_resource type="Script" uid="uid://b6t5ttmc37k1r" path="res://main/utils/circle_timer.gd" id="4_lkh84"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_oafew"]
+resource_local_to_scene = true
+shader = ExtResource("2_sn2ke")
+shader_parameter/radius = 1.0
+shader_parameter/inner_radius = 0.90000004275
+shader_parameter/fill = 1.0
+shader_parameter/blur = 0.0001
+shader_parameter/bg_color = Color(0, 0, 0, 1)
+shader_parameter/inner_color = Color(0, 0, 0, 0)
+shader_parameter/outline_width = 0.0
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lkh84"]
+resource_local_to_scene = true
 shader = ExtResource("2_sn2ke")
 shader_parameter/radius = 1.0
 shader_parameter/inner_radius = 0.90000004275
@@ -123,7 +136,7 @@ text = "10"
 horizontal_alignment = 2
 
 [node name="RespawnTime" type="ColorRect" parent="HBoxContainer/PlayerIcon" parent_id_path=PackedInt32Array(115709656) index="1" unique_id=1998324057 node_paths=PackedStringArray("timer")]
-material = SubResource("ShaderMaterial_oafew")
+material = SubResource("ShaderMaterial_lkh84")
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 1
 anchors_preset = 15

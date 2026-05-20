@@ -3,6 +3,7 @@ extends CharacterBody3D
 
 signal reached_gate()
 signal died()
+signal skill_activated()
 
 enum Skill {
 	NONE,
@@ -178,7 +179,7 @@ func dash() -> void:
 	animation.play(running_anim)
 	await get_tree().create_timer(dash_time).timeout
 
-	skill_cooldown_timer.start()
+	skill_activated.emit()
 	is_dashing = false
 
 func shield() -> void:
@@ -189,5 +190,5 @@ func shield() -> void:
 	hurtbox.invulnerable(shield_duration)
 	await get_tree().create_timer(shield_duration).timeout
 	
-	skill_cooldown_timer.start()
+	skill_activated.emit()
 	is_shielded = false

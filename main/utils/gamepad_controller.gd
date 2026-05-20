@@ -3,7 +3,6 @@ extends ClientController
 
 var device_id: int
 var player_name: String
-var uuid: String
 
 var _prev_primary := false
 var _prev_secondary := false

@@ -1,7 +1,7 @@
 class_name PlayerList
 extends VBoxContainer
 
-signal list_ready()
+signal player_created(uuid)
 signal ready_changed()
 
 const COLORS = [
@@ -25,8 +25,7 @@ static func get_color(idx: int) -> Color:
 func _ready() -> void:
 	PlayerManager.clients_changed.connect(_refresh_list)
 	await get_tree().create_timer(initial_delay).timeout
-	await _refresh_list()
-	list_ready.emit()
+	_refresh_list()
 
 func _refresh_list() -> void:
 	var players_data: Array[Dictionary] = []
@@ -47,6 +46,7 @@ func _refresh_list() -> void:
 			new_node.update_data(player_data)
 			add_child(new_node)
 			new_node.move_in()
+			player_created.emit(player_data.client_id)
 
 		await get_tree().create_timer(create_delay).timeout
 
