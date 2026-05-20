@@ -11,6 +11,9 @@ const ELEMENT_COLOR := {
 	Arrow.Element.FIRE: Color(1.0, 0.4, 0.0),
 	Arrow.Element.ICE: Color(0.3, 0.8, 1.0),
 	Arrow.Element.LIGHTNING: Color(0.9, 0.9, 0.4),
+	Arrow.Element.WIND: Color(0.8, 0.8, 0.8),
+	Arrow.Element.POISON: Color(0.3, 0.7, 0.4),
+	Arrow.Element.VOID: Color(0.5, 0.1, 0.5),
 }
 
 @export var visual: MeshInstance3D
@@ -44,20 +47,15 @@ func fired():
 	is_fired = true
 
 static func get_element_color(elem: Arrow.Element) -> Color:
-	if elem in ELEMENT_COLOR: return Color.WHITE
+	if not elem in ELEMENT_COLOR: return Color.WHITE
 	return ELEMENT_COLOR[elem] as Color
 
 static func update_visual(mesh: MeshInstance3D, elem: Arrow.Element) -> void:
-	var indicator := mesh
-	if not indicator:
+	if not mesh:
 		return
 		
-	var mat := indicator.get_active_material(0) as StandardMaterial3D
+	var mat := mesh.get_active_material(0) as StandardMaterial3D
 	if not mat:
-		return
-	
-	if elem not in ELEMENT_COLOR:
-		mesh.hide()
 		return
 	
 	var color := get_element_color(elem)
