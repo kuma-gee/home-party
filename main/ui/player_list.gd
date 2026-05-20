@@ -25,7 +25,8 @@ static func get_color(idx: int) -> Color:
 func _ready() -> void:
 	PlayerManager.clients_changed.connect(_refresh_list)
 	await get_tree().create_timer(initial_delay).timeout
-	_refresh_list()
+	await _refresh_list()
+	list_ready.emit()
 
 func _refresh_list() -> void:
 	var players_data: Array[Dictionary] = []
@@ -39,6 +40,7 @@ func _refresh_list() -> void:
 		var existing = find_existing_node(player_data.client_id)
 		if existing:
 			existing.update_data(player_data)
+			existing.move_in()
 		else:
 			var new_node = player_scene.instantiate() as JoinedPlayer
 			new_node.ready_updated.connect(func(): ready_changed.emit())
@@ -51,8 +53,6 @@ func _refresh_list() -> void:
 	for child in get_children():
 		if child is JoinedPlayer and child.uuid not in current_uuids:
 			child.move_out()
-	
-	list_ready.emit()
 
 func find_existing_node(uuid: String):
 	for child in get_children():

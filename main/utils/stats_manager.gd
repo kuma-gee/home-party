@@ -23,9 +23,13 @@ func get_rankings() -> Array:
 	for uuid in stats:
 		var s = stats[uuid]
 		var score: float = s["damage_dealt"] - (s["deaths"] * 50)
+		var player_name = s["name"].substr(0, 16)
+		if s["name"].length() > 16:
+			player_name += "..."
+		
 		entries.append({
 			"uuid": uuid,
-			"name": s["name"],
+			"name": player_name,
 			"icon": s["icon"],
 			"deaths": s["deaths"],
 			"damage_dealt": s["damage_dealt"],

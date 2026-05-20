@@ -17,3 +17,7 @@ func is_loaded():
 
 func fired():
 	cooldown_timer.start(cooldown_time)
+
+func set_element(new_element: Arrow.Element) -> void:
+	element = new_element
+	ArrowElement.update_visual(visual, element)

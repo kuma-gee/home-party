@@ -45,36 +45,6 @@ func gameover(msg: String):
 	var rankings = StatsManager.get_rankings()
 	screen.set_rankings(rankings)
 
-	var rankings_payload: Array = []
-	for entry in rankings:
-		rankings_payload.append({
-			"name": entry["name"],
-			"icon": entry["icon"],
-			"deaths": entry["deaths"],
-			"damage_dealt": entry["damage_dealt"],
-			"score": entry["score"],
-			"rank": entry["rank"],
-		})
-
-	for client in PlayerManager.playing_clients:
-		if client is GameClient:
-			var game_client := client as GameClient
-			var player_entry = {}
-			for entry in rankings:
-				if entry["uuid"] == game_client.uuid:
-					player_entry = entry
-					break
-			var payload := {
-				"type": "gameover",
-				"your_rank": player_entry.get("rank", 0),
-				"your_stats": {
-					"deaths": player_entry.get("deaths", 0),
-					"damage_dealt": player_entry.get("damage_dealt", 0),
-				},
-				"rankings": rankings_payload,
-			}
-			game_client.send_text(JSON.stringify(payload))
-
 func show_screen(screen: PackedScene, show_for_desktop = false):
 	overlay_mesh.show_overlay()
 	was_paused = get_tree().paused

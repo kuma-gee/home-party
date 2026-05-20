@@ -76,6 +76,7 @@ func create_peer(data: Dictionary):
 	var existing = find_player_by_uuid(uuid)
 	if existing:
 		existing.initialize()
+		logger.info("Initializing existing game client: %s" % existing.get_display_data())
 	else:
 		var player = GameClient.new()
 		player.name = "%s" % peer_id
@@ -84,6 +85,8 @@ func create_peer(data: Dictionary):
 		player.send_candidate.connect(func(mid: String, index: int, sdp: String): LobbyServer.send_candidate(uuid, mid, index, sdp))
 		player.send_session.connect(func(type: String, sdp: String): LobbyServer.send_session(uuid, type, sdp))
 		add_child(player)
+		logger.info("Creating game client: %s" % player.get_display_data())
+		
 	clients_changed.emit()
 
 func remove_peer(client_id: String):
@@ -100,6 +103,7 @@ func register_gamepad(device_id: int) -> void:
 	var existing = find_player_by_device_id(device_id)
 	if existing:
 		existing.initialize()
+		logger.info("Initializing existing gamepad controller: %s" % existing.get_display_data())
 	else:
 		var uuid := GamepadController.get_uuid_for_device(device_id)
 		var controller := GamepadController.new()
@@ -107,6 +111,7 @@ func register_gamepad(device_id: int) -> void:
 		controller.uuid = uuid
 		controller.player_name = "%s" % Input.get_joy_name(device_id)
 		add_child(controller)
+		logger.info("Creating gamepad controller: %s" % controller.get_display_data())
 	clients_changed.emit()
 
 func unregister_gamepad(device_id: int) -> void:

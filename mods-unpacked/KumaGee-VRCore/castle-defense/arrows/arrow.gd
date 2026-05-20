@@ -2,7 +2,7 @@
 class_name Arrow
 extends XRToolsPickable
 
-enum Element { NONE, FIRE, ICE, LIGHTNING }
+enum Element { NONE, FIRE, ICE, LIGHTNING, WIND, POISON, VOID }
 
 @export var damage := 1
 

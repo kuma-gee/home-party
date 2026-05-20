@@ -1,43 +1,71 @@
 class_name ElementSelect
 extends PanelContainer
 
-signal ready_pressed(element: Arrow.Element)
+signal ready_pressed(elements: Array[Arrow.Element])
 
-var selected_element: Arrow.Element = Arrow.Element.FIRE
+const ELEMENT_DATA := [
+	[Arrow.Element.FIRE, "🔥 Fire"],
+	[Arrow.Element.ICE, "❄️ Ice"],
+	[Arrow.Element.LIGHTNING, "⚡ Lightning"],
+	[Arrow.Element.WIND, "🌪️ Wind"],
+	[Arrow.Element.POISON, "☠️ Poison"],
+	[Arrow.Element.VOID, "🌑 Void"],
+]
 
-@export var fire_button: Button
-@export var ice_button: Button
+const ELEMENT_EMOJIS := {
+	Arrow.Element.FIRE: "🔥",
+	Arrow.Element.ICE: "❄️",
+	Arrow.Element.LIGHTNING: "⚡",
+	Arrow.Element.WIND: "🌪️",
+	Arrow.Element.POISON: "☠️",
+	Arrow.Element.VOID: "🌑",
+}
+
+var selected_elements: Array[Arrow.Element] = [Arrow.Element.FIRE, Arrow.Element.ICE, Arrow.Element.LIGHTNING]
+var _mobile_ready := false
+
+@export var element_buttons_container: Control
 @export var selected_label: Label
 @export var ready_button: Button
 
 func _ready() -> void:
-	fire_button.pressed.connect(func(): _select_element(Arrow.Element.FIRE))
-	ice_button.pressed.connect(func(): _select_element(Arrow.Element.ICE))
-	ready_button.pressed.connect(func(): ready_pressed.emit(selected_element))
-	
-	_update_element_visuals()
+	for entry in ELEMENT_DATA:
+		var element: Arrow.Element = entry[0]
+		var label: String = entry[1]
+		var btn := Button.new()
+		btn.text = label
+		btn.toggle_mode = true
+		btn.button_pressed = element in selected_elements
+		btn.pressed.connect(func(): _toggle_element(element, btn))
+		element_buttons_container.add_child(btn)
+
+	ready_button.pressed.connect(func(): ready_pressed.emit(selected_elements))
 	ready_button.disabled = true
+	_update_selected_label()
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("debug_1"):
-		ready_pressed.emit(Arrow.Element.FIRE)
+		ready_pressed.emit(selected_elements)
 
-func update_ready(ready_count: int, player_count: int):
-	if ready_count == player_count:
+func update_ready(ready_count: int, player_count: int) -> void:
+	_mobile_ready = ready_count == player_count
+	if _mobile_ready:
 		ready_button.text = "Start game"
 	else:
 		ready_button.text = "mobile ready %s / %s" % [ready_count, player_count]
-	ready_button.disabled = ready_count != player_count
+	ready_button.disabled = not _mobile_ready or selected_elements.is_empty()
 
-func _select_element(element: Arrow.Element) -> void:
-	selected_element = element
-	_update_element_visuals()
+func _toggle_element(element: Arrow.Element, btn: Button) -> void:
+	if element in selected_elements:
+		selected_elements.erase(element)
+		btn.button_pressed = false
+	else:
+		selected_elements.append(element)
+		btn.button_pressed = true
+	
+	_update_selected_label()
+	ready_button.disabled = not _mobile_ready or selected_elements.is_empty()
 
-func _update_element_visuals() -> void:
-	fire_button.button_pressed = selected_element == Arrow.Element.FIRE
-	ice_button.button_pressed = selected_element == Arrow.Element.ICE
-	match selected_element:
-		Arrow.Element.FIRE:
-			selected_label.text = "Selected: 🔥 Fire"
-		Arrow.Element.ICE:
-			selected_label.text = "Selected: ❄️ Ice"
+func _update_selected_label() -> void:
+	var emojis := " ".join(selected_elements.map(func(e): return ELEMENT_EMOJIS[e]))
+	selected_label.text = "Selected: %s" % emojis

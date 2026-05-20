@@ -37,4 +37,3 @@ func set_rankings(rankings: Array) -> void:
 			entry["score"],
 		]
 		rankings_list.add_child(row)
-

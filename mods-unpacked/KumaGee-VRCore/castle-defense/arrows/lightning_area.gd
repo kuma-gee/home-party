@@ -1,6 +1,6 @@
 extends Node3D
 
-signal bounced(from_pos: Vector3, to_pos: Vector3)
+signal bounced(from_pos, to_pos)
 
 @export var damage := 1
 @export var max_bounces := 3
@@ -13,10 +13,10 @@ var _hit_hurtboxes: Array[HurtBox] = []
 
 func _ready() -> void:
 	bounced.connect(_spawn_bolt)
-	await get_tree().physics_frame
-	_bounce_to(global_position, 0)
+	await get_tree().create_timer(0.1).timeout
+	bounce_to()
 
-func _bounce_to(pos: Vector3, bounce_count: int) -> void:
+func bounce_to(pos: Vector3 = global_position, bounce_count: int = 0) -> void:
 	var closest: HurtBox = null
 	var closest_dist := INF
 
@@ -29,20 +29,21 @@ func _bounce_to(pos: Vector3, bounce_count: int) -> void:
 
 	if closest == null:
 		if bounce_count == 0:
-			_spawn_bolt(null, hit_area.global_position)
-			#bounced.emit(null, hit_area.global_position)
+			bounced.emit(null, hit_area.global_position)
 		_cleanup()
 		return
 
 	_hit_hurtboxes.append(closest)
+	
+	var p = closest.global_position
 	closest.hit(damage)
-	#bounced.emit(pos, closest.global_position)
+	bounced.emit(pos, p)
 
 	if bounce_count < max_bounces:
-		hit_area.global_position = closest.global_position
+		hit_area.global_position = p
 		await get_tree().create_timer(bounce_delay).timeout
 		if is_inside_tree():
-			_bounce_to(closest.global_position, bounce_count + 1)
+			bounce_to(p, bounce_count + 1)
 	else:
 		_cleanup()
 
@@ -51,12 +52,6 @@ func _spawn_bolt(from_pos, to_pos: Vector3) -> void:
 	node.position = to_pos
 	Staging.add_scene_child(node)
 	
-	get_tree().create_timer(0.5).timeout.connect(func():
-		print(node.global_position, ", ", to_pos)
-		node.global_position = to_pos
-	)
-	
-	print(node.global_position, ", ", to_pos)
 	#if from_pos is Vector3 and from_pos != to_pos:
 		#var from := from_pos as Vector3
 		#var length := from.distance_to(to_pos)

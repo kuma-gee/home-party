@@ -43,4 +43,3 @@ text = "Main Menu"
 [node name="RestartButton" type="Button" parent="VBoxContainer" unique_id=1159729685]
 layout_mode = 2
 text = "Restart"
-

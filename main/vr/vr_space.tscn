@@ -18,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="15_f1ooe"]
 [ext_resource type="Script" uid="uid://cjk3gsrbfomdh" path="res://main/utils/camera_follow_3d.gd" id="16_ajmcf"]
 [ext_resource type="PackedScene" uid="uid://dtik0q104occg" path="res://main/ui/gameover_screen.tscn" id="18_icwxr"]
+[ext_resource type="PackedScene" uid="uid://0bcv0v5ytadj" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/ui/element_select.tscn" id="18_lisjs"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_0yltu"]
 custom_aabb = AABB(-5000, -5000, -5000, 10000, 10000, 10000)
@@ -101,7 +102,7 @@ point_count = 2
 
 [sub_resource type="QuadMesh" id="QuadMesh_ojtvx"]
 resource_local_to_scene = true
-size = Vector2(3, 2)
+size = Vector2(4, 3)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_vufdb"]
 viewport_path = NodePath("SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2/Viewport")
@@ -114,7 +115,7 @@ texture_filter = 1
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ussne"]
 resource_local_to_scene = true
-size = Vector3(3, 2, 0.02)
+size = Vector3(4, 3, 0.02)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_tic4c"]
 viewport_path = NodePath("SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2/Viewport")
@@ -153,7 +154,7 @@ script = ExtResource("4_0yltu")
 [node name="XRPlayer" type="XROrigin3D" parent="SubViewport" unique_id=1404813673]
 
 [node name="PlayerBody" parent="SubViewport/XRPlayer" unique_id=1745649098 instance=ExtResource("4_c1qvc")]
-collision_mask = 0
+collision_mask = 1
 push_rigid_bodies = false
 
 [node name="Body" type="Node3D" parent="SubViewport/XRPlayer/PlayerBody" unique_id=1031441429]
@@ -363,20 +364,26 @@ metadata/_custom_type_script = "uid://cjk3gsrbfomdh"
 
 [node name="Viewport2Din3D2" parent="SubViewport/XRPlayer/CameraFollow3D" unique_id=553147920 instance=ExtResource("15_f1ooe")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.5)
-viewport_size = Vector2(400, 300)
+screen_size = Vector2(4, 3)
+viewport_size = Vector2(720, 560)
 transparent = 0
 unshaded = true
 
 [node name="Viewport" parent="SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2" index="0" unique_id=434808864]
 transparent_bg = false
-size = Vector2i(400, 300)
+size = Vector2i(720, 560)
+
+[node name="ElementSelect" parent="SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2/Viewport" index="0" unique_id=1552823357 instance=ExtResource("18_lisjs")]
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Screen" parent="SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2" index="1" unique_id=1761931612]
 mesh = SubResource("QuadMesh_ojtvx")
 surface_material_override/0 = SubResource("StandardMaterial3D_83ac8")
 
 [node name="StaticBody3D" parent="SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2" index="2" unique_id=1882660186]
-viewport_size = Vector2(400, 300)
+screen_size = Vector2(4, 3)
+viewport_size = Vector2(720, 560)
 
 [node name="CollisionShape3D" parent="SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2/StaticBody3D" index="0" unique_id=507281989]
 shape = SubResource("BoxShape3D_ussne")

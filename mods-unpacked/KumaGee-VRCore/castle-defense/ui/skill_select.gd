@@ -17,6 +17,7 @@ func _update():
 		dash_container.add_child(select)
 		
 		var ui = player_list.find_existing_node(player.uuid) as CastlePlayerUI
+		player.active_changed.connect(func(): select.visible = player.active)
 		ui.ready_updated.connect(func():
 			select.set_ready(ui.is_ready)
 			_update_ready_text()

@@ -3,14 +3,13 @@
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme.css" id="1_ka1uy"]
 [ext_resource type="Script" uid="uid://1aayinm40pm" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/ui/element_select.gd" id="2_elsel"]
 
-[node name="ElementSelect" type="PanelContainer" unique_id=1552823357 node_paths=PackedStringArray("fire_button", "ice_button", "selected_label", "ready_button")]
+[node name="ElementSelect" type="PanelContainer" unique_id=1552823357 node_paths=PackedStringArray("element_buttons_container", "selected_label", "ready_button")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource("1_ka1uy")
 script = ExtResource("2_elsel")
-fire_button = NodePath("MarginContainer/VBoxContainer2/VBoxContainer/ElementButtons/FireButton")
-ice_button = NodePath("MarginContainer/VBoxContainer2/VBoxContainer/ElementButtons/IceButton")
+element_buttons_container = NodePath("MarginContainer/VBoxContainer2/VBoxContainer/ElementButtons")
 selected_label = NodePath("MarginContainer/VBoxContainer2/VBoxContainer/SelectedLabel")
 ready_button = NodePath("MarginContainer/VBoxContainer2/VBoxContainer2/ReadyButton")
 
@@ -23,32 +22,22 @@ theme_override_constants/separation = 16
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer2" unique_id=1004068923]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 32
 
 [node name="Title" type="Label" parent="MarginContainer/VBoxContainer2/VBoxContainer" unique_id=1399165347]
 layout_mode = 2
 text = "Select Elements"
 horizontal_alignment = 1
 
-[node name="ElementButtons" type="HBoxContainer" parent="MarginContainer/VBoxContainer2/VBoxContainer" unique_id=1611972892]
+[node name="ElementButtons" type="HFlowContainer" parent="MarginContainer/VBoxContainer2/VBoxContainer" unique_id=914540330]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 16
 alignment = 1
-
-[node name="FireButton" type="Button" parent="MarginContainer/VBoxContainer2/VBoxContainer/ElementButtons" unique_id=934958039]
-layout_mode = 2
-toggle_mode = true
-button_pressed = true
-text = "🔥 Fire"
-
-[node name="IceButton" type="Button" parent="MarginContainer/VBoxContainer2/VBoxContainer/ElementButtons" unique_id=1542471612]
-layout_mode = 2
-toggle_mode = true
-text = "❄️ Ice"
 
 [node name="SelectedLabel" type="Label" parent="MarginContainer/VBoxContainer2/VBoxContainer" unique_id=1435322277]
 layout_mode = 2
-text = "Selected: 🔥 Fire"
+text = "Selected: 🔥"
 horizontal_alignment = 1
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer2" unique_id=1376648956]
