@@ -39,6 +39,7 @@ func _check_all_ready() -> void:
 		_start_game()
 
 func _start_game() -> void:
+	StatsManager.initialize(PlayerManager.playing_clients)
 	xr_player.hide_screen()
 	skill_select.hide()
 	play_time.start()

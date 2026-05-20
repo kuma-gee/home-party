@@ -4,14 +4,16 @@ extends Area3D
 @export var damage := 1
 @export var hit_on_enter := true
 
+var attacker_uuid: String = ""
+
 func _ready() -> void:
 	if hit_on_enter:
 		area_entered.connect(func(a):
 			if a is HurtBox:
-				a.hit(damage)
+				a.hit(damage, attacker_uuid)
 		)
 
 func hit(dmg = damage):
 	for area in get_overlapping_areas():
 		if area is HurtBox:
-			area.hit(dmg)
+			area.hit(dmg, attacker_uuid)

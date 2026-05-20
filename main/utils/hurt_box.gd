@@ -15,8 +15,10 @@ signal died()
 
 @export var enabled := true
 
-func hit(dmg = 1):
+func hit(dmg = 1, attacker_uuid: String = ""):
 	if not enabled: return
+	if attacker_uuid != "" and Engine.has_singleton("StatsManager"):
+		StatsManager.record_damage(attacker_uuid, dmg)
 	current_health -= dmg
 
 func invulnerable(duration: float):

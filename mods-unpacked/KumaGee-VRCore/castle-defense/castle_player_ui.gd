@@ -70,7 +70,12 @@ func spawn_player():
 	player.reached_gate.connect(func(): firepower += 1)
 	player.died.connect(func():
 		alive = false
+		StatsManager.record_death(game_client.uuid)
 		respawn_timer.start(player.respawn_time)
 		player.queue_free()
+	)
+	player.snap_zone.has_picked_up.connect(func(obj: XRToolsPickable):
+		if obj is Bomb:
+			(obj as Bomb).hit_box.attacker_uuid = game_client.uuid
 	)
 	alive = true
