@@ -482,7 +482,7 @@ _data = {
 }
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_lyvqq"]
-radius = 1.2777122
+radius = 1.0
 
 [node name="Explosion" type="Node3D" unique_id=765294686]
 

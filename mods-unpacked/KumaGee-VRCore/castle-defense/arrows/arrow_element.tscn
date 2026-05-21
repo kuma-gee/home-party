@@ -1,6 +1,15 @@
 [gd_scene format=3 uid="uid://dmrtyxsttqwve"]
 
 [ext_resource type="Script" uid="uid://bw8hl7j3crysb" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/arrow_element.gd" id="1_mncll"]
+[ext_resource type="PackedScene" uid="uid://b5hphn8j5il8w" path="res://assets/castle-defense/weapons/arrow_tip.glb" id="2_belai"]
+[ext_resource type="Texture2D" uid="uid://bhtmbib4h42sn" path="res://assets/castle-defense/weapons/weapons_bits_texture.png" id="3_41yic"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_belai"]
+resource_local_to_scene = true
+albedo_texture = ExtResource("3_41yic")
+emission_enabled = true
+emission = Color(0.92, 0.285, 0.92, 1)
+emission_energy_multiplier = 3.0
 
 [sub_resource type="SphereMesh" id="SphereMesh_me75u"]
 radius = 0.1
@@ -8,25 +17,33 @@ height = 0.2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mncll"]
 resource_local_to_scene = true
-albedo_color = Color(1, 0.4, 0, 1)
+albedo_texture = ExtResource("3_41yic")
 emission_enabled = true
-emission = Color(1, 0.4, 0, 1)
+emission = Color(0.92, 0.285, 0.92, 1)
 emission_energy_multiplier = 3.0
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_me75u"]
-radius = 0.06317466
+radius = 0.07
 
 [node name="ElementArea" type="Area3D" unique_id=1447031381 node_paths=PackedStringArray("visual")]
 collision_layer = 0
 collision_mask = 128
 script = ExtResource("1_mncll")
-visual = NodePath("ElementIndicator")
+visual = NodePath("arrow_tip/arrow_A")
+
+[node name="arrow_tip" parent="." unique_id=1477406399 instance=ExtResource("2_belai")]
+
+[node name="arrow_A" parent="arrow_tip" index="0" unique_id=1028177088]
+surface_material_override/0 = SubResource("StandardMaterial3D_belai")
 
 [node name="ElementIndicator" type="MeshInstance3D" parent="." unique_id=347226210]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+visible = false
 mesh = SubResource("SphereMesh_me75u")
-skeleton = NodePath("../../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_mncll")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=578714361]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.470748)
 shape = SubResource("SphereShape3D_me75u")
+
+[editable path="arrow_tip"]

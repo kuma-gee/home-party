@@ -5,9 +5,8 @@ extends XRToolsPickable
 enum Element { NONE, FIRE, ICE, LIGHTNING, WIND, POISON, VOID }
 
 @export var damage := 1
-
+@export var element_area: ArrowElement
 @onready var lifetime_timer: Timer = $LifetimeTimer
-@onready var element_area: ArrowElement = $ElementArea
 
 var _hit := false
 var fired := false

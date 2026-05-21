@@ -5,6 +5,7 @@ extends XRToolsSceneBase
 @export var player_list: PlayerList
 @export var skill_select: Control
 @export var orbs: Array[ElementOrb]
+@export var arrow_types: Node3D
 
 @onready var play_time: Timer = $PlayTime
 
@@ -21,6 +22,7 @@ func _ready() -> void:
 func _on_game_start() -> void:
 	_element_select = xr_player.show_screen(element_select_scene, false) as ElementSelect
 	_element_select.ready_pressed.connect(_on_vr_ready)
+	arrow_types.hide()
 	_check_all_ready()
 
 func _on_vr_ready(elements: Array[Arrow.Element]) -> void:
@@ -47,6 +49,7 @@ func _start_game() -> void:
 		var element := _vr_elements[i] if i < _vr_elements.size() else Arrow.Element.NONE
 		orbs[i].set_element(element)
 		orbs[i].visible = element != Arrow.Element.NONE
+	arrow_types.show()
 
 func _on_gate_died() -> void:
 	_finish_game("Attackers stormed the gate!")

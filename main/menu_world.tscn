@@ -94,7 +94,7 @@ node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &
 
 [sub_resource type="QuadMesh" id="QuadMesh_xe5fq"]
 resource_local_to_scene = true
-size = Vector2(3, 2)
+size = Vector2(4, 3)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_7seay"]
 viewport_path = NodePath("VRSpace/SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2/Viewport")
@@ -107,7 +107,7 @@ texture_filter = 1
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_i6mv1"]
 resource_local_to_scene = true
-size = Vector3(3, 2, 0.02)
+size = Vector3(4, 3, 0.02)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_b2vgm"]
 viewport_path = NodePath("SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2/Viewport")

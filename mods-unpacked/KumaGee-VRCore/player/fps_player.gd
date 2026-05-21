@@ -12,6 +12,7 @@ enum Skill {
 }
 
 @export var speed := 1.0
+@export var acceleration := 10.0
 @export var push_force = 2.0
 
 @export var body: Node3D
@@ -117,12 +118,8 @@ func _physics_process(delta):
 	var _speed = speed * (1.0 - slow)
 
 	if ground_spring_cast.is_grounded():
-		if direction:
-			velocity.x = direction.x * _speed
-			velocity.z = direction.y * _speed
-		else:
-			velocity.x = lerp(velocity.x, direction.x * _speed, delta * 15.0)
-			velocity.z = lerp(velocity.z, direction.y * _speed, delta * 15.0)
+		velocity.x = lerp(velocity.x, direction.x * _speed, delta * acceleration)
+		velocity.z = lerp(velocity.z, direction.y * _speed, delta * acceleration)
 	else:
 		velocity.x = lerp(velocity.x, direction.x * _speed, delta * 3.0)
 		velocity.z = lerp(velocity.z, direction.y * _speed, delta * 3.0)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cq7wxyuweav0q"]
+[gd_scene format=3 uid="uid://cq7wxyuweav0q"]
 
 [ext_resource type="ArrayMesh" uid="uid://bcirpdb8lj8xn" path="res://assets/particles/shapes/smoke.obj" id="1_8l66w"]
 [ext_resource type="Shader" uid="uid://byywxm5jqqfox" path="res://vfx/smoke_cell_shader.gdshader" id="1_wc53b"]
@@ -58,9 +58,9 @@ scale_curve = SubResource("CurveTexture_bpyhj")
 color_ramp = SubResource("GradientTexture1D_56xxt")
 alpha_curve = SubResource("CurveTexture_af67l")
 
-[node name="Smoke" type="Node3D"]
+[node name="Smoke" type="Node3D" unique_id=1225832959]
 
-[node name="Smoke" type="GPUParticles3D" parent="."]
+[node name="Smoke" type="GPUParticles3D" parent="." unique_id=1145882213]
 material_override = SubResource("ShaderMaterial_wc53b")
 amount = 20
 fixed_fps = 60

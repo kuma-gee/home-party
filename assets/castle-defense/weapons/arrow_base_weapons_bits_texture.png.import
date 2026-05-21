@@ -2,17 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://62hkfjpmgrkk"
-path.s3tc="res://.godot/imported/T_FirePanningCyl45.png-04119b575ad3c0d4ee37a39564e1ca40.s3tc.ctex"
+uid="uid://cjm0fj1sl11yw"
+path.s3tc="res://.godot/imported/arrow_base_weapons_bits_texture.png-06c189c8380091288bc2e1a9a4e27f74.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "c04a2eca4620772bbe7c37b37d2a9355"
+}
 
 [deps]
 
-source_file="res://assets/particles/T_FirePanningCyl45.png"
-dest_files=["res://.godot/imported/T_FirePanningCyl45.png-04119b575ad3c0d4ee37a39564e1ca40.s3tc.ctex"]
+source_file="res://assets/castle-defense/weapons/arrow_base_weapons_bits_texture.png"
+dest_files=["res://.godot/imported/arrow_base_weapons_bits_texture.png-06c189c8380091288bc2e1a9a4e27f74.s3tc.ctex"]
 
 [params]
 

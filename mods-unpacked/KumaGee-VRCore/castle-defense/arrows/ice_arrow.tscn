@@ -288,7 +288,7 @@ color_ramp = SubResource("GradientTexture1D_eb4q0")
 albedo_color = Color(0, 0, 0, 1)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_hq7le"]
-radius = 1.2226415
+radius = 2.0
 
 [node name="blizzard_area" type="Node3D" unique_id=603795471]
 

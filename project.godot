@@ -93,6 +93,8 @@ debug_3={
 
 [layer_names]
 
+3d_render/layer_19="PC Only"
+3d_render/layer_20="VR Only"
 3d_physics/layer_1="Static World"
 3d_physics/layer_2="Dynamic World"
 3d_physics/layer_3="Pickable Objects"
@@ -102,6 +104,7 @@ debug_3={
 3d_physics/layer_7="EnemyHurtBox"
 3d_physics/layer_8="PowerUp"
 3d_physics/layer_9="Moveable"
+3d_physics/layer_16="Desktop Player"
 3d_physics/layer_17="Held Objects"
 3d_physics/layer_18="Player Hands"
 3d_physics/layer_19="Grab Handles"
