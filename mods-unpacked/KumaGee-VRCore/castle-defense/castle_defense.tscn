@@ -637,7 +637,7 @@ debug_color = Color(0.9933772, 0, 0.24780053, 1)
 
 [node name="VRSpace" parent="." unique_id=841158329 instance=ExtResource("10_a14ph")]
 
-[node name="XRPlayer" parent="VRSpace/SubViewport" parent_id_path=PackedInt32Array(841158329, 1709074553) index="2" unique_id=1404813673]
+[node name="XRPlayer" parent="VRSpace/SubViewport" parent_id_path=PackedInt32Array(841158329, 1709074553) index="3" unique_id=1404813673]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 2.4058523, 8.760864)
 
 [node name="characterMedium" parent="VRSpace/SubViewport/XRPlayer/PlayerBody/Body/characterMedium/Root/Skeleton3D" parent_id_path=PackedInt32Array(841158329, 1814812252, 588746209) index="0" unique_id=1147260388]
@@ -709,12 +709,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2884634, 9.864026)
 [node name="IceOrb" parent="VRSpace/ArrowTypes" unique_id=1158891516 instance=ExtResource("5_a14ph")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.0003528595, 0)
 element = 2
-cooldown_time = 2.0
 
 [node name="LightningOrb" parent="VRSpace/ArrowTypes" unique_id=759223450 instance=ExtResource("5_a14ph")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, -0.0003528595, 0)
 element = 3
-cooldown_time = 4.0
 
 [node name="BowGrip" parent="VRSpace" unique_id=777328390 instance=ExtResource("6_a14ph")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 3.308353, 8.449216)

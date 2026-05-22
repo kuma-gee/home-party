@@ -27,6 +27,7 @@ var _mobile_ready := false
 @export var element_buttons_container: Control
 @export var selected_label: Label
 @export var ready_button: Button
+@export var max_elements := 3
 
 func _ready() -> void:
 	for entry in ELEMENT_DATA:
@@ -59,12 +60,23 @@ func _toggle_element(element: Arrow.Element, btn: Button) -> void:
 	if element in selected_elements:
 		selected_elements.erase(element)
 		btn.button_pressed = false
-	else:
+	elif selected_elements.size() < max_elements:
 		selected_elements.append(element)
 		btn.button_pressed = true
+	else:
+		btn.button_pressed = false
 	
+	_update()
+
+func _update():
+	_set_disabled_for_unpressed(selected_elements.size() >= max_elements)
 	_update_selected_label()
 	ready_button.disabled = not _mobile_ready or selected_elements.is_empty()
+	
+func _set_disabled_for_unpressed(disable = false):
+	for child in element_buttons_container.get_children():
+		if child is Button and not child.button_pressed:
+			child.disabled = disable
 
 func _update_selected_label() -> void:
 	var emojis := " ".join(selected_elements.map(func(e): return ELEMENT_EMOJIS[e]))
