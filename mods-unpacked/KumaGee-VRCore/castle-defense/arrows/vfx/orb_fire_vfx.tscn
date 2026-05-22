@@ -1,0 +1,117 @@
+[gd_scene format=3 uid="uid://desy24bfeiij1"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_embers"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+
+[sub_resource type="Curve" id="Curve_embers_alpha"]
+_data = [Vector2(0, 0), 0.0, 3.0, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_embers_alpha"]
+curve = SubResource("Curve_embers_alpha")
+
+[sub_resource type="Gradient" id="Gradient_embers"]
+offsets = PackedFloat32Array(0, 0.3, 0.7, 1)
+colors = PackedColorArray(2, 1.2, 0, 1, 2, 0.5, 0, 1, 1.5, 0.2, 0, 0.6, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_embers"]
+gradient = SubResource("Gradient_embers")
+use_hdr = true
+
+[sub_resource type="Curve" id="Curve_embers_scale"]
+_data = [Vector2(0, 0.3), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.2), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_embers_scale"]
+curve = SubResource("Curve_embers_scale")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_embers"]
+emission_shape = 1
+emission_sphere_radius = 0.2
+angle_min = -180.0
+angle_max = 180.0
+direction = Vector3(0, 1, 0)
+spread = 35.0
+initial_velocity_min = 0.08
+initial_velocity_max = 0.18
+gravity = Vector3(0, 0.02, 0)
+damping_min = 0.1
+damping_max = 0.3
+scale_min = 0.4
+scale_max = 0.9
+scale_curve = SubResource("CurveTexture_embers_scale")
+color_ramp = SubResource("GradientTexture1D_embers")
+alpha_curve = SubResource("CurveTexture_embers_alpha")
+
+[sub_resource type="QuadMesh" id="QuadMesh_embers"]
+size = Vector2(0.04, 0.04)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_orbit"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+
+[sub_resource type="Curve" id="Curve_orbit_alpha"]
+_data = [Vector2(0, 0), 0.0, 2.0, 0, 0, Vector2(0.15, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -1.5, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_orbit_alpha"]
+curve = SubResource("Curve_orbit_alpha")
+
+[sub_resource type="Gradient" id="Gradient_orbit"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(2, 0.6, 0, 0.8, 1.5, 0.3, 0, 0.5, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_orbit"]
+gradient = SubResource("Gradient_orbit")
+use_hdr = true
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_orbit"]
+particle_flag_rotate_y = true
+emission_shape = 2
+emission_sphere_radius = 1.0
+spread = 10.0
+initial_velocity_min = 0.3
+initial_velocity_max = 0.5
+angular_velocity_min = 180.0
+angular_velocity_max = 360.0
+gravity = Vector3(0, 0, 0)
+damping_min = 0.5
+damping_max = 1.0
+scale_min = 0.5
+color_ramp = SubResource("GradientTexture1D_orbit")
+alpha_curve = SubResource("CurveTexture_orbit_alpha")
+
+[sub_resource type="QuadMesh" id="QuadMesh_orbit"]
+size = Vector2(0.03, 0.03)
+
+[node name="OrbFireVFX" type="Node3D" unique_id=128969020]
+
+[node name="Embers" type="GPUParticles3D" parent="." unique_id=1427395705]
+material_override = SubResource("StandardMaterial3D_embers")
+amount = 14
+lifetime = 1.8
+randomness = 0.5
+process_material = SubResource("ParticleProcessMaterial_embers")
+draw_pass_1 = SubResource("QuadMesh_embers")
+
+[node name="OrbitParticles" type="GPUParticles3D" parent="." unique_id=368847060]
+visible = false
+material_override = SubResource("StandardMaterial3D_orbit")
+lifetime = 1.2
+randomness = 0.8
+process_material = SubResource("ParticleProcessMaterial_orbit")
+draw_pass_1 = SubResource("QuadMesh_orbit")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=169878140]
+light_color = Color(1, 0.45, 0.05, 1)
+light_energy = 0.8
+omni_range = 0.5

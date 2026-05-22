@@ -1,6 +1,8 @@
 class_name ArrowElement
 extends Area3D
 
+signal element_changed(elem: Arrow.Element)
+
 const ELEMENT_SCENE = {
 	Arrow.Element.FIRE: preload("uid://bnh078xxhjtqf"),
 	Arrow.Element.ICE: preload("uid://c684oj6gh0t68"),
@@ -18,6 +20,7 @@ const ELEMENT_COLOR := {
 }
 
 @export var visual: MeshInstance3D
+@export var vfx: ElementVFX
 
 var is_fired := false
 var orb: ElementOrb
@@ -25,9 +28,12 @@ var element := Arrow.Element.NONE:
 	set(v):
 		element = v
 		update_visual(visual, element)
+		element_changed.emit(v)
+		if vfx: vfx.element = v
 
 func _ready() -> void:
 	self.element = element
+	if vfx: vfx.element = element
 	area_entered.connect(_on_area_entered)
 
 func _on_area_entered(area: Area3D) -> void:

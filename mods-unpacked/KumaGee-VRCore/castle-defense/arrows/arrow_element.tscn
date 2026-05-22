@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bw8hl7j3crysb" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/arrow_element.gd" id="1_mncll"]
 [ext_resource type="PackedScene" uid="uid://b5hphn8j5il8w" path="res://assets/castle-defense/weapons/arrow_tip.glb" id="2_belai"]
 [ext_resource type="Texture2D" uid="uid://bhtmbib4h42sn" path="res://assets/castle-defense/weapons/weapons_bits_texture.png" id="3_41yic"]
+[ext_resource type="Script" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/element_vfx.gd" id="4_vfx00"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_belai"]
 resource_local_to_scene = true
@@ -25,11 +26,12 @@ emission_energy_multiplier = 3.0
 [sub_resource type="SphereShape3D" id="SphereShape3D_me75u"]
 radius = 0.07
 
-[node name="ElementArea" type="Area3D" unique_id=1447031381 node_paths=PackedStringArray("visual")]
+[node name="ElementArea" type="Area3D" unique_id=1447031381 node_paths=PackedStringArray("visual", "vfx")]
 collision_layer = 0
 collision_mask = 128
 script = ExtResource("1_mncll")
 visual = NodePath("arrow_tip/arrow_A")
+vfx = NodePath("ElementVFX")
 
 [node name="arrow_tip" parent="." unique_id=1477406399 instance=ExtResource("2_belai")]
 
@@ -45,5 +47,8 @@ surface_material_override/0 = SubResource("StandardMaterial3D_mncll")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=578714361]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.470748)
 shape = SubResource("SphereShape3D_me75u")
+
+[node name="ElementVFX" type="Node3D" parent="." unique_id=202000001]
+script = ExtResource("4_vfx00")
 
 [editable path="arrow_tip"]

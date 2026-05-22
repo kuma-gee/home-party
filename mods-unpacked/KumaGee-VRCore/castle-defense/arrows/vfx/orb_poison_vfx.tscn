@@ -1,0 +1,114 @@
+[gd_scene format=3 uid="uid://cc4y14htiomp0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bubbles"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+
+[sub_resource type="Curve" id="Curve_bubbles_alpha"]
+_data = [Vector2(0, 0), 0.0, 2.0, 0, 0, Vector2(0.15, 0.8), 0.0, 0.0, 0, 0, Vector2(0.85, 0.6), 0.0, 0.0, 0, 0, Vector2(1, 0), -3.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_bubbles_alpha"]
+curve = SubResource("Curve_bubbles_alpha")
+
+[sub_resource type="Gradient" id="Gradient_bubbles"]
+offsets = PackedFloat32Array(0, 0.2, 0.7, 1)
+colors = PackedColorArray(0, 0, 0, 0, 0.3, 2, 0.5, 0.7, 0.15, 1.5, 0.3, 0.4, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_bubbles"]
+gradient = SubResource("Gradient_bubbles")
+use_hdr = true
+
+[sub_resource type="Curve" id="Curve_bubbles_scale"]
+_data = [Vector2(0, 0.4), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 1.2), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_bubbles_scale"]
+curve = SubResource("Curve_bubbles_scale")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_bubbles"]
+emission_shape = 1
+emission_sphere_radius = 0.2
+angle_min = -180.0
+angle_max = 180.0
+direction = Vector3(0, 1, 0)
+spread = 40.0
+initial_velocity_min = 0.05
+initial_velocity_max = 0.12
+gravity = Vector3(0, 0.015, 0)
+damping_min = 0.05
+damping_max = 0.1
+scale_min = 0.5
+scale_max = 1.2
+scale_curve = SubResource("CurveTexture_bubbles_scale")
+color_ramp = SubResource("GradientTexture1D_bubbles")
+alpha_curve = SubResource("CurveTexture_bubbles_alpha")
+
+[sub_resource type="QuadMesh" id="QuadMesh_bubbles"]
+size = Vector2(0.04, 0.04)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_miasma"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+
+[sub_resource type="Curve" id="Curve_miasma_alpha"]
+_data = [Vector2(0, 0), 0.0, 1.5, 0, 0, Vector2(0.3, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -1.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_miasma_alpha"]
+curve = SubResource("Curve_miasma_alpha")
+
+[sub_resource type="Gradient" id="Gradient_miasma"]
+offsets = PackedFloat32Array(0, 0.4, 1)
+colors = PackedColorArray(0, 0, 0, 0, 0.1, 0.8, 0.2, 0.25, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_miasma"]
+gradient = SubResource("Gradient_miasma")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_miasma"]
+emission_shape = 1
+emission_sphere_radius = 0.24
+direction = Vector3(0, 1, 0)
+spread = 70.0
+initial_velocity_min = 0.02
+initial_velocity_max = 0.06
+gravity = Vector3(0, 0.005, 0)
+damping_min = 0.02
+damping_max = 0.05
+scale_max = 2.0
+color_ramp = SubResource("GradientTexture1D_miasma")
+alpha_curve = SubResource("CurveTexture_miasma_alpha")
+
+[sub_resource type="QuadMesh" id="QuadMesh_miasma"]
+size = Vector2(0.06, 0.06)
+
+[node name="OrbPoisonVFX" type="Node3D" unique_id=1577689584]
+
+[node name="Bubbles" type="GPUParticles3D" parent="." unique_id=1458400489]
+material_override = SubResource("StandardMaterial3D_bubbles")
+amount = 12
+lifetime = 2.2
+randomness = 0.6
+process_material = SubResource("ParticleProcessMaterial_bubbles")
+draw_pass_1 = SubResource("QuadMesh_bubbles")
+
+[node name="Miasma" type="GPUParticles3D" parent="." unique_id=195506657]
+material_override = SubResource("StandardMaterial3D_miasma")
+lifetime = 3.0
+randomness = 0.9
+fixed_fps = 20
+process_material = SubResource("ParticleProcessMaterial_miasma")
+draw_pass_1 = SubResource("QuadMesh_miasma")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=2093874191]
+light_color = Color(0.15, 1, 0.3, 1)
+light_energy = 0.5
+omni_range = 0.4

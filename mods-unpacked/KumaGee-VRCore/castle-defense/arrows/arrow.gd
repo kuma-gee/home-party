@@ -2,6 +2,8 @@
 class_name Arrow
 extends XRToolsPickable
 
+signal element_changed(elem: Arrow.Element)
+
 enum Element { NONE, FIRE, ICE, LIGHTNING, WIND, POISON, VOID }
 
 @export var damage := 1
@@ -14,6 +16,7 @@ var fired := false
 func _ready() -> void:
 	super()
 	body_entered.connect(_on_body_entered)
+	element_area.element_changed.connect(func(e): element_changed.emit(e))
 	lifetime_timer.timeout.connect(queue_free)
 	dropped.connect(func(a):
 		if is_inside_tree():

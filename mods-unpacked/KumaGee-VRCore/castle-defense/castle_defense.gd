@@ -6,6 +6,7 @@ extends XRToolsSceneBase
 @export var skill_select: Control
 @export var orbs: Array[ElementOrb]
 @export var arrow_types: Node3D
+@export var quiver: Quiver
 
 @onready var play_time: Timer = $PlayTime
 
@@ -18,6 +19,12 @@ func _ready() -> void:
 	play_time.timeout.connect(_on_play_time_timeout)
 	gate_hurtbox.died.connect(_on_gate_died)
 	player_list.ready_changed.connect(_check_all_ready)
+	quiver.element_changed.connect(_on_element_changed)
+	_on_element_changed(Arrow.Element.NONE)
+
+func _on_element_changed(elem: Arrow.Element):
+	for orb in orbs:
+		orb.set_selected(orb.element == elem)
 
 func _on_game_start() -> void:
 	_element_select = xr_player.show_screen(element_select_scene, false) as ElementSelect
@@ -48,7 +55,7 @@ func _start_game() -> void:
 	for i in orbs.size():
 		var element := _vr_elements[i] if i < _vr_elements.size() else Arrow.Element.NONE
 		orbs[i].set_element(element)
-		orbs[i].visible = element != Arrow.Element.NONE
+		orbs[i].set_active(element != Arrow.Element.NONE)
 	arrow_types.show()
 
 func _on_gate_died() -> void:

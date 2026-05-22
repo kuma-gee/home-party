@@ -29,6 +29,12 @@ var _mobile_ready := false
 @export var ready_button: Button
 @export var max_elements := 3
 
+static func get_element_icon(element: Arrow.Element) -> String:
+	for entry in ELEMENT_EMOJIS.keys():
+		if entry == element:
+			return ELEMENT_EMOJIS[entry]
+	return "Unknown"
+
 func _ready() -> void:
 	for entry in ELEMENT_DATA:
 		var element: Arrow.Element = entry[0]
@@ -79,5 +85,5 @@ func _set_disabled_for_unpressed(disable = false):
 			child.disabled = disable
 
 func _update_selected_label() -> void:
-	var emojis := " ".join(selected_elements.map(func(e): return ELEMENT_EMOJIS[e]))
+	var emojis := " ".join(selected_elements.map(func(e): return get_element_icon(e)))
 	selected_label.text = "Selected: %s" % emojis

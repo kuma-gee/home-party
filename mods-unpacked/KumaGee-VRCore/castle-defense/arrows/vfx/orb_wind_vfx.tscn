@@ -1,0 +1,113 @@
+[gd_scene format=3 uid="uid://bir5t83kpai5f"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_swirl"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+
+[sub_resource type="Curve" id="Curve_swirl_alpha"]
+_data = [Vector2(0, 0), 0.0, 3.0, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(0.8, 0.8), 0.0, 0.0, 0, 0, Vector2(1, 0), -3.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_swirl_alpha"]
+curve = SubResource("Curve_swirl_alpha")
+
+[sub_resource type="Gradient" id="Gradient_swirl"]
+offsets = PackedFloat32Array(0, 0.3, 0.7, 1)
+colors = PackedColorArray(0, 0, 0, 0, 0.9, 0.95, 1, 0.5, 0.7, 0.75, 0.8, 0.35, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_swirl"]
+gradient = SubResource("Gradient_swirl")
+
+[sub_resource type="Curve" id="Curve_swirl_scale"]
+_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.3), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_swirl_scale"]
+curve = SubResource("Curve_swirl_scale")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_swirl"]
+particle_flag_rotate_y = true
+emission_shape = 2
+emission_sphere_radius = 0.2
+direction = Vector3(1, 0.2, 0)
+spread = 15.0
+initial_velocity_min = 0.2
+initial_velocity_max = 0.4
+angular_velocity_min = 200.0
+angular_velocity_max = 400.0
+gravity = Vector3(0, 0, 0)
+damping_min = 0.1
+damping_max = 0.3
+scale_min = 0.6
+scale_max = 1.2
+scale_curve = SubResource("CurveTexture_swirl_scale")
+color_ramp = SubResource("GradientTexture1D_swirl")
+alpha_curve = SubResource("CurveTexture_swirl_alpha")
+
+[sub_resource type="QuadMesh" id="QuadMesh_swirl"]
+size = Vector2(0.04, 0.04)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wisp"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+
+[sub_resource type="Curve" id="Curve_wisp_alpha"]
+_data = [Vector2(0, 0), 0.0, 2.0, 0, 0, Vector2(0.4, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_wisp_alpha"]
+curve = SubResource("Curve_wisp_alpha")
+
+[sub_resource type="Gradient" id="Gradient_wisp"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0, 0, 0, 0, 0.6, 0.65, 0.7, 0.3, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_wisp"]
+gradient = SubResource("Gradient_wisp")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_wisp"]
+particle_flag_rotate_y = true
+emission_shape = 1
+emission_sphere_radius = 0.22
+spread = 180.0
+flatness = 0.8
+initial_velocity_min = 0.1
+initial_velocity_max = 0.25
+angular_velocity_min = 150.0
+angular_velocity_max = 300.0
+gravity = Vector3(0, 0, 0)
+damping_min = 0.2
+damping_max = 0.5
+scale_min = 0.4
+scale_max = 0.8
+color_ramp = SubResource("GradientTexture1D_wisp")
+alpha_curve = SubResource("CurveTexture_wisp_alpha")
+
+[sub_resource type="QuadMesh" id="QuadMesh_wisp"]
+size = Vector2(0.05, 0.02)
+
+[node name="OrbWindVFX" type="Node3D" unique_id=1119810045]
+
+[node name="SwirlRing" type="GPUParticles3D" parent="." unique_id=1007164664]
+material_override = SubResource("StandardMaterial3D_swirl")
+amount = 14
+lifetime = 2.0
+randomness = 0.5
+process_material = SubResource("ParticleProcessMaterial_swirl")
+draw_pass_1 = SubResource("QuadMesh_swirl")
+
+[node name="Wisps" type="GPUParticles3D" parent="." unique_id=737344486]
+material_override = SubResource("StandardMaterial3D_wisp")
+amount = 16
+lifetime = 1.5
+randomness = 0.8
+process_material = SubResource("ParticleProcessMaterial_wisp")
+draw_pass_1 = SubResource("QuadMesh_wisp")

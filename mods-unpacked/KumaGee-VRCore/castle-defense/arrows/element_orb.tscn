@@ -1,8 +1,10 @@
 [gd_scene format=3 uid="uid://dvcr7erf7sa4h"]
 
 [ext_resource type="Script" uid="uid://c4y0mykjy4tl2" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/element_orb.gd" id="1_7bjo4"]
+[ext_resource type="Shader" uid="uid://dpok7fwpxk7yd" path="res://shader/element_orb.gdshader" id="2_kle6v"]
 [ext_resource type="Shader" uid="uid://cdfjqx6ei5653" path="res://shader/circle_inner.gdshader" id="2_ljjn1"]
-[ext_resource type="Script" uid="uid://b6t5ttmc37k1r" path="res://main/utils/circle_timer.gd" id="3_h6mlr"]
+[ext_resource type="Script" uid="uid://djbjvy83achjo" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/element_vfx.gd" id="2_vfx00"]
+[ext_resource type="FontFile" uid="uid://yty6kclrrpgr" path="res://LuckiestGuy-Regular.ttf" id="4_kle6v"]
 
 [sub_resource type="SphereShape3D" id="Shape_OrbFire"]
 radius = 0.2
@@ -11,15 +13,21 @@ radius = 0.2
 radius = 0.25
 height = 0.5
 
-[sub_resource type="StandardMaterial3D" id="Mat_FireOrb"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qnnlq"]
 resource_local_to_scene = true
-albedo_color = Color(1, 0.35, 0, 1)
-emission_enabled = true
-emission = Color(1, 0.35, 0, 1)
-emission_energy_multiplier = 2.0
+render_priority = 0
+shader = ExtResource("2_kle6v")
+shader_parameter/fill_level = 0.70000003325
+shader_parameter/base_color = Color(0.1, 0.1, 0.15, 1)
+shader_parameter/fill_color = Color(0, 0.8, 1, 0.8627451)
+shader_parameter/emission_color = Color(0, 0.7999997, 1, 0.8627451)
+shader_parameter/emission_strength = 10.0
+shader_parameter/edge_softness = 0.05
+shader_parameter/edge_glow_width = 0.08
+shader_parameter/edge_glow_strength = 5.0000002375
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_ljjn1"]
-viewport_path = NodePath("Sprite3D/SubViewport")
+viewport_path = NodePath("ActiveCircle/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_h6mlr"]
 resource_local_to_scene = true
@@ -33,12 +41,14 @@ shader_parameter/inner_color = Color(0, 0, 0, 0)
 shader_parameter/outline_width = 0.0
 shader_parameter/outline_color = Color(1, 1, 1, 1)
 
-[node name="FireOrb" type="Area3D" unique_id=107013500 node_paths=PackedStringArray("visual", "color_rect")]
+[node name="FireOrb" type="Area3D" unique_id=107013500 node_paths=PackedStringArray("visual", "color_rect", "label", "vfx")]
 collision_layer = 128
 collision_mask = 0
 script = ExtResource("1_7bjo4")
 visual = NodePath("OrbMesh")
-color_rect = NodePath("Sprite3D/SubViewport/ColorRect")
+color_rect = NodePath("ActiveCircle/SubViewport/ColorRect")
+label = NodePath("Label3D")
+vfx = NodePath("ElementVFX")
 
 [node name="OrbShape" type="CollisionShape3D" parent="." unique_id=305172659]
 shape = SubResource("Shape_OrbFire")
@@ -46,27 +56,36 @@ shape = SubResource("Shape_OrbFire")
 [node name="OrbMesh" type="MeshInstance3D" parent="." unique_id=1906309142]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 mesh = SubResource("Mesh_Orb")
-surface_material_override/0 = SubResource("Mat_FireOrb")
+surface_material_override/0 = SubResource("ShaderMaterial_qnnlq")
 
 [node name="CooldownTimer" type="Timer" parent="." unique_id=1983703085]
 one_shot = true
 
-[node name="Sprite3D" type="Sprite3D" parent="." unique_id=1331204660]
+[node name="ActiveCircle" type="Sprite3D" parent="." unique_id=1331204660]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
 billboard = 1
 texture = SubResource("ViewportTexture_ljjn1")
 
-[node name="SubViewport" type="SubViewport" parent="Sprite3D" unique_id=1347263593]
+[node name="SubViewport" type="SubViewport" parent="ActiveCircle" unique_id=1347263593]
 disable_3d = true
 transparent_bg = true
 size = Vector2i(256, 256)
 
-[node name="ColorRect" type="ColorRect" parent="Sprite3D/SubViewport" unique_id=1894593873 node_paths=PackedStringArray("timer")]
+[node name="ColorRect" type="ColorRect" parent="ActiveCircle/SubViewport" unique_id=1894593873]
 material = SubResource("ShaderMaterial_h6mlr")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("3_h6mlr")
-timer = NodePath("../../../CooldownTimer")
+
+[node name="Label3D" type="Label3D" parent="." unique_id=90735961]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.020471111, 0)
+layers = 524288
+billboard = 1
+double_sided = false
+text = "A"
+font = ExtResource("4_kle6v")
+
+[node name="ElementVFX" type="Node3D" parent="." unique_id=201000001]
+script = ExtResource("2_vfx00")

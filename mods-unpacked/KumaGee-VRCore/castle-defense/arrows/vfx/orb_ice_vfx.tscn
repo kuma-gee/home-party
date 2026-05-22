@@ -1,0 +1,115 @@
+[gd_scene format=3 uid="uid://d3gdq5pryn0xo"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_crystals"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+
+[sub_resource type="Curve" id="Curve_crystals_alpha"]
+_data = [Vector2(0, 0), 0.0, 2.5, 0, 0, Vector2(0.25, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -1.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_crystals_alpha"]
+curve = SubResource("Curve_crystals_alpha")
+
+[sub_resource type="Gradient" id="Gradient_crystals"]
+offsets = PackedFloat32Array(0, 0.4, 0.8, 1)
+colors = PackedColorArray(1.5, 1.5, 2, 0.9, 0.6, 1.2, 2, 0.7, 0.3, 0.8, 1.5, 0.3, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_crystals"]
+gradient = SubResource("Gradient_crystals")
+use_hdr = true
+
+[sub_resource type="Curve" id="Curve_crystals_scale"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.6, 1.2), 0.0, 0.0, 0, 0, Vector2(1, 0.3), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_crystals_scale"]
+curve = SubResource("Curve_crystals_scale")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_crystals"]
+emission_shape = 1
+emission_sphere_radius = 0.22
+angle_min = -180.0
+angle_max = 180.0
+direction = Vector3(0, 1, 0)
+spread = 60.0
+initial_velocity_min = 0.04
+initial_velocity_max = 0.1
+gravity = Vector3(0, -0.01, 0)
+damping_min = 0.05
+damping_max = 0.15
+scale_min = 0.5
+scale_max = 1.2
+scale_curve = SubResource("CurveTexture_crystals_scale")
+color_ramp = SubResource("GradientTexture1D_crystals")
+alpha_curve = SubResource("CurveTexture_crystals_alpha")
+
+[sub_resource type="QuadMesh" id="QuadMesh_crystals"]
+size = Vector2(0.035, 0.035)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_frost"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+
+[sub_resource type="Curve" id="Curve_frost_alpha"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.5, 0.8), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_frost_alpha"]
+curve = SubResource("Curve_frost_alpha")
+
+[sub_resource type="Gradient" id="Gradient_frost"]
+offsets = PackedFloat32Array(0, 0.3, 1)
+colors = PackedColorArray(2, 2, 2.5, 1, 0.5, 1, 2, 0.5, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_frost"]
+gradient = SubResource("Gradient_frost")
+use_hdr = true
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_frost"]
+emission_shape = 1
+emission_sphere_radius = 0.18
+spread = 180.0
+initial_velocity_min = 0.15
+initial_velocity_max = 0.3
+gravity = Vector3(0, 0, 0)
+damping_min = 1.5
+damping_max = 2.5
+scale_min = 0.3
+scale_max = 0.7
+color_ramp = SubResource("GradientTexture1D_frost")
+alpha_curve = SubResource("CurveTexture_frost_alpha")
+
+[sub_resource type="QuadMesh" id="QuadMesh_frost"]
+size = Vector2(0.025, 0.025)
+
+[node name="OrbIceVFX" type="Node3D" unique_id=1557909226]
+
+[node name="CrystalDrift" type="GPUParticles3D" parent="." unique_id=428989596]
+material_override = SubResource("StandardMaterial3D_crystals")
+amount = 12
+lifetime = 2.5
+randomness = 0.7
+process_material = SubResource("ParticleProcessMaterial_crystals")
+draw_pass_1 = SubResource("QuadMesh_crystals")
+
+[node name="FrostBurst" type="GPUParticles3D" parent="." unique_id=1035223795]
+material_override = SubResource("StandardMaterial3D_frost")
+lifetime = 0.8
+explosiveness = 0.7
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_frost")
+draw_pass_1 = SubResource("QuadMesh_frost")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=763403738]
+light_color = Color(0.3, 0.8, 1, 1)
+light_energy = 0.6
+omni_range = 0.5
