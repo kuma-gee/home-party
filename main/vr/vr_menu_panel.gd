@@ -3,16 +3,19 @@ class_name VRMenuPanel
 extends Node3D
 
 signal resume_pressed
+signal reset_space_pressed
 signal settings_pressed
 signal quit_pressed
 
 enum ButtonType {
 	RESUME,
 	SETTINGS,
+	RESET_SPACE,
 	QUIT
 }
 
 @export var _button_resume: XRMenuButton
+@export var _button_reset_space: XRMenuButton
 @export var _button_settings: XRMenuButton
 @export var _button_quit: XRMenuButton
 
@@ -23,6 +26,10 @@ func _ready() -> void:
 	if _button_resume:
 		_button_resume.pointer_event.connect(_on_button_pointer_event.bind(ButtonType.RESUME))
 		_setup_button_visuals(_button_resume)
+	
+	if _button_reset_space:
+		_button_reset_space.pointer_event.connect(_on_button_pointer_event.bind(ButtonType.RESET_SPACE))
+		_setup_button_visuals(_button_reset_space)
 	
 	if _button_settings:
 		_button_settings.pointer_event.connect(_on_button_pointer_event.bind(ButtonType.SETTINGS))
@@ -85,5 +92,7 @@ func _on_button_pressed(button_type: ButtonType) -> void:
 			resume_pressed.emit()
 		ButtonType.SETTINGS:
 			settings_pressed.emit()
+		ButtonType.RESET_SPACE:
+			reset_space_pressed.emit()
 		ButtonType.QUIT:
 			quit_pressed.emit()

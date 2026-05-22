@@ -29,6 +29,9 @@ render_priority = 50
 shader = ExtResource("3_2gosq")
 shader_parameter/albedo = Color(0, 0, 0, 0)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_icwxr"]
+size = Vector3(50, 0.5, 50)
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vx6d0"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_01vt5"]
@@ -120,7 +123,7 @@ size = Vector3(4, 3, 0.02)
 [sub_resource type="ViewportTexture" id="ViewportTexture_tic4c"]
 viewport_path = NodePath("SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2/Viewport")
 
-[node name="VRSpace" type="Node3D" unique_id=841158329 node_paths=PackedStringArray("origin", "camera", "pause_menu", "overlay_mesh", "menu_function", "vr_screen", "desktop_screen")]
+[node name="VRSpace" type="Node3D" unique_id=841158329 node_paths=PackedStringArray("origin", "camera", "pause_menu", "overlay_mesh", "menu_function", "reset_area", "vr_screen", "desktop_screen")]
 process_mode = 3
 script = ExtResource("1_2vxk7")
 origin = NodePath("SubViewport/XRPlayer")
@@ -128,6 +131,7 @@ camera = NodePath("SubViewport/XRPlayer/XRCamera3D")
 pause_menu = NodePath("CanvasLayer/PauseMenu")
 overlay_mesh = NodePath("SubViewport/OverlayMesh")
 menu_function = NodePath("SubViewport/XRPlayer/LeftHand/FunctionMenu")
+reset_area = NodePath("SubViewport/ResetArea")
 vr_screen = NodePath("SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2")
 desktop_screen = NodePath("DesktopGameover")
 gameover_scene = ExtResource("18_icwxr")
@@ -148,6 +152,14 @@ mesh = SubResource("QuadMesh_0yltu")
 skeleton = NodePath("../SpaceFade")
 surface_material_override/0 = SubResource("ShaderMaterial_f1ooe")
 script = ExtResource("4_0yltu")
+
+[node name="ResetArea" type="Area3D" parent="SubViewport" unique_id=1712400852]
+collision_layer = 0
+collision_mask = 524288
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewport/ResetArea" unique_id=610982561]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -7.6620073, 0)
+shape = SubResource("BoxShape3D_icwxr")
 
 [node name="SpaceFade" parent="SubViewport" unique_id=639972210 instance=ExtResource("3_wg2ng")]
 

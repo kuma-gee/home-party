@@ -1,6 +1,7 @@
 class_name VRSpace
 extends Node
 
+signal center_player(offset: Vector3)
 signal restart_game()
 signal back_to_home()
 
@@ -9,6 +10,7 @@ signal back_to_home()
 @export var pause_menu: Control
 @export var overlay_mesh: OverlayMesh
 @export var menu_function: XRToolsFunctionMenu
+@export var reset_area: Area3D
 
 @export_category("Gameover")
 @export var vr_screen: XRToolsViewport2DIn3D
@@ -20,16 +22,22 @@ var was_paused := false
 func _ready() -> void:
 	menu_function.menu_opened.connect(_connect_menu)
 	menu_function.menu_closed.connect(_on_menu_closed)
+	reset_area.body_entered.connect(func(_b): reset_space())
 	vr_screen.hide()
 	desktop_screen.hide()
 	pause_menu.hide()
 
 func _connect_menu(menu: VRMenuPanel):
 	menu.quit_pressed.connect(func(): back_to_home.emit())
+	menu.reset_space_pressed.connect(func(): reset_space())
 	overlay_mesh.show_overlay()
 	pause_menu.show()
 	was_paused = get_tree().paused
 	get_tree().paused = true
+
+func reset_space(offset: Vector3 = Vector3.ZERO):
+	offset.y = 0
+	center_player.emit(offset)
 
 func _on_menu_closed():
 	pause_menu.hide()
