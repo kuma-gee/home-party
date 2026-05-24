@@ -5,6 +5,7 @@
 - [Blunderbass](https://sketchfab.com/3d-models/stylized-blunderbuss-hand-painted-f3ef63310a7047a39de58cff734f56c8)
 - [Halloween](https://kaylousberg.itch.io/halloween-bits)
 - [Skeletons](https://kaylousberg.itch.io/kaykit-skeletons)
+- [Living Room](https://goryana.itch.io/2d-and-3d-living-room-game-assets)
 
 - [Font](https://fonts.google.com/specimen/Luckiest+Guy?categoryFilters=Feeling:%2FExpressive%2FPlayful&preview.script=Latn&preview.lang=ace_Latn)
 

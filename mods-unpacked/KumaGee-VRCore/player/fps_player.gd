@@ -35,18 +35,22 @@ enum Skill {
 @export var min_respawn_time := 3.0
 @export var max_respawn_time := 6.0
 @export var explosion_respawn_time := 2.0
+@export var death_sound: RandomizedSfx
 
 @export_category("Animation")
 @export var animation: AnimationPlayer
 @export var idle_anim := "Idle_B" 
 @export var running_anim := "Running_A"
 @export var spawn_anim := "Spawn_Ground"
+@export var dash_anim := "Dash"
+@export var death_anim := "Death_A"
 
 @onready var ground_spring_cast: GroundSpringCast = $GroundSpringCast
 @onready var hurtbox: HurtBox = $Hurtbox
 @onready var freeze_timer: Timer = $FreezeTimer
 @onready var slow_restore_timer: Timer = $SlowRestoreTimer
 @onready var poison_timer: Timer = $PoisonTimer
+@onready var death_timer: Timer = $DeathTimer
 
 var game_client: ClientController
 var player_num := 0
@@ -55,13 +59,15 @@ var respawn_time := 0.0
 var is_spawning := true
 var firepower := 1
 
+var is_dead := false
 var is_dashing := false
 var is_shielded := false
 var skill = Skill.NONE
 var skill_cooldown_timer: Timer
 
 func _ready():
-	poison_timer.timeout.connect(func(): on_hurtbox_died())
+	death_timer.timeout.connect(_cleanup)
+	poison_timer.timeout.connect(on_hurtbox_died)
 	color_ring.set_color(PlayerList.get_color(player_num))
 	hurtbox.died.connect(on_hurtbox_died)
 	slow_restore_timer.timeout.connect(func(): slow = 0.0)
@@ -98,7 +104,15 @@ func on_hurtbox_died():
 		respawn_time = _compute_respawn_delay_for_count(PlayerManager.playing_clients.size())
 
 	snap_zone.drop_object()
+	animation.play(death_anim)
+	death_sound.play_randomized()
+	is_dead = true
+	velocity = Vector3.ZERO
+	death_timer.start()
 	died.emit()
+
+func _cleanup():
+	queue_free()
 
 func _on_pickup(obj: XRToolsPickable):
 	if obj is Bomb:
@@ -116,16 +130,11 @@ func apply_slow(slow_amount: float):
 	slow = slow_amount
 	slow_restore_timer.start()
 
+func can_control():
+	return not is_dead and not is_dashing and not is_shielded and not is_spawning and freeze_timer.is_stopped()
+
 func _physics_process(delta):
-	if is_shielded:
-		velocity = Vector3.ZERO
-		return
-
-	if not freeze_timer.is_stopped() or is_spawning or not is_instance_valid(game_client):
-		if not is_dashing:
-			return
-
-	if is_dashing:
+	if not can_control():
 		ground_spring_cast.apply_gravity(self, delta)
 		move_and_slide()
 		return
@@ -164,6 +173,8 @@ func push_other_player(other_player: FPSPlayer) -> void:
 		other_player.velocity.z = push_direction.z * push_force
 
 func activate_skill():
+	if not can_control(): return
+	
 	match skill:
 		Skill.DASH:
 			dash()
@@ -189,7 +200,7 @@ func dash() -> void:
 	velocity.x = dir3.x * dash_speed
 	velocity.z = dir3.z * dash_speed
 
-	animation.play(running_anim)
+	animation.play(dash_anim)
 	dash_particles.emitting = true
 	dash_sfx.play()
 	await get_tree().create_timer(dash_time).timeout
@@ -210,6 +221,7 @@ func shield() -> void:
 		return
 	
 	is_shielded = true
+	animation.play(idle_anim)
 	hurtbox.invulnerable(shield_duration)
 	tween_shield(0.0, 1.0)
 	await get_tree().create_timer(shield_duration).timeout

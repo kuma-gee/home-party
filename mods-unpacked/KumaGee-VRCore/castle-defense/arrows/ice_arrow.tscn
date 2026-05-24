@@ -584,6 +584,7 @@ radius = 1.5
 [node name="blizzard_area" type="Node3D" unique_id=603795471]
 
 [node name="CleanupTimer" type="Timer" parent="." unique_id=1452428118]
+wait_time = 8.0
 one_shot = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=865820762]
@@ -667,6 +668,7 @@ material_override = SubResource("StandardMaterial3D_0wuco")
 mesh = SubResource("CylinderMesh_met35")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1798244645]
+visible = false
 layers = 524289
 material_override = SubResource("StandardMaterial3D_6bwcj")
 size = Vector3(3.0419922, 0.02758789, 3.0292969)

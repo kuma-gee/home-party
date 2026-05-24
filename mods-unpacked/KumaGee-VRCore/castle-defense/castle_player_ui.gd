@@ -73,7 +73,6 @@ func spawn_player():
 		alive = false
 		StatsManager.record_death(game_client.uuid)
 		respawn_timer.start(player.respawn_time)
-		player.queue_free()
 	)
 	player.skill_activated.connect(func(): 
 		var cooldown = dash_cooldown if selected_skill == FPSPlayer.Skill.DASH else shield_cooldown
