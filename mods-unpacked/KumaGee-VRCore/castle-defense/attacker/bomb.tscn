@@ -134,6 +134,8 @@ power_sprite = NodePath("Sprite3D")
 explode_timer = NodePath("ExplodeTimer")
 fire_vfx = NodePath("BombVFX")
 explosion_vfx = ExtResource("6_vljp1")
+pulse_speed_min = 2.0
+pulse_speed_max = 10.0
 second_hand_grab = 1
 
 [node name="BombShape" type="CollisionShape3D" parent="." unique_id=1788901368]
