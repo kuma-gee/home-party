@@ -20,7 +20,7 @@ jobs:
       matrix:
         platform: [linux, windows]
     steps:
-      - uses: kuma-gee/action-godot-template@v1
+      - uses: kuma-gee/action-godot-template@v1.1
         with:
           version: ${{ inputs.version }}
           platform: ${{ matrix.platform }}
