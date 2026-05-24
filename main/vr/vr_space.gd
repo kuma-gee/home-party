@@ -41,8 +41,9 @@ func reset_space(offset: Vector3 = Vector3.ZERO):
 
 func _on_menu_closed():
 	pause_menu.hide()
-	overlay_mesh.hide_overlay()
 	get_tree().paused = was_paused
+	if not get_tree().paused:
+		overlay_mesh.hide_overlay()
 
 func gameover(msg: String):
 	var screen = show_screen(gameover_scene, true) as GameoverPanel

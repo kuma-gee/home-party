@@ -149,7 +149,6 @@ render_target_update_mode = 4
 visible = false
 cast_shadow = 0
 mesh = SubResource("QuadMesh_0yltu")
-skeleton = NodePath("../SpaceFade")
 surface_material_override/0 = SubResource("ShaderMaterial_f1ooe")
 script = ExtResource("4_0yltu")
 
