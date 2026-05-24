@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://j20efs01x4vh" path="res://assets/particles/shapes/tornado.glb" id="1_sglr4"]
 [ext_resource type="Shader" uid="uid://chdpydvkec36m" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/tornado.tres" id="2_0g788"]
 [ext_resource type="Texture2D" uid="uid://coikxo5mcrjkl" path="res://assets/particles/T_Noise1_nk.png" id="3_v7lbj"]
-[ext_resource type="Shader" uid="uid://bgf21trwrtlwv" path="res://vfx/basic_dissolve.tres" id="4_d7k0l"]
+[ext_resource type="Shader" uid="uid://bgf21trwrtlwv" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/vfx/basic_dissolve.tres" id="4_d7k0l"]
 [ext_resource type="Texture2D" uid="uid://62hkfjpmgrkk" path="res://assets/particles/T_FirePanningCyl45.png" id="5_rfhuq"]
 [ext_resource type="ArrayMesh" uid="uid://cpngxjtkb7f5q" path="res://assets/particles/shapes/tornado_waves.obj" id="6_jmm1g"]
 [ext_resource type="Script" uid="uid://7cief0kwceod" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/pull_area.gd" id="7_0g788"]

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://divwtjoh71sg2"]
 
 [ext_resource type="Script" uid="uid://crt7bthukwv1x" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/poison_arrow.gd" id="1_cgkay"]
-[ext_resource type="Script" uid="uid://bkrembvwcg1br" path="res://vfx/PlayParticleSystems.gd" id="1_su17v"]
+[ext_resource type="Script" uid="uid://bkrembvwcg1br" path="res://main/utils/PlayParticleSystems.gd" id="1_su17v"]
 [ext_resource type="Texture2D" uid="uid://dys85apxk1ya6" path="res://assets/particles/T_Noise_Wfk14.png" id="4_jwoet"]
 [ext_resource type="Texture2D" uid="uid://c1av1im8iolgp" path="res://assets/particles/T_Noise_Wf0.png" id="7_xstdt"]
 [ext_resource type="ArrayMesh" uid="uid://d1bmmq7bguglq" path="res://assets/particles/shapes/sphere_flat.obj" id="8_yufeq"]
@@ -9,7 +9,7 @@
 [ext_resource type="ArrayMesh" uid="uid://igxfevcgy1pl" path="res://assets/particles/shapes/half_sphere.obj" id="10_it32a"]
 [ext_resource type="Texture2D" uid="uid://ce37fcn8ptva0" path="res://assets/particles/course/Circle.png" id="10_ul8oa"]
 [ext_resource type="AudioStream" uid="uid://vp4d2sb4rjg0" path="res://assets/sound/sfx/パパッ.wav" id="11_3fw8i"]
-[ext_resource type="Shader" uid="uid://d0cyp5rcja8wx" path="res://vfx/aoe_cylinder.tres" id="11_u3aig"]
+[ext_resource type="Shader" uid="uid://d0cyp5rcja8wx" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/vfx/aoe_cylinder.tres" id="11_u3aig"]
 [ext_resource type="Texture2D" uid="uid://bbww05n0ma6xq" path="res://assets/particles/course/SphereWarp.png" id="12_43746"]
 
 [sub_resource type="Animation" id="Animation_55ljn"]

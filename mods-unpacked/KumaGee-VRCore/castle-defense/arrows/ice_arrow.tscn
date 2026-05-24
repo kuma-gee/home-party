@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://c684oj6gh0t68"]
 
 [ext_resource type="AudioStream" uid="uid://c8cg2kpfrq4ga" path="res://assets/sound/sfx/氷魔法で凍結.mp3" id="2_e0gft"]
-[ext_resource type="Script" uid="uid://bkrembvwcg1br" path="res://vfx/PlayParticleSystems.gd" id="3_j8plv"]
-[ext_resource type="Shader" uid="uid://dpqsia4sjvs85" path="res://vfx/streak_vfx.tres" id="4_0wuco"]
+[ext_resource type="Script" uid="uid://bkrembvwcg1br" path="res://main/utils/PlayParticleSystems.gd" id="3_j8plv"]
+[ext_resource type="Shader" uid="uid://dpqsia4sjvs85" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/vfx/streak_vfx.tres" id="4_0wuco"]
 [ext_resource type="Texture2D" uid="uid://ce37fcn8ptva0" path="res://assets/particles/course/Circle.png" id="5_p7thp"]
 [ext_resource type="Texture2D" uid="uid://b65tr0wpntmms" path="res://assets/particles/T_texr41.png" id="6_met35"]
 [ext_resource type="Script" uid="uid://dvbrpi2xb72fg" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/freeze_area.gd" id="8_e0gft"]

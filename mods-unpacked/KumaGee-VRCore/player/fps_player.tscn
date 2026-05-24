@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://0l06iplwx2uw" path="res://mods-unpacked/KumaGee-VRCore/player/fps_player.gd" id="1_krq8x"]
 [ext_resource type="PackedScene" uid="uid://b6rtcjea56cep" path="res://assets/castle-defense/weapons/skeleton.glb" id="2_yjct3"]
-[ext_resource type="PackedScene" uid="uid://7r3jp0vbieft" path="res://vfx/shield_vfx.tscn" id="3_151xx"]
+[ext_resource type="PackedScene" uid="uid://7r3jp0vbieft" path="res://mods-unpacked/KumaGee-VRCore/player/shield_vfx.tscn" id="3_151xx"]
 [ext_resource type="Shader" uid="uid://ddw0mekly5k6g" path="res://shader/shield.gdshader" id="4_0o2vu"]
-[ext_resource type="PackedScene" uid="uid://boqn5ounc0ori" path="res://vfx/dash_vfx.tscn" id="4_shiud"]
+[ext_resource type="PackedScene" uid="uid://boqn5ounc0ori" path="res://mods-unpacked/KumaGee-VRCore/player/dash_vfx.tscn" id="4_shiud"]
 [ext_resource type="Texture2D" uid="uid://ue51p6m1lno" path="res://assets/particles/T_Noise_W5i.png" id="5_0o2vu"]
 [ext_resource type="Texture2D" uid="uid://pvw6v2gomj2s" path="res://assets/particles/hexagon_smooth.png" id="5_ovucc"]
 [ext_resource type="Script" uid="uid://crtkl6ldhona6" path="res://main/utils/hurt_box.gd" id="6_3dsh6"]

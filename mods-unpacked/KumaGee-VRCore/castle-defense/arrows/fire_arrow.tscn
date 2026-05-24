@@ -4,9 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://dbm5r0ya35uqy" path="res://assets/particles/explosion_decal_emission.png" id="4_nk4vk"]
 [ext_resource type="ArrayMesh" uid="uid://d1bmmq7bguglq" path="res://assets/particles/shapes/sphere_flat.obj" id="6_xpt46"]
 [ext_resource type="Script" uid="uid://dgs3dj8la0mk0" path="res://main/utils/sfx_player.gd" id="7_onq34"]
-[ext_resource type="Shader" uid="uid://dpqsia4sjvs85" path="res://vfx/streak_vfx.tres" id="7_p5ont"]
+[ext_resource type="Shader" uid="uid://dpqsia4sjvs85" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/vfx/streak_vfx.tres" id="7_p5ont"]
 [ext_resource type="Texture2D" uid="uid://ce37fcn8ptva0" path="res://assets/particles/course/Circle.png" id="8_hl031"]
-[ext_resource type="Script" uid="uid://bkrembvwcg1br" path="res://vfx/PlayParticleSystems.gd" id="8_jc8tt"]
+[ext_resource type="Script" uid="uid://bkrembvwcg1br" path="res://main/utils/PlayParticleSystems.gd" id="8_jc8tt"]
 [ext_resource type="Script" uid="uid://cfqyv12dohlh7" path="res://main/utils/hit_box.gd" id="8_lyvqq"]
 [ext_resource type="AudioStream" uid="uid://dxta3ng0pxsil" path="res://assets/sound/sfx/爆発3.mp3" id="8_mipks"]
 

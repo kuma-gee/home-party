@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://wh6ia3jc5jdu"]
 
-[ext_resource type="Script" uid="uid://bkrembvwcg1br" path="res://vfx/PlayParticleSystems.gd" id="1_1lgyv"]
+[ext_resource type="Script" uid="uid://bkrembvwcg1br" path="res://main/utils/PlayParticleSystems.gd" id="1_1lgyv"]
 [ext_resource type="Texture2D" uid="uid://dpy74naxllt47" path="res://assets/particles/flare_01.png" id="2_lv1ow"]
 [ext_resource type="Texture2D" uid="uid://ciespxrctvqsp" path="res://assets/particles/explosion_decal.png" id="3_ax7ia"]
 [ext_resource type="Texture2D" uid="uid://dbm5r0ya35uqy" path="res://assets/particles/explosion_decal_emission.png" id="4_7tf5t"]

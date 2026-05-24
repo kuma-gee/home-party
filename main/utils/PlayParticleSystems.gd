@@ -44,7 +44,7 @@ func _find_particles():
 	var existing_delays = delays.duplicate()  # Preserve existing delays
 
 	for child in get_children():
-		if child is GPUParticles3D or child is HitBox or child is ParticleCallback or child is Timer:
+		if child is GPUParticles3D or child is HitBox or child is Timer:
 			particle_systems.append(child)
 			if not existing_delays.has(child.name):
 				existing_delays[child.name] = 0.0  # Assign default delay
@@ -79,9 +79,6 @@ func _playDelay(ps: Node, delay: float):
 		await get_tree().create_timer(delay).timeout
 		ps.show()
 		ps.hit()
-	elif ps is ParticleCallback:
-		await get_tree().create_timer(delay).timeout
-		ps.run()
 	elif ps is Timer:
 		await get_tree().create_timer(delay).timeout
 		ps.start()
