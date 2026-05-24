@@ -3,9 +3,9 @@
 [ext_resource type="Script" uid="uid://bw8hl7j3crysb" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/arrow_element.gd" id="1_mncll"]
 [ext_resource type="PackedScene" uid="uid://b5hphn8j5il8w" path="res://assets/castle-defense/weapons/arrow_tip.glb" id="2_belai"]
 [ext_resource type="Texture2D" uid="uid://bhtmbib4h42sn" path="res://assets/castle-defense/weapons/weapons_bits_texture.png" id="3_41yic"]
-[ext_resource type="Script" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/element_vfx.gd" id="4_vfx00"]
+[ext_resource type="Script" uid="uid://djbjvy83achjo" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/element_vfx.gd" id="4_vfx00"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_belai"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_41yic"]
 resource_local_to_scene = true
 albedo_texture = ExtResource("3_41yic")
 emission_enabled = true
@@ -35,8 +35,8 @@ vfx = NodePath("ElementVFX")
 
 [node name="arrow_tip" parent="." unique_id=1477406399 instance=ExtResource("2_belai")]
 
-[node name="arrow_A" parent="arrow_tip" index="0" unique_id=1028177088]
-surface_material_override/0 = SubResource("StandardMaterial3D_belai")
+[node name="arrow_A" parent="arrow_tip" index="0" unique_id=1007366287]
+surface_material_override/0 = SubResource("StandardMaterial3D_41yic")
 
 [node name="ElementIndicator" type="MeshInstance3D" parent="." unique_id=347226210]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)

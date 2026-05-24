@@ -8,6 +8,7 @@ signal exploded()
 @export var firepower_label: Label
 @export var power_sprite: Sprite3D
 @export var explode_timer: Timer
+@export var fire_vfx: Node3D
 
 @onready var explode_trigger: Area3D = $ExplodeTrigger
 @onready var hit_box: HitBox = $HitBox
@@ -25,12 +26,14 @@ func _ready():
 	picked_up.connect(func(_p):
 		lighting_fuse.play()
 		power_sprite.show()
+		fire_vfx.show()
 		if explode_timer:
 			explode_timer.start()
 	)
 	explode_timer.timeout.connect(func(): explode())
 	dropped.connect(func(_p): queue_free())
 	power_sprite.hide()
+	fire_vfx.hide()
 
 func explode(reached = false) -> void:
 	if has_exploded: return

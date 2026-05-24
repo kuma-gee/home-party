@@ -8,6 +8,8 @@
 [ext_resource type="ArrayMesh" uid="uid://cpngxjtkb7f5q" path="res://assets/particles/shapes/tornado_waves.obj" id="6_jmm1g"]
 [ext_resource type="Script" uid="uid://7cief0kwceod" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/pull_area.gd" id="7_0g788"]
 [ext_resource type="Script" uid="uid://d07c57v65yavj" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/move_direction.gd" id="8_v7lbj"]
+[ext_resource type="AudioStream" uid="uid://cxj28x7f6w3da" path="res://assets/sound/sfx/風が吹く4.mp3" id="9_d7k0l"]
+[ext_resource type="Script" uid="uid://b4woodkg2nup8" path="res://main/utils/randomized_sfx.gd" id="10_rfhuq"]
 
 [sub_resource type="Gradient" id="Gradient_eve0y"]
 offsets = PackedFloat32Array(0, 0.218868, 0.449057, 1)
@@ -25,7 +27,7 @@ colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1)
 gradient = SubResource("Gradient_8eafj")
 fill_from = Vector2(1, 1)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_eve0y"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d7k0l"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("2_0g788")
@@ -125,6 +127,30 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [1.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AudioStreamPlayer:volume_db")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-50.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("AudioStreamPlayer:playing")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
 }
 
 [sub_resource type="Animation" id="Animation_8eafj"]
@@ -235,6 +261,30 @@ tracks/4/keys = {
 "method": &"start"
 }]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("AudioStreamPlayer:volume_db")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-50.0, -10.0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("AudioStreamPlayer:playing")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="Animation" id="Animation_0g788"]
 resource_name = "stop"
@@ -289,6 +339,30 @@ tracks/3/keys = {
 "method": &"queue_free"
 }]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AudioStreamPlayer:volume_db")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-10.0, -50.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("AudioStreamPlayer:playing")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_eve0y"]
 _data = {
@@ -307,7 +381,7 @@ radius = 5.0
 
 [node name="Cylinder" parent="tornado" index="0" unique_id=460836199]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
-material_override = SubResource("ShaderMaterial_eve0y")
+material_override = SubResource("ShaderMaterial_d7k0l")
 cast_shadow = 0
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="tornado" unique_id=463829666]
@@ -351,6 +425,13 @@ one_shot = true
 script = ExtResource("8_v7lbj")
 direction = Vector3(0, 0, 1)
 node = NodePath("..")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer3D" parent="." unique_id=689652539]
+stream = ExtResource("9_d7k0l")
+volume_db = -50.0
+pitch_scale = 0.8
+script = ExtResource("10_rfhuq")
+max_pitch = 1.1
 
 [connection signal="timeout" from="Lifetime" to="AnimationPlayer" method="play" binds= ["stop"]]
 

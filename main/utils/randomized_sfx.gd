@@ -1,3 +1,4 @@
+@tool
 class_name RandomizedSfx
 extends AudioStreamPlayer3D
 

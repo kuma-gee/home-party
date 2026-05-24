@@ -17,6 +17,14 @@ height = 0.4
 albedo_color = Color(0.15, 0.15, 0.15, 1)
 roughness = 0.6
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_4a37y"]
+top_radius = 0.01
+bottom_radius = 0.01
+height = 0.07
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vljp1"]
+albedo_color = Color(0.47058824, 0.34509805, 0.07450981, 1)
+
 [sub_resource type="SphereShape3D" id="SphereShape3D_4h28i"]
 radius = 0.76269895
 
@@ -29,7 +37,92 @@ viewport_path = NodePath("Sprite3D/SubViewport")
 [sub_resource type="SphereShape3D" id="SphereShape3D_4a37y"]
 radius = 0.79229516
 
-[node name="Bomb" type="RigidBody3D" unique_id=2006338049 node_paths=PackedStringArray("firepower_label", "power_sprite", "explode_timer") groups=["bomb"]]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4a37y"]
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+
+[sub_resource type="Gradient" id="Gradient_4a37y"]
+offsets = PackedFloat32Array(0, 0.09762533, 0.25329816, 1)
+colors = PackedColorArray(2.454227, 1.7803429, 0, 1, 1.353256, 0.7080834, 0, 1, 1.353256, 0.30763152, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_vljp1"]
+gradient = SubResource("Gradient_4a37y")
+
+[sub_resource type="Curve" id="Curve_4a37y"]
+_data = [Vector2(0, 0.37713474), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_vljp1"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_45ehh"]
+_data = [Vector2(0, 0.5189754), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_hfijg"]
+curve_x = SubResource("Curve_4a37y")
+curve_y = SubResource("Curve_vljp1")
+curve_z = SubResource("Curve_45ehh")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_4a37y"]
+particle_flag_align_y = true
+direction = Vector3(0, 1, 0)
+spread = 30.0
+initial_velocity_min = 0.79999995
+initial_velocity_max = 1.0
+gravity = Vector3(0, 0, 0)
+damping_min = 1.0
+damping_max = 2.0
+scale_min = 0.06
+scale_max = 0.099999994
+scale_curve = SubResource("CurveXYZTexture_hfijg")
+color_ramp = SubResource("GradientTexture1D_vljp1")
+
+[sub_resource type="SphereMesh" id="SphereMesh_vljp1"]
+
+[sub_resource type="Gradient" id="Gradient_vljp1"]
+offsets = PackedFloat32Array(0, 0.37994722, 0.7282322, 1)
+colors = PackedColorArray(2.454227, 1.7803429, 0, 1, 1.353256, 0.7080834, 0, 1, 1.353256, 0.30763152, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_45ehh"]
+gradient = SubResource("Gradient_vljp1")
+
+[sub_resource type="Curve" id="Curve_hfijg"]
+_data = [Vector2(0, 0.5004744), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_s8vkv"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_1ablj"]
+_data = [Vector2(0, 0.45113856), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_sc172"]
+curve_x = SubResource("Curve_hfijg")
+curve_y = SubResource("Curve_s8vkv")
+curve_z = SubResource("Curve_1ablj")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_153qm"]
+particle_flag_align_y = true
+angle_min = 1.0728835e-05
+angle_max = 360.00003
+direction = Vector3(0, 1, 0)
+spread = 180.0
+initial_velocity_min = 0.19999999
+initial_velocity_max = 0.5
+gravity = Vector3(0, 0, 0)
+scale_min = 0.04
+scale_max = 0.06
+scale_curve = SubResource("CurveXYZTexture_sc172")
+color_ramp = SubResource("GradientTexture1D_45ehh")
+
+[sub_resource type="SphereMesh" id="SphereMesh_4a37y"]
+
+[node name="Bomb" type="RigidBody3D" unique_id=2006338049 node_paths=PackedStringArray("firepower_label", "power_sprite", "explode_timer", "fire_vfx") groups=["bomb"]]
 collision_layer = 4
 collision_mask = 196615
 freeze = true
@@ -38,6 +131,7 @@ base_damage = 3
 firepower_label = NodePath("Sprite3D/SubViewport/CenterContainer/Label")
 power_sprite = NodePath("Sprite3D")
 explode_timer = NodePath("ExplodeTimer")
+fire_vfx = NodePath("BombVFX")
 second_hand_grab = 1
 
 [node name="BombShape" type="CollisionShape3D" parent="." unique_id=1788901368]
@@ -46,6 +140,11 @@ shape = SubResource("Shape_BombBody")
 [node name="BombMesh" type="MeshInstance3D" parent="." unique_id=1923419919]
 mesh = SubResource("Mesh_Bomb")
 surface_material_override/0 = SubResource("Mat_Bomb")
+
+[node name="Rope" type="MeshInstance3D" parent="BombMesh" unique_id=1314932324]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22584924, 0)
+mesh = SubResource("CylinderMesh_4a37y")
+surface_material_override/0 = SubResource("StandardMaterial3D_vljp1")
 
 [node name="GrabPointSnap" parent="." unique_id=347841878 instance=ExtResource("2_o4xnu")]
 
@@ -96,7 +195,7 @@ layout_mode = 2
 text = "10"
 
 [node name="ExplodeTimer" type="Timer" parent="." unique_id=1854079034]
-wait_time = 8.0
+wait_time = 10.0
 one_shot = true
 
 [node name="ExplosionHitTrigger" type="Area3D" parent="." unique_id=1029765113]
@@ -105,3 +204,25 @@ collision_mask = 524292
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ExplosionHitTrigger" unique_id=91467105]
 shape = SubResource("SphereShape3D_4a37y")
+
+[node name="BombVFX" type="Node3D" parent="." unique_id=940422227]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2650952, 0)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="BombVFX" unique_id=1434607328]
+light_color = Color(1, 0.67058825, 0.54901963, 1)
+light_energy = 0.5
+omni_range = 3.0
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="BombVFX" unique_id=1025835889]
+material_override = SubResource("StandardMaterial3D_4a37y")
+amount = 16
+lifetime = 0.5
+process_material = SubResource("ParticleProcessMaterial_4a37y")
+draw_pass_1 = SubResource("SphereMesh_vljp1")
+
+[node name="GPUParticles3D2" type="GPUParticles3D" parent="BombVFX" unique_id=1355388322]
+material_override = SubResource("StandardMaterial3D_4a37y")
+amount = 16
+lifetime = 0.3
+process_material = SubResource("ParticleProcessMaterial_153qm")
+draw_pass_1 = SubResource("SphereMesh_4a37y")

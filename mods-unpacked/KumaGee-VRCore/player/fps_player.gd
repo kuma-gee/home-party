@@ -5,6 +5,8 @@ signal reached_gate()
 signal died()
 signal skill_activated()
 
+const POISON_MAT = preload("uid://bymwrrnafu4mv")
+
 enum Skill {
 	NONE,
 	DASH,
@@ -18,11 +20,16 @@ enum Skill {
 @export var body: Node3D
 @export var color_ring: ColorRing
 @export var snap_zone: XRToolsSnapZone
+@export var meshes: Array[MeshInstance3D] = []
 
 @export_category("Skills")
 @export var dash_speed := 8.0
 @export var dash_time := 0.15
+@export var dash_sfx: AudioStreamPlayer
 @export var shield_duration := 1.0
+@export var shield_activate_time := 0.5
+@export var shield_vfx: MeshInstance3D
+@export var dash_particles: GPUParticles3D
 
 @export_category("Death")
 @export var min_respawn_time := 3.0
@@ -39,6 +46,7 @@ enum Skill {
 @onready var hurtbox: HurtBox = $Hurtbox
 @onready var freeze_timer: Timer = $FreezeTimer
 @onready var slow_restore_timer: Timer = $SlowRestoreTimer
+@onready var poison_timer: Timer = $PoisonTimer
 
 var game_client: ClientController
 var player_num := 0
@@ -53,6 +61,7 @@ var skill = Skill.NONE
 var skill_cooldown_timer: Timer
 
 func _ready():
+	poison_timer.timeout.connect(func(): on_hurtbox_died())
 	color_ring.set_color(PlayerList.get_color(player_num))
 	hurtbox.died.connect(on_hurtbox_died)
 	slow_restore_timer.timeout.connect(func(): slow = 0.0)
@@ -64,6 +73,13 @@ func _ready():
 	snap_zone.has_picked_up.connect(_on_pickup)
 	animation.play(spawn_anim)
 	game_client.primary_action_pressed.connect(activate_skill)
+	game_client.secondary_action_pressed.connect(activate_skill)
+
+func poison():
+	if not poison_timer.is_stopped(): return
+	poison_timer.start()
+	for mesh in meshes:
+		mesh.material_override = POISON_MAT
 
 func trigger_explosion():
 	reached_gate.emit()
@@ -174,10 +190,20 @@ func dash() -> void:
 	velocity.z = dir3.z * dash_speed
 
 	animation.play(running_anim)
+	dash_particles.emitting = true
+	dash_sfx.play()
 	await get_tree().create_timer(dash_time).timeout
 
 	skill_activated.emit()
 	is_dashing = false
+
+func set_shield(v: float):
+	var mat = shield_vfx.get_active_material(0) as ShaderMaterial
+	mat.set_shader_parameter("fade_value", v)
+
+func tween_shield(start: float, end: float):
+	var tw = create_tween()
+	tw.tween_method(set_shield, start, end, shield_activate_time)
 
 func shield() -> void:
 	if is_spawning or not is_instance_valid(hurtbox) or not skill_cooldown_timer.is_stopped():
@@ -185,7 +211,9 @@ func shield() -> void:
 	
 	is_shielded = true
 	hurtbox.invulnerable(shield_duration)
+	tween_shield(0.0, 1.0)
 	await get_tree().create_timer(shield_duration).timeout
 	
 	skill_activated.emit()
 	is_shielded = false
+	tween_shield(1.0, 0.0)

@@ -1,13 +1,14 @@
 [gd_scene format=3 uid="uid://c684oj6gh0t68"]
 
-[ext_resource type="Script" uid="uid://dgs3dj8la0mk0" path="res://main/utils/sfx_player.gd" id="1_hq7le"]
 [ext_resource type="AudioStream" uid="uid://c8cg2kpfrq4ga" path="res://assets/sound/sfx/氷魔法で凍結.mp3" id="2_e0gft"]
 [ext_resource type="Script" uid="uid://bkrembvwcg1br" path="res://vfx/PlayParticleSystems.gd" id="3_j8plv"]
 [ext_resource type="Shader" uid="uid://dpqsia4sjvs85" path="res://vfx/streak_vfx.tres" id="4_0wuco"]
 [ext_resource type="Texture2D" uid="uid://ce37fcn8ptva0" path="res://assets/particles/course/Circle.png" id="5_p7thp"]
 [ext_resource type="Texture2D" uid="uid://b65tr0wpntmms" path="res://assets/particles/T_texr41.png" id="6_met35"]
-[ext_resource type="Texture2D" uid="uid://ye82tbjnbqqy" path="res://assets/particles/T_VFX_Flare_22.jpg" id="7_oii60"]
 [ext_resource type="Script" uid="uid://dvbrpi2xb72fg" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/freeze_area.gd" id="8_e0gft"]
+[ext_resource type="Texture2D" uid="uid://hih5af7npy3f" path="res://assets/particles/T_VFX_exp_dissapear.png" id="8_j8plv"]
+[ext_resource type="AudioStream" uid="uid://b5gr2dm707lfd" path="res://assets/sound/sfx/吹雪.mp3" id="9_0wuco"]
+[ext_resource type="Script" uid="uid://b4woodkg2nup8" path="res://main/utils/randomized_sfx.gd" id="9_j8plv"]
 
 [sub_resource type="Animation" id="Animation_xdjkm"]
 length = 0.001
@@ -45,7 +46,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [1.0]
+"values": [0.0]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -57,12 +58,71 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [1.0]
+"values": [0.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("PlayParticleSystems/Ring:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("PlayParticleSystems/Ring:material_override:albedo_color")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.38, 0.7623333, 1, 1)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("PlayParticleSystems/BlizzardSnow:emitting")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("BlizzardSound:volume_db")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-50.0]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("BlizzardSound:playing")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_6bwcj"]
 resource_name = "start"
-length = 10.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -122,7 +182,7 @@ tracks/4/path = NodePath("CleanupTimer")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(1.5),
+"times": PackedFloat32Array(1),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [-1],
@@ -156,24 +216,10 @@ tracks/6/keys = {
 tracks/7/type = "method"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("SFXPlayer")
+tracks/7/path = NodePath("FreezeArea")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"play"
-}]
-}
-tracks/8/type = "method"
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/path = NodePath("FreezeArea")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/keys = {
 "times": PackedFloat32Array(0.033333335),
 "transitions": PackedFloat32Array(1),
 "values": [{
@@ -181,11 +227,166 @@ tracks/8/keys = {
 "method": &"start_freeze"
 }]
 }
+tracks/8/type = "method"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("FrostSound")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"play_randomized"
+}]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("PlayParticleSystems/Ring:scale")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0, 0.26),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(1, 1, 1)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("PlayParticleSystems/Ring:material_override:albedo_color")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.38, 0.7623333, 1, 1)]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("BlizzardSound:volume_db")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-50.0, -10.0]
+}
+tracks/12/type = "method"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("BlizzardSound")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"play_randomized"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_e0gft"]
+resource_name = "stop"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayParticleSystems/Ring:material_override:albedo_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.38, 0.7623333, 1, 1), Color(0.38039216, 0.7607843, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayParticleSystems/BlizzardSnow:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PlayParticleSystems/Decal:emission_energy")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("PlayParticleSystems/Decal2:emission_energy")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 0.0]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("BlizzardSound:volume_db")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-10.0, -50.0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("BlizzardSound:playing")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_xdjkm"]
 _data = {
 &"RESET": SubResource("Animation_xdjkm"),
-&"start": SubResource("Animation_6bwcj")
+&"start": SubResource("Animation_6bwcj"),
+&"stop": SubResource("Animation_e0gft")
 }
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bubsx"]
@@ -249,11 +450,75 @@ damping_min = 0.3
 damping_max = 0.70000005
 scale_min = 0.099999994
 scale_max = 0.29999998
-color = Color(1.502, 4, 3.917, 1)
+color = Color(1.502, 3.126, 4, 1)
 alpha_curve = SubResource("CurveTexture_pbjgn")
 
 [sub_resource type="QuadMesh" id="QuadMesh_7ob6o"]
 size = Vector2(0.8, 1.3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_blizzard"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_color = Color(2, 2.2, 2.5, 1)
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Gradient" id="Gradient_blizzard"]
+offsets = PackedFloat32Array(0, 0.3, 0.7, 1)
+colors = PackedColorArray(1, 1, 1, 0, 0.8, 0.95, 1, 0.8, 0.7, 0.9, 1, 0.6, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_blizzard"]
+gradient = SubResource("Gradient_blizzard")
+
+[sub_resource type="Curve" id="Curve_j8plv"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1e-05, 0.43263757), 0.0, 0.0, 0, 0, Vector2(1, 0.38330173), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_0wuco"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_p7thp"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_met35"]
+curve_x = SubResource("Curve_j8plv")
+curve_y = SubResource("Curve_0wuco")
+curve_z = SubResource("Curve_p7thp")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_blizzard"]
+emission_shape = 3
+emission_box_extents = Vector3(1, 0.5, 1)
+direction = Vector3(0, -1, 0)
+spread = 10.0
+initial_velocity_min = 0.099999994
+initial_velocity_max = 0.5
+angular_velocity_min = -1.6093254e-05
+angular_velocity_max = -1.6093254e-05
+orbit_velocity_min = 100.00001
+orbit_velocity_max = 100.00001
+radial_velocity_min = -2.2351742e-05
+radial_velocity_max = -2.2351742e-05
+gravity = Vector3(0, -0.3, 0)
+tangential_accel_min = 0.29999775
+tangential_accel_max = 0.59999776
+damping_min = 0.1
+damping_max = 0.3
+scale_min = 0.19999999
+scale_max = 0.5
+scale_curve = SubResource("CurveXYZTexture_met35")
+color_ramp = SubResource("GradientTexture1D_blizzard")
+
+[sub_resource type="QuadMesh" id="QuadMesh_blizzard"]
+size = Vector2(0.12, 0.12)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bubsx"]
 transparency = 1
@@ -277,41 +542,64 @@ curve = SubResource("Curve_a364s")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_kox7f"]
 gravity = Vector3(0, 0, 0)
-scale_min = 2.5
-scale_max = 2.5
+scale_min = 3.0
+scale_max = 3.0
 scale_curve = SubResource("CurveTexture_b8j6c")
 color_ramp = SubResource("GradientTexture1D_eb4q0")
 
 [sub_resource type="SphereMesh" id="SphereMesh_u1fw1"]
 
+[sub_resource type="Gradient" id="Gradient_e0gft"]
+offsets = PackedFloat32Array(0.16112532, 0.38618925, 0.72378516, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.8363171, 0.8363171, 0.8363171, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_j8plv"]
+gradient = SubResource("Gradient_e0gft")
+fill_to = Vector2(0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0wuco"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_color = Color(0.38, 0.7623333, 1, 1)
+albedo_texture = SubResource("GradientTexture2D_j8plv")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_met35"]
+top_radius = 1.5
+bottom_radius = 1.5
+height = 0.5
+rings = 2
+cap_top = false
+cap_bottom = false
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6bwcj"]
 albedo_color = Color(0, 0, 0, 1)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_hq7le"]
-radius = 2.0
+radius = 1.5
 
 [node name="blizzard_area" type="Node3D" unique_id=603795471]
 
 [node name="CleanupTimer" type="Timer" parent="." unique_id=1452428118]
-wait_time = 8.0
 one_shot = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=865820762]
 libraries/ = SubResource("AnimationLibrary_xdjkm")
 autoplay = &"start"
 
-[node name="SFXPlayer" type="Node" parent="." unique_id=536415483]
-script = ExtResource("1_hq7le")
-audio = ExtResource("2_e0gft")
-max_pitch = 1.3
-
 [node name="PlayParticleSystems" type="Node3D" parent="." unique_id=1543387720]
 script = ExtResource("3_j8plv")
 delays = {
+&"BlizzardSnow": 0.1,
 &"CenterSphere": 0.0,
+&"Circle": 0.0,
 &"ImpactParticles": 0.2,
 &"Streaks": 0.0
 }
+cleanup_after = -1.0
 metadata/_custom_type_script = "uid://bkrembvwcg1br"
 
 [node name="Streaks" type="GPUParticles3D" parent="PlayParticleSystems" unique_id=1510498496]
@@ -339,19 +627,30 @@ draw_pass_1 = SubResource("QuadMesh_7ob6o")
 
 [node name="Decal" type="Decal" parent="PlayParticleSystems" unique_id=368172231]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.024628937, 0)
-size = Vector3(2.5, 2.5, 2.5)
+size = Vector3(3.2, 3.2, 3.2)
 texture_albedo = ExtResource("6_met35")
 texture_emission = ExtResource("6_met35")
-modulate = Color(0.5411765, 1, 0.8784314, 0)
+emission_energy = 0.0
+modulate = Color(0.395, 0.796, 1.32, 0)
 cull_mask = 1
 
 [node name="Decal2" type="Decal" parent="PlayParticleSystems" unique_id=427597862]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.024628937, 0)
 size = Vector3(2.5, 2.5, 2.5)
-texture_albedo = ExtResource("7_oii60")
-texture_emission = ExtResource("7_oii60")
-modulate = Color(0.5411765, 1, 0.8784314, 0)
+texture_emission = ExtResource("8_j8plv")
+emission_energy = 0.0
+modulate = Color(0.395, 0.796, 1.32, 0)
 cull_mask = 1
+
+[node name="BlizzardSnow" type="GPUParticles3D" parent="PlayParticleSystems" unique_id=1201938471]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1596253, 0)
+material_override = SubResource("StandardMaterial3D_blizzard")
+emitting = false
+amount = 120
+lifetime = 2.5
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_blizzard")
+draw_pass_1 = SubResource("QuadMesh_blizzard")
 
 [node name="CenterSphere" type="GPUParticles3D" parent="PlayParticleSystems" unique_id=1134179429]
 material_override = SubResource("StandardMaterial3D_bubsx")
@@ -362,8 +661,12 @@ one_shot = true
 process_material = SubResource("ParticleProcessMaterial_kox7f")
 draw_pass_1 = SubResource("SphereMesh_u1fw1")
 
+[node name="Ring" type="MeshInstance3D" parent="PlayParticleSystems" unique_id=1404700222]
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.2552877, 0)
+material_override = SubResource("StandardMaterial3D_0wuco")
+mesh = SubResource("CylinderMesh_met35")
+
 [node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1798244645]
-visible = false
 layers = 524289
 material_override = SubResource("StandardMaterial3D_6bwcj")
 size = Vector3(3.0419922, 0.02758789, 3.0292969)
@@ -372,8 +675,18 @@ size = Vector3(3.0419922, 0.02758789, 3.0292969)
 collision_layer = 0
 collision_mask = 524288
 script = ExtResource("8_e0gft")
+freeze_time = 4.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="FreezeArea" unique_id=967835598]
 shape = SubResource("SphereShape3D_hq7le")
 
-[connection signal="timeout" from="CleanupTimer" to="." method="queue_free"]
+[node name="FrostSound" type="AudioStreamPlayer3D" parent="." unique_id=84818194]
+stream = ExtResource("2_e0gft")
+script = ExtResource("9_j8plv")
+
+[node name="BlizzardSound" type="AudioStreamPlayer3D" parent="." unique_id=46562127]
+stream = ExtResource("9_0wuco")
+volume_db = -50.0
+script = ExtResource("9_j8plv")
+
+[connection signal="timeout" from="CleanupTimer" to="AnimationPlayer" method="play" binds= ["stop"]]

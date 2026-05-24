@@ -1,0 +1,336 @@
+[gd_scene format=3 uid="uid://jqg3l1wgpb77"]
+
+[ext_resource type="Shader" uid="uid://3k8omj2hnqwq" path="res://shader/black_hole.gdshader" id="1_oisn5"]
+[ext_resource type="Script" uid="uid://7cief0kwceod" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/pull_area.gd" id="2_cj1iu"]
+[ext_resource type="Script" uid="uid://cfqyv12dohlh7" path="res://main/utils/hit_box.gd" id="3_edpec"]
+[ext_resource type="AudioStream" uid="uid://bu3ipscc5u2wp" path="res://assets/sound/sfx/blackhole.wav" id="4_q453o"]
+[ext_resource type="AudioStream" uid="uid://loo44sygplej" path="res://assets/sound/sfx/blackhole_start.wav" id="5_6w5aw"]
+[ext_resource type="Script" uid="uid://b4woodkg2nup8" path="res://main/utils/randomized_sfx.gd" id="5_q453o"]
+
+[sub_resource type="Gradient" id="Gradient_oisn5"]
+offsets = PackedFloat32Array(0.314578, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_oisn5"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_cj1iu"]
+noise = SubResource("FastNoiseLite_oisn5")
+color_ramp = SubResource("Gradient_oisn5")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cj1iu"]
+render_priority = 0
+shader = ExtResource("1_oisn5")
+shader_parameter/radius = 0.0
+shader_parameter/noise = SubResource("NoiseTexture2D_cj1iu")
+shader_parameter/sky_color = Color(0, 0, 0, 1)
+shader_parameter/horizon_color = Color(0.05, 0.05, 0.1, 1)
+shader_parameter/horizon_sharpness = 4.0
+shader_parameter/accretion_color = Color(1.045, 0.336, 2.186, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_oisn5"]
+radius = 2.0
+height = 2.5
+radial_segments = 32
+rings = 16
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_edpec"]
+radius = 2.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_cj1iu"]
+radius = 1.0
+
+[sub_resource type="Animation" id="Animation_dofqw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../MeshInstance3D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../PullArea:enabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../DeathArea:hit_on_enter")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../AudioStreamPlayer:volume_db")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-50.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../AudioStreamPlayer:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../Initial:playing")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_edpec"]
+resource_name = "init"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../MeshInstance3D:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(1, 1, 1)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [-1],
+"method": &"start"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../PullArea:enabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.28),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../DeathArea:hit_on_enter")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../AudioStreamPlayer:volume_db")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-50.0, -10.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../AudioStreamPlayer:playing")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../Initial:playing")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_6w5aw"]
+resource_name = "stop"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../MeshInstance3D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../PullArea:enabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.19),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../DeathArea:hit_on_enter")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.19),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("..")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../AudioStreamPlayer:volume_db")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-10.0, -50.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../AudioStreamPlayer:playing")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dofqw"]
+_data = {
+&"RESET": SubResource("Animation_dofqw"),
+&"init": SubResource("Animation_edpec"),
+&"stop": SubResource("Animation_6w5aw")
+}
+
+[node name="BlackHole" type="Node3D" unique_id=670022080]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=523192527]
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_cj1iu")
+mesh = SubResource("SphereMesh_oisn5")
+
+[node name="PullArea" type="Area3D" parent="." unique_id=1891436942]
+collision_layer = 0
+collision_mask = 32768
+script = ExtResource("2_cj1iu")
+exponential_pull = false
+enabled = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PullArea" unique_id=1490650589]
+shape = SubResource("SphereShape3D_edpec")
+
+[node name="DeathArea" type="Area3D" parent="." unique_id=1142675395]
+collision_layer = 0
+collision_mask = 32
+script = ExtResource("3_edpec")
+hit_on_enter = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DeathArea" unique_id=1553201140]
+shape = SubResource("SphereShape3D_cj1iu")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1971733000]
+root_node = NodePath("../Lifetime")
+libraries/ = SubResource("AnimationLibrary_dofqw")
+autoplay = &"init"
+
+[node name="Lifetime" type="Timer" parent="." unique_id=1597872212]
+wait_time = 6.0
+one_shot = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer3D" parent="." unique_id=1336822135]
+stream = ExtResource("4_q453o")
+volume_db = -50.0
+script = ExtResource("5_q453o")
+
+[node name="Initial" type="AudioStreamPlayer" parent="." unique_id=1735273554]
+stream = ExtResource("5_6w5aw")
+pitch_scale = 0.7
+
+[connection signal="timeout" from="Lifetime" to="AnimationPlayer" method="play" binds= ["stop"]]

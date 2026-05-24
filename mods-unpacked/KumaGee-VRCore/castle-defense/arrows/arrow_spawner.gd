@@ -14,6 +14,12 @@ func _unhandled_input(event: InputEvent) -> void:
 			element = Arrow.Element.ICE
 		elif key.keycode == KEY_3:
 			element = Arrow.Element.LIGHTNING
+		elif key.keycode == KEY_4:
+			element = Arrow.Element.WIND
+		elif key.keycode == KEY_5:
+			element = Arrow.Element.POISON
+		elif key.keycode == KEY_6:
+			element = Arrow.Element.VOID
 	elif event is InputEventMouseButton:
 		var mb := event as InputEventMouseButton
 		if mb.button_index == MOUSE_BUTTON_LEFT and mb.pressed:

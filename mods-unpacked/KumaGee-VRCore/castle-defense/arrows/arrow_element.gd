@@ -8,15 +8,17 @@ const ELEMENT_SCENE = {
 	Arrow.Element.ICE: preload("uid://c684oj6gh0t68"),
 	Arrow.Element.LIGHTNING: preload("uid://bdkwolot88p0j"),
 	Arrow.Element.WIND: preload("uid://b6cxw3y4xo030"),
+	Arrow.Element.VOID: preload("uid://jqg3l1wgpb77"),
+	Arrow.Element.POISON: preload("uid://divwtjoh71sg2"),
 }
 
 const ELEMENT_COLOR := {
-	Arrow.Element.FIRE: Color(1.0, 0.4, 0.0),
-	Arrow.Element.ICE: Color(0.3, 0.8, 1.0),
-	Arrow.Element.LIGHTNING: Color(0.902, 0.902, 0.0),
-	Arrow.Element.WIND: Color(0.8, 0.8, 0.8),
-	Arrow.Element.POISON: Color(0.22, 1.0, 0.415),
-	Arrow.Element.VOID: Color(0.92, 0.285, 0.92),
+	Arrow.Element.FIRE: Color(1.0, 0.4, 0.0, 0.8),
+	Arrow.Element.ICE: Color(0.3, 0.8, 1.0, 0.8),
+	Arrow.Element.LIGHTNING: Color(0.9, 0.9, 0.0, 0.8),
+	Arrow.Element.WIND: Color(0.8, 0.8, 0.8, 0.8),
+	Arrow.Element.POISON: Color(0.22, 1.0, 0.415, 0.8),
+	Arrow.Element.VOID: Color(0.92, 0.285, 0.92, 0.8),
 }
 
 @export var visual: MeshInstance3D

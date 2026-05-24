@@ -36,7 +36,8 @@ func play():
 		if d > max_delay:
 			max_delay = d
 	
-	get_tree().create_timer(max_delay + cleanup_after).timeout.connect(func(): queue_free())
+	if cleanup_after >= 0:
+		get_tree().create_timer(max_delay + cleanup_after).timeout.connect(func(): queue_free())
 
 func _find_particles():
 	particle_systems.clear()  # Always clear and re-detect
