@@ -447,7 +447,7 @@ script = ExtResource("32_88pht")
 shape = SubResource("Resource_0cjve")
 
 [node name="ProtonScatterShape" type="Node3D" parent="ProtonScatter" unique_id=1495473633]
-transform = Transform3D(0.9999627, 0, -0.008639272, 0, 1, 0, 0.008639272, 0, 0.9999627, 0, 0, 8.512078)
+transform = Transform3D(0.9999627, 0, -0.008639272, 0, 1, 0, 0.008639272, 0, 0.9999627, 0, 0, 9.053248)
 script = ExtResource("32_88pht")
 negative = true
 shape = SubResource("Resource_88pht")
@@ -476,7 +476,7 @@ size = Vector3(60, 0.5, 60)
 material = SubResource("Mat_Ground")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1181458762]
-transform = Transform3D(0.99999607, -0.0027975373, 3.6160007e-05, 0.0012877852, 0.47172356, 0.8817456, -0.0024837735, -0.88174206, 0.47172534, 0, 30.039917, 32.158924)
+transform = Transform3D(0.0024837295, 0.8817421, -0.4717253, 0.001287785, 0.47172356, 0.8817456, 0.9999961, -0.0027974986, 3.6139496e-05, -16.740616, 30.039917, 21.116209)
 cull_mask = 786431
 current = true
 fov = 25.0
@@ -695,7 +695,8 @@ surface_material_override/0 = SubResource("StandardMaterial3D_v278o")
 shape = SubResource("BoxShape3D_ij2kk")
 
 [node name="DesktopGameover" parent="VRSpace" index="3" unique_id=841672726]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.834278, 23.087746)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9813194, 11.214123, 20.89264)
+visible = false
 texture = SubResource("ViewportTexture_f8wa5")
 
 [node name="ArrowTypes" type="Node3D" parent="VRSpace" unique_id=900118082]
@@ -746,7 +747,7 @@ transform = Transform3D(0.8660254, 0, 0.5, 0, 1, 0, -0.5, 0, 0.8660254, 5.903138
 gate_target = NodePath("../../Castle/Gate")
 
 [node name="BombSpawner" type="Node3D" parent="AttackerArea" unique_id=1326014235]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.21217847, 19)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.21217847, 21.976915)
 script = ExtResource("15_a11e3")
 bomb_scene = ExtResource("16_a11e3")
 bomb_count = 4
@@ -768,7 +769,7 @@ omni_range = 8.0
 omni_attenuation = 0.3
 
 [node name="PlayerSpawner" type="Node3D" parent="." unique_id=290112290 groups=["player_spawner"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 22.68351)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 27)
 script = ExtResource("14_jv2d0")
 player_scene = ExtResource("5_fps")
 metadata/_custom_type_script = "uid://b1f1y52jugtns"
