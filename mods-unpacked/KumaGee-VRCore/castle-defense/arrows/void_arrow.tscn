@@ -2,7 +2,7 @@
 
 [ext_resource type="Shader" uid="uid://3k8omj2hnqwq" path="res://shader/black_hole.gdshader" id="1_oisn5"]
 [ext_resource type="Script" uid="uid://7cief0kwceod" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/pull_area.gd" id="2_cj1iu"]
-[ext_resource type="Script" uid="uid://cfqyv12dohlh7" path="res://main/utils/hit_box.gd" id="3_edpec"]
+[ext_resource type="Script" uid="uid://vhr7xs86yr2e" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/death_area.gd" id="3_q453o"]
 [ext_resource type="AudioStream" uid="uid://bu3ipscc5u2wp" path="res://assets/sound/sfx/blackhole.wav" id="4_q453o"]
 [ext_resource type="AudioStream" uid="uid://loo44sygplej" path="res://assets/sound/sfx/blackhole_start.wav" id="5_6w5aw"]
 [ext_resource type="Script" uid="uid://b4woodkg2nup8" path="res://main/utils/randomized_sfx.gd" id="5_q453o"]
@@ -150,7 +150,7 @@ tracks/2/path = NodePath("../PullArea:enabled")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0.28),
+"times": PackedFloat32Array(0.26666668),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
@@ -162,7 +162,7 @@ tracks/3/path = NodePath("../DeathArea:hit_on_enter")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0.1),
+"times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
@@ -308,9 +308,8 @@ shape = SubResource("SphereShape3D_edpec")
 
 [node name="DeathArea" type="Area3D" parent="." unique_id=1142675395]
 collision_layer = 0
-collision_mask = 32
-script = ExtResource("3_edpec")
-hit_on_enter = false
+collision_mask = 98304
+script = ExtResource("3_q453o")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DeathArea" unique_id=1553201140]
 shape = SubResource("SphereShape3D_cj1iu")

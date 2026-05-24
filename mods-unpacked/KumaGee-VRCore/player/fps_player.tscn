@@ -112,7 +112,7 @@ push_force = 1.0
 body = NodePath("CollisionShape3D")
 color_ring = NodePath("ColorRing")
 snap_zone = NodePath("CollisionShape3D/SnapZone")
-meshes = [null, null, null, null, null, null]
+meshes = [NodePath("CollisionShape3D/skeleton/Rig_Medium_002/Skeleton3D/Skeleton_Minion_ArmLeft"), NodePath("CollisionShape3D/skeleton/Rig_Medium_002/Skeleton3D/Skeleton_Minion_ArmRight"), NodePath("CollisionShape3D/skeleton/Rig_Medium_002/Skeleton3D/Skeleton_Minion_Body"), NodePath("CollisionShape3D/skeleton/Rig_Medium_002/Skeleton3D/Skeleton_Minion_Head"), NodePath("CollisionShape3D/skeleton/Rig_Medium_002/Skeleton3D/Skeleton_Minion_LegLeft"), NodePath("CollisionShape3D/skeleton/Rig_Medium_002/Skeleton3D/Skeleton_Minion_LegRight"), NodePath("CollisionShape3D/skeleton/Rig_Medium_002/Skeleton3D/Skeleton_Minion_Jaw")]
 dash_sfx = NodePath("DashSound")
 shield_vfx = NodePath("ShieldVFX")
 dash_particles = NodePath("CollisionShape3D/DashVFX")
@@ -147,7 +147,7 @@ process_material = SubResource("ParticleProcessMaterial_hl7qv")
 [node name="skeleton" parent="CollisionShape3D" unique_id=1359499979 instance=ExtResource("2_yjct3")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, -0.64262736, 0)
 
-[node name="Skeleton3D" parent="CollisionShape3D/skeleton/Rig_Medium_002" parent_id_path=PackedInt32Array(1359499979, 290867599) index="0" unique_id=214458817]
+[node name="Skeleton3D" parent="CollisionShape3D/skeleton/Rig_Medium_002" parent_id_path=PackedInt32Array(1359499979, 219042195) index="0" unique_id=404748452]
 bones/1/position = Vector3(-5.234515e-22, 0.41715863, 1.7763568e-15)
 bones/1/rotation = Quaternion(0.09584578, -1.02841604e-07, 9.902522e-09, 0.9953962)
 bones/1/scale = Vector3(1, 0.9999999, 0.9999999)
@@ -214,7 +214,7 @@ bones/21/scale = Vector3(0.99999976, 0.99999994, 1)
 bones/22/position = Vector3(-9.5793055e-08, 0.096125, -0.057499964)
 bones/22/rotation = Quaternion(-0.06173216, -0.04616069, 0.4138353, 0.9070826)
 
-[node name="AnimationPlayer" parent="CollisionShape3D/skeleton" index="1" unique_id=198493068]
+[node name="AnimationPlayer" parent="CollisionShape3D/skeleton" index="1" unique_id=769480183]
 autoplay = &"Idle_B"
 
 [node name="SnapZone" parent="CollisionShape3D" unique_id=1883047161 instance=ExtResource("7_irk2m")]

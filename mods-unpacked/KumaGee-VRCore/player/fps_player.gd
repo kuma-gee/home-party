@@ -100,6 +100,8 @@ func _compute_respawn_delay_for_count(count: int) -> float:
 	return lerp(min_respawn_time, max_respawn_time, t)
 
 func on_hurtbox_died():
+	if is_dead: return
+	
 	if respawn_time == 0.0:
 		respawn_time = _compute_respawn_delay_for_count(PlayerManager.playing_clients.size())
 
@@ -135,8 +137,9 @@ func can_control():
 
 func _physics_process(delta):
 	if not can_control():
-		ground_spring_cast.apply_gravity(self, delta)
-		move_and_slide()
+		if not is_dead:
+			ground_spring_cast.apply_gravity(self, delta)
+			move_and_slide()
 		return
 	
 	var direction = game_client.get_move()
