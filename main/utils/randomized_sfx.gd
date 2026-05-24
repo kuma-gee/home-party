@@ -9,6 +9,7 @@ const GROUP = "AudioSFX"
 @export var min_pitch := 0.8
 @export var max_pitch := 1.0
 @export var one_shot := true
+@export var play_on_ready := false
 
 var active := false
 
@@ -23,6 +24,9 @@ func _ready() -> void:
 			if active:
 				play_randomized()
 			)
+			
+	if play_on_ready:
+		start()
 
 func get_group():
 	return GROUP + "_" + id

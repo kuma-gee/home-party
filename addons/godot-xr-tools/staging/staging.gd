@@ -69,10 +69,13 @@ func _get_configuration_warnings() -> PackedStringArray:
 func is_xr_class(xr_name:  String) -> bool:
 	return xr_name == "XRToolsStaging"
 
+func create_sfx_at(sfx_scene: PackedScene, pos: Vector3):
+	var sfx = sfx_scene.instantiate()
+	sfx.position = pos
+	add_scene_child(sfx)
 
 func add_scene_child(node: Node):
 	scene.add_child(node)
-
 
 func load_scene(p_scene_path : String, user_data = null) -> void:
 	if Engine.is_editor_hint() or !xr_origin or !xr_camera:

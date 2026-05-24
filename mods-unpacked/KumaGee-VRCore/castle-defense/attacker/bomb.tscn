@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://cfqyv12dohlh7" path="res://main/utils/hit_box.gd" id="3_4h28i"]
 [ext_resource type="AudioStream" uid="uid://c5rxm1rbcobqx" path="res://assets/sound/sfx/Lighting Fuse.wav" id="4_4q7qu"]
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme.css" id="5_4a37y"]
+[ext_resource type="PackedScene" uid="uid://2icwvyn5a575" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/attacker/bomb_explosion_vfx.tscn" id="6_vljp1"]
 
 [sub_resource type="SphereShape3D" id="Shape_BombBody"]
 radius = 0.3
@@ -132,6 +133,7 @@ firepower_label = NodePath("Sprite3D/SubViewport/CenterContainer/Label")
 power_sprite = NodePath("Sprite3D")
 explode_timer = NodePath("ExplodeTimer")
 fire_vfx = NodePath("BombVFX")
+explosion_vfx = ExtResource("6_vljp1")
 second_hand_grab = 1
 
 [node name="BombShape" type="CollisionShape3D" parent="." unique_id=1788901368]
@@ -207,6 +209,7 @@ shape = SubResource("SphereShape3D_4a37y")
 
 [node name="BombVFX" type="Node3D" parent="." unique_id=940422227]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2650952, 0)
+visible = false
 
 [node name="OmniLight3D" type="OmniLight3D" parent="BombVFX" unique_id=1434607328]
 light_color = Color(1, 0.67058825, 0.54901963, 1)

@@ -222,8 +222,8 @@ curve = SubResource("Curve_p5ont")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_p5ont"]
 gravity = Vector3(0, 0, 0)
-scale_min = 2.5
-scale_max = 2.5
+scale_min = 2.0
+scale_max = 2.0
 scale_curve = SubResource("CurveTexture_b8j6c")
 color_ramp = SubResource("GradientTexture1D_eb4q0")
 
@@ -484,6 +484,9 @@ _data = {
 [sub_resource type="SphereShape3D" id="SphereShape3D_lyvqq"]
 radius = 1.0
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cij4q"]
+albedo_color = Color(0, 0, 0, 1)
+
 [node name="Explosion" type="Node3D" unique_id=765294686]
 
 [node name="PlayParticleSystems" type="Node3D" parent="." unique_id=1465807215]
@@ -499,11 +502,10 @@ delays = {
 metadata/_custom_type_script = "uid://bkrembvwcg1br"
 
 [node name="Decal" type="Decal" parent="PlayParticleSystems" unique_id=368433145]
-size = Vector3(2.5, 2.5, 2.5)
 texture_albedo = ExtResource("3_45phi")
 texture_emission = ExtResource("4_nk4vk")
 modulate = Color(1, 0.5875, 0.00999999, 0)
-cull_mask = 524288
+cull_mask = 1
 
 [node name="Cylinder" type="GPUParticles3D" parent="PlayParticleSystems" unique_id=1871055430]
 visible = false
@@ -597,5 +599,11 @@ metadata/_custom_type_script = "uid://cfqyv12dohlh7"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox" unique_id=436368336]
 shape = SubResource("SphereShape3D_lyvqq")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=851245941]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3183644, 0)
+visible = false
+size = Vector3(3.0549316, 0.03540039, 3.1208496)
+material = SubResource("StandardMaterial3D_cij4q")
 
 [connection signal="timeout" from="CleanupTimer" to="." method="queue_free"]

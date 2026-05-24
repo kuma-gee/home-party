@@ -9,6 +9,7 @@ signal exploded()
 @export var power_sprite: Sprite3D
 @export var explode_timer: Timer
 @export var fire_vfx: Node3D
+@export var explosion_vfx: PackedScene
 
 @onready var explode_trigger: Area3D = $ExplodeTrigger
 @onready var hit_box: HitBox = $HitBox
@@ -38,6 +39,7 @@ func _ready():
 func explode(reached = false) -> void:
 	if has_exploded: return
 	has_exploded = true
+	Staging.create_sfx_at(explosion_vfx, global_position)
 	
 	exploded.emit()
 	if reached:

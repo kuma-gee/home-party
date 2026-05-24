@@ -125,9 +125,6 @@ uv1_triplanar = true
 [sub_resource type="StandardMaterial3D" id="Mat_Ground"]
 albedo_color = Color(0.35, 0.52, 0.28, 1)
 
-[sub_resource type="FogMaterial" id="FogMaterial_r4ttt"]
-density = -1.0
-
 [sub_resource type="ViewportTexture" id="ViewportTexture_ofmg5"]
 viewport_path = NodePath("Castle/Gate/HealthSprite/SubViewport")
 
@@ -432,6 +429,7 @@ wait_time = 300.0
 one_shot = true
 
 [node name="ProtonScatter" type="Node3D" parent="." unique_id=1216591199]
+process_mode = 3
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 9.613975)
 script = ExtResource("24_0cjve")
 modifier_stack = SubResource("Resource_v1y0d")
@@ -483,11 +481,9 @@ cull_mask = 786431
 current = true
 fov = 25.0
 
-[node name="FogVolume" type="FogVolume" parent="Camera3D" unique_id=275233354]
-transform = Transform3D(0.9999963, -0.00012663205, -0.0027949044, -0.002797538, -0.032346398, -0.99947315, 3.616007e-05, 0.999477, -0.032346725, 0.00395428, 1.1856079, -17.629673)
-visible = false
-size = Vector3(21.246094, 37.39, 21.28)
-material = SubResource("FogMaterial_r4ttt")
+[node name="AudioListener3D" type="AudioListener3D" parent="Camera3D" unique_id=2120416044]
+transform = Transform3D(0.99999654, 0.0012877854, -0.0024837758, -0.0027975384, 0.47172382, -0.88174284, 3.6159796e-05, 0.8817461, 0.47172576, 0.010317594, 3.3206139, -28.429482)
+current = true
 
 [node name="Castle" type="Node3D" parent="." unique_id=775708432]
 
