@@ -7,4 +7,3 @@ extends Resource
 @export var icon: PackedScene
 @export var min_recommended_players := 2
 @export var max_recommended_players := -1
-@export var tags: Array[TagResource] = []

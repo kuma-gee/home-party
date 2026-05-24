@@ -3,7 +3,6 @@
 [ext_resource type="PackedScene" uid="uid://cdcastle0001" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/castle_defense.tscn" id="1_cdef"]
 [ext_resource type="PackedScene" uid="uid://bm3cgsjmba0yd" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/castle_defense_icon.tscn" id="1_yjh8u"]
 [ext_resource type="Script" uid="uid://bwykg0o4vosvn" path="res://main/game_resource.gd" id="2_5o8ye"]
-[ext_resource type="Script" uid="uid://btc1factr54dk" path="res://main/tags/tag_resource.gd" id="3_js5o6"]
 
 [resource]
 script = ExtResource("2_5o8ye")

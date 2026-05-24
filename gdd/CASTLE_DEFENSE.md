@@ -37,14 +37,6 @@ All arrows deal **1 damage** — every skeleton dies in one hit. Elements are pu
 - **Poison** — punishes clustering; tag one skeleton heading to a catapult and let the cloud do the work; useless against solo runners
 - **Void** — comeback button; highest cooldown, highest payoff; one well-placed shot can wipe a coordinated multi-threat push; Dash can escape the pull
 
-### Kill Rewards
-
-No mechanical rewards for kills — the VR player's reward is surviving 5 minutes. Cooldown reduction would compound advantage and undermine tension.
-
-A **score/streak display** (kill counter, streak callouts like "Triple Kill!") is fine for social energy with no balance impact.
-
-If any mechanical reward is added, make it **informational not powerful** — e.g. killing 5 skeletons in quick succession briefly highlights the next active bomb carrier.
-
 ## Mobile Players
 
 Mobile players spawn as skeletons and choose between two strategies each life: charging a catapult shot or running a bomb to the gate.
@@ -60,7 +52,7 @@ Respawn time scales with player count, spawning at a fixed point away from the g
 
 ### Abilities
 
-Players select one ability on spawn. It resets on death.
+Players select one ability at the start of the game.
 
 | Ability | Cooldown | Effect |
 |---------|----------|--------|

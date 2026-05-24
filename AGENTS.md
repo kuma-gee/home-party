@@ -25,7 +25,7 @@ bun run build    # Builds to game-client/build, copies to ../build/web
 
 It's mainly used as a replacement for gamepad controls, so it shouldn't display any game data or graphics.
 
-**Critical:** SvelteKit build uses `adapter-static` with `fallback: 'index.html'` for SPA mode. Build step copies output to `../build/web` where Godot's HttpServer (port 8484) serves it.
+Build step copies output to `../build/web` where Godot's HttpServer (port 8484) serves it.
 
 ## Architecture Notes
 
