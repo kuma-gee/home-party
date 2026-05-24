@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://yty6kclrrpgr"
-path="res://.godot/imported/LuckiestGuy-Regular.ttf-48602213b2728f91158314c58dfd350a.fontdata"
+uid="uid://dklcey4rt6b7g"
+path="res://.godot/imported/MaterialSymbolsOutlined-VariableFont_FILL,GRAD,opsz,wght.ttf-5762e4dd5e6d548b16bf162b8f07cb18.fontdata"
 
 [deps]
 
-source_file="res://LuckiestGuy-Regular.ttf"
-dest_files=["res://.godot/imported/LuckiestGuy-Regular.ttf-48602213b2728f91158314c58dfd350a.fontdata"]
+source_file="res://theme/MaterialSymbolsOutlined-VariableFont_FILL,GRAD,opsz,wght.ttf"
+dest_files=["res://.godot/imported/MaterialSymbolsOutlined-VariableFont_FILL,GRAD,opsz,wght.ttf-5762e4dd5e6d548b16bf162b8f07cb18.fontdata"]
 
 [params]
 
@@ -23,20 +23,14 @@ allow_system_fallback=true
 force_autohinter=false
 modulate_color_glyphs=false
 hinting=1
-subpixel_positioning=0
+subpixel_positioning=4
 keep_rounding_remainders=true
 oversampling=0.0
 Fallbacks=null
 fallbacks=[]
 Compress=null
 compress=true
-preload=[{
-"chars": [],
-"glyphs": [],
-"name": "New Configuration",
-"size": Vector2i(16, 0),
-&"variation_embolden": 0.0
-}]
+preload=[]
 language_support={}
 script_support={}
 opentype_features={}

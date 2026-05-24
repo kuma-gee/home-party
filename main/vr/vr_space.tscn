@@ -14,7 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://cqhw276realc" path="res://addons/godot-xr-tools/functions/function_pointer.tscn" id="9_wg2ng"]
 [ext_resource type="PackedScene" uid="uid://bqm8xr5n3yvwh" path="res://addons/godot-xr-tools/functions/function_menu.tscn" id="10_c1qvc"]
 [ext_resource type="PackedScene" uid="uid://c4xvn8qp2ywmh" path="res://main/vr/vr_menu_panel.tscn" id="11_h8p7v"]
-[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme.css" id="13_h8p7v"]
+[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="13_h8p7v"]
 [ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="15_f1ooe"]
 [ext_resource type="Script" uid="uid://cjk3gsrbfomdh" path="res://main/utils/camera_follow_3d.gd" id="16_ajmcf"]
 [ext_resource type="PackedScene" uid="uid://dtik0q104occg" path="res://main/ui/gameover_screen.tscn" id="18_icwxr"]

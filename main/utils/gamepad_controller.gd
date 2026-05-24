@@ -37,4 +37,4 @@ func get_move() -> Vector2:
 	return vec
 
 func get_display_data() -> Dictionary:
-	return { "client_id": uuid, "name": player_name, "icon": "ea28" }
+	return { "client_id": uuid, "name": player_name, "icon": "🎮" }

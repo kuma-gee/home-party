@@ -26,7 +26,9 @@ func get_move():
 	return inputs["move"] if inputs.has("move") else Vector2.ZERO
 
 func get_display_data() -> Dictionary:
-	return { "client_id": uuid, "name": data.get("name", ""), "icon": data.get("icon", "person") }
+	#var icon = data.get("icon", "person")
+	var icon = "📱"
+	return { "client_id": uuid, "name": data.get("name", ""), "icon": icon }
 
 func _on_ice_candidate(mid, index, sdp):
 	send_candidate.emit(mid, index, sdp)

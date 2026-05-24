@@ -11,4 +11,4 @@ func _ready() -> void:
 	update()
 	
 func update():
-	text = "[center][char=%s][/center]" % code
+	text = "[center]%s[/center]" % code

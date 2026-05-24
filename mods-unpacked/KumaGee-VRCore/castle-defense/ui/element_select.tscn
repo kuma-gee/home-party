@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://0bcv0v5ytadj"]
 
-[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme.css" id="1_ka1uy"]
+[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="1_ka1uy"]
 [ext_resource type="Script" uid="uid://1aayinm40pm" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/ui/element_select.gd" id="2_elsel"]
 
 [node name="ElementSelect" type="PanelContainer" unique_id=1552823357 node_paths=PackedStringArray("element_buttons_container", "selected_label", "ready_button")]

@@ -6,8 +6,10 @@
 - [Halloween](https://kaylousberg.itch.io/halloween-bits)
 - [Skeletons](https://kaylousberg.itch.io/kaykit-skeletons)
 - [Living Room](https://goryana.itch.io/2d-and-3d-living-room-game-assets)
+- [Tavern](https://goryana.itch.io/medieval-slavic-tavern-game-assets)
 
 - [Font](https://fonts.google.com/specimen/Luckiest+Guy?categoryFilters=Feeling:%2FExpressive%2FPlayful&preview.script=Latn&preview.lang=ace_Latn)
+- [Emoji Font](https://fonts.google.com/noto/specimen/Noto+Emoji?query=emoji&preview.script=Latn)
 
 ### BGM
 

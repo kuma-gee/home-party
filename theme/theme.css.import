@@ -1,0 +1,14 @@
+[remap]
+
+importer="Godot CSS Importer"
+type="Theme"
+uid="uid://525nwsh3xdex"
+path="res://.godot/imported/theme.css-552e2468be0029ac7b32f670a1191903.tres"
+
+[deps]
+
+source_file="res://theme/theme.css"
+dest_files=["res://.godot/imported/theme.css-552e2468be0029ac7b32f670a1191903.tres"]
+
+[params]
+

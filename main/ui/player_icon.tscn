@@ -2,7 +2,6 @@
 
 [ext_resource type="Shader" uid="uid://cdfjqx6ei5653" path="res://shader/circle_inner.gdshader" id="1_ltk76"]
 [ext_resource type="Script" uid="uid://mig6jvs6x58q" path="res://main/ui/player_icon.gd" id="2_voot5"]
-[ext_resource type="PackedScene" uid="uid://c6c5h3ccruc3o" path="res://main/ui/material_icon.tscn" id="3_g4ba2"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1tk02"]
 shader = ExtResource("1_ltk76")
@@ -24,7 +23,14 @@ color = Color(0.32915837, 0.3291584, 0.3291584, 1)
 script = ExtResource("2_voot5")
 icon = NodePath("MaterialIcon")
 
-[node name="MaterialIcon" parent="." unique_id=2057638828 instance=ExtResource("3_g4ba2")]
+[node name="MaterialIcon" type="Label" parent="." unique_id=2057638828]
 layout_mode = 1
-text = "[center][char=e838][/center]"
-code = "e838"
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 52
+text = "📱"
+horizontal_alignment = 1
+vertical_alignment = 1

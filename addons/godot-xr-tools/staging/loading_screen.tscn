@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bhi5ee6eerov0" path="res://addons/godot-xr-tools/staging/loading_screen.gd" id="1"]
 [ext_resource type="Shader" uid="uid://lyq4glvuj23f" path="res://addons/godot-xr-tools/staging/loading_spinner.gdshader" id="2"]
 [ext_resource type="PackedScene" uid="uid://cymteydkxagpp" path="res://addons/godot-xr-tools/misc/hold_button.tscn" id="3"]
-[ext_resource type="FontFile" uid="uid://yty6kclrrpgr" path="res://LuckiestGuy-Regular.ttf" id="3_fcok3"]
+[ext_resource type="FontFile" uid="uid://yty6kclrrpgr" path="res://theme/LuckiestGuy-Regular.ttf" id="3_fcok3"]
 
 [sub_resource type="Curve" id="Curve_8guob"]
 _data = [Vector2(0, 0), 0.0, 3.0485072, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]

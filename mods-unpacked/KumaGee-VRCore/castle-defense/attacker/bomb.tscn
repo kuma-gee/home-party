@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://dh8grd7s3n8kg" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_snap.tscn" id="2_o4xnu"]
 [ext_resource type="Script" uid="uid://cfqyv12dohlh7" path="res://main/utils/hit_box.gd" id="3_4h28i"]
 [ext_resource type="AudioStream" uid="uid://c5rxm1rbcobqx" path="res://assets/sound/sfx/Lighting Fuse.wav" id="4_4q7qu"]
-[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme.css" id="5_4a37y"]
+[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="5_4a37y"]
 [ext_resource type="PackedScene" uid="uid://2icwvyn5a575" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/attacker/bomb_explosion_vfx.tscn" id="6_vljp1"]
 
 [sub_resource type="SphereShape3D" id="Shape_BombBody"]

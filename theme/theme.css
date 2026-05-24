@@ -10,7 +10,7 @@
 
 body {
   font-size: 36;
-  font-family: url(LuckiestGuy-Regular.ttf);
+  font-family: url(default_font.tres);
 }
 
 Button, Button:pressed, Button:hover, Button:hover_pressed {

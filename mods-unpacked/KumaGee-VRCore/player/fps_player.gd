@@ -221,6 +221,7 @@ func shield() -> void:
 		return
 	
 	is_shielded = true
+	velocity = Vector3.ZERO
 	animation.play(idle_anim)
 	hurtbox.invulnerable(shield_duration)
 	tween_shield(0.0, 1.0)

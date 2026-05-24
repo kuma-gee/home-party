@@ -4,7 +4,7 @@
 [ext_resource type="Shader" uid="uid://dpok7fwpxk7yd" path="res://shader/element_orb.gdshader" id="2_kle6v"]
 [ext_resource type="Shader" uid="uid://cdfjqx6ei5653" path="res://shader/circle_inner.gdshader" id="2_ljjn1"]
 [ext_resource type="Script" uid="uid://djbjvy83achjo" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/element_vfx.gd" id="2_vfx00"]
-[ext_resource type="FontFile" uid="uid://yty6kclrrpgr" path="res://LuckiestGuy-Regular.ttf" id="4_kle6v"]
+[ext_resource type="FontFile" uid="uid://yty6kclrrpgr" path="res://theme/LuckiestGuy-Regular.ttf" id="4_kle6v"]
 
 [sub_resource type="SphereShape3D" id="Shape_OrbFire"]
 radius = 0.2

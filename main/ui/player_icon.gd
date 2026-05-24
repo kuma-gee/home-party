@@ -1,8 +1,8 @@
 class_name PlayerIcon
 extends ColorRect
 
-@export var icon: MaterialIcon
+@export var icon: Label
 
 func update(data: Dictionary):
 	color = PlayerList.get_color(PlayerManager.get_player_idx(data.client_id))
-	icon.code = data.icon
+	icon.text = data.icon

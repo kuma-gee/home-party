@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dtik0q104occg"]
 
-[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme.css" id="1_7htws"]
+[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="1_7htws"]
 [ext_resource type="Script" uid="uid://84vm3ojuip7r" path="res://main/ui/gameover_screen.gd" id="2_qcyic"]
 
 [node name="GameoverPanel" type="Panel" unique_id=1565900216]

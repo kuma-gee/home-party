@@ -14,7 +14,7 @@
 [ext_resource type="Shader" uid="uid://c45mkp5k5xvrl" path="res://mods-unpacked/KumaGee-VRCore/pirate/water.gdshader" id="10_sf4ir"]
 [ext_resource type="PackedScene" uid="uid://cw7girhrs4k7c" path="res://assets/pirate/belt.glb" id="10_urw1i"]
 [ext_resource type="PackedScene" uid="uid://dm2vknykqcmcj" path="res://mods-unpacked/KumaGee-VRCore/pirate/gun.tscn" id="11_5vkqn"]
-[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme.css" id="11_gksw4"]
+[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="11_gksw4"]
 [ext_resource type="PackedScene" uid="uid://cw1s1cpm8m1lj" path="res://mods-unpacked/KumaGee-VRCore/pirate/barrel.tscn" id="11_qqeml"]
 [ext_resource type="Script" uid="uid://54ff6uyo8677" path="res://main/utils/time_label.gd" id="12_s4ws1"]
 [ext_resource type="Script" uid="uid://bw36fn1jy1q51" path="res://mods-unpacked/KumaGee-VRCore/pirate/health_bar.gd" id="13_2tdr6"]
