@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://dq1qe2qo3uiet"]
+
+[ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_7uchs"]
+[ext_resource type="Script" uid="uid://ba35ke2bowbbn" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/arrow.gd" id="2_lvm8s"]
+[ext_resource type="PackedScene" uid="uid://cvcvb74donybn" path="res://assets/castle-defense/weapons/arrow_base.glb" id="3_2ua0v"]
+[ext_resource type="PackedScene" uid="uid://dmrtyxsttqwve" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/arrow_element.tscn" id="4_466jn"]
+[ext_resource type="PackedScene" uid="uid://dh8grd7s3n8kg" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_snap.tscn" id="5_g64f4"]
+[ext_resource type="PackedScene" uid="uid://ctw7nbntd5pcj" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_right.tscn" id="6_3c1o0"]
+[ext_resource type="PackedScene" uid="uid://c25yxb0vt53vc" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_left.tscn" id="7_tp382"]
+[ext_resource type="Script" uid="uid://cfqyv12dohlh7" path="res://main/utils/hit_box.gd" id="8_lvm8s"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ul88r"]
+radius = 0.04
+height = 0.75
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_lvm8s"]
+radius = 0.08
+
+[node name="FlyingArrow" unique_id=777328390 node_paths=PackedStringArray("element_area") groups=["arrow"] instance=ExtResource("1_7uchs")]
+collision_mask = 3
+freeze = true
+freeze_mode = 0
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("2_lvm8s")
+damage = 1
+element_area = NodePath("Base/ElementArea")
+
+[node name="CollisionShape3D" parent="." index="0" unique_id=1198871219]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_ul88r")
+
+[node name="Base" type="Node3D" parent="." index="1" unique_id=81282304]
+transform = Transform3D(-0.7, 0, 1.0569706e-07, 0, 0.7, 0, -1.0569706e-07, 0, -0.7, 0, 0, 0)
+
+[node name="arrow_base" parent="Base" index="0" unique_id=408814742 instance=ExtResource("3_2ua0v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4934592e-08, 0, 0.09890732)
+
+[node name="ElementArea" parent="Base" index="1" unique_id=1447031381 instance=ExtResource("4_466jn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4934592e-08, 0, 0.09890732)
+
+[node name="LifetimeTimer" type="Timer" parent="." index="2" unique_id=507691472]
+wait_time = 6.0
+one_shot = true
+
+[node name="GrabPointSnap" parent="." index="3" unique_id=1692852419 groups=["arrow"] instance=ExtResource("5_g64f4")]
+visible = true
+
+[node name="GrabPointHandRight" parent="." index="4" unique_id=763524229 instance=ExtResource("6_3c1o0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.021294758, 0.029576316, 0.28744617)
+visible = true
+
+[node name="GrabPointHandLeft" parent="." index="5" unique_id=163360132 instance=ExtResource("7_tp382")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.01873115, 0.039187804, 0.29951236)
+visible = true
+
+[node name="HitBox" type="Area3D" parent="." index="6" unique_id=1764972362]
+collision_layer = 0
+collision_mask = 32
+script = ExtResource("8_lvm8s")
+metadata/_custom_type_script = "uid://cfqyv12dohlh7"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox" index="0" unique_id=282219671]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.3143119)
+shape = SubResource("SphereShape3D_lvm8s")

@@ -1,0 +1,125 @@
+[gd_scene format=3 uid="uid://dr7bfsomdfpn3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_motes"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+
+[sub_resource type="Curve" id="Curve_motes_alpha"]
+_data = [Vector2(0, 0), 0.0, 3.0, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(0.75, 0.7), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.5, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_motes_alpha"]
+curve = SubResource("Curve_motes_alpha")
+
+[sub_resource type="Gradient" id="Gradient_motes"]
+offsets = PackedFloat32Array(0, 0.25, 0.65, 1)
+colors = PackedColorArray(0, 0, 0, 0, 1.5, 0.2, 2, 0.8, 0.6, 0.05, 0.8, 0.5, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_motes"]
+gradient = SubResource("Gradient_motes")
+use_hdr = true
+
+[sub_resource type="Curve" id="Curve_motes_scale"]
+_data = [Vector2(0, 1.2), 0.0, 0.0, 0, 0, Vector2(0.6, 0.7), 0.0, 0.0, 0, 0, Vector2(1, 0.1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_motes_scale"]
+curve = SubResource("Curve_motes_scale")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_motes"]
+particle_flag_rotate_y = true
+emission_shape = 1
+emission_sphere_radius = 0.28
+angle_min = -180.0
+angle_max = 180.0
+direction = Vector3(0, -1, 0)
+spread = 50.0
+initial_velocity_min = 0.06
+initial_velocity_max = 0.15
+angular_velocity_min = -250.0
+angular_velocity_max = -100.0
+gravity = Vector3(0, -0.03, 0)
+radial_accel_min = -0.5000022
+radial_accel_max = -0.30000222
+damping_min = 0.1
+damping_max = 0.2
+scale_min = 0.5
+scale_max = 1.1
+scale_curve = SubResource("CurveTexture_motes_scale")
+color_ramp = SubResource("GradientTexture1D_motes")
+alpha_curve = SubResource("CurveTexture_motes_alpha")
+
+[sub_resource type="QuadMesh" id="QuadMesh_motes"]
+size = Vector2(0.035, 0.035)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rift"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+
+[sub_resource type="Curve" id="Curve_rift_alpha"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.5, 0.6), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_rift_alpha"]
+curve = SubResource("Curve_rift_alpha")
+
+[sub_resource type="Gradient" id="Gradient_rift"]
+offsets = PackedFloat32Array(0, 0.3, 0.8, 1)
+colors = PackedColorArray(0.8, 0.05, 1, 0.6, 0.4, 0.02, 0.5, 0.4, 0.1, 0, 0.15, 0.15, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_rift"]
+gradient = SubResource("Gradient_rift")
+use_hdr = true
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rift"]
+particle_flag_rotate_y = true
+emission_shape = 1
+emission_sphere_radius = 0.25
+spread = 180.0
+flatness = 0.6
+initial_velocity_min = 0.08
+initial_velocity_max = 0.2
+angular_velocity_min = -400.0
+angular_velocity_max = -150.0
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -0.5
+radial_accel_max = -0.2
+damping_min = 0.3
+damping_max = 0.6
+scale_min = 0.4
+scale_max = 0.9
+color_ramp = SubResource("GradientTexture1D_rift")
+alpha_curve = SubResource("CurveTexture_rift_alpha")
+
+[sub_resource type="QuadMesh" id="QuadMesh_rift"]
+size = Vector2(0.03, 0.03)
+
+[node name="OrbVoidVFX" type="Node3D" unique_id=488376338]
+
+[node name="CollapsingMotes" type="GPUParticles3D" parent="." unique_id=1446553371]
+material_override = SubResource("StandardMaterial3D_motes")
+amount = 16
+randomness = 0.6
+process_material = SubResource("ParticleProcessMaterial_motes")
+draw_pass_1 = SubResource("QuadMesh_motes")
+
+[node name="RiftPull" type="GPUParticles3D" parent="." unique_id=1025821644]
+material_override = SubResource("StandardMaterial3D_rift")
+amount = 10
+lifetime = 1.2
+randomness = 0.7
+process_material = SubResource("ParticleProcessMaterial_rift")
+draw_pass_1 = SubResource("QuadMesh_rift")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=92942871]
+light_color = Color(0.6, 0.05, 0.8, 1)
+light_energy = 0.7
+omni_range = 0.5

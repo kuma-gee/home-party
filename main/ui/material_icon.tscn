@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://c6c5h3ccruc3o"]
+
+[ext_resource type="FontFile" uid="uid://dklcey4rt6b7g" path="res://MaterialSymbolsOutlined-VariableFont_FILL,GRAD,opsz,wght.ttf" id="1_w6jb0"]
+[ext_resource type="Script" uid="uid://delnonwkvp30u" path="res://main/ui/material_icon.gd" id="2_2ubjg"]
+
+[node name="MaterialIcon" type="RichTextLabel" unique_id=2057638828]
+custom_minimum_size = Vector2(64, 64)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = ExtResource("1_w6jb0")
+theme_override_font_sizes/normal_font_size = 52
+bbcode_enabled = true
+text = "[center][char=e869][/center]"
+scroll_active = false
+script = ExtResource("2_2ubjg")
+code = "e869"

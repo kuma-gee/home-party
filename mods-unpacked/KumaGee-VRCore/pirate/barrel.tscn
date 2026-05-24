@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://cw1s1cpm8m1lj"]
+
+[ext_resource type="PackedScene" uid="uid://jrxr4c37stf1" path="res://assets/pirate/barrel.glb" id="1_ikvi5"]
+[ext_resource type="Script" uid="uid://byhg4t4ldkamd" path="res://mods-unpacked/KumaGee-VRCore/pirate/barrel.gd" id="1_llgkl"]
+[ext_resource type="Script" uid="uid://dn1hlla402of8" path="res://main/utils/hit_area.gd" id="3_dd6aa"]
+[ext_resource type="Script" uid="uid://crtkl6ldhona6" path="res://main/utils/hurt_box.gd" id="4_niq6i"]
+[ext_resource type="AudioStream" uid="uid://mgkt14i02t8h" path="res://assets/sound/sfx/Wood+Box+Break.wav" id="5_vhr5b"]
+[ext_resource type="Script" uid="uid://b4woodkg2nup8" path="res://main/utils/randomized_sfx.gd" id="6_u56x2"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ikvi5"]
+radius = 0.78895026
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_llgkl"]
+radius = 0.8606327
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_niq6i"]
+radius = 0.81508046
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_vhr5b"]
+radius = 0.8752651
+
+[node name="Barrel" type="CharacterBody3D" unique_id=1611131427]
+collision_layer = 0
+script = ExtResource("1_llgkl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1558451171]
+shape = SubResource("SphereShape3D_ikvi5")
+
+[node name="barrel2" parent="." unique_id=1286530298 instance=ExtResource("1_ikvi5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5651073, 0)
+
+[node name="HitArea" type="Area3D" parent="." unique_id=312260157]
+collision_layer = 0
+collision_mask = 32
+script = ExtResource("3_dd6aa")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitArea" unique_id=333730114]
+shape = SubResource("SphereShape3D_llgkl")
+
+[node name="HurtBox" type="Area3D" parent="." unique_id=247971429]
+collision_layer = 64
+collision_mask = 0
+script = ExtResource("4_niq6i")
+metadata/_custom_type_script = "uid://crtkl6ldhona6"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtBox" unique_id=202025330]
+shape = SubResource("SphereShape3D_niq6i")
+
+[node name="PowerUpArea" type="Area3D" parent="." unique_id=489293639]
+collision_layer = 0
+collision_mask = 128
+script = ExtResource("4_niq6i")
+metadata/_custom_type_script = "uid://crtkl6ldhona6"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PowerUpArea" unique_id=460909716]
+shape = SubResource("SphereShape3D_vhr5b")
+
+[node name="BreakSFX" type="AudioStreamPlayer3D" parent="." unique_id=410466419]
+stream = ExtResource("5_vhr5b")
+volume_db = -5.0
+script = ExtResource("6_u56x2")
+
+[node name="FreeTimer" type="Timer" parent="." unique_id=2086613672]
+wait_time = 3.0
+one_shot = true

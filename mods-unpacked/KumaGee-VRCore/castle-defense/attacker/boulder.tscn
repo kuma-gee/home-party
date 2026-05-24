@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://cdboulder001"]
+
+[ext_resource type="Script" uid="uid://dv3hkf3b1gmsh" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/attacker/boulder.gd" id="1_boulder"]
+[ext_resource type="PackedScene" uid="uid://dbmt2cjyth8a4" path="res://assets/castle-defense/weapons/projectile_catapult.gltf" id="2_a3hix"]
+[ext_resource type="Texture2D" uid="uid://bhtmbib4h42sn" path="res://assets/castle-defense/weapons/weapons_bits_texture.png" id="3_i8s5f"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_body"]
+radius = 0.21401803
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xyrxt"]
+albedo_texture = ExtResource("3_i8s5f")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_hit"]
+radius = 0.2866052
+
+[node name="Boulder" type="CharacterBody3D" unique_id=29135178]
+collision_layer = 2
+script = ExtResource("1_boulder")
+base_damage = 3
+high_arc = true
+
+[node name="BoulderShape" type="CollisionShape3D" parent="." unique_id=768478445]
+shape = SubResource("SphereShape3D_body")
+
+[node name="projectile_catapult2" parent="." unique_id=1879904734 instance=ExtResource("2_a3hix")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
+
+[node name="projectile_catapult" parent="projectile_catapult2" index="0" unique_id=1735618756]
+surface_material_override/0 = SubResource("StandardMaterial3D_xyrxt")
+
+[node name="HitArea" type="Area3D" parent="." unique_id=1657186976]
+collision_layer = 0
+collision_mask = 64
+
+[node name="HitShape" type="CollisionShape3D" parent="HitArea" unique_id=728666122]
+shape = SubResource("SphereShape3D_hit")
+
+[node name="FreeTimer" type="Timer" parent="." unique_id=90759581]
+one_shot = true
+
+[editable path="projectile_catapult2"]

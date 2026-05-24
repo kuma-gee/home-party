@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://c8e4jfkpl4tn0"]
+
+[ext_resource type="Shader" uid="uid://cdfjqx6ei5653" path="res://shader/circle_inner.gdshader" id="1_77mw3"]
+[ext_resource type="Script" uid="uid://hen2ixl6yn2s" path="res://mods-unpacked/KumaGee-VRCore/player/color_ring.gd" id="1_bwmu2"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_we0o2"]
+viewport_path = NodePath("ColorRing/SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_l7of8"]
+shader = ExtResource("1_77mw3")
+shader_parameter/radius = 0.550000026125
+shader_parameter/inner_radius = 0.350000016625
+shader_parameter/fill = 1.0
+shader_parameter/blur = 0.009999999747
+shader_parameter/bg_color = Color(0, 0, 0, 1)
+shader_parameter/inner_color = Color(0, 0, 0, 0)
+shader_parameter/outline_width = 0.0
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+
+[node name="ColorRing" type="Sprite3D" unique_id=1233288472 node_paths=PackedStringArray("color_rect")]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+texture = SubResource("ViewportTexture_we0o2")
+script = ExtResource("1_bwmu2")
+color_rect = NodePath("SubViewport/Ring")
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=2023036085]
+transparent_bg = true
+size = Vector2i(160, 160)
+
+[node name="Ring" type="ColorRect" parent="SubViewport" unique_id=491662435]
+material = SubResource("ShaderMaterial_l7of8")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)

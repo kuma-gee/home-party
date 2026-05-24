@@ -1,15 +1,43 @@
 :root {
     --default-margin: 16;
     --default-separation: 8;
+    --label-outline: 16;
+    --primary-color: #00F;
+    --secondary-color: #0F0;
+    --accent-color: #F00;
+    --health-color: #0F0;
 }
 
 body {
-  font-size: 24;
+  font-size: 36;
+  font-family: url(LuckiestGuy-Regular.ttf);
+}
+
+Button, Button:pressed, Button:hover, Button:hover_pressed {
+  background: var(--primary-color);
+  padding: 12 0 0 0;
+}
+
+Button:pressed {
+  background: var(--secondary-color);
+}
+
+Button:hover, Button:hover_pressed {
+  background: var(--accent-color);
+}
+
+Label {
+  --const-outline-size: var(--label-outline);
 }
 
 Label.Large {
   font-size: 48;
-  --const-outline-size: 16;
+  --const-outline-size: var(--label-outline);
+}
+
+Label.Small {
+  font-size: 24;
+  --const-outline-size: var(--label-outline);
 }
 
 MarginContainer {
@@ -20,5 +48,16 @@ MarginContainer {
 }
 
 VBoxContainer, HBoxContainer {
-  --const-separation: var(--default-separation);
+  gap: var(--default-separation);
+}
+
+PanelContainer {
+  background: #111111;
+}
+
+ProgressBar.Health:background {
+  background: #000;
+}
+ProgressBar.Health:fill {
+  background: var(--health-color);
 }

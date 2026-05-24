@@ -1,3 +1,4 @@
+import { getIconForPlayer } from "./icons";
 import { WebRTCClient, type WebRTCConfig } from "./webrtc";
 
 // Fallback UUID generator for browsers that don't support crypto.randomUUID()
@@ -50,6 +51,7 @@ export enum MessageType {
   Id = 0,
   GameClientSession = 1,
   GameClientIceCandidate = 2,
+  InputLayout = 3,
 }
 
 export interface Message {
@@ -60,6 +62,7 @@ export interface Message {
 export interface IdMessage extends Message {
   msg: MessageType.Id;
   id: number;
+  number: number;
 }
 
 export interface SessionMessage extends Message {
@@ -73,6 +76,11 @@ export interface IceCandidateMessage extends Message {
   mid: string;
   index: number;
   sdp: string;
+}
+
+export interface InputLayoutMessage extends Message {
+  msg: MessageType.InputLayout;
+  layout: "joystick" | "buttons";
 }
 
 export class WebSocketClient {
@@ -91,6 +99,7 @@ export class WebSocketClient {
   onError?: (error: Event) => void;
   onMessage?: (message: Message) => void;
   onIdReceived?: (id: number) => void;
+  onInputLayoutReceived?: (layout: "joystick" | "buttons") => void;
   onWebRTCStateChange?: (state: RTCPeerConnectionState) => void;
   onWebRTCDataChannelOpen?: () => void;
   onDataChannelMessage?: (data: string) => void;
@@ -135,7 +144,7 @@ export class WebSocketClient {
 
         this.ws.onmessage = async (event) => {
           try {
-			const messageText = await this.messageToString(event);
+            const messageText = await this.messageToString(event);
             console.log("Message text:", messageText);
             const message = JSON.parse(messageText) as Message;
             this.handleMessage(message);
@@ -173,7 +182,8 @@ export class WebSocketClient {
   private handleMessage(message: Message) {
     switch (message.msg) {
       case MessageType.Id:
-        this.peerId = (message as IdMessage).id;
+        var msg = message as IdMessage;
+        this.peerId = msg.id;
         console.log(`Received peer ID: ${this.peerId}`);
         this.onIdReceived?.(this.peerId);
 
@@ -193,6 +203,8 @@ export class WebSocketClient {
           peer_id: this.peerId,
           client_id: clientId,
           name: this.playerName || "Player " + this.peerId,
+          number: msg.number,
+          icon: getIconForPlayer(msg.number),
         });
 
         this.initializeWebRTC();
@@ -212,6 +224,12 @@ export class WebSocketClient {
           .catch((error) =>
             console.error("Failed to add ICE candidate:", error)
           );
+        break;
+      case MessageType.InputLayout:
+        const inputLayoutMsg = message as InputLayoutMessage;
+        if (inputLayoutMsg.layout === "joystick" || inputLayoutMsg.layout === "buttons") {
+          this.onInputLayoutReceived?.(inputLayoutMsg.layout);
+        }
         break;
     }
   }
@@ -244,7 +262,7 @@ export class WebSocketClient {
         });
       },
       onDataChannelMessage: async (data) => {
-		const txt = await this.messageToString(data)
+        const txt = await this.messageToString(data)
         this.onDataChannelMessage?.(txt);
       },
     };

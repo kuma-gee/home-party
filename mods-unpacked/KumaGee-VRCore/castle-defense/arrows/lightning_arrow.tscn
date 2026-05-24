@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://bdkwolot88p0j"]
+
+[ext_resource type="Shader" uid="uid://kumhxcdqm0jv" path="res://shader/lightning.gdshader" id="1_kk1ci"]
+[ext_resource type="PackedScene" uid="uid://wh6ia3jc5jdu" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/lightning_vfx.tscn" id="2_f43ig"]
+[ext_resource type="Script" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/lightning_area.gd" id="3_la"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_kk1ci"]
+radius = 2.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_f43ig"]
+render_priority = 0
+shader = ExtResource("1_kk1ci")
+shader_parameter/Main_Color = Color(1, 1, 1, 1)
+shader_parameter/Effect_Color = Color(0.3, 0.3, 1, 1)
+shader_parameter/Octave_Count = 10
+shader_parameter/Amp_Start = 0.5
+shader_parameter/Amp_Coeff = 0.5
+shader_parameter/Freq_Coeff = 2.0
+shader_parameter/Speed = 3.0
+shader_parameter/Y_Size = 4.0
+shader_parameter/X_Size = 5.0
+shader_parameter/Thickness = 1.0
+shader_parameter/Rotation_Degrees = 90.000012825
+shader_parameter/Emission_Power = 2.0
+shader_parameter/y_billboard = false
+shader_parameter/x_billboard = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_kk1ci"]
+size = Vector2(1.905, 1.53)
+
+[node name="LightningStrike" type="Node3D" unique_id=1899216090]
+script = ExtResource("3_la")
+lightning_scene = ExtResource("2_f43ig")
+
+[node name="HitArea" type="Area3D" parent="." unique_id=249186031]
+collision_layer = 0
+collision_mask = 32
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitArea" unique_id=56332823]
+shape = SubResource("SphereShape3D_kk1ci")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=178711775]
+visible = false
+material_override = SubResource("ShaderMaterial_f43ig")
+mesh = SubResource("QuadMesh_kk1ci")

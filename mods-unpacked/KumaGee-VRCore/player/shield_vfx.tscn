@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://7r3jp0vbieft"]
+
+[ext_resource type="Shader" uid="uid://ddw0mekly5k6g" path="res://shader/shield.gdshader" id="1_rvymb"]
+[ext_resource type="Texture2D" uid="uid://ue51p6m1lno" path="res://assets/particles/T_Noise_W5i.png" id="3_2sc4a"]
+[ext_resource type="Texture2D" uid="uid://bo46iybe3taj5" path="res://assets/particles/hexagon.png" id="4_kbasd"]
+[ext_resource type="Texture2D" uid="uid://pvw6v2gomj2s" path="res://assets/particles/hexagon_smooth.png" id="4_x7qu6"]
+
+[sub_resource type="Gradient" id="Gradient_0ms2b"]
+offsets = PackedFloat32Array(0.5, 0.68, 0.75, 1)
+colors = PackedColorArray(0, 0.255, 1, 0.016, 0, 0.255, 1, 0.106, 0.027, 0.157, 2.925, 0.31, 0.1, 0.8, 8, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_7txbf"]
+gradient = SubResource("Gradient_0ms2b")
+
+[sub_resource type="Gradient" id="Gradient_aqjxd"]
+offsets = PackedFloat32Array(0.25, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0, 2, 5, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_2ohdo"]
+gradient = SubResource("Gradient_aqjxd")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qnavn"]
+render_priority = 0
+shader = ExtResource("1_rvymb")
+shader_parameter/fresnel_power = 0.2999999932944
+shader_parameter/gradient_color = SubResource("GradientTexture1D_2ohdo")
+shader_parameter/alpha_gradient = SubResource("GradientTexture1D_7txbf")
+shader_parameter/opacity = 0.999999977648
+shader_parameter/overlay_texture = ExtResource("4_kbasd")
+shader_parameter/overlay_scale = Vector2(3, 3)
+shader_parameter/overlay_speed = Vector2(0, 0)
+shader_parameter/overlay_strength = 0.0999999977648
+shader_parameter/fade_value = 0.999999977648
+shader_parameter/fade_texture_divider = 9.999999798832
+shader_parameter/fade_smooth = 0.45999998971808
+shader_parameter/fade_mask = ExtResource("4_x7qu6")
+shader_parameter/fade_texture = ExtResource("3_2sc4a")
+shader_parameter/fade_texture_scale = Vector2(1, 1)
+shader_parameter/proximity_fade_distance = 1.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_nmkwr"]
+radius = 1.0
+height = 2.0
+radial_segments = 16
+rings = 8
+
+[node name="MeshInstance3D" type="MeshInstance3D" unique_id=1287199905]
+material_override = SubResource("ShaderMaterial_qnavn")
+mesh = SubResource("SphereMesh_nmkwr")

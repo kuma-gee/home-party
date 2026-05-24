@@ -1,0 +1,24 @@
+[gd_resource type="VisualShader" format=3 uid="uid://bgf21trwrtlwv"]
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_jss28"]
+parameter_name = "BaseTexture"
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_yw35p"]
+expanded_output_ports = [0]
+source = 5
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_wfakh"]
+expanded_output_ports = [0]
+input_name = "color"
+
+[resource]
+modes/cull = 2
+flags/unshaded = true
+nodes/fragment/0/position = Vector2(740, 160)
+nodes/fragment/2/node = SubResource("VisualShaderNodeTexture2DParameter_jss28")
+nodes/fragment/2/position = Vector2(-80, 160)
+nodes/fragment/3/node = SubResource("VisualShaderNodeTexture_yw35p")
+nodes/fragment/3/position = Vector2(220, 180)
+nodes/fragment/4/node = SubResource("VisualShaderNodeInput_wfakh")
+nodes/fragment/4/position = Vector2(200, -120)
+nodes/fragment/connections = PackedInt32Array(2, 0, 3, 2, 3, 1, 0, 1, 4, 0, 0, 0, 4, 4, 0, 19)

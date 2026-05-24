@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://bucsqhjr75ini"]
+
+[ext_resource type="Shader" uid="uid://cdfjqx6ei5653" path="res://shader/circle_inner.gdshader" id="1_q00f1"]
+[ext_resource type="PackedScene" uid="uid://c6c5h3ccruc3o" path="res://main/ui/material_icon.tscn" id="2_bbb4l"]
+[ext_resource type="Script" uid="uid://w38vewqb218t" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/ui/player_select.gd" id="2_pola4"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ynw0o"]
+shader = ExtResource("1_q00f1")
+shader_parameter/radius = 0.90000004275
+shader_parameter/inner_radius = 0.0
+shader_parameter/fill = 1.0
+shader_parameter/blur = 0.00499999987349999
+shader_parameter/bg_color = Color(0, 0, 0, 1)
+shader_parameter/inner_color = Color(0, 0, 0, 0)
+shader_parameter/outline_width = 0.10000000475
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+
+[node name="PlayerSelect" type="ColorRect" unique_id=1246926194 node_paths=PackedStringArray("icon")]
+material = SubResource("ShaderMaterial_ynw0o")
+custom_minimum_size = Vector2(32, 32)
+color = Color(1, 0, 0, 1)
+script = ExtResource("2_pola4")
+icon = NodePath("MaterialIcon")
+
+[node name="MaterialIcon" parent="." unique_id=2057638828 instance=ExtResource("2_bbb4l")]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 1
+offset_left = -23.0
+offset_top = -24.0
+offset_right = 25.0
+offset_bottom = 24.0
+theme_override_colors/default_color = Color(0.33333334, 1, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/normal_font_size = 36
+text = "[center][char=e5ca][/center]"
+code = "e5ca"

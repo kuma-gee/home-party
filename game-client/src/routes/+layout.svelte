@@ -1,5 +1,5 @@
 <svelte:head>
-    <title>Phaser Svelte Template</title>
+    <title>Home Party Controller</title>
 </svelte:head>
 
 <slot />

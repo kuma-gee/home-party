@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="TagResource" format=3 uid="uid://bpsxjircteyji"]
+
+[ext_resource type="Script" uid="uid://btc1factr54dk" path="res://main/tags/tag_resource.gd" id="1_waf84"]
+
+[resource]
+script = ExtResource("1_waf84")
+tag = "VR"
+description = "VR supported"
+color = Color(0.100000024, 0.71500003, 1, 1)
+metadata/_custom_type_script = "uid://btc1factr54dk"

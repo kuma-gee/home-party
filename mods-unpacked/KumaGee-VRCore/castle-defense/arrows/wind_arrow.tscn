@@ -1,0 +1,438 @@
+[gd_scene format=3 uid="uid://b6cxw3y4xo030"]
+
+[ext_resource type="PackedScene" uid="uid://j20efs01x4vh" path="res://assets/particles/shapes/tornado.glb" id="1_sglr4"]
+[ext_resource type="Shader" uid="uid://chdpydvkec36m" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/tornado.tres" id="2_0g788"]
+[ext_resource type="Texture2D" uid="uid://coikxo5mcrjkl" path="res://assets/particles/T_Noise1_nk.png" id="3_v7lbj"]
+[ext_resource type="Shader" uid="uid://bgf21trwrtlwv" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/vfx/basic_dissolve.tres" id="4_d7k0l"]
+[ext_resource type="Texture2D" uid="uid://62hkfjpmgrkk" path="res://assets/particles/T_FirePanningCyl45.png" id="5_rfhuq"]
+[ext_resource type="ArrayMesh" uid="uid://cpngxjtkb7f5q" path="res://assets/particles/shapes/tornado_waves.obj" id="6_jmm1g"]
+[ext_resource type="Script" uid="uid://7cief0kwceod" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/pull_area.gd" id="7_0g788"]
+[ext_resource type="Script" uid="uid://d07c57v65yavj" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/move_direction.gd" id="8_v7lbj"]
+[ext_resource type="AudioStream" uid="uid://cxj28x7f6w3da" path="res://assets/sound/sfx/風が吹く4.mp3" id="9_d7k0l"]
+[ext_resource type="Script" uid="uid://b4woodkg2nup8" path="res://main/utils/randomized_sfx.gd" id="10_rfhuq"]
+
+[sub_resource type="Gradient" id="Gradient_eve0y"]
+offsets = PackedFloat32Array(0, 0.218868, 0.449057, 1)
+colors = PackedColorArray(0, 0, 0, 0, 1.0709552, 4.3450084, 4.9998198, 0.41960785, 0.74122804, 2.9996202, 1.9080639, 0.90588236, 2, 2, 2, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_2b1s6"]
+gradient = SubResource("Gradient_eve0y")
+use_hdr = true
+
+[sub_resource type="Gradient" id="Gradient_8eafj"]
+offsets = PackedFloat32Array(0, 0.0641509, 0.898113, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_eve0y"]
+gradient = SubResource("Gradient_8eafj")
+fill_from = Vector2(1, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d7k0l"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("2_0g788")
+shader_parameter/Speed = Vector2(-1, 1.8)
+shader_parameter/BaseTexture = ExtResource("3_v7lbj")
+shader_parameter/Subtract_Texture = SubResource("GradientTexture2D_eve0y")
+shader_parameter/Color1DGradient = SubResource("GradientTexture1D_2b1s6")
+shader_parameter/Opacity = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_geje6"]
+render_priority = 0
+shader = ExtResource("4_d7k0l")
+shader_parameter/BaseTexture = ExtResource("5_rfhuq")
+
+[sub_resource type="Curve" id="Curve_7ooeq"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 2.78587, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_rbhhk"]
+curve = SubResource("Curve_7ooeq")
+
+[sub_resource type="Gradient" id="Gradient_geje6"]
+offsets = PackedFloat32Array(0.13834, 0.6678832, 1)
+colors = PackedColorArray(0.2025, 0.516375, 0.81, 1, 0.35000002, 1, 0.48000008, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_7ooeq"]
+gradient = SubResource("Gradient_geje6")
+
+[sub_resource type="Curve" id="Curve_rbhhk"]
+_data = [Vector2(0, 0.192308), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_57xxv"]
+curve = SubResource("Curve_rbhhk")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2b1s6"]
+particle_flag_rotate_y = true
+angle_min = -180.0
+angle_max = 180.0
+direction = Vector3(1, 1, 0)
+initial_velocity_max = 3.0
+angular_velocity_min = 350.0
+angular_velocity_max = 500.0
+gravity = Vector3(0, 0, 0)
+scale_max = 2.0
+scale_curve = SubResource("CurveTexture_57xxv")
+color = Color(1.5, 1.5, 1.5, 1)
+color_ramp = SubResource("GradientTexture1D_7ooeq")
+alpha_curve = SubResource("CurveTexture_rbhhk")
+
+[sub_resource type="Animation" id="Animation_eve0y"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("tornado:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("tornado/GPUParticles3D2:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("tornado/GPUParticles3D:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("tornado/Cylinder:material_override:shader_parameter/Opacity")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AudioStreamPlayer:volume_db")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-50.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("AudioStreamPlayer:playing")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_8eafj"]
+resource_name = "spin"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("tornado:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 6.28319, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("tornado/GPUParticles3D:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("tornado/GPUParticles3D2:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_l0reg"]
+resource_name = "start"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("tornado/Cylinder:material_override:shader_parameter/Opacity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 0.400000019]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("tornado/GPUParticles3D:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.06666667),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("tornado/GPUParticles3D2:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.23333333),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AnimationPlayer")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [&"spin"],
+"method": &"play"
+}]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Lifetime")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [-1],
+"method": &"start"
+}]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("AudioStreamPlayer:volume_db")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-50.0, -10.0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("AudioStreamPlayer:playing")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_0g788"]
+resource_name = "stop"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("tornado/GPUParticles3D2:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("tornado/GPUParticles3D:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("tornado/Cylinder:material_override:shader_parameter/Opacity")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.400000019, 1.0]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AudioStreamPlayer:volume_db")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-10.0, -50.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("AudioStreamPlayer:playing")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_eve0y"]
+_data = {
+&"RESET": SubResource("Animation_eve0y"),
+&"spin": SubResource("Animation_8eafj"),
+&"start": SubResource("Animation_l0reg"),
+&"stop": SubResource("Animation_0g788")
+}
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_l0reg"]
+radius = 5.0
+
+[node name="WindArrow" type="Node3D" unique_id=1943273362]
+
+[node name="tornado" parent="." unique_id=780864556 instance=ExtResource("1_sglr4")]
+
+[node name="Cylinder" parent="tornado" index="0" unique_id=460836199]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_d7k0l")
+cast_shadow = 0
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="tornado" unique_id=463829666]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.184103, -0.260679, 0)
+material_override = SubResource("ShaderMaterial_geje6")
+cast_shadow = 0
+emitting = false
+lifetime = 0.5
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_2b1s6")
+draw_pass_1 = ExtResource("6_jmm1g")
+
+[node name="GPUParticles3D2" type="GPUParticles3D" parent="tornado" unique_id=133075804]
+transform = Transform3D(0.391743, 0, -0.920075, 0, 1, 0, 0.920075, 0, 0.391743, -0.072, 2.5, -0.169)
+material_override = SubResource("ShaderMaterial_geje6")
+cast_shadow = 0
+emitting = false
+lifetime = 0.5
+fixed_fps = 60
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_2b1s6")
+draw_pass_1 = ExtResource("6_jmm1g")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1695027534]
+libraries/ = SubResource("AnimationLibrary_eve0y")
+autoplay = &"start"
+
+[node name="PullArea" type="Area3D" parent="." unique_id=598028271]
+collision_layer = 0
+collision_mask = 32768
+script = ExtResource("7_0g788")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PullArea" unique_id=529548999]
+shape = SubResource("SphereShape3D_l0reg")
+
+[node name="Lifetime" type="Timer" parent="." unique_id=3075468]
+wait_time = 3.0
+one_shot = true
+
+[node name="MoveDirection" type="Node" parent="." unique_id=1543731684 node_paths=PackedStringArray("node")]
+script = ExtResource("8_v7lbj")
+direction = Vector3(0, 0, 1)
+node = NodePath("..")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer3D" parent="." unique_id=689652539]
+stream = ExtResource("9_d7k0l")
+volume_db = -50.0
+pitch_scale = 0.8
+script = ExtResource("10_rfhuq")
+max_pitch = 1.1
+
+[connection signal="timeout" from="Lifetime" to="AnimationPlayer" method="play" binds= ["stop"]]
+
+[editable path="tornado"]

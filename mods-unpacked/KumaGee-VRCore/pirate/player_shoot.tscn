@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://cfkaaf5hagfis"]
+
+[ext_resource type="Script" uid="uid://c52vk877urogd" path="res://mods-unpacked/KumaGee-VRCore/pirate/player_shoot_point.gd" id="1_rjxo5"]
+[ext_resource type="PackedScene" uid="uid://c8e4jfkpl4tn0" path="res://mods-unpacked/KumaGee-VRCore/player/color_ring.tscn" id="3_8rlud"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_8rlud"]
+viewport_path = NodePath("SubViewport")
+
+[node name="PlayerShoot" type="Node3D" unique_id=571802471 node_paths=PackedStringArray("visuals")]
+script = ExtResource("1_rjxo5")
+visuals = NodePath("")
+
+[node name="ColorRing" parent="." unique_id=1233288472 instance=ExtResource("3_8rlud")]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.031019151, 0)
+texture = SubResource("ViewportTexture_8rlud")
+
+[editable path="ColorRing"]

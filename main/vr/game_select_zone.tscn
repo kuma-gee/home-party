@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://btho7coc5b1sq"]
+
+[ext_resource type="Script" uid="uid://ckoy4mkplkm7o" path="res://main/vr/game_select_zone.gd" id="1_iak6b"]
+[ext_resource type="PackedScene" uid="uid://ce7vysyvondf8" path="res://addons/godot-xr-tools/objects/snap_zone.tscn" id="2_qmqi3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iak6b"]
+albedo_color = Color(0.27058825, 0.30980393, 0.23921569, 1)
+
+[node name="GameSelectZone" type="Node3D" unique_id=318897250]
+script = ExtResource("1_iak6b")
+
+[node name="SnapZone" parent="." unique_id=1883047161 instance=ExtResource("2_qmqi3")]
+grab_distance = 0.12
+snap_on_dropped = true
+snap_require = "game_select"
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="." unique_id=83522275]
+use_collision = true
+radius = 0.15
+height = 0.01
+sides = 32
+material = SubResource("StandardMaterial3D_iak6b")
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="CSGCylinder3D" unique_id=1188793051]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.006641332, 0)
+operation = 2
+radius = 0.11
+height = 0.02
+sides = 32

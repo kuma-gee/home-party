@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bw8a2x8y75suj"]
+
+[ext_resource type="Script" uid="uid://djbjvy83achjo" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/element_vfx.gd" id="1_vfx00"]
+
+[node name="ElementVFX" type="Node3D" unique_id=1154205302]
+script = ExtResource("1_vfx00")

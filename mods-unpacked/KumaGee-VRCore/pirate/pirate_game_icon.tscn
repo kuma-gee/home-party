@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://dxa8mvr5m0qdx"]
+
+[ext_resource type="PackedScene" uid="uid://b04c0irdp3hbi" path="res://assets/pirate/scene.gltf" id="1_0qaw1"]
+[ext_resource type="PackedScene" uid="uid://jrxr4c37stf1" path="res://assets/pirate/barrel.glb" id="2_7nt2m"]
+
+[node name="PirateGameIcon" type="Node3D" unique_id=1393413089]
+
+[node name="Sketchfab_Scene" parent="." unique_id=1192997662 instance=ExtResource("1_0qaw1")]
+transform = Transform3D(0.028349992, -0.025637077, -0.011790574, 0.020295097, 0.006912365, 0.033768747, -0.01960578, -0.029915867, 0.017906811, -0.04398323, 0.020526946, 0.04795163)
+
+[node name="barrel2" parent="." unique_id=1286530298 instance=ExtResource("2_7nt2m")]
+transform = Transform3D(0.056789838, -1.4666766e-08, 0.019362703, -0.019362703, 4.4132412e-10, 0.056789838, -1.4024472e-08, -0.06, -4.3154245e-09, 0.03082641, 0.039238743, 0.0057014115)

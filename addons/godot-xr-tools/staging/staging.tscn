@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://bnqnnnet4dw12"]
+
+[ext_resource type="Script" uid="uid://ralokdfu8o3n" path="res://addons/godot-xr-tools/staging/staging.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://bqumugyvkct4r" path="res://addons/godot-xr-tools/staging/loading_screen.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://wtpox7m5vu2b" path="res://addons/godot-xr-tools/effects/fade.tscn" id="2_htugy"]
+[ext_resource type="PackedScene" uid="uid://btknduttnmoxf" path="res://addons/godot-xr-tools/misc/vr_common_shader_cache.tscn" id="5"]
+[ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="6_balvx"]
+
+[sub_resource type="Curve" id="21"]
+_limits = [0.0, 3.14, 0.0, 1.0]
+_data = [Vector2(0.00207039, 0), 0.0, 1.00884, 0, 0, Vector2(1, 3.14), 0.313348, 0.0, 0, 0]
+point_count = 2
+
+[node name="Staging" type="Node3D" unique_id=343982823 node_paths=PackedStringArray("desktop_camera", "xr_origin", "xr_camera", "loading", "fade", "desktop_fade")]
+process_mode = 3
+script = ExtResource("1")
+main_scene = "uid://cne8oxil0b4yy"
+desktop_camera = NodePath("Camera3D")
+xr_origin = NodePath("SubViewport/XROrigin3D")
+xr_camera = NodePath("SubViewport/XROrigin3D/XRCamera3D")
+loading = NodePath("SubViewport/LoadingScreen")
+prompt_for_continue = false
+fade = NodePath("SubViewport/StagingFade")
+desktop_fade = NodePath("CanvasLayer/ColorRect")
+
+[node name="StartXR" parent="." unique_id=2002817492 node_paths=PackedStringArray("viewport") instance=ExtResource("6_balvx")]
+viewport = NodePath("../SubViewport")
+
+[node name="Scene" type="Node3D" parent="." unique_id=1337958056]
+process_mode = 1
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=1315696163]
+
+[node name="StagingFade" parent="SubViewport" unique_id=1431443523 instance=ExtResource("2_htugy")]
+
+[node name="LoadingScreen" parent="SubViewport" unique_id=924912006 instance=ExtResource("2")]
+follow_camera = true
+follow_speed = SubResource("21")
+
+[node name="XROrigin3D" type="XROrigin3D" parent="SubViewport" unique_id=612123133]
+current = true
+
+[node name="XRCamera3D" type="XRCamera3D" parent="SubViewport/XROrigin3D" unique_id=1264047006]
+current = true
+
+[node name="VRCommonShaderCache" parent="SubViewport/XROrigin3D/XRCamera3D" unique_id=480574796 instance=ExtResource("5")]
+
+[node name="LeftHandController" type="XRController3D" parent="SubViewport/XROrigin3D" unique_id=132114136]
+tracker = &"left_hand"
+pose = &"aim"
+
+[node name="RightHandController" type="XRController3D" parent="SubViewport/XROrigin3D" unique_id=2085748082]
+tracker = &"right_hand"
+pose = &"aim"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=292277983]
+layer = 1000
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=1151775105]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=401912813]
+
+[connection signal="xr_ended" from="StartXR" to="." method="_on_StartXR_xr_ended"]
+[connection signal="xr_started" from="StartXR" to="." method="_on_StartXR_xr_started"]

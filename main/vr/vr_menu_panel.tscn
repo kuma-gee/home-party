@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://c4xvn8qp2ywmh"]
+
+[ext_resource type="Script" uid="uid://ceq72hwfp8fya" path="res://main/vr/vr_menu_panel.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://b657im88ku5f3" path="res://main/vr/menu_button.tscn" id="2_65ryq"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_panel"]
+size = Vector2(1.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_panel"]
+render_priority = 100
+transparency = 1
+albedo_color = Color(0.1, 0.1, 0.15, 0.95)
+metallic = 0.3
+roughness = 0.7
+emission_enabled = true
+emission = Color(0.36862746, 0.19215687, 0, 1)
+emission_energy_multiplier = 0.3
+
+[node name="VRMenuPanel" type="Node3D" unique_id=1751220842 node_paths=PackedStringArray("_button_resume", "_button_reset_space", "_button_settings", "_button_quit")]
+process_mode = 2
+script = ExtResource("1")
+_button_resume = NodePath("Panel/Buttons/ResumeButton")
+_button_reset_space = NodePath("Panel/Buttons/ResetSpace")
+_button_settings = NodePath("Panel/Buttons/Settings")
+_button_quit = NodePath("Panel/Buttons/Home")
+
+[node name="Panel" type="Node3D" parent="." unique_id=2035068302]
+
+[node name="Background" type="MeshInstance3D" parent="Panel" unique_id=1188329229]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0038571656)
+mesh = SubResource("QuadMesh_panel")
+surface_material_override/0 = SubResource("StandardMaterial3D_panel")
+
+[node name="Buttons" type="Node3D" parent="Panel" unique_id=1932328862]
+
+[node name="ResumeButton" parent="Panel/Buttons" unique_id=2050163624 instance=ExtResource("2_65ryq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.27608383, 0)
+visible = false
+text = "Resume"
+
+[node name="ResetSpace" parent="Panel/Buttons" unique_id=1878160095 instance=ExtResource("2_65ryq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.27608383, 0)
+text = "Reset Space"
+
+[node name="Settings" parent="Panel/Buttons" unique_id=258015669 instance=ExtResource("2_65ryq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.009280145, 0)
+text = "Settings"
+
+[node name="Home" parent="Panel/Buttons" unique_id=1896353586 instance=ExtResource("2_65ryq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2830439, 0)
+text = "Back to home"

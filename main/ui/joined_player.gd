@@ -1,0 +1,61 @@
+class_name JoinedPlayer
+extends Control
+
+signal ready_updated()
+
+@export var container: Control
+@export var name_label: Label
+@export var max_length: int = 20
+@export var player_icon: PlayerIcon
+
+var is_ready := false:
+	set(v):
+		is_ready = v
+		ready_updated.emit()
+	
+var uuid: String
+var player_name: String:
+	set(v):
+		player_name = v
+		if v == "":
+			name_label.text = "(awaiting data)"
+		else:
+			name_label.text = "%s" % v
+
+@onready var out_pos := -container.custom_minimum_size.x
+@onready var in_pos := 0
+
+var tw: Tween
+var game_client: ClientController
+
+func _ready() -> void:
+	container.position.x = -container.custom_minimum_size.x
+	size.x = 0
+
+func set_ready():
+	is_ready = true
+
+func reset_ready():
+	is_ready = false
+
+func update_data(data: Dictionary):
+	uuid = data.client_id
+	game_client = PlayerManager.find_player_by_uuid(uuid)
+	player_name = data.name.substr(0, max_length)
+	if data.name.length() > max_length:
+		player_name += "..."
+	
+	player_icon.update(data)
+
+func move_in():
+	if tw:
+		tw.stop()
+	tw = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tw.tween_property(container, "position:x", in_pos, 1.0)
+
+func move_out():
+	if tw:
+		tw.stop()
+	tw = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	tw.tween_property(container, "position:x", container.custom_minimum_size.x, 1.0)
+	#tw.finished.connect(func(): queue_free())

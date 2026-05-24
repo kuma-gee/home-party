@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://bm3cgsjmba0yd"]
+
+[ext_resource type="PackedScene" uid="uid://burfl5ip86htg" path="res://assets/castle-defense/castle/siege-catapult.glb" id="1_hjkdp"]
+[ext_resource type="PackedScene" uid="uid://yjav0atkkgkf" path="res://assets/castle-defense/weapons/bow_B_withString.gltf" id="2_r3078"]
+
+[node name="CastleDefenseIcon" type="Node3D" unique_id=1393413089]
+
+[node name="siege-catapult2" parent="." unique_id=1026443418 instance=ExtResource("1_hjkdp")]
+transform = Transform3D(0.06128355, 0, -0.05142301, 0, 0.08, 0, 0.05142301, 0, 0.06128355, 0.015035875, 0.012999173, -0.015653187)
+
+[node name="bow_B_withString2" parent="." unique_id=64388565 instance=ExtResource("2_r3078")]
+transform = Transform3D(-0.022511369, 0.022034056, -0.073537305, 0.029471366, -0.06828111, -0.029480973, -0.070884965, -0.03538628, 0.011096594, -0.032061078, 0.024518572, 0.035354484)

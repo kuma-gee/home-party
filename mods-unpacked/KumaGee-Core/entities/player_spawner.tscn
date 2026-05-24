@@ -1,8 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://cl7gbhd8rj6id"]
-
-[ext_resource type="Script" uid="uid://xp1tuobfit1h" path="res://mods-unpacked/KumaGee-Core/entities/player_spawner.gd" id="1_ritfh"]
-[ext_resource type="PackedScene" uid="uid://c8hy6654mshgi" path="res://mods-unpacked/KumaGee-Core/entities/player.tscn" id="2_3ux6k"]
-
-[node name="PlayerSpawner" type="Node3D"]
-script = ExtResource("1_ritfh")
-player_scene = ExtResource("2_3ux6k")
