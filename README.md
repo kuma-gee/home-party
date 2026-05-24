@@ -1,3 +1,7 @@
+## Important Notes
+
+- Do not add any blend files! It causes the import to not include any of the uids
+
 ## Credits
 
 - [Characters](https://kenney.nl/assets/animated-characters-protagonists)

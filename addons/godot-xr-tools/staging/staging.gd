@@ -9,7 +9,7 @@ signal scene_visible(scene, user_data)
 signal xr_started
 signal xr_ended
 
-@export var main_scene : String
+@export_file("*.tscn") var main_scene : String
 
 @export var desktop_camera: Camera3D
 @export var xr_origin : XROrigin3D

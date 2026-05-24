@@ -13,6 +13,8 @@ enum Skill {
 	SHIELD,
 }
 
+@export var camera_up_axis := Vector2(-1.0, 0.0)
+
 @export var speed := 1.0
 @export var acceleration := 10.0
 @export var push_force = 2.0
@@ -142,21 +144,16 @@ func _physics_process(delta):
 			move_and_slide()
 		return
 	
-	var direction = game_client.get_move()
+	var direction := get_direction()
 	var _speed = speed * (1.0 - slow)
-
-	if ground_spring_cast.is_grounded():
-		velocity.x = lerp(velocity.x, direction.x * _speed, delta * acceleration)
-		velocity.z = lerp(velocity.z, direction.y * _speed, delta * acceleration)
-	else:
-		velocity.x = lerp(velocity.x, direction.x * _speed, delta * 3.0)
-		velocity.z = lerp(velocity.z, direction.y * _speed, delta * 3.0)
+	var accel = delta * (acceleration if ground_spring_cast.is_grounded() else 3.0)
+	velocity.x = lerp(velocity.x, direction.x * _speed, accel)
+	velocity.z = lerp(velocity.z, direction.z * _speed, accel)
 
 	if direction:
-		var dir = Vector3(direction.x, 0, direction.y)
-		body.look_at(body.global_position + dir, Vector3.UP, true)
+		body.look_at(body.global_position + direction, Vector3.UP, true)
 
-	animation.play(idle_anim if direction == Vector2.ZERO else running_anim)
+	animation.play(idle_anim if direction == Vector3.ZERO else running_anim)
 	ground_spring_cast.apply_gravity(self, delta)
 	move_and_slide()
 
@@ -184,6 +181,15 @@ func activate_skill():
 		Skill.SHIELD:
 			shield()
 
+func get_direction() -> Vector3:
+	var direction = game_client.get_move()
+	var right := Vector2(-camera_up_axis.y, camera_up_axis.x)
+	return Vector3(
+		direction.dot(right),
+		0.0,
+		-direction.dot(camera_up_axis)
+	).normalized()
+
 func dash() -> void:
 	if is_spawning or not is_instance_valid(game_client) or not freeze_timer.is_stopped():
 		return
@@ -197,9 +203,7 @@ func dash() -> void:
 
 	is_dashing = true
 
-	var dir3 = Vector3(direction.x, 0, direction.y)
-	dir3 = dir3.normalized()
-
+	var dir3 := get_direction()
 	velocity.x = dir3.x * dash_speed
 	velocity.z = dir3.z * dash_speed
 

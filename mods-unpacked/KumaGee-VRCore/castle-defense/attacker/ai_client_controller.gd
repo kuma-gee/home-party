@@ -42,7 +42,17 @@ func get_move() -> Vector2:
 	if diff.length_squared() < ARRIVED_SQ:
 		return Vector2.ZERO
 	var n := diff.normalized()
-	return Vector2(n.x, n.z)
+	var world_dir := Vector2(n.x, n.z)
+	var up := _player.camera_up_axis
+	var right := Vector2(-up.y, up.x)
+	# Invert player's mapping: world2d = (dir.dot(right), -dir.dot(up))
+	# Transpose of orthonormal basis gives the inverse:
+	# dir.x = world2d.x*right.x + world2d.y*(-up.x)
+	# dir.y = world2d.x*right.y + world2d.y*(-up.y)
+	return Vector2(
+		world_dir.x * right.x - world_dir.y * up.x,
+		world_dir.x * right.y - world_dir.y * up.y
+	)
 
 func trigger_skill() -> void:
 	primary_action_pressed.emit()
