@@ -14,7 +14,7 @@ point_count = 2
 [node name="Staging" type="Node3D" unique_id=343982823 node_paths=PackedStringArray("desktop_camera", "xr_origin", "xr_camera", "loading", "fade", "desktop_fade")]
 process_mode = 3
 script = ExtResource("1")
-main_scene = "uid://cne8oxil0b4yy"
+main_scene = "res://main/menu_world.tscn"
 desktop_camera = NodePath("Camera3D")
 xr_origin = NodePath("SubViewport/XROrigin3D")
 xr_camera = NodePath("SubViewport/XROrigin3D/XRCamera3D")
