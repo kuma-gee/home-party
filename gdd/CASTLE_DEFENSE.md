@@ -22,7 +22,7 @@ All arrows deal **1 damage** — every skeleton dies in one hit. Elements are pu
 | Normal    | None     | Single target |
 | Fire      | 1s       | Explosion on hit — kills all skeletons in a small radius (~2m) |
 | Ice       | 2s       | Kills hit target; freezes all skeletons in a medium radius (~4m) for 2s; lingering slow for 3s after |
-| Wind      | 3s       | Doesn't kill — blasts hit target and all skeletons in a cone (~6m) back toward spawn; bomb carriers keep their fuse ticking |
+| Wind      | 3s       | Doesn't kill — create a moving tornado that pulls all skeletons within the area (~6m) ; bomb carriers keep their fuse ticking |
 | Lightning | 4s       | Kills hit target; chains to up to 3 nearby skeletons within ~5m |
 | Poison    | 2.5s     | Kills hit target; corpse emits a cloud for 4s — skeletons entering the cloud (~3m) die after 4s unless they leave |
 | Void      | 5s       | Creates a black hole at impact for 3s, pulling all skeletons within ~8m toward it, then explodes killing everything inside |

@@ -83,6 +83,11 @@ func _ready():
 	game_client.primary_action_pressed.connect(activate_skill)
 	game_client.secondary_action_pressed.connect(activate_skill)
 
+	tree_exiting.connect(func():
+		if not is_dead:
+			_on_death()
+	)
+
 func poison():
 	if not poison_timer.is_stopped(): return
 	poison_timer.start()
@@ -103,9 +108,6 @@ func _compute_respawn_delay_for_count(count: int) -> float:
 
 func on_hurtbox_died():
 	if is_dead: return
-	
-	if respawn_time == 0.0:
-		respawn_time = _compute_respawn_delay_for_count(PlayerManager.playing_clients.size())
 
 	snap_zone.drop_object()
 	animation.play(death_anim)
@@ -113,6 +115,10 @@ func on_hurtbox_died():
 	is_dead = true
 	velocity = Vector3.ZERO
 	death_timer.start()
+	_on_death()
+
+func _on_death():
+	respawn_time = _compute_respawn_delay_for_count(PlayerManager.playing_clients.size())
 	died.emit()
 
 func _cleanup():

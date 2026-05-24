@@ -69,7 +69,7 @@ func _get_spawn_origin() -> Vector3:
 
 
 func _connect_died(player: FPSPlayer, i: int) -> void:
-	player.tree_exiting.connect(func(): _on_agent_died(i, player.respawn_time))
+	player.died.connect(func(): _on_agent_died(i, player.respawn_time))
 
 
 func _spawn_agent(scene: PackedScene, i: int, spawn_pos: Vector3, controller: AIClientController) -> FPSPlayer:
