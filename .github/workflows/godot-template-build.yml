@@ -1,0 +1,51 @@
+name: Build Godot Templates
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Godot Version'
+        required: true
+        type: string
+        default: '4.6'
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  template-build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform: [linux, windows]
+    steps:
+      - uses: kuma-gee/action-godot-template@v1
+        with:
+          version: ${{ inputs.version }}
+          platform: ${{ matrix.platform }}
+          encryption-key: ${{ secrets.ENCRYPTION_KEY }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: template-${{ matrix.platform }}
+          path: custom_templates/
+          if-no-files-found: error
+
+  release-godot-template:
+    runs-on: ubuntu-latest
+    needs: template-build
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: template-*
+          path: bin
+          merge-multiple: true
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          prerelease: false
+          files: bin/*
+          name: Godot ${{ inputs.version }} Templates
+          tag_name: template-${{ inputs.version }}

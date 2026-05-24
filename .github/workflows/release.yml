@@ -1,0 +1,111 @@
+# Release workflow for games on steam
+# - Itch used for uploading demo build (only web)
+# - Github release for internal testing
+name: Steam Releases
+
+on:
+  workflow_dispatch:
+    inputs:
+      demo:
+        description: 'Release demo'
+        type: boolean
+        default: false
+      release-steam:
+        description: 'Release for steam'
+        type: boolean
+        default: false
+      release-github:
+        description: 'Release for github'
+        type: boolean
+        default: false
+      release-itch:
+        description: 'Release for itch.io'
+        type: boolean
+        default: false
+
+env:
+  STEAM_APP: 0
+  STEAM_DEMO_APP: 0
+
+jobs:
+  build-info:
+    runs-on: ubuntu-latest
+    outputs:
+      steam_id: ${{ steps.build-data.outputs.steam_id }}
+      channels: ${{ steps.build-data.outputs.channels }}
+    steps:
+      - id: build-data
+        run: |
+          STEAM_ID=${STEAM_APP:-430}
+          IS_DEMO=${DEMO:-false}
+          CHANNELS='"windows", "linux"'
+
+          if [ $RELEASE_STEAM = false ] && [ $RELEASE_GITHUB = false ]; then
+            CHANNELS=''
+
+            if [ $RELEASE_ITCH = true ]; then
+              CHANNELS='"web"'
+            fi
+          elif [ $RELEASE_ITCH = true ]; then
+            CHANNELS+=', "web"'
+          fi
+
+          if [ $IS_DEMO = true ] || [[ "$REF" =~ "-demo" ]]; then
+            STEAM_ID=$STEAM_DEMO_APP
+          fi
+
+          echo "::debug::Steam App ID: $STEAM_ID"
+          echo "steam_id=$STEAM_ID" >> $GITHUB_OUTPUT
+          echo "channels=[$CHANNELS]" >> $GITHUB_OUTPUT
+        env:
+          DEMO: ${{ inputs.demo }}
+          REF: ${{ github.ref_name }}
+          RELEASE_ITCH: ${{ inputs.release-itch }}
+          RELEASE_STEAM: ${{ inputs.release-steam }}
+          RELEASE_GITHUB: ${{ inputs.release-github }}
+  
+  build-godot:
+    uses: kuma-gee/actions/.github/workflows/godot-build.yml@main
+    needs: build-info
+    if: ${{ needs.build-info.outputs.channels != '[]' }}
+    with:
+      channels: ${{ needs.build-info.outputs.channels }}
+      steam-app: ${{ fromJSON(needs.build-info.outputs.steam_id) }}
+      godot-version: 4.6
+      project-path: godot
+      template-repo: ${{ github.repository }}
+    secrets: inherit
+
+  release-itch:
+    uses: kuma-gee/actions/.github/workflows/itch-release.yml@main
+    needs: build-godot
+    if: ${{ inputs.release-itch }}
+    with:
+      channels: '["web"]'
+      game: ${{ needs.build-godot.outputs.game }}
+      itch-user: kuma-gee
+    secrets:
+      BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+      PASSWORD: ${{ needs.build-godot.outputs.password }}
+  
+  release-steam:
+    uses: kuma-gee/actions/.github/workflows/steam-release.yml@main
+    needs: [build-godot, build-info]
+    if: ${{ inputs.release-steam }}
+    with:
+      steam-app: ${{ fromJSON(needs.build-info.outputs.steam_id) }}
+      branch: beta
+    secrets:
+      STEAM_USERNAME: ${{ secrets.STEAM_USERNAME }}
+      STEAM_CONFIG_VDF: ${{ secrets.STEAM_CONFIG_VDF }}
+      PASSWORD: ${{ needs.build-godot.outputs.password }}
+
+  release-github:
+    uses: kuma-gee/actions/.github/workflows/github-release.yml@main
+    needs: build-godot
+    if: ${{ inputs.release-github }}
+    with:
+      demo: ${{ inputs.demo }}
+    secrets:
+      discord-webhook: ${{ secrets.DISCORD_RELEASE_HOOK }}
+      password: ${{ needs.build-godot.outputs.password }}
