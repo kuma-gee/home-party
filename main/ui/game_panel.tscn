@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://cwl0ekorgrixb"]
+
+[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="1_664q2"]
+[ext_resource type="Script" uid="uid://cp7mmevbe8a8b" path="res://main/ui/game_details_panel.gd" id="2_31x71"]
+[ext_resource type="Texture2D" uid="uid://cgqwlrol4v7xg" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/desktop_preview.png" id="3_pbf3h"]
+
+[node name="PanelContainer" type="PanelContainer" unique_id=357869800 node_paths=PackedStringArray("name_label", "desc_label", "player_label", "bg_image")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_664q2")
+script = ExtResource("2_31x71")
+name_label = NodePath("MarginContainer2/MarginContainer/VBoxContainer/Name")
+desc_label = NodePath("MarginContainer2/MarginContainer/VBoxContainer/Desc")
+player_label = NodePath("MarginContainer2/MarginContainer/VBoxContainer/Players")
+bg_image = NodePath("MarginContainer2/TextureRect")
+
+[node name="ColorRect2" type="ColorRect" parent="." unique_id=107742878]
+layout_mode = 2
+color = Color(0.07683582, 0.07683582, 0.07683582, 1)
+
+[node name="MarginContainer2" type="MarginContainer" parent="." unique_id=1094930703]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer2" unique_id=779114775]
+layout_mode = 2
+texture = ExtResource("3_pbf3h")
+expand_mode = 3
+stretch_mode = 6
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer2" unique_id=1621062180]
+layout_mode = 2
+color = Color(0, 0, 0, 0.47058824)
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer2" unique_id=1086336808]
+modulate = Color(1, 1, 1, 0.78431374)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer2/MarginContainer" unique_id=1081143582]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="Name" type="Label" parent="MarginContainer2/MarginContainer/VBoxContainer" unique_id=491535122]
+layout_mode = 2
+theme_type_variation = &"LabelLarge"
+text = "Super Game"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Desc" type="Label" parent="MarginContainer2/MarginContainer/VBoxContainer" unique_id=1031360026]
+layout_mode = 2
+size_flags_vertical = 3
+text = "This game is gonna be super amazing and fun to play for everyone!"
+autowrap_mode = 2
+
+[node name="Players" type="Label" parent="MarginContainer2/MarginContainer/VBoxContainer" unique_id=548465603]
+layout_mode = 2
+text = "Recommended players: 4+"

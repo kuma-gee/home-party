@@ -3,13 +3,13 @@ extends Node3D
 
 signal started_game(game: GameResource)
 
-@export var game_details_ui: GameDetailsUI
+@export var game_details_desktop: GameDetailsPanel
+@export var game_details_vr: GameDetailsPanel
 @export var scene: PackedScene
 @export var radius := 0.85
 @export_range(1, 90, 1, "degrees") var item_spacing := 20.0
 
 @onready var game_loader: GameLoader = $GameLoader
-@onready var game_details: Sprite3D = $GameDetails
 @onready var game_select_zone: GameSelectZone = $GameSelectZone
 @onready var games_root: Node3D = $GamesRoot
 @onready var tv_remote: XRToolsPickable = $TVRemote
@@ -25,10 +25,11 @@ func _ready() -> void:
 			started_game.emit(selected_game)
 	)
 	
+	_on_game_selected(null)
 	_populate()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey:
+	if event is InputEventKey and event.is_pressed():
 		var key = event as InputEventKey
 		if key.shift_pressed:
 			var code = key.keycode
@@ -37,7 +38,12 @@ func _unhandled_input(event: InputEvent) -> void:
 				if idx < games.size():
 					var g = games[idx]
 					if g:
-						started_game.emit(g)
+						if selected_game == g:
+							_on_game_selected(null)
+						else:
+							_on_game_selected(g)
+			elif code == KEY_F1:
+				started_game.emit(selected_game)
 
 func _populate() -> void:
 	for child in games_root.get_children():
@@ -80,5 +86,5 @@ func _populate() -> void:
 
 func _on_game_selected(game: GameResource) -> void:
 	selected_game = game
-	game_details_ui.update_details(game)
-	game_details.update_details(game)
+	game_details_desktop.update_details(game)
+	game_details_vr.update_details(game)
