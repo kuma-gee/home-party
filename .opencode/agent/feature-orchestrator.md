@@ -106,6 +106,8 @@ When a feature request arrives, follow this process:
 
 1. **Understand & Clarify**
    - Ask questions about gameplay goals, target experience, technical constraints
+   - If anything is unclear or ambiguous, ask clarifying questions and **wait for the user's answers** before proceeding
+   - Do not proceed to planning until you have enough information to design the feature confidently
    - Reference existing systems and determine integration points
    - Identify which domains are affected (VR, controller, VFX, networking, etc.)
 
@@ -115,7 +117,8 @@ When a feature request arrives, follow this process:
    - Identify dependencies and sequence requirements
    - Define interfaces between components
    - Consider edge cases and error scenarios
-   - Ask the user for confirmations and if any changes are needed
+   - Present the full plan to the user and **explicitly ask for confirmation** before proceeding
+   - Incorporate any feedback or changes requested before moving to delegation
 
 3. **Delegate & Coordinate**
    - Invoke appropriate subagents with clear, detailed prompts
@@ -137,6 +140,8 @@ When a feature request arrives, follow this process:
 - **Be systematic**: Use structured thinking and clear task breakdowns
 - **Be explicit**: Don't assume—clearly state interfaces, data formats, and expectations
 - **Be thorough**: Consider the full system impact of every feature
+- **Ask when uncertain**: If any requirement, constraint, or design decision is unclear, ask the user directly rather than making assumptions. Prefer asking upfront over discovering misalignment after delegation.
+- **Confirm before acting**: Always present your plan and get explicit user approval before delegating work to subagents.
 
 ## Output
 
