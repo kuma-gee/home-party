@@ -22,6 +22,8 @@ signal exploded()
 @onready var hit_box: HitBox = $HitBox
 @onready var lighting_fuse: AudioStreamPlayer = $LightingFuse
 @onready var explosion_hit_trigger: Area3D = $ExplosionHitTrigger
+@onready var _gate_direction: Node3D = $GateDirection
+@onready var _dir_line: MeshInstance3D = $GateDirection/Line
 
 var has_exploded := false
 var firepower := 1:
@@ -29,11 +31,15 @@ var firepower := 1:
 		firepower = v
 		firepower_label.text = "%d🔥" % firepower
 
+var _prepare_mode := false
+var _fade_tween: Tween
 var _pulse_time := 0.0
 
 func _ready():
 	explode_trigger.area_entered.connect(func(_a): explode(true))
 	picked_up.connect(func(_p):
+		if is_instance_valid(_gate_direction):
+			_gate_direction.hide()
 		lighting_fuse.play()
 		power_sprite.show()
 		fire_vfx.show()
@@ -45,7 +51,30 @@ func _ready():
 	power_sprite.hide()
 	fire_vfx.hide()
 
+func set_prepare_mode(v: bool) -> void:
+	if _fade_tween:
+		_fade_tween.kill()
+		_fade_tween = null
+	_prepare_mode = v
+	if is_instance_valid(_gate_direction):
+		if v:
+			_gate_direction.visible = true
+			_dir_line.scale = Vector3.ONE
+		else:
+			_fade_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SINE)
+			_fade_tween.tween_property(_dir_line, "scale:y", 0.0, 0.5)
+			_fade_tween.tween_callback(func():
+				if is_instance_valid(_gate_direction):
+					_gate_direction.visible = false
+			)
+	process_mode = Node.PROCESS_MODE_ALWAYS if v else Node.PROCESS_MODE_INHERIT
+
 func _process(delta: float) -> void:
+	if _prepare_mode and is_instance_valid(_dir_line):
+		var t := sin(Time.get_ticks_msec() * 0.0025)
+		var z := lerpf(-0.8, -2.2, t * 0.5 + 0.5)
+		_dir_line.position.z = z
+
 	if not firepower_label or not explode_timer:
 		return
 	if explode_timer.is_stopped() or has_exploded:

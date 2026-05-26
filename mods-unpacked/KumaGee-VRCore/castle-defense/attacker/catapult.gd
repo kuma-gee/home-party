@@ -18,6 +18,10 @@ enum State { EMPTY, LOADED }
 
 @onready var operating_zone: Area3D = $OperatingZone
 @onready var cooldown_timer: Timer = $CooldownTimer
+@onready var _player_area: Sprite3D = $PlayerArea
+
+var _prepare_mode := false
+var _fade_tween: Tween
 
 var charge := 0.0:
 	set(v):
@@ -33,6 +37,20 @@ var power := 0:
 func _ready() -> void:
 	charge = 0.0
 
+func set_prepare_mode(v: bool) -> void:
+	if _fade_tween:
+		_fade_tween.kill()
+		_fade_tween = null
+	_prepare_mode = v
+	process_mode = Node.PROCESS_MODE_ALWAYS if v else Node.PROCESS_MODE_INHERIT
+	if not v:
+		if is_instance_valid(_player_area):
+			_fade_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SINE)
+			_fade_tween.tween_property(_player_area, "scale", Vector3.ONE, 0.5)
+			_fade_tween.parallel().tween_property(_player_area, "modulate", Color(1, 1, 1, 0.05), 0.5)
+	else:
+		_player_area.modulate = Color(1, 1, 1, 0.05)
+
 func get_total_power():
 	var total = 0
 	for body in operating_zone.get_overlapping_bodies():
@@ -43,6 +61,11 @@ func get_total_power():
 
 func _process(delta: float) -> void:
 	power = get_total_power()
+
+	if _prepare_mode:
+		var t := sin(Time.get_ticks_msec() * 0.003) * 0.5 + 0.5
+		var s := lerpf(1.0, 1.3, t)
+		_player_area.scale = Vector3.ONE * s
 
 	if power > 0 and cooldown_timer.is_stopped():
 		var player_count = operating_zone.get_overlapping_bodies().size()

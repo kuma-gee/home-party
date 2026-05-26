@@ -13,6 +13,8 @@ extends XRToolsSceneBase
 
 @onready var play_time: Timer = $PlayTime
 
+var _indicator_timer: Timer
+
 var logger := KumaLog.new("CastleDefense")
 
 var _element_select: ElementSelect
@@ -22,6 +24,11 @@ var _has_grabbed_bow := false
 var _has_grabbed_arrow := false
 
 func _ready() -> void:
+	_indicator_timer = Timer.new()
+	_indicator_timer.one_shot = true
+	_indicator_timer.timeout.connect(_on_indicator_timeout)
+	add_child(_indicator_timer)
+
 	play_time.timeout.connect(_on_play_time_timeout)
 	gate_hurtbox.died.connect(_on_gate_died)
 	player_list.ready_changed.connect(_check_all_ready)
@@ -42,7 +49,19 @@ func _on_element_changed(elem: Arrow.Element):
 	for orb in orbs:
 		orb.set_selected(orb.element == elem)
 
+func _set_prepare_indicators(v: bool) -> void:
+	for cata in get_tree().get_nodes_in_group("catapult"):
+		if is_instance_valid(cata) and cata is Catapult:
+			cata.set_prepare_mode(v)
+	for bomb in get_tree().get_nodes_in_group("bomb"):
+		if is_instance_valid(bomb) and bomb is Bomb:
+			bomb.set_prepare_mode(v)
+
+func _on_indicator_timeout() -> void:
+	_set_prepare_indicators(false)
+
 func _on_game_start() -> void:
+	_set_prepare_indicators(true)
 	_element_select = xr_player.show_screen(element_select_scene, false) as ElementSelect
 	_element_select.ready_pressed.connect(_on_vr_ready)
 	arrow_types.hide()
@@ -80,6 +99,7 @@ func _start_game() -> void:
 	play_time.start()
 	game_ui.show()
 	logger.info("Game started — %.0f seconds to survive" % play_time.wait_time)
+	_indicator_timer.start(3.0)
 
 	_set_bow_active(true)
 
