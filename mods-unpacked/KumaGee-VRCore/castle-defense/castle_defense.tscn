@@ -33,8 +33,10 @@
 [ext_resource type="Script" uid="uid://bm5ft6vm56s8w" path="res://addons/proton_scatter/src/modifiers/randomize_transforms.gd" id="28_se6x7"]
 [ext_resource type="Script" uid="uid://55epc38d7k5b" path="res://addons/proton_scatter/src/modifiers/relax.gd" id="29_r4ttt"]
 [ext_resource type="Script" uid="uid://b5ak450bd12ar" path="res://addons/proton_scatter/src/modifiers/project_on_geometry.gd" id="30_ofmg5"]
+[ext_resource type="Script" uid="uid://cjk3gsrbfomdh" path="res://main/utils/camera_follow_3d.gd" id="31_5jms6"]
 [ext_resource type="Script" uid="uid://bi4u3rwdceyn8" path="res://addons/proton_scatter/src/scatter_item.gd" id="31_bd7o1"]
 [ext_resource type="Script" uid="uid://4f6ju7rd45me" path="res://addons/proton_scatter/src/scatter_shape.gd" id="32_88pht"]
+[ext_resource type="FontVariation" uid="uid://cv3schwy7bq8t" path="res://theme/default_font.tres" id="32_enrkc"]
 [ext_resource type="Shader" uid="uid://d1cis0r7gi5pm" path="res://shader/outline_3d.gdshader" id="32_vf04h"]
 [ext_resource type="Script" uid="uid://bi01qjf5sng7a" path="res://main/vr/highlight_object.gd" id="33_bl5ky"]
 [ext_resource type="Script" uid="uid://ca371rsy4x4ya" path="res://addons/proton_scatter/src/shapes/box_shape.gd" id="34_lhggn"]
@@ -390,6 +392,10 @@ texture_filter = 1
 resource_local_to_scene = true
 size = Vector3(4, 3, 0.02)
 
+[sub_resource type="Curve" id="Curve_5jms6"]
+_data = [Vector2(0, 0), 0.0, 3.043883, 0, 0, Vector2(0.1192412, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
 [sub_resource type="ViewportTexture" id="ViewportTexture_7uav6"]
 viewport_path = NodePath("SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2/Viewport")
 
@@ -405,7 +411,7 @@ shader_parameter/outline_size = 1.0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bl5ky"]
 albedo_color = Color(0.5686275, 0.3254902, 0.16470589, 1)
 
-[node name="CastleDefense" type="Node3D" unique_id=1524346607 node_paths=PackedStringArray("gate_hurtbox", "player_list", "skill_select", "orbs", "arrow_types", "game_explain_ui", "quiver", "bow", "xr_player")]
+[node name="CastleDefense" type="Node3D" unique_id=1524346607 node_paths=PackedStringArray("gate_hurtbox", "player_list", "skill_select", "orbs", "arrow_types", "game_explain_ui", "quiver", "bow", "tutorial_label", "xr_player")]
 script = ExtResource("1_cdef")
 gate_hurtbox = NodePath("Castle/Gate/GateHurtBox")
 element_select_scene = ExtResource("43_elsel")
@@ -416,6 +422,7 @@ arrow_types = NodePath("VRSpace/ArrowTypes")
 game_explain_ui = NodePath("UI/Control/CenterContainer")
 quiver = NodePath("VRSpace/SubViewport/XRPlayer/XRCamera3D/Quiver")
 bow = NodePath("VRSpace/Bow")
+tutorial_label = NodePath("VRSpace/SubViewport/XRPlayer/CameraFollow3D2")
 xr_player = NodePath("VRSpace")
 bgm_audio = ExtResource("2_fkt18")
 
@@ -732,6 +739,19 @@ surface_material_override/0 = SubResource("StandardMaterial3D_4f4wv")
 
 [node name="CollisionShape3D" parent="VRSpace/SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2/StaticBody3D" parent_id_path=PackedInt32Array(841158329, 553147920, 1882660186) index="0" unique_id=507281989]
 shape = SubResource("BoxShape3D_u6is1")
+
+[node name="CameraFollow3D2" type="Node3D" parent="VRSpace/SubViewport/XRPlayer" index="5" unique_id=687369714 node_paths=PackedStringArray("_camera")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0493975, 0)
+script = ExtResource("31_5jms6")
+follow_speed = SubResource("Curve_5jms6")
+_camera = NodePath("../XRCamera3D")
+metadata/_custom_type_script = "uid://cjk3gsrbfomdh"
+
+[node name="Label3D" type="Label3D" parent="VRSpace/SubViewport/XRPlayer/CameraFollow3D2" unique_id=1764981449]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8639042e-07, 0, -2.1320581)
+text = "Grab an arrow
+behind your head"
+font = ExtResource("32_enrkc")
 
 [node name="DesktopGameover" parent="VRSpace" index="3" unique_id=841672726]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9813194, 11.214123, 20.89264)

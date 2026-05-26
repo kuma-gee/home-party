@@ -2,6 +2,7 @@ class_name Quiver
 extends Node3D
 
 signal element_changed(elem: Arrow.Element)
+signal picked_up(arrow: Arrow)
 
 @export var arrow_scene: PackedScene
 @export var snap_zone: XRToolsSnapZone
@@ -31,8 +32,9 @@ func _check_snap_object():
 			arrow = snap_zone.picked_up_object
 		return
 	
-	arrow = arrow_scene.instantiate()
+	arrow = arrow_scene.instantiate() as Arrow
 	arrow.element_changed.connect(func(e): element_changed.emit(e))
 	arrow.tree_exited.connect(func(): element_changed.emit(Arrow.Element.NONE))
+	arrow.picked_up.connect(func(_p): picked_up.emit(arrow))
 	Staging.add_scene_child(arrow)
 	snap_zone.pick_up_object(arrow)
