@@ -27,7 +27,7 @@ var charge := 0.0:
 var power := 0:
 	set(v):
 		power = v
-		power_label.text = "%d" % power
+		power_label.text = "%d🔥" % power
 		power_sprite.visible = power > 0
 
 func _ready() -> void:

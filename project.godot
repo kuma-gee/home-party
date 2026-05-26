@@ -93,8 +93,8 @@ debug_3={
 
 [layer_names]
 
-3d_render/layer_19="PC Only"
-3d_render/layer_20="VR Only"
+3d_render/layer_19="VR Only"
+3d_render/layer_20="PC Only"
 3d_physics/layer_1="Static World"
 3d_physics/layer_2="Dynamic World"
 3d_physics/layer_3="Pickable Objects"

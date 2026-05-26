@@ -13,7 +13,7 @@
 - [Tavern](https://goryana.itch.io/medieval-slavic-tavern-game-assets)
 
 - [Font](https://fonts.google.com/specimen/Luckiest+Guy?categoryFilters=Feeling:%2FExpressive%2FPlayful&preview.script=Latn&preview.lang=ace_Latn)
-- [Emoji Font](https://fonts.google.com/noto/specimen/Noto+Emoji?query=emoji&preview.script=Latn)
+- [Emoji Font](https://fonts.google.com/noto/specimen/Noto+Color+Emoji?query=emoji)
 
 ### BGM
 

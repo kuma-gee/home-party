@@ -679,6 +679,7 @@ draw_pass_1 = ExtResource("10_it32a")
 
 [node name="puff_bubbles" type="GPUParticles3D" parent="PlayParticleSystems" unique_id=225054239]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06760192, 0)
+visible = false
 material_override = SubResource("ShaderMaterial_yufeq")
 emitting = false
 amount = 64

@@ -105,7 +105,7 @@ viewport_path = NodePath("ColorRing/SubViewport")
 
 [node name="FPSPlayer" type="CharacterBody3D" unique_id=1756570454 node_paths=PackedStringArray("body", "color_ring", "snap_zone", "meshes", "dash_sfx", "shield_vfx", "dash_particles", "death_sound", "animation") groups=["resetable"]]
 collision_layer = 557056
-collision_mask = 3
+collision_mask = 11
 script = ExtResource("1_krq8x")
 speed = 2.5
 push_force = 1.0

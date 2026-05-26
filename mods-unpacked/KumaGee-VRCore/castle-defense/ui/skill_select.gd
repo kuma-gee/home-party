@@ -28,4 +28,4 @@ func _create_select(uuid: String):
 	)
 
 func _update_ready_text():
-	skill_select_text.text = "Select your skill (%s/%s)" % [player_list.get_ready_count(), player_list.get_player_count()]
+	skill_select_text.text = "Select skill (%s/%s)" % [player_list.get_ready_count(), player_list.get_player_count()]

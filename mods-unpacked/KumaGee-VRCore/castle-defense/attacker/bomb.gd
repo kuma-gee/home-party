@@ -27,7 +27,7 @@ var has_exploded := false
 var firepower := 1:
 	set(v):
 		firepower = v
-		firepower_label.text = "%d" % firepower
+		firepower_label.text = "%d🔥" % firepower
 
 var _pulse_time := 0.0
 

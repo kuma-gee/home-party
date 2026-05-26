@@ -27,7 +27,7 @@ colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1)
 gradient = SubResource("Gradient_8eafj")
 fill_from = Vector2(1, 1)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_d7k0l"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rfhuq"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("2_0g788")
@@ -379,9 +379,9 @@ radius = 5.0
 
 [node name="tornado" parent="." unique_id=780864556 instance=ExtResource("1_sglr4")]
 
-[node name="Cylinder" parent="tornado" index="0" unique_id=460836199]
+[node name="Cylinder" parent="tornado" index="0" unique_id=1223057867]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
-material_override = SubResource("ShaderMaterial_d7k0l")
+material_override = SubResource("ShaderMaterial_rfhuq")
 cast_shadow = 0
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="tornado" unique_id=463829666]

@@ -1,8 +1,8 @@
 [gd_resource type="FontVariation" format=3 uid="uid://cv3schwy7bq8t"]
 
 [ext_resource type="FontFile" uid="uid://yty6kclrrpgr" path="res://theme/LuckiestGuy-Regular.ttf" id="1_fjfxt"]
-[ext_resource type="FontFile" uid="uid://c0cxubsfxvkos" path="res://theme/NotoEmoji-VariableFont_wght.ttf" id="2_1ra2v"]
+[ext_resource type="FontFile" uid="uid://bpop13tvx7mcs" path="res://theme/NotoColorEmoji-Regular.ttf" id="2_6ghx1"]
 
 [resource]
-fallbacks = Array[Font]([ExtResource("2_1ra2v")])
+fallbacks = Array[Font]([ExtResource("2_6ghx1")])
 base_font = ExtResource("1_fjfxt")

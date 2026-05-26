@@ -6,7 +6,9 @@ extends XRToolsSceneBase
 @export var skill_select: Control
 @export var orbs: Array[ElementOrb]
 @export var arrow_types: Node3D
+@export var game_explain_ui: Control
 @export var quiver: Quiver
+@export var bow: Bow
 
 @onready var play_time: Timer = $PlayTime
 
@@ -21,6 +23,11 @@ func _ready() -> void:
 	player_list.ready_changed.connect(_check_all_ready)
 	quiver.element_changed.connect(_on_element_changed)
 	_on_element_changed(Arrow.Element.NONE)
+
+	_set_bow_active(false)
+
+func _set_bow_active(active: bool) -> void:
+	bow.visible = active
 
 func _on_element_changed(elem: Arrow.Element):
 	for orb in orbs:
@@ -48,9 +55,12 @@ func _check_all_ready(start = false) -> void:
 func _start_game() -> void:
 	StatsManager.initialize(PlayerManager.playing_clients)
 	xr_player.hide_screen()
+	game_explain_ui.hide()
 	skill_select.hide()
 	play_time.start()
 	logger.info("Game started — %.0f seconds to survive" % play_time.wait_time)
+
+	_set_bow_active(true)
 
 	for i in orbs.size():
 		var element := _vr_elements[i] if i < _vr_elements.size() else Arrow.Element.NONE

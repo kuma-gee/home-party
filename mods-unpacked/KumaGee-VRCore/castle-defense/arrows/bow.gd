@@ -47,16 +47,9 @@ func _ready() -> void:
 	arrow_snap.has_picked_up.connect(_on_arrow_placed)
 	
 	if bow_grip:
-		picked_up.connect(func(_p):
-			bow_grip.enabled = true
-			bow_grip.show()
-		)
-		dropped.connect(func(_p):
-			bow_grip.enabled = false
-			bow_grip.hide()
-		)
-		bow_grip.enabled = false
-		bow_grip.hide()
+		picked_up.connect(_on_bow_picked_up)
+		dropped.connect(_on_bow_dropped)
+		set_bow_grip_visible(false)
 
 	_grip_held = false
 
@@ -105,6 +98,18 @@ func _on_grip_dropped(_pickable: XRToolsPickable) -> void:
 		_fire(draw)
 	
 	pull_sound.playing = false
+
+func set_bow_grip_visible(v: bool) -> void:
+	if not is_instance_valid(bow_grip):
+		return
+	bow_grip.enabled = v
+	bow_grip.visible = v
+
+func _on_bow_picked_up(_pickable: XRToolsPickable) -> void:
+	set_bow_grip_visible(true)
+
+func _on_bow_dropped(_pickable: XRToolsPickable) -> void:
+	set_bow_grip_visible(false)
 
 func _physics_process(_delta: float) -> void:
 	if Engine.is_editor_hint():

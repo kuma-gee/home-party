@@ -142,11 +142,13 @@ second_hand_grab = 1
 shape = SubResource("Shape_BombBody")
 
 [node name="BombMesh" type="MeshInstance3D" parent="." unique_id=1923419919]
+layers = 2
 mesh = SubResource("Mesh_Bomb")
 surface_material_override/0 = SubResource("Mat_Bomb")
 
 [node name="Rope" type="MeshInstance3D" parent="BombMesh" unique_id=1314932324]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22584924, 0)
+layers = 2
 mesh = SubResource("CylinderMesh_4a37y")
 surface_material_override/0 = SubResource("StandardMaterial3D_vljp1")
 
@@ -176,6 +178,7 @@ volume_db = -20.0
 
 [node name="Sprite3D" type="Sprite3D" parent="." unique_id=23121954]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2287637, 0)
+visible = false
 billboard = 1
 double_sided = false
 texture = SubResource("ViewportTexture_vljp1")
@@ -196,6 +199,7 @@ theme = ExtResource("5_4a37y")
 [node name="Label" type="Label" parent="Sprite3D/SubViewport/CenterContainer" unique_id=1428072052]
 layout_mode = 2
 text = "10"
+horizontal_alignment = 1
 
 [node name="ExplodeTimer" type="Timer" parent="." unique_id=1854079034]
 wait_time = 10.0

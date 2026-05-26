@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://c0lytqixnm437"]
+
+[ext_resource type="Script" uid="uid://cj3bmec5c5ub3" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/ui/element_button.gd" id="1_abc12"]
+[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="1_crhtc"]
+
+[node name="ElementButton" type="PanelContainer" unique_id=410400894 node_paths=PackedStringArray("_emoji_label", "_name_label", "_description_label", "_button")]
+theme = ExtResource("1_crhtc")
+script = ExtResource("1_abc12")
+_emoji_label = NodePath("MarginContainer/HBoxContainer/EmojiLabel")
+_name_label = NodePath("MarginContainer/HBoxContainer/VBoxContainer/NameLabel")
+_description_label = NodePath("MarginContainer/HBoxContainer/VBoxContainer/DescriptionLabel")
+_button = NodePath("InternalButton")
+
+[node name="InternalButton" type="Button" parent="." unique_id=2010730634]
+layout_mode = 2
+toggle_mode = true
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1174033731]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=310084354]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="EmojiLabel" type="Label" parent="MarginContainer/HBoxContainer" unique_id=269007584]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "🔥"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=2033050409]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="NameLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=409612055]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Name"
+
+[node name="DescriptionLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1021024621]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Description"

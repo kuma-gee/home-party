@@ -505,7 +505,7 @@ metadata/_custom_type_script = "uid://bkrembvwcg1br"
 texture_albedo = ExtResource("3_45phi")
 texture_emission = ExtResource("4_nk4vk")
 modulate = Color(1, 0.5875, 0.00999999, 0)
-cull_mask = 1
+cull_mask = 512
 
 [node name="Cylinder" type="GPUParticles3D" parent="PlayParticleSystems" unique_id=1871055430]
 visible = false
