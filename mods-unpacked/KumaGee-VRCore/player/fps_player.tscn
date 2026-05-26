@@ -16,6 +16,7 @@
 [ext_resource type="AudioStream" uid="uid://cas44nkkgscrq" path="res://assets/sound/sfx/dash.mp3" id="13_hl7qv"]
 [ext_resource type="AudioStream" uid="uid://dgn3nuibk8w7d" path="res://assets/sound/sfx/falling-bones.mp3" id="14_4mstr"]
 [ext_resource type="Script" uid="uid://b4woodkg2nup8" path="res://main/utils/randomized_sfx.gd" id="15_p7qy1"]
+[ext_resource type="FontFile" uid="uid://bpop13tvx7mcs" path="res://theme/NotoColorEmoji-Regular.ttf" id="17_p7qy1"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dxdo2"]
 radius = 0.2524414
@@ -118,6 +119,10 @@ shield_vfx = NodePath("ShieldVFX")
 dash_particles = NodePath("CollisionShape3D/DashVFX")
 death_sound = NodePath("DeathSound")
 animation = NodePath("CollisionShape3D/skeleton/AnimationPlayer")
+poison_pulse_speed_min = 2.0
+poison_pulse_speed_max = 6.0
+poison_pulse_amplitude_min = 0.1
+poison_pulse_amplitude_max = 0.2
 
 [node name="Hurtbox" type="Area3D" parent="." unique_id=1131967096]
 collision_layer = 32
@@ -250,7 +255,7 @@ one_shot = true
 one_shot = true
 
 [node name="PoisonTimer" type="Timer" parent="." unique_id=664187711]
-wait_time = 3.0
+wait_time = 5.0
 one_shot = true
 
 [node name="PoisonInjectArea" type="Area3D" parent="." unique_id=107468239]
@@ -261,6 +266,13 @@ script = ExtResource("7_yjct3")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PoisonInjectArea" unique_id=285447301]
 shape = SubResource("SphereShape3D_3dsh6")
+
+[node name="PoisonIcon" type="Label3D" parent="." unique_id=128283787]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5298612, 0.107263505)
+billboard = 1
+text = "☠"
+font = ExtResource("17_p7qy1")
+font_size = 64
 
 [node name="DeathTimer" type="Timer" parent="." unique_id=958510232]
 wait_time = 3.0
