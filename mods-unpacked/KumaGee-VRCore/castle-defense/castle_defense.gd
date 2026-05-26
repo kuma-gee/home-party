@@ -3,13 +3,13 @@ extends XRToolsSceneBase
 @export var gate_hurtbox: HurtBox
 @export var element_select_scene: PackedScene
 @export var player_list: PlayerList
-@export var skill_select: Control
 @export var orbs: Array[ElementOrb]
 @export var arrow_types: Node3D
-@export var game_explain_ui: Control
 @export var quiver: Quiver
 @export var bow: Bow
 @export var tutorial_label: CameraFollow3D
+@export var game_ui: Control
+@export var prepare_ui: Control
 
 @onready var play_time: Timer = $PlayTime
 
@@ -33,6 +33,7 @@ func _ready() -> void:
 
 	_set_bow_active(false)
 	tutorial_label.hide()
+	game_ui.hide()
 
 func _set_bow_active(active: bool) -> void:
 	bow.visible = active
@@ -75,9 +76,9 @@ func _on_arrow_grabbed_tutorial(_what: Node3D) -> void:
 func _start_game() -> void:
 	StatsManager.initialize(PlayerManager.playing_clients)
 	xr_player.hide_screen()
-	game_explain_ui.hide()
-	skill_select.hide()
+	prepare_ui.hide()
 	play_time.start()
+	game_ui.show()
 	logger.info("Game started — %.0f seconds to survive" % play_time.wait_time)
 
 	_set_bow_active(true)

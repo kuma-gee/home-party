@@ -310,85 +310,85 @@ bind/44/name = &"RightToes"
 bind/44/bone = -1
 bind/44/pose = Transform3D(-0.99280274, 0.11937319, 0.009585102, -0.11966439, -0.992026, -0.039573982, 0.004782783, -0.040435933, 0.99917066, -0.003406178, -0.0012833491, -0.00014981334)
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_db7bw"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_enrkc"]
 animation = &"Grip"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dwc66"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_kufnw"]
 animation = &"Grip"
 
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_l2qex"]
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_v1y0d"]
 filter_enabled = true
 filters = ["Armature/Skeleton3D:Little_Distal_L", "Armature/Skeleton3D:Little_Intermediate_L", "Armature/Skeleton3D:Little_Metacarpal_L", "Armature/Skeleton3D:Little_Proximal_L", "Armature/Skeleton3D:Middle_Distal_L", "Armature/Skeleton3D:Middle_Intermediate_L", "Armature/Skeleton3D:Middle_Metacarpal_L", "Armature/Skeleton3D:Middle_Proximal_L", "Armature/Skeleton3D:Ring_Distal_L", "Armature/Skeleton3D:Ring_Intermediate_L", "Armature/Skeleton3D:Ring_Metacarpal_L", "Armature/Skeleton3D:Ring_Proximal_L", "Armature/Skeleton3D:Thumb_Distal_L", "Armature/Skeleton3D:Thumb_Metacarpal_L", "Armature/Skeleton3D:Thumb_Proximal_L", "Armature/Skeleton:Little_Distal_L", "Armature/Skeleton:Little_Intermediate_L", "Armature/Skeleton:Little_Proximal_L", "Armature/Skeleton:Middle_Distal_L", "Armature/Skeleton:Middle_Intermediate_L", "Armature/Skeleton:Middle_Proximal_L", "Armature/Skeleton:Ring_Distal_L", "Armature/Skeleton:Ring_Intermediate_L", "Armature/Skeleton:Ring_Proximal_L", "Armature/Skeleton:Thumb_Distal_L", "Armature/Skeleton:Thumb_Proximal_L"]
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_o3j7d"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_db7bw"]
 animation = &"Grip 5"
 
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_1yni0"]
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_dwc66"]
 filter_enabled = true
 filters = ["Armature/Skeleton3D:Index_Distal_L", "Armature/Skeleton3D:Index_Intermediate_L", "Armature/Skeleton3D:Index_Metacarpal_L", "Armature/Skeleton3D:Index_Proximal_L", "Armature/Skeleton:Index_Distal_L", "Armature/Skeleton:Index_Intermediate_L", "Armature/Skeleton:Index_Proximal_L"]
 
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_4ilkm"]
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_l2qex"]
 graph_offset = Vector2(-536, 11)
-nodes/ClosedHand1/node = SubResource("AnimationNodeAnimation_db7bw")
+nodes/ClosedHand1/node = SubResource("AnimationNodeAnimation_enrkc")
 nodes/ClosedHand1/position = Vector2(-600, 300)
-nodes/ClosedHand2/node = SubResource("AnimationNodeAnimation_dwc66")
+nodes/ClosedHand2/node = SubResource("AnimationNodeAnimation_kufnw")
 nodes/ClosedHand2/position = Vector2(-360, 300)
-nodes/Grip/node = SubResource("AnimationNodeBlend2_l2qex")
+nodes/Grip/node = SubResource("AnimationNodeBlend2_v1y0d")
 nodes/Grip/position = Vector2(0, 20)
-nodes/OpenHand/node = SubResource("AnimationNodeAnimation_o3j7d")
+nodes/OpenHand/node = SubResource("AnimationNodeAnimation_db7bw")
 nodes/OpenHand/position = Vector2(-600, 100)
-nodes/Trigger/node = SubResource("AnimationNodeBlend2_1yni0")
+nodes/Trigger/node = SubResource("AnimationNodeBlend2_dwc66")
 nodes/Trigger/position = Vector2(-360, 20)
 node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_88pht"]
 viewport_path = NodePath("VRSpace/SubViewport/XRPlayer/LeftHand/Sprite3D/SubViewport")
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dpx8h"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_o3j7d"]
 animation = &"Grip"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_l5702"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1yni0"]
 animation = &"Grip"
 
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_1ilsd"]
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_4ilkm"]
 filter_enabled = true
 filters = ["Armature/Skeleton3D:Little_Distal_R", "Armature/Skeleton3D:Little_Intermediate_R", "Armature/Skeleton3D:Little_Metacarpal_R", "Armature/Skeleton3D:Little_Proximal_R", "Armature/Skeleton3D:Middle_Distal_R", "Armature/Skeleton3D:Middle_Intermediate_R", "Armature/Skeleton3D:Middle_Metacarpal_R", "Armature/Skeleton3D:Middle_Proximal_R", "Armature/Skeleton3D:Ring_Distal_R", "Armature/Skeleton3D:Ring_Intermediate_R", "Armature/Skeleton3D:Ring_Metacarpal_R", "Armature/Skeleton3D:Ring_Proximal_R", "Armature/Skeleton3D:Thumb_Distal_R", "Armature/Skeleton3D:Thumb_Metacarpal_R", "Armature/Skeleton3D:Thumb_Proximal_R", "Armature/Skeleton:Little_Distal_R", "Armature/Skeleton:Little_Intermediate_R", "Armature/Skeleton:Little_Proximal_R", "Armature/Skeleton:Middle_Distal_R", "Armature/Skeleton:Middle_Intermediate_R", "Armature/Skeleton:Middle_Proximal_R", "Armature/Skeleton:Ring_Distal_R", "Armature/Skeleton:Ring_Intermediate_R", "Armature/Skeleton:Ring_Proximal_R", "Armature/Skeleton:Thumb_Distal_R", "Armature/Skeleton:Thumb_Proximal_R"]
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_v278o"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dpx8h"]
 animation = &"Grip 5"
 
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_ij2kk"]
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_l5702"]
 filter_enabled = true
 filters = ["Armature/Skeleton3D:Index_Distal_R", "Armature/Skeleton3D:Index_Intermediate_R", "Armature/Skeleton3D:Index_Metacarpal_R", "Armature/Skeleton3D:Index_Proximal_R", "Armature/Skeleton:Index_Distal_R", "Armature/Skeleton:Index_Intermediate_R", "Armature/Skeleton:Index_Proximal_R"]
 
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_f8wa5"]
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_1ilsd"]
 graph_offset = Vector2(-552.664, 107.301)
-nodes/ClosedHand1/node = SubResource("AnimationNodeAnimation_dpx8h")
+nodes/ClosedHand1/node = SubResource("AnimationNodeAnimation_o3j7d")
 nodes/ClosedHand1/position = Vector2(-600, 300)
-nodes/ClosedHand2/node = SubResource("AnimationNodeAnimation_l5702")
+nodes/ClosedHand2/node = SubResource("AnimationNodeAnimation_1yni0")
 nodes/ClosedHand2/position = Vector2(-360, 300)
-nodes/Grip/node = SubResource("AnimationNodeBlend2_1ilsd")
+nodes/Grip/node = SubResource("AnimationNodeBlend2_4ilkm")
 nodes/Grip/position = Vector2(0, 40)
-nodes/OpenHand/node = SubResource("AnimationNodeAnimation_v278o")
+nodes/OpenHand/node = SubResource("AnimationNodeAnimation_dpx8h")
 nodes/OpenHand/position = Vector2(-600, 100)
-nodes/Trigger/node = SubResource("AnimationNodeBlend2_ij2kk")
+nodes/Trigger/node = SubResource("AnimationNodeBlend2_l5702")
 nodes/Trigger/position = Vector2(-360, 40)
 node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1"]
 
-[sub_resource type="QuadMesh" id="QuadMesh_d36p2"]
+[sub_resource type="QuadMesh" id="QuadMesh_v278o"]
 resource_local_to_scene = true
 size = Vector2(4, 3)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_313of"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_ij2kk"]
 viewport_path = NodePath("VRSpace/SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2/Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4f4wv"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f8wa5"]
 cull_mode = 2
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_313of")
+albedo_texture = SubResource("ViewportTexture_ij2kk")
 texture_filter = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_u6is1"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_d36p2"]
 resource_local_to_scene = true
 size = Vector3(4, 3, 0.02)
 
@@ -396,7 +396,7 @@ size = Vector3(4, 3, 0.02)
 _data = [Vector2(0, 0), 0.0, 3.043883, 0, 0, Vector2(0.1192412, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 3
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_7uav6"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_313of"]
 viewport_path = NodePath("SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2/Viewport")
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_g2kc1"]
@@ -411,18 +411,18 @@ shader_parameter/outline_size = 1.0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bl5ky"]
 albedo_color = Color(0.5686275, 0.3254902, 0.16470589, 1)
 
-[node name="CastleDefense" type="Node3D" unique_id=1524346607 node_paths=PackedStringArray("gate_hurtbox", "player_list", "skill_select", "orbs", "arrow_types", "game_explain_ui", "quiver", "bow", "tutorial_label", "xr_player")]
+[node name="CastleDefense" type="Node3D" unique_id=1524346607 node_paths=PackedStringArray("gate_hurtbox", "player_list", "orbs", "arrow_types", "quiver", "bow", "tutorial_label", "game_ui", "prepare_ui", "xr_player")]
 script = ExtResource("1_cdef")
 gate_hurtbox = NodePath("Castle/Gate/GateHurtBox")
 element_select_scene = ExtResource("43_elsel")
 player_list = NodePath("UI/Control/PlayerList")
-skill_select = NodePath("UI/Control/SkillSelect")
 orbs = [NodePath("VRSpace/ArrowTypes/FireOrb"), NodePath("VRSpace/ArrowTypes/IceOrb"), NodePath("VRSpace/ArrowTypes/LightningOrb")]
 arrow_types = NodePath("VRSpace/ArrowTypes")
-game_explain_ui = NodePath("UI/Control/CenterContainer")
 quiver = NodePath("VRSpace/SubViewport/XRPlayer/XRCamera3D/Quiver")
 bow = NodePath("VRSpace/Bow")
 tutorial_label = NodePath("VRSpace/SubViewport/XRPlayer/CameraFollow3D2")
+game_ui = NodePath("UI/Control/GameUI")
+prepare_ui = NodePath("UI/Control/PrepareUI")
 xr_player = NodePath("VRSpace")
 bgm_audio = ExtResource("2_fkt18")
 
@@ -693,7 +693,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0658141e-14, -0.85153246, 
 visible = false
 
 [node name="AnimationTree" parent="VRSpace/SubViewport/XRPlayer/LeftHand/LeftHand" parent_id_path=PackedInt32Array(841158329, 801242371) index="1" unique_id=1971929839]
-tree_root = SubResource("AnimationNodeBlendTree_4ilkm")
+tree_root = SubResource("AnimationNodeBlendTree_l2qex")
 
 [node name="FunctionPickup" parent="VRSpace/SubViewport/XRPlayer/LeftHand" parent_id_path=PackedInt32Array(841158329, 2106749189) index="1" unique_id=1924663514 instance=ExtResource("5_w0s4v")]
 
@@ -727,18 +727,18 @@ timer = NodePath("../../../../../../../../PlayTime")
 surface_material_override/0 = null
 
 [node name="AnimationTree" parent="VRSpace/SubViewport/XRPlayer/RightHand/RightHand" parent_id_path=PackedInt32Array(841158329, 40282269) index="1"]
-tree_root = SubResource("AnimationNodeBlendTree_f8wa5")
+tree_root = SubResource("AnimationNodeBlendTree_1ilsd")
 
 [node name="FunctionPickup2" parent="VRSpace/SubViewport/XRPlayer/RightHand" parent_id_path=PackedInt32Array(841158329, 1667605568) index="1" unique_id=1988130203 instance=ExtResource("5_w0s4v")]
 
 [node name="MovementTurn" parent="VRSpace/SubViewport/XRPlayer/RightHand" parent_id_path=PackedInt32Array(841158329, 1667605568) index="2" unique_id=2008313491 instance=ExtResource("6_5cd4w")]
 
 [node name="Screen" parent="VRSpace/SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2" parent_id_path=PackedInt32Array(841158329, 553147920) index="1" unique_id=1761931612]
-mesh = SubResource("QuadMesh_d36p2")
-surface_material_override/0 = SubResource("StandardMaterial3D_4f4wv")
+mesh = SubResource("QuadMesh_v278o")
+surface_material_override/0 = SubResource("StandardMaterial3D_f8wa5")
 
 [node name="CollisionShape3D" parent="VRSpace/SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2/StaticBody3D" parent_id_path=PackedInt32Array(841158329, 553147920, 1882660186) index="0" unique_id=507281989]
-shape = SubResource("BoxShape3D_u6is1")
+shape = SubResource("BoxShape3D_d36p2")
 
 [node name="CameraFollow3D2" type="Node3D" parent="VRSpace/SubViewport/XRPlayer" index="5" unique_id=687369714 node_paths=PackedStringArray("_camera")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0493975, 0)
@@ -756,7 +756,7 @@ font = ExtResource("32_enrkc")
 [node name="DesktopGameover" parent="VRSpace" index="3" unique_id=841672726]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9813194, 11.214123, 20.89264)
 visible = false
-texture = SubResource("ViewportTexture_7uav6")
+texture = SubResource("ViewportTexture_313of")
 
 [node name="ArrowTypes" type="Node3D" parent="VRSpace" unique_id=900118082]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2884634, 9.864026)
@@ -847,33 +847,41 @@ grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("18_3sspo")
 
-[node name="MarginContainer2" type="MarginContainer" parent="UI/Control" unique_id=1482534056]
+[node name="GameUI" type="Control" parent="UI/Control" unique_id=2013505135]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="UI/Control/GameUI" unique_id=1482534056]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -18.0
-offset_right = 18.0
+offset_left = -266.0
+offset_right = 266.0
 offset_bottom = 73.0
 grow_horizontal = 2
 
-[node name="ProgressBar" type="ProgressBar" parent="UI/Control/MarginContainer2" unique_id=1317259319 node_paths=PackedStringArray("hurtbox")]
+[node name="ProgressBar" type="ProgressBar" parent="UI/Control/GameUI/MarginContainer2" unique_id=1317259319 node_paths=PackedStringArray("hurtbox")]
 custom_minimum_size = Vector2(500, 28)
 layout_mode = 2
 theme_type_variation = &"ProgressBarHealth"
 value = 30.0
 show_percentage = false
 script = ExtResource("17_iwc37")
-hurtbox = NodePath("../../../../Castle/Gate/GateHurtBox")
+hurtbox = NodePath("../../../../../Castle/Gate/GateHurtBox")
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/Control" unique_id=415818585]
+[node name="MarginContainer" type="MarginContainer" parent="UI/Control/GameUI" unique_id=415818585]
 layout_mode = 0
+offset_right = 132.0
+offset_bottom = 75.0
 
-[node name="Label" type="Label" parent="UI/Control/MarginContainer" unique_id=395233643 node_paths=PackedStringArray("timer")]
+[node name="Label" type="Label" parent="UI/Control/GameUI/MarginContainer" unique_id=395233643 node_paths=PackedStringArray("timer")]
 layout_mode = 2
 text = "00:00"
 script = ExtResource("39_88pht")
-timer = NodePath("../../../../PlayTime")
+timer = NodePath("../../../../../PlayTime")
 
 [node name="PlayerList" type="VBoxContainer" parent="UI/Control" unique_id=370788784]
 layout_mode = 1
@@ -885,31 +893,35 @@ mouse_filter = 0
 script = ExtResource("40_vf04h")
 player_scene = ExtResource("40_bl5ky")
 
-[node name="CenterContainer" type="MarginContainer" parent="UI/Control" unique_id=861934814]
+[node name="PrepareUI" type="Control" parent="UI/Control" unique_id=165486963]
 layout_mode = 1
-offset_right = 1247.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="MarginContainer" parent="UI/Control/PrepareUI" unique_id=861934814]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -623.5
+offset_right = 623.5
 offset_bottom = 239.0
+grow_horizontal = 2
 theme_override_constants/margin_top = 90
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/Control/CenterContainer" unique_id=318622999]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Control/PrepareUI/CenterContainer" unique_id=318622999]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UI/Control/CenterContainer/VBoxContainer" unique_id=1817654707]
+[node name="Label" type="Label" parent="UI/Control/PrepareUI/CenterContainer/VBoxContainer" unique_id=1817654707]
 layout_mode = 2
 theme_type_variation = &"LabelLarge"
 text = "Destroy the gate within the time limit"
+horizontal_alignment = 1
 
-[node name="Label2" type="Label" parent="UI/Control/CenterContainer/VBoxContainer" unique_id=2044246407]
-visible = false
-layout_mode = 2
-text = "Stand near the catapult to launch an attack"
-
-[node name="Label3" type="Label" parent="UI/Control/CenterContainer/VBoxContainer" unique_id=1281863058]
-visible = false
-layout_mode = 2
-text = "Take the bomb to the gate damages it and increases your firepower"
-
-[node name="SkillSelect" type="CenterContainer" parent="UI/Control" unique_id=289904384 node_paths=PackedStringArray("player_list", "skill_select_text", "dash_container", "shield_container")]
+[node name="SkillSelect" type="CenterContainer" parent="UI/Control/PrepareUI" unique_id=289904384 node_paths=PackedStringArray("player_list", "skill_select_text", "dash_container", "shield_container")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -917,31 +929,31 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("44_sl1b2")
-player_list = NodePath("../PlayerList")
+player_list = NodePath("../../PlayerList")
 skill_select_text = NodePath("VBoxContainer/Label")
 player_select = ExtResource("44_ynw0o")
 dash_container = NodePath("VBoxContainer/HBoxContainer/MarginContainer/MarginContainer/DashContainer")
 shield_container = NodePath("VBoxContainer/HBoxContainer/MarginContainer2/MarginContainer/ShieldContainer")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/Control/SkillSelect" unique_id=1927240254]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Control/PrepareUI/SkillSelect" unique_id=1927240254]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UI/Control/SkillSelect/VBoxContainer" unique_id=124138132]
+[node name="Label" type="Label" parent="UI/Control/PrepareUI/SkillSelect/VBoxContainer" unique_id=124138132]
 layout_mode = 2
 text = "Select skill (0/10)"
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/Control/SkillSelect/VBoxContainer" unique_id=299417699]
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/Control/PrepareUI/SkillSelect/VBoxContainer" unique_id=299417699]
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/Control/SkillSelect/VBoxContainer/HBoxContainer" unique_id=1031087207]
+[node name="MarginContainer" type="MarginContainer" parent="UI/Control/PrepareUI/SkillSelect/VBoxContainer/HBoxContainer" unique_id=1031087207]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/Control/SkillSelect/VBoxContainer/HBoxContainer/MarginContainer" unique_id=34216453]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Control/PrepareUI/SkillSelect/VBoxContainer/HBoxContainer/MarginContainer" unique_id=34216453]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="UI/Control/SkillSelect/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer" unique_id=855028346]
+[node name="TextureRect" type="TextureRect" parent="UI/Control/PrepareUI/SkillSelect/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer" unique_id=855028346]
 visible = false
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
@@ -949,13 +961,13 @@ texture = ExtResource("42_ia34x")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="UI/Control/SkillSelect/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer" unique_id=695458373]
+[node name="Label" type="Label" parent="UI/Control/PrepareUI/SkillSelect/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer" unique_id=695458373]
 layout_mode = 2
 text = "💨
 Dash"
 horizontal_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/Control/SkillSelect/VBoxContainer/HBoxContainer/MarginContainer" unique_id=1331019801]
+[node name="MarginContainer" type="MarginContainer" parent="UI/Control/PrepareUI/SkillSelect/VBoxContainer/HBoxContainer/MarginContainer" unique_id=1331019801]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_constants/margin_left = 0
@@ -963,17 +975,17 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = -16
 
-[node name="DashContainer" type="HFlowContainer" parent="UI/Control/SkillSelect/VBoxContainer/HBoxContainer/MarginContainer/MarginContainer" unique_id=1548005917]
+[node name="DashContainer" type="HFlowContainer" parent="UI/Control/PrepareUI/SkillSelect/VBoxContainer/HBoxContainer/MarginContainer/MarginContainer" unique_id=1548005917]
 layout_mode = 2
 size_flags_vertical = 8
 
-[node name="MarginContainer2" type="MarginContainer" parent="UI/Control/SkillSelect/VBoxContainer/HBoxContainer" unique_id=798381247]
+[node name="MarginContainer2" type="MarginContainer" parent="UI/Control/PrepareUI/SkillSelect/VBoxContainer/HBoxContainer" unique_id=798381247]
 layout_mode = 2
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="UI/Control/SkillSelect/VBoxContainer/HBoxContainer/MarginContainer2" unique_id=623562527]
+[node name="VBoxContainer2" type="VBoxContainer" parent="UI/Control/PrepareUI/SkillSelect/VBoxContainer/HBoxContainer/MarginContainer2" unique_id=623562527]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="UI/Control/SkillSelect/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer2" unique_id=1084542427]
+[node name="TextureRect" type="TextureRect" parent="UI/Control/PrepareUI/SkillSelect/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer2" unique_id=1084542427]
 visible = false
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
@@ -981,13 +993,13 @@ texture = ExtResource("42_ia34x")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="UI/Control/SkillSelect/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer2" unique_id=663140200]
+[node name="Label" type="Label" parent="UI/Control/PrepareUI/SkillSelect/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer2" unique_id=663140200]
 layout_mode = 2
 text = "🛡️
 Shield"
 horizontal_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/Control/SkillSelect/VBoxContainer/HBoxContainer/MarginContainer2" unique_id=894034451]
+[node name="MarginContainer" type="MarginContainer" parent="UI/Control/PrepareUI/SkillSelect/VBoxContainer/HBoxContainer/MarginContainer2" unique_id=894034451]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_constants/margin_left = 0
@@ -995,7 +1007,7 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = -16
 
-[node name="ShieldContainer" type="HFlowContainer" parent="UI/Control/SkillSelect/VBoxContainer/HBoxContainer/MarginContainer2/MarginContainer" unique_id=799429356]
+[node name="ShieldContainer" type="HFlowContainer" parent="UI/Control/PrepareUI/SkillSelect/VBoxContainer/HBoxContainer/MarginContainer2/MarginContainer" unique_id=799429356]
 layout_mode = 2
 size_flags_vertical = 8
 
