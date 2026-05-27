@@ -2,6 +2,7 @@ class_name CastlePlayerUI
 extends JoinedPlayer
 
 signal skill_changed(skill: FPSPlayer.Skill)
+signal player_spawned
 
 @export var firepower_label: Label
 @export var firepower := 1:
@@ -63,6 +64,7 @@ func spawn_player():
 	if not can_respawn():
 		return
 
+	player_spawned.emit()
 	var player = player_spawner.create_player(game_client)
 	player.global_rotation.y = PI
 	player.firepower = firepower

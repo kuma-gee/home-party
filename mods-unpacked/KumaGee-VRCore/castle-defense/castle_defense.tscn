@@ -33,10 +33,8 @@
 [ext_resource type="Script" uid="uid://bm5ft6vm56s8w" path="res://addons/proton_scatter/src/modifiers/randomize_transforms.gd" id="28_se6x7"]
 [ext_resource type="Script" uid="uid://55epc38d7k5b" path="res://addons/proton_scatter/src/modifiers/relax.gd" id="29_r4ttt"]
 [ext_resource type="Script" uid="uid://b5ak450bd12ar" path="res://addons/proton_scatter/src/modifiers/project_on_geometry.gd" id="30_ofmg5"]
-[ext_resource type="Script" uid="uid://cjk3gsrbfomdh" path="res://main/utils/camera_follow_3d.gd" id="31_5jms6"]
 [ext_resource type="Script" uid="uid://bi4u3rwdceyn8" path="res://addons/proton_scatter/src/scatter_item.gd" id="31_bd7o1"]
 [ext_resource type="Script" uid="uid://4f6ju7rd45me" path="res://addons/proton_scatter/src/scatter_shape.gd" id="32_88pht"]
-[ext_resource type="FontVariation" uid="uid://cv3schwy7bq8t" path="res://theme/default_font.tres" id="32_enrkc"]
 [ext_resource type="Shader" uid="uid://d1cis0r7gi5pm" path="res://shader/outline_3d.gdshader" id="32_vf04h"]
 [ext_resource type="Script" uid="uid://bi01qjf5sng7a" path="res://main/vr/highlight_object.gd" id="33_bl5ky"]
 [ext_resource type="Script" uid="uid://ca371rsy4x4ya" path="res://addons/proton_scatter/src/shapes/box_shape.gd" id="34_lhggn"]
@@ -49,6 +47,8 @@
 [ext_resource type="PackedScene" uid="uid://0bcv0v5ytadj" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/ui/element_select.tscn" id="43_elsel"]
 [ext_resource type="Script" uid="uid://ce51a7cbm8u6g" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/ui/skill_select.gd" id="44_sl1b2"]
 [ext_resource type="PackedScene" uid="uid://bucsqhjr75ini" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/ui/player_select.tscn" id="44_ynw0o"]
+[ext_resource type="PackedScene" uid="uid://bhnk5q517pr8o" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/castle_defense_tutorial.tscn" id="45_tutorial"]
+[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/ui/spawn_hint.tscn" id="46_spwnh"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_3sspo"]
 panorama = ExtResource("3_r4ttt")
@@ -70,34 +70,34 @@ volumetric_fog_albedo = Color(0.8509804, 0.9843137, 1, 1)
 adjustment_contrast = 1.1
 adjustment_saturation = 0.9
 
-[sub_resource type="Resource" id="Resource_sl1b2"]
+[sub_resource type="Resource" id="Resource_5jms6"]
 script = ExtResource("27_fkt18")
 amount = 2000
 restrict_height = true
 reference_frame = 1
 
-[sub_resource type="Resource" id="Resource_5jms6"]
+[sub_resource type="Resource" id="Resource_enrkc"]
 script = ExtResource("28_se6x7")
 position = Vector3(0.15, 0.15, 0.15)
 rotation = Vector3(0, 360, 0)
 scale = Vector3(1, 1, 0.2)
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_enrkc"]
+[sub_resource type="Resource" id="Resource_kufnw"]
 script = ExtResource("29_r4ttt")
 offset_step = 0.2
 consecutive_step_multiplier = 0.75
 restrict_height = true
 
-[sub_resource type="Resource" id="Resource_kufnw"]
+[sub_resource type="Resource" id="Resource_v1y0d"]
 script = ExtResource("30_ofmg5")
 ray_length = 5.0
 ray_offset = 5.0
 remove_points_on_miss = false
 
-[sub_resource type="Resource" id="Resource_v1y0d"]
+[sub_resource type="Resource" id="Resource_db7bw"]
 script = ExtResource("25_lhggn")
-stack = Array[ExtResource("26_41gkt")]([SubResource("Resource_sl1b2"), SubResource("Resource_5jms6"), SubResource("Resource_enrkc"), SubResource("Resource_kufnw")])
+stack = Array[ExtResource("26_41gkt")]([SubResource("Resource_5jms6"), SubResource("Resource_enrkc"), SubResource("Resource_kufnw"), SubResource("Resource_v1y0d")])
 
 [sub_resource type="Resource" id="Resource_0cjve"]
 script = ExtResource("34_lhggn")
@@ -392,10 +392,6 @@ texture_filter = 1
 resource_local_to_scene = true
 size = Vector3(4, 3, 0.02)
 
-[sub_resource type="Curve" id="Curve_5jms6"]
-_data = [Vector2(0, 0), 0.0, 3.043883, 0, 0, Vector2(0.1192412, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 3
-
 [sub_resource type="ViewportTexture" id="ViewportTexture_313of"]
 viewport_path = NodePath("SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2/Viewport")
 
@@ -411,7 +407,7 @@ shader_parameter/outline_size = 1.0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bl5ky"]
 albedo_color = Color(0.5686275, 0.3254902, 0.16470589, 1)
 
-[node name="CastleDefense" type="Node3D" unique_id=1524346607 node_paths=PackedStringArray("gate_hurtbox", "player_list", "orbs", "arrow_types", "quiver", "bow", "tutorial_label", "game_ui", "prepare_ui", "xr_player")]
+[node name="CastleDefense" type="Node3D" unique_id=1524346607 node_paths=PackedStringArray("gate_hurtbox", "player_list", "orbs", "arrow_types", "quiver", "bow", "tutorial", "game_ui", "prepare_ui", "spawn_hint", "xr_player")]
 script = ExtResource("1_cdef")
 gate_hurtbox = NodePath("Castle/Gate/GateHurtBox")
 element_select_scene = ExtResource("43_elsel")
@@ -420,9 +416,10 @@ orbs = [NodePath("VRSpace/ArrowTypes/FireOrb"), NodePath("VRSpace/ArrowTypes/Ice
 arrow_types = NodePath("VRSpace/ArrowTypes")
 quiver = NodePath("VRSpace/SubViewport/XRPlayer/XRCamera3D/Quiver")
 bow = NodePath("VRSpace/Bow")
-tutorial_label = NodePath("VRSpace/SubViewport/XRPlayer/CameraFollow3D2")
+tutorial = NodePath("VRSpace/SubViewport/XRPlayer/CastleDefenseTutorial")
 game_ui = NodePath("UI/Control/GameUI")
 prepare_ui = NodePath("UI/Control/PrepareUI")
+spawn_hint = NodePath("UI/Control/SpawnHint")
 xr_player = NodePath("VRSpace")
 bgm_audio = ExtResource("2_fkt18")
 
@@ -448,7 +445,7 @@ one_shot = true
 process_mode = 3
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 9.613975)
 script = ExtResource("24_0cjve")
-modifier_stack = SubResource("Resource_v1y0d")
+modifier_stack = SubResource("Resource_db7bw")
 Performance/use_chunks = true
 Performance/chunk_dimensions = Vector3(15, 15, 15)
 metadata/_custom_type_script = "uid://3jl51qajvpsq"
@@ -740,18 +737,9 @@ surface_material_override/0 = SubResource("StandardMaterial3D_f8wa5")
 [node name="CollisionShape3D" parent="VRSpace/SubViewport/XRPlayer/CameraFollow3D/Viewport2Din3D2/StaticBody3D" parent_id_path=PackedInt32Array(841158329, 553147920, 1882660186) index="0" unique_id=507281989]
 shape = SubResource("BoxShape3D_d36p2")
 
-[node name="CameraFollow3D2" type="Node3D" parent="VRSpace/SubViewport/XRPlayer" index="5" unique_id=687369714 node_paths=PackedStringArray("_camera")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0493975, 0)
-script = ExtResource("31_5jms6")
-follow_speed = SubResource("Curve_5jms6")
-_camera = NodePath("../XRCamera3D")
-metadata/_custom_type_script = "uid://cjk3gsrbfomdh"
-
-[node name="Label3D" type="Label3D" parent="VRSpace/SubViewport/XRPlayer/CameraFollow3D2" unique_id=1764981449]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8639042e-07, 0, -2.1320581)
-text = "Grab an arrow
-behind your head"
-font = ExtResource("32_enrkc")
+[node name="CastleDefenseTutorial" parent="VRSpace/SubViewport/XRPlayer" index="5" unique_id=687369714 node_paths=PackedStringArray("bow", "quiver") instance=ExtResource("45_tutorial")]
+bow = NodePath("../../../Bow")
+quiver = NodePath("../XRCamera3D/Quiver")
 
 [node name="DesktopGameover" parent="VRSpace" index="3" unique_id=841672726]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9813194, 11.214123, 20.89264)
@@ -1010,6 +998,10 @@ theme_override_constants/margin_bottom = -16
 [node name="ShieldContainer" type="HFlowContainer" parent="UI/Control/PrepareUI/SkillSelect/VBoxContainer/HBoxContainer/MarginContainer2/MarginContainer" unique_id=799429356]
 layout_mode = 2
 size_flags_vertical = 8
+
+[node name="SpawnHint" parent="UI/Control" unique_id=293092644 instance=ExtResource("46_spwnh")]
+layout_mode = 1
+anchors_preset = 3
 
 [node name="AISpawner" type="Node" parent="." unique_id=1649809598 node_paths=PackedStringArray("player_spawner")]
 script = ExtResource("39_ofmg5")

@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://bhnk5q517pr8o"]
+
+[ext_resource type="Script" uid="uid://cegjfdeui5r6p" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/castle_defense_tutorial.gd" id="1_tutorial"]
+[ext_resource type="Script" uid="uid://cjk3gsrbfomdh" path="res://main/utils/camera_follow_3d.gd" id="2_camfollow"]
+[ext_resource type="FontVariation" uid="uid://cv3schwy7bq8t" path="res://theme/default_font.tres" id="3_font"]
+
+[sub_resource type="Curve" id="Curve_follow"]
+_data = [Vector2(0, 0), 0.0, 3.043883, 0, 0, Vector2(0.1192412, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[node name="CastleDefenseTutorial" type="Node3D" unique_id=1]
+script = ExtResource("1_tutorial")
+
+[node name="CameraFollow3D" type="Node3D" parent="." unique_id=2]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0493975, 0)
+script = ExtResource("2_camfollow")
+follow_speed = SubResource("Curve_follow")
+metadata/_custom_type_script = "uid://cjk3gsrbfomdh"
+
+[node name="Label3D" type="Label3D" parent="CameraFollow3D" unique_id=3]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8639042e-07, 0, -2.1320581)
+text = "Grab arrow
+behind head"
+font = ExtResource("3_font")
+
+[node name="Label3D2" type="Label3D" parent="CameraFollow3D" unique_id=4]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8639042e-07, 0, -2.1320581)
+visible = false
+text = "Put tip inside
+element orb"
+font = ExtResource("3_font")

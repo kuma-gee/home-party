@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://d1kycfe3yj46r"]
+
+[ext_resource type="Script" uid="uid://etsmchdyyu7b" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/ui/spawn_hint.gd" id="1_spwnh"]
+[ext_resource type="Texture2D" uid="uid://j0yx18cllr7m" path="res://assets/Inputs/Xbox Series/XboxSeriesX_A.png" id="2_spwnh"]
+[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="3_spwnh"]
+
+[node name="SpawnHint" type="MarginContainer" unique_id=943539629]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -347.0
+offset_top = -75.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("3_spwnh")
+script = ExtResource("1_spwnh")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1124421435]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="LabelPress" type="Label" parent="HBoxContainer" unique_id=460872331]
+layout_mode = 2
+text = "Press"
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer" unique_id=1674154029]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 8
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/MarginContainer" unique_id=1376050325]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("2_spwnh")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LabelToSpawn" type="Label" parent="HBoxContainer" unique_id=251038932]
+layout_mode = 2
+text = "to spawn"
+
+[node name="Timer" type="Timer" parent="." unique_id=1968161136]
+wait_time = 6.0
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -50,6 +50,7 @@ func _ready():
 	dropped.connect(func(_p): queue_free())
 	power_sprite.hide()
 	fire_vfx.hide()
+	_gate_direction.visible = get_tree().paused
 
 func set_prepare_mode(v: bool) -> void:
 	if _fade_tween:

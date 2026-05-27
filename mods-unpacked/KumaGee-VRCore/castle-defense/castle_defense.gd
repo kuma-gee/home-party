@@ -7,9 +7,10 @@ extends XRToolsSceneBase
 @export var arrow_types: Node3D
 @export var quiver: Quiver
 @export var bow: Bow
-@export var tutorial_label: CameraFollow3D
+@export var tutorial: CastleDefenseTutorial
 @export var game_ui: Control
 @export var prepare_ui: Control
+@export var spawn_hint: SpawnHint
 
 @onready var play_time: Timer = $PlayTime
 
@@ -19,9 +20,6 @@ var logger := KumaLog.new("CastleDefense")
 
 var _element_select: ElementSelect
 var _vr_elements: Array[Arrow.Element] = [Arrow.Element.FIRE]
-
-var _has_grabbed_bow := false
-var _has_grabbed_arrow := false
 
 func _ready() -> void:
 	_indicator_timer = Timer.new()
@@ -35,17 +33,13 @@ func _ready() -> void:
 	quiver.element_changed.connect(_on_element_changed)
 	_on_element_changed(Arrow.Element.NONE)
 
-	bow.picked_up.connect(_on_bow_picked_up_tutorial)
-	quiver.picked_up.connect(_on_arrow_grabbed_tutorial)
-
 	_set_bow_active(false)
-	tutorial_label.hide()
 	game_ui.hide()
 
 func _set_bow_active(active: bool) -> void:
 	bow.visible = active
 
-func _on_element_changed(elem: Arrow.Element):
+func _on_element_changed(elem: Arrow.Element) -> void:
 	for orb in orbs:
 		orb.set_selected(orb.element == elem)
 
@@ -80,24 +74,13 @@ func _check_all_ready(start = false) -> void:
 	if start and player_list.is_all_ready():
 		_start_game()
 
-func _on_bow_picked_up_tutorial(_pickable: XRToolsPickable) -> void:
-	if _has_grabbed_bow:
-		return
-	_has_grabbed_bow = true
-	tutorial_label.show()
-
-func _on_arrow_grabbed_tutorial(_what: Node3D) -> void:
-	if _has_grabbed_arrow or not _has_grabbed_bow:
-		return
-	_has_grabbed_arrow = true
-	tutorial_label.hide()
-
 func _start_game() -> void:
 	StatsManager.initialize(PlayerManager.playing_clients)
 	xr_player.hide_screen()
 	prepare_ui.hide()
 	play_time.start()
 	game_ui.show()
+	spawn_hint.start(player_list)
 	logger.info("Game started — %.0f seconds to survive" % play_time.wait_time)
 	_indicator_timer.start(3.0)
 
@@ -116,7 +99,7 @@ func _on_play_time_timeout() -> void:
 	_finish_game("Castle survived!")
 
 func _finish_game(message: String) -> void:
-	tutorial_label.hide()
+	tutorial.finish()
 	logger.info("Game over: %s" % message)
 	xr_player.gameover(message)
 	play_time.stop()
