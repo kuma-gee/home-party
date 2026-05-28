@@ -22,6 +22,7 @@ func _on_button_pressed() -> void:
 func set_element(elem: Arrow.Element, emoji: String, name: String, description: String) -> void:
 	self.element = elem
 	_emoji_label.text = emoji
+	_button.text = "             %s\n             %s" % [name, description]
 	_name_label.text = name
 	_description_label.text = description
 

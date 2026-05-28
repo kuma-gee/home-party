@@ -4,6 +4,10 @@
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="1_crhtc"]
 
 [node name="ElementButton" type="PanelContainer" unique_id=410400894 node_paths=PackedStringArray("_emoji_label", "_name_label", "_description_label", "_button")]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 81.0
+grow_horizontal = 2
 theme = ExtResource("1_crhtc")
 script = ExtResource("1_abc12")
 _emoji_label = NodePath("MarginContainer/HBoxContainer/EmojiLabel")
@@ -13,15 +17,22 @@ _button = NodePath("InternalButton")
 
 [node name="InternalButton" type="Button" parent="." unique_id=2010730634]
 layout_mode = 2
+theme_override_font_sizes/font_size = 22
 toggle_mode = true
+text = "              Test
+              Creating a tornado pulling enemies towards it"
+alignment = 0
+text_overrun_behavior = 3
+autowrap_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1174033731]
 layout_mode = 2
+size_flags_vertical = 0
 mouse_filter = 2
-theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 6
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 4
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=310084354]
 layout_mode = 2
@@ -35,16 +46,19 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=2033050409]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
 [node name="NameLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=409612055]
+visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "Name"
 
 [node name="DescriptionLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1021024621]
+visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
 text = "Description"

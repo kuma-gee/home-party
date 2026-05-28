@@ -6,8 +6,8 @@ signal started_game(game: GameResource)
 @export var game_details_desktop: GameDetailsPanel
 @export var game_details_vr: GameDetailsPanel
 @export var scene: PackedScene
-@export var radius := 0.85
-@export_range(1, 90, 1, "degrees") var item_spacing := 20.0
+@export var axis := Vector3.RIGHT
+@export var item_spacing := 0.5
 
 @onready var game_loader: GameLoader = $GameLoader
 @onready var game_select_zone: GameSelectZone = $GameSelectZone
@@ -68,21 +68,9 @@ func _populate() -> void:
 		inst.game = g
 		games_root.add_child(inst)
 
-		# Place on arc in XZ plane with fixed spacing
-		var step = deg_to_rad(item_spacing)
-		var angle = step * (float(i) - float(n - 1) / 2.0)
-		var local_pos = Vector3(sin(angle) * radius, 0.0, cos(angle) * radius)
-		inst.transform.origin = local_pos
-
-		# Make the instance look toward the shelf's global center
-		var center_global = games_root.global_transform.origin
-		inst.look_at(center_global, Vector3.UP)
-
-		# Keep object upright: zero X/Z rotation components
-		var rot = inst.rotation_degrees
-		rot.x = 0
-		rot.z = 0
-		inst.rotation_degrees = rot
+		# Place in a line along the configured axis with fixed spacing
+		var offset = axis.normalized() * (float(i) - float(n - 1) / 2.0) * item_spacing
+		inst.transform.origin = offset
 
 func _on_game_selected(game: GameResource) -> void:
 	selected_game = game

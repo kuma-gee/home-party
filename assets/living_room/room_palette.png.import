@@ -2,17 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cgqwlrol4v7xg"
-path.s3tc="res://.godot/imported/desktop_preview.png-eff6236fc3fcda4f92ba11ed7ab4046e.s3tc.ctex"
+uid="uid://bya2vjrmk4omu"
+path.s3tc="res://.godot/imported/room_palette.png-1ebdb95b6fbef3a1d973f6220aba7ccd.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "90ab315a02d86afa3b57d1afc2b4c2cd"
+}
 
 [deps]
 
-source_file="res://mods-unpacked/KumaGee-VRCore/castle-defense/desktop_preview.png"
-dest_files=["res://.godot/imported/desktop_preview.png-eff6236fc3fcda4f92ba11ed7ab4046e.s3tc.ctex"]
+source_file="res://assets/living_room/room_palette.png"
+dest_files=["res://.godot/imported/room_palette.png-1ebdb95b6fbef3a1d973f6220aba7ccd.s3tc.ctex"]
 
 [params]
 

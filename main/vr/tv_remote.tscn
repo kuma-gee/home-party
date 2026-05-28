@@ -5,7 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://ctw7nbntd5pcj" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_right.tscn" id="3_0si2y"]
 [ext_resource type="PackedScene" uid="uid://dsqf4lwytprrk" path="res://assets/living_room/remote.glb" id="4_0si2y"]
 [ext_resource type="Shader" uid="uid://d1cis0r7gi5pm" path="res://shader/outline_3d.gdshader" id="5_826rp"]
-[ext_resource type="Script" uid="uid://bi01qjf5sng7a" path="res://main/vr/highlight_object.gd" id="6_cpg8o"]
+[ext_resource type="Script" uid="uid://cdl5kcr2wvnav" path="res://addons/godot-xr-tools/objects/highlight/highlight_material.gd" id="7_spws3"]
+[ext_resource type="Material" uid="uid://dyuaw57o8y3i" path="res://addons/godot-xr-tools/materials/highlight.tres" id="8_wq8ul"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dmn88"]
 size = Vector3(0.16430664, 0.017578125, 0.07519531)
@@ -14,7 +15,7 @@ size = Vector3(0.16430664, 0.017578125, 0.07519531)
 render_priority = 0
 shader = ExtResource("5_826rp")
 shader_parameter/color = Color(1, 1, 1, 1)
-shader_parameter/outline_size = 1.05
+shader_parameter/outline_size = 1.0
 
 [node name="TVRemote" unique_id=777328390 instance=ExtResource("1_dmn88")]
 second_hand_grab = 1
@@ -32,9 +33,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.024740903, 0.027983576, -0
 [node name="remote" parent="." index="3" unique_id=1718433474 instance=ExtResource("4_0si2y")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, -0.00090548024)
 
-[node name="Remote" parent="remote" index="0" unique_id=2063719311 node_paths=PackedStringArray("pickable")]
+[node name="Remote" parent="remote" index="0" unique_id=1757658840]
 material_overlay = SubResource("ShaderMaterial_cpg8o")
-script = ExtResource("6_cpg8o")
-pickable = NodePath("../..")
+
+[node name="XRToolsHighlightMaterial" type="Node" parent="." index="4" unique_id=1165179198]
+script = ExtResource("7_spws3")
+highlight_mesh_instance = NodePath("../remote/Remote")
+highlight_material = ExtResource("8_wq8ul")
+metadata/_custom_type_script = "uid://cdl5kcr2wvnav"
 
 [editable path="remote"]

@@ -25,8 +25,8 @@ const ELEMENT_TEXT := {
 	Arrow.Element.FIRE: "Explodes and hit enemies in a small area",
 	Arrow.Element.ICE: "Freezes in impact and slows enemies in an area",
 	Arrow.Element.LIGHTNING: "Hits the closest enemy and bounces up to 3 times",
-	Arrow.Element.WIND: "creating a moving tornado pulling enemies towards it",
-	Arrow.Element.POISON: "Poisons enemies in a large area which can spread to nearby enemies",
+	Arrow.Element.WIND: "Creating a tornado pulling enemies towards it",
+	Arrow.Element.POISON: "Poisons enemies in a large area",
 }
 
 var selected_elements: Array[Arrow.Element] = [Arrow.Element.FIRE, Arrow.Element.ICE, Arrow.Element.LIGHTNING]

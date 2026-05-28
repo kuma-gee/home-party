@@ -558,6 +558,7 @@ gradient = SubResource("Gradient_e0gft")
 fill_to = Vector2(0, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0wuco"]
+resource_local_to_scene = true
 transparency = 1
 blend_mode = 1
 cull_mode = 2

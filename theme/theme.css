@@ -15,17 +15,23 @@ body {
   font-family: url(default_font.tres);
 }
 
-Button, Button:pressed, Button:hover, Button:hover_pressed {
+Button, Button:pressed, Button:hover, Button:hover_pressed, Button:disabled, Button:focus {
   color: var(--text-color);
+  background: var(--primary-color);
+  padding: 12 8 4 8;
+  border-radius: 16;
+}
+
+Button:disabled {
   background: var(--secondary-color);
-  padding: 12 0 0 0;
 }
 
 Button:pressed {
-  background: var(--primary-color);
+  background: var(--text-color);
+  color: var(--primary-color);
 }
 
-Button:hover, Button:hover_pressed {
+Button:hover, Button:hover_pressed, Button:focus {
   background: var(--primary-highlight-color);
 }
 

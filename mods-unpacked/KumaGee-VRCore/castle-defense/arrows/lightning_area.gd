@@ -13,7 +13,7 @@ var _hit_hurtboxes: Array[HurtBox] = []
 
 func _ready() -> void:
 	bounced.connect(_spawn_bolt)
-	await get_tree().create_timer(0.1).timeout
+	await get_tree().create_timer(0.05).timeout
 	bounce_to()
 
 func bounce_to(pos: Vector3 = global_position, bounce_count: int = 0) -> void:

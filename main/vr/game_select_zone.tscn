@@ -15,6 +15,7 @@ snap_on_dropped = true
 snap_require = "game_select"
 
 [node name="CSGCylinder3D" type="CSGCylinder3D" parent="." unique_id=83522275]
+visible = false
 use_collision = true
 radius = 0.15
 height = 0.01

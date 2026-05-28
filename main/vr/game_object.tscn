@@ -3,14 +3,16 @@
 [ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_u8ifv"]
 [ext_resource type="PackedScene" uid="uid://dh8grd7s3n8kg" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_snap.tscn" id="2_piqj4"]
 [ext_resource type="Script" uid="uid://b37bxflp231tn" path="res://main/vr/game_select_area.gd" id="2_r842p"]
+[ext_resource type="PackedScene" uid="uid://dv3k4nwcqsxou" path="res://assets/living_room/cassette.glb" id="3_ul6vm"]
 [ext_resource type="Shader" uid="uid://d1cis0r7gi5pm" path="res://shader/outline_3d.gdshader" id="4_vkcnx"]
-[ext_resource type="Script" uid="uid://bi01qjf5sng7a" path="res://main/vr/highlight_object.gd" id="5_ul6vm"]
 [ext_resource type="PackedScene" uid="uid://c25yxb0vt53vc" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_left.tscn" id="5_vkcnx"]
 [ext_resource type="PackedScene" uid="uid://ctw7nbntd5pcj" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_right.tscn" id="6_ul6vm"]
+[ext_resource type="Texture2D" uid="uid://cgqwlrol4v7xg" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/desktop_preview.png" id="9_wqosv"]
+[ext_resource type="Script" uid="uid://cdl5kcr2wvnav" path="res://addons/godot-xr-tools/objects/highlight/highlight_material.gd" id="10_nnut3"]
+[ext_resource type="Material" uid="uid://dyuaw57o8y3i" path="res://addons/godot-xr-tools/materials/highlight.tres" id="11_dbu0t"]
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_piqj4"]
-height = 0.14355469
-radius = 0.11230469
+[sub_resource type="BoxShape3D" id="BoxShape3D_ul6vm"]
+size = Vector3(0.12011719, 0.083984375, 0.0234375)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kqex8"]
 albedo_color = Color(0.29954728, 0.2995475, 0.29954743, 1)
@@ -28,26 +30,41 @@ ranged_grab_method = 2
 second_hand_grab = 1
 
 [node name="CollisionShape3D" parent="." index="0" unique_id=1198871219]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.07035574, 0)
-shape = SubResource("CylinderShape3D_piqj4")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00011299923, 0)
+shape = SubResource("BoxShape3D_ul6vm")
 
-[node name="IconRoot" type="Node3D" parent="." index="1" unique_id=1477808711]
+[node name="cassette" parent="." index="1" unique_id=807629271 instance=ExtResource("3_ul6vm")]
+
+[node name="IconRoot" type="Node3D" parent="." index="2" unique_id=1477808711]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.018920764, 0)
 
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="." index="2" unique_id=1541365418 node_paths=PackedStringArray("pickable")]
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="." index="3" unique_id=1541365418]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.009892605, 0)
+visible = false
 material_override = SubResource("StandardMaterial3D_kqex8")
 material_overlay = SubResource("ShaderMaterial_vkcnx")
 radius = 0.11
 height = 0.02
 sides = 32
-script = ExtResource("5_ul6vm")
-pickable = NodePath("..")
 
-[node name="GrabPointSnap" parent="." index="3" unique_id=1846373347 instance=ExtResource("2_piqj4")]
+[node name="GrabPointSnap" parent="." index="4" unique_id=1846373347 instance=ExtResource("2_piqj4")]
 
-[node name="GrabPointHandRight" parent="." index="4" unique_id=233978263 instance=ExtResource("6_ul6vm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.08901184, 0.058463216, -0.079446815)
+[node name="Sprite3D" type="Sprite3D" parent="." index="5" unique_id=114718724]
+transform = Transform3D(0.004, 0, 0, 0, 0.004, 0, 0, 0, 0.004, 0, -0.004, 0.013559315)
+texture = ExtResource("9_wqosv")
 
-[node name="GrabPointHandLeft" parent="." index="5" unique_id=373562343 instance=ExtResource("5_vkcnx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09198538, 0.058463216, -0.079446815)
+[node name="GrabPointHandLeft" parent="." index="6" unique_id=373562343 instance=ExtResource("5_vkcnx")]
+transform = Transform3D(0.9316151, 0, -0.36344638, 0, 1, 0, 0.36344638, 0, 0.9316151, -0.012092922, 0.052954406, -0.09176138)
+visible = true
+
+[node name="GrabPointHandRight" parent="." index="7" unique_id=233978263 instance=ExtResource("6_ul6vm")]
+transform = Transform3D(0.95738006, 0, 0.28883135, 0, 1, 0, -0.28883135, 0, 0.95738006, 0.018415082, 0.052954406, -0.09176138)
+visible = true
+
+[node name="XRToolsHighlightMaterial" type="Node" parent="." index="8" unique_id=970509488]
+script = ExtResource("10_nnut3")
+highlight_mesh_instance = NodePath("../cassette/Cassette")
+highlight_material = ExtResource("11_dbu0t")
+metadata/_custom_type_script = "uid://cdl5kcr2wvnav"
+
+[editable path="cassette"]

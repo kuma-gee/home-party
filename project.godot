@@ -119,7 +119,7 @@ debug_3={
 
 [rendering]
 
-environment/defaults/default_clear_color=Color(0.18000486, 0.18000486, 0.18000486, 1)
+environment/defaults/default_clear_color=Color(0.12955844, 0.12955847, 0.12955844, 1)
 
 [xr]
 

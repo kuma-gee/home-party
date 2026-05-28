@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bwi3s0ixfuvq5"
-path="res://.godot/imported/room.glb-bea77d6018b9cf093d3e84df4e6f3784.scn"
+uid="uid://dv3k4nwcqsxou"
+path="res://.godot/imported/cassette.glb-dc5cd7a09ce7b91b8b8a4a9757653382.scn"
 
 [deps]
 
-source_file="res://assets/living_room/room.glb"
-dest_files=["res://.godot/imported/room.glb-bea77d6018b9cf093d3e84df4e6f3784.scn"]
+source_file="res://assets/living_room/cassette.glb"
+dest_files=["res://.godot/imported/cassette.glb-dc5cd7a09ce7b91b8b8a4a9757653382.scn"]
 
 [params]
 
@@ -37,24 +37,6 @@ import_script/path=""
 materials/extract=0
 materials/extract_format=0
 materials/extract_path=""
-_subresources={
-"materials": {
-"Floor": {
-"use_external/enabled": true,
-"use_external/fallback_path": "res://assets/living_room/floor_mat.tres",
-"use_external/path": "uid://bybarphxfi3y8"
-},
-"Lamp": {
-"use_external/enabled": true,
-"use_external/fallback_path": "res://assets/living_room/lamp_glow.tres",
-"use_external/path": "uid://b1feaeyjqcmib"
-},
-"RoomMat": {
-"use_external/enabled": true,
-"use_external/fallback_path": "res://assets/living_room/room_mat.tres",
-"use_external/path": "uid://dmr5w04cdkmck"
-}
-}
-}
+_subresources={}
 gltf/naming_version=2
 gltf/embedded_image_handling=1
