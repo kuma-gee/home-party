@@ -91,6 +91,7 @@ func _process(delta: float) -> void:
 func _on_button_pressed(button_name: String) -> void:
 	if button_name != menu_button_action or not _menu_enabled:
 		return
+	
 	if _menu_instance:
 		close_menu()
 	else:
