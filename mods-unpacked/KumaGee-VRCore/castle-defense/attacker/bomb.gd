@@ -41,7 +41,7 @@ func _ready():
 		if is_instance_valid(_gate_direction):
 			_gate_direction.hide()
 		lighting_fuse.play()
-		power_sprite.show()
+		#power_sprite.show()
 		fire_vfx.show()
 		if explode_timer:
 			explode_timer.start()

@@ -11,6 +11,13 @@ _limits = [0.0, 3.14, 0.0, 1.0]
 _data = [Vector2(0.00207039, 0), 0.0, 1.00884, 0, 0, Vector2(1, 3.14), 0.313348, 0.0, 0, 0]
 point_count = 2
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ajx0v"]
+shading_mode = 0
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_ajx0v"]
+size = Vector2(50, 50)
+
 [node name="Staging" type="Node3D" unique_id=343982823 node_paths=PackedStringArray("desktop_camera", "xr_origin", "xr_camera", "loading", "fade", "desktop_fade")]
 process_mode = 3
 script = ExtResource("1")
@@ -66,6 +73,36 @@ mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=401912813]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=811052869]
+transform = Transform3D(0.9998337, 0.01823768, 0, -0.01823768, 0.9998337, 0, 0, 0, 1, 0, 0, -9.0937)
+material_override = SubResource("StandardMaterial3D_ajx0v")
+mesh = SubResource("QuadMesh_ajx0v")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="." unique_id=359000008]
+transform = Transform3D(-0.9998337, -0.01823768, -8.742278e-08, -0.01823768, 0.9998337, 0, 8.740824e-08, 1.5943886e-09, -1, 0, 0, 13.9063)
+material_override = SubResource("StandardMaterial3D_ajx0v")
+mesh = SubResource("QuadMesh_ajx0v")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=1359935218]
+transform = Transform3D(-4.370412e-08, -7.971943e-10, 1, -0.01823768, 0.9998337, 0, -0.9998337, -0.01823768, -4.371139e-08, -11.041558, 0, -9.0937)
+material_override = SubResource("StandardMaterial3D_ajx0v")
+mesh = SubResource("QuadMesh_ajx0v")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="." unique_id=892286635]
+transform = Transform3D(-0.01823768, 0.9998337, -4.371139e-08, 4.4501313e-08, -4.2906926e-08, -1, -0.9998337, -0.01823768, -4.371139e-08, 0.43754292, 21.030573, -2.5150995)
+material_override = SubResource("StandardMaterial3D_ajx0v")
+mesh = SubResource("QuadMesh_ajx0v")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="." unique_id=528181618]
+transform = Transform3D(0.01823768, -0.9998337, 1.3113416e-07, -4.60957e-08, 1.3031516e-07, 1, -0.9998337, -0.01823768, -4.371139e-08, 0.43754292, -10.969427, -2.5150995)
+material_override = SubResource("StandardMaterial3D_ajx0v")
+mesh = SubResource("QuadMesh_ajx0v")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="." unique_id=444876249]
+transform = Transform3D(1.3111236e-07, 2.391583e-09, -1, -0.01823768, 0.9998337, 0, 0.9998337, 0.01823768, 1.3113416e-07, 13.579083, 0, -9.0937)
+material_override = SubResource("StandardMaterial3D_ajx0v")
+mesh = SubResource("QuadMesh_ajx0v")
 
 [connection signal="xr_ended" from="StartXR" to="." method="_on_StartXR_xr_ended"]
 [connection signal="xr_started" from="StartXR" to="." method="_on_StartXR_xr_started"]

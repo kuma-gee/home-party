@@ -301,6 +301,7 @@ bones/56/rotation = Quaternion(0.028260704, 0.9539411, -0.29757363, -0.02544769)
 bones/56/scale = Vector3(1.0000001, 1.0000002, 0.9999999)
 
 [node name="characterMedium" parent="SubViewport/XRPlayer/PlayerBody/Body/characterMedium/Root/Skeleton3D" index="0" unique_id=46226491]
+visible = false
 layers = 524288
 surface_material_override/0 = SubResource("StandardMaterial3D_01vt5")
 

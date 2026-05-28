@@ -19,6 +19,7 @@ signal player_spawned
 @onready var respawn_timer: Timer = $RespawnTimer
 @onready var skill_timer: Timer = $SkillTimer
 
+var current_player: FPSPlayer
 var alive := false
 var player_spawner: PlayerSpawner
 var selected_skill : = FPSPlayer.Skill.NONE:
@@ -42,6 +43,10 @@ func _ready():
 			selected_skill = FPSPlayer.Skill.SHIELD
 		elif dir.x < 0 and selected_skill == FPSPlayer.Skill.SHIELD:
 			selected_skill = FPSPlayer.Skill.DASH
+	)
+	skill_timer.timeout.connect(func():
+		if is_instance_valid(current_player):
+			current_player.indicators.set_skill_ready(selected_skill)
 	)
 
 func can_respawn() -> bool:
@@ -70,23 +75,21 @@ func spawn_player():
 	player.firepower = firepower
 	player.skill = selected_skill
 	player.skill_cooldown_timer = skill_timer
-	player.indicators.set_skill_ready(selected_skill if skill_timer.is_stopped() else FPSPlayer.Skill.NONE)
 	player.reached_gate.connect(func(): firepower += 1)
 	player.died.connect(func():
 		alive = false
 		StatsManager.record_death(game_client.uuid)
 		respawn_timer.start(player.respawn_time)
+		skill_timer.stop()
 	)
 	player.skill_activated.connect(func(): 
 		var cooldown = dash_cooldown if selected_skill == FPSPlayer.Skill.DASH else shield_cooldown
 		skill_timer.start(cooldown)
-		player.indicators.set_skill_ready(FPSPlayer.Skill.NONE)
 	)
-	skill_timer.timeout.connect(func():
-		player.indicators.set_skill_ready(selected_skill)
-	)
+
 	player.snap_zone.has_picked_up.connect(func(obj: XRToolsPickable):
 		if obj is Bomb:
 			(obj as Bomb).hit_box.attacker_uuid = game_client.uuid
 	)
+	current_player = player
 	alive = true

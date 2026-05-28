@@ -162,6 +162,7 @@ mesh = SubResource("CylinderMesh_4a37y")
 surface_material_override/0 = SubResource("StandardMaterial3D_vljp1")
 
 [node name="GrabPointSnap" parent="." unique_id=347841878 instance=ExtResource("2_o4xnu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.15499687)
 
 [node name="HitBox" type="Area3D" parent="." unique_id=1945639331]
 collision_layer = 0
@@ -245,6 +246,7 @@ process_material = SubResource("ParticleProcessMaterial_153qm")
 draw_pass_1 = SubResource("SphereMesh_4a37y")
 
 [node name="GateDirection" type="Node3D" parent="." unique_id=1611517499]
+visible = false
 
 [node name="Line" type="MeshInstance3D" parent="GateDirection" unique_id=148467823]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.25)

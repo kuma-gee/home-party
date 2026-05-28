@@ -2,32 +2,41 @@
 
 [ext_resource type="PackedScene" uid="uid://f8e1u58jvfd1" path="res://main/ui/joined_player.tscn" id="1_cf4xi"]
 [ext_resource type="Script" uid="uid://d2ump4paj0a02" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/castle_player_ui.gd" id="2_oafew"]
-[ext_resource type="Shader" uid="uid://cdfjqx6ei5653" path="res://shader/circle_inner.gdshader" id="2_sn2ke"]
-[ext_resource type="Script" uid="uid://b6t5ttmc37k1r" path="res://main/utils/circle_timer.gd" id="4_lkh84"]
+[ext_resource type="Shader" uid="uid://bcf5qyhgtc11w" path="res://shader/icon_fill.gdshader" id="3_fill"]
+[ext_resource type="Script" uid="uid://hnamw7ws643n" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/icon_timer.gd" id="4_itimer"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_oafew"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dash"]
 resource_local_to_scene = true
-shader = ExtResource("2_sn2ke")
-shader_parameter/radius = 1.0
-shader_parameter/inner_radius = 0.90000004275
+shader = ExtResource("3_fill")
 shader_parameter/fill = 1.0
-shader_parameter/blur = 0.0001
-shader_parameter/bg_color = Color(0, 0, 0, 1)
-shader_parameter/inner_color = Color(0, 0, 0, 0)
-shader_parameter/outline_width = 0.0
-shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/empty_color = Color(0, 0, 0, 0.7058824)
+shader_parameter/glyph_start = 0.0
+shader_parameter/glyph_end = 0.150000007125
+shader_parameter/circle_shape = false
+shader_parameter/circle_radius = 0.5
+shader_parameter/merge_empty_color = true
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_lkh84"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_shield"]
 resource_local_to_scene = true
-shader = ExtResource("2_sn2ke")
-shader_parameter/radius = 1.0
-shader_parameter/inner_radius = 0.90000004275
+shader = ExtResource("3_fill")
 shader_parameter/fill = 1.0
-shader_parameter/blur = 0.0001
-shader_parameter/bg_color = Color(0, 0, 0, 1)
-shader_parameter/inner_color = Color(0, 0, 0, 0)
-shader_parameter/outline_width = 0.0
-shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/empty_color = Color(0, 0, 0, 0.7058824)
+shader_parameter/glyph_start = 0.14000000665
+shader_parameter/glyph_end = 0.30000001425
+shader_parameter/circle_shape = false
+shader_parameter/circle_radius = 0.5
+shader_parameter/merge_empty_color = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_respawn"]
+resource_local_to_scene = true
+shader = ExtResource("3_fill")
+shader_parameter/fill = 0.4830000229425
+shader_parameter/empty_color = Color(0, 0, 0, 0.7058824)
+shader_parameter/glyph_start = 0.0
+shader_parameter/glyph_end = 1.0
+shader_parameter/circle_shape = true
+shader_parameter/circle_radius = 0.4150000197125
+shader_parameter/merge_empty_color = false
 
 [node name="CastlePlayerUI" unique_id=1251273663 node_paths=PackedStringArray("firepower_label", "dash_icon", "shield_icon") instance=ExtResource("1_cf4xi")]
 script = ExtResource("2_oafew")
@@ -58,25 +67,8 @@ layout_mode = 2
 expand_mode = 5
 stretch_mode = 5
 
-[node name="SkillCooldown" type="ColorRect" parent="HBoxContainer/TextureRect" index="0" unique_id=1982949967 node_paths=PackedStringArray("timer")]
-material = SubResource("ShaderMaterial_oafew")
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -40.0
-offset_top = -40.0
-offset_right = 40.0
-offset_bottom = 40.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("4_lkh84")
-timer = NodePath("../../../SkillTimer")
-
-[node name="DashIcon" type="Label" parent="HBoxContainer/TextureRect" index="1" unique_id=973407352]
+[node name="DashIcon" type="Label" parent="HBoxContainer/TextureRect" index="0" unique_id=973407352]
+material = SubResource("ShaderMaterial_dash")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -89,8 +81,13 @@ text = "💨"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ShieldIcon" type="Label" parent="HBoxContainer/TextureRect" index="2" unique_id=396389067]
+[node name="IconTimer" type="Node" parent="HBoxContainer/TextureRect/DashIcon" index="0" unique_id=1001000001 node_paths=PackedStringArray("timer")]
+script = ExtResource("4_itimer")
+timer = NodePath("../../../../SkillTimer")
+
+[node name="ShieldIcon" type="Label" parent="HBoxContainer/TextureRect" index="1" unique_id=396389067]
 visible = false
+material = SubResource("ShaderMaterial_shield")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -102,6 +99,10 @@ theme_override_font_sizes/font_size = 64
 text = "🛡️"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="IconTimer" type="Node" parent="HBoxContainer/TextureRect/ShieldIcon" index="0" unique_id=1001000002 node_paths=PackedStringArray("timer")]
+script = ExtResource("4_itimer")
+timer = NodePath("../../../../SkillTimer")
 
 [node name="TextureRect2" type="TextureRect" parent="HBoxContainer" index="2" unique_id=486480224]
 custom_minimum_size = Vector2(64, 64)
@@ -135,8 +136,8 @@ grow_vertical = 0
 text = "10"
 horizontal_alignment = 2
 
-[node name="RespawnTime" type="ColorRect" parent="HBoxContainer/PlayerIcon" parent_id_path=PackedInt32Array(115709656) index="1" unique_id=1998324057 node_paths=PackedStringArray("timer")]
-material = SubResource("ShaderMaterial_lkh84")
+[node name="RespawnTime" type="ColorRect" parent="HBoxContainer/PlayerIcon" parent_id_path=PackedInt32Array(115709656) index="1" unique_id=1998324057]
+material = SubResource("ShaderMaterial_respawn")
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 1
 anchors_preset = 15
@@ -144,5 +145,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("4_lkh84")
-timer = NodePath("../../../RespawnTimer")
+color = Color(0, 0, 0, 0)
+
+[node name="IconTimer" type="Node" parent="HBoxContainer/PlayerIcon/RespawnTime" index="0" unique_id=1001000003 node_paths=PackedStringArray("timer")]
+script = ExtResource("4_itimer")
+timer = NodePath("../../../../RespawnTimer")

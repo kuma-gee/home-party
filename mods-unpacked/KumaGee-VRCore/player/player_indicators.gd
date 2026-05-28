@@ -7,15 +7,15 @@ extends Node3D
 @export var poison_pulse_amplitude_max := 0.3
 @export var poison_color_flash_threshold := 0.7
 
-@export var skill_ready_display_time := 2.0
+@export var skill_ready_display_time := 1.0
 
 @onready var poison_icon: Label3D = $PoisonIcon
 @onready var skill_icon: Label3D = $SkillIcon
 @onready var skill_ready_timer: Timer = $SkillReadyTimer
 
 const SINGLE_Y := 0.0
-const STACK_TOP_Y := 0.12
-const STACK_BOT_Y := -0.12
+const STACK_TOP_Y := -1.0
+const STACK_BOT_Y := 0.0
 
 var _poison_timer: Timer
 var _poison_pulse_time := 0.0
@@ -26,6 +26,8 @@ func setup(poison_timer: Timer) -> void:
 		skill_icon.hide()
 		_restack()
 	)
+	hide_poison()
+	set_skill_ready(FPSPlayer.Skill.NONE)
 
 func show_poison() -> void:
 	_poison_pulse_time = 0.0
@@ -40,14 +42,14 @@ func hide_poison() -> void:
 
 func set_skill_ready(skill: FPSPlayer.Skill) -> void:
 	match skill:
-		FPSPlayer.Skill.DASH:
-			skill_icon.text = "💨"
-			skill_icon.show()
-			skill_ready_timer.start(skill_ready_display_time)
-		FPSPlayer.Skill.SHIELD:
-			skill_icon.text = "🛡️"
-			skill_icon.show()
-			skill_ready_timer.start(skill_ready_display_time)
+		#FPSPlayer.Skill.DASH:
+			#skill_icon.text = "💨"
+			#skill_icon.show()
+			#skill_ready_timer.start(skill_ready_display_time)
+		#FPSPlayer.Skill.SHIELD:
+			#skill_icon.text = "🛡️"
+			#skill_icon.show()
+			#skill_ready_timer.start(skill_ready_display_time)
 		_:
 			skill_ready_timer.stop()
 			skill_icon.hide()
