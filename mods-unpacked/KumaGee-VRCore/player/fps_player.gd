@@ -47,22 +47,13 @@ enum Skill {
 @export var dash_anim := "Dash"
 @export var death_anim := "Death_A"
 
-@export_category("Poison Icon")
-@export var poison_pulse_speed_min := 3.0
-@export var poison_pulse_speed_max := 18.0
-@export var poison_pulse_amplitude_min := 0.15
-@export var poison_pulse_amplitude_max := 0.3
-@export var poison_color_flash_threshold := 0.7
-
 @onready var ground_spring_cast: GroundSpringCast = $GroundSpringCast
 @onready var hurtbox: HurtBox = $Hurtbox
 @onready var freeze_timer: Timer = $FreezeTimer
 @onready var slow_restore_timer: Timer = $SlowRestoreTimer
 @onready var poison_timer: Timer = $PoisonTimer
 @onready var death_timer: Timer = $DeathTimer
-
-@onready var poison_icon: Label3D = $PoisonIcon
-var _poison_pulse_time := 0.0
+@onready var indicators: PlayerIndicators = $PlayerIndicators
 
 var game_client: ClientController
 var player_num := 0
@@ -92,6 +83,7 @@ func _ready():
 	animation.play(spawn_anim)
 	game_client.primary_action_pressed.connect(activate_skill)
 	game_client.secondary_action_pressed.connect(activate_skill)
+	indicators.setup(poison_timer)
 
 	tree_exiting.connect(func():
 		if not is_dead:
@@ -101,10 +93,7 @@ func _ready():
 func poison():
 	if not poison_timer.is_stopped(): return
 	poison_timer.start()
-	_poison_pulse_time = 0.0
-	poison_icon.scale = Vector3.ONE
-	poison_icon.modulate = Color.WHITE
-	poison_icon.show()
+	indicators.show_poison()
 	for mesh in meshes:
 		mesh.material_override = POISON_MAT
 
@@ -123,7 +112,8 @@ func _compute_respawn_delay_for_count(count: int) -> float:
 func on_hurtbox_died():
 	if is_dead: return
 
-	poison_icon.hide()
+	indicators.hide_poison()
+	indicators.set_skill_ready(Skill.NONE)
 	snap_zone.drop_object()
 	animation.play(death_anim)
 	death_sound.play_randomized()
@@ -192,30 +182,6 @@ func push_other_player(other_player: FPSPlayer) -> void:
 	if velocity.length() > 0 and other_player.velocity.length() < 0.1:
 		other_player.velocity.x = push_direction.x * push_force
 		other_player.velocity.z = push_direction.z * push_force
-
-func _process(delta: float) -> void:
-	if poison_timer.is_stopped() or is_dead:
-		_poison_pulse_time = 0.0
-		poison_icon.scale = Vector3.ONE
-		poison_icon.modulate = Color.WHITE
-		if poison_icon.visible:
-			poison_icon.hide()
-		return
-
-	_poison_pulse_time += delta
-
-	var progress := 1.0 - (poison_timer.time_left / poison_timer.wait_time)
-	var speed := lerpf(poison_pulse_speed_min, poison_pulse_speed_max, progress)
-	var amplitude := lerpf(poison_pulse_amplitude_min, poison_pulse_amplitude_max, progress)
-	var s := 1.0 + amplitude * sin(_poison_pulse_time * speed)
-	poison_icon.scale = Vector3.ONE * s
-
-	if progress > poison_color_flash_threshold:
-		var flash := (sin(_poison_pulse_time * speed) + 1.0) / 2.0
-		var flash_progress := (progress - poison_color_flash_threshold) / (1.0 - poison_color_flash_threshold)
-		poison_icon.modulate = Color.WHITE.lerp(Color.RED, flash * flash_progress)
-	else:
-		poison_icon.modulate = Color.WHITE
 
 func activate_skill():
 	if not can_control(): return

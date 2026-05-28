@@ -70,6 +70,7 @@ func spawn_player():
 	player.firepower = firepower
 	player.skill = selected_skill
 	player.skill_cooldown_timer = skill_timer
+	player.indicators.set_skill_ready(selected_skill if skill_timer.is_stopped() else FPSPlayer.Skill.NONE)
 	player.reached_gate.connect(func(): firepower += 1)
 	player.died.connect(func():
 		alive = false
@@ -79,6 +80,10 @@ func spawn_player():
 	player.skill_activated.connect(func(): 
 		var cooldown = dash_cooldown if selected_skill == FPSPlayer.Skill.DASH else shield_cooldown
 		skill_timer.start(cooldown)
+		player.indicators.set_skill_ready(FPSPlayer.Skill.NONE)
+	)
+	skill_timer.timeout.connect(func():
+		player.indicators.set_skill_ready(selected_skill)
 	)
 	player.snap_zone.has_picked_up.connect(func(obj: XRToolsPickable):
 		if obj is Bomb:

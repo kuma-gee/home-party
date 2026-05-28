@@ -16,7 +16,7 @@
 [ext_resource type="AudioStream" uid="uid://cas44nkkgscrq" path="res://assets/sound/sfx/dash.mp3" id="13_hl7qv"]
 [ext_resource type="AudioStream" uid="uid://dgn3nuibk8w7d" path="res://assets/sound/sfx/falling-bones.mp3" id="14_4mstr"]
 [ext_resource type="Script" uid="uid://b4woodkg2nup8" path="res://main/utils/randomized_sfx.gd" id="15_p7qy1"]
-[ext_resource type="FontFile" uid="uid://bpop13tvx7mcs" path="res://theme/NotoColorEmoji-Regular.ttf" id="17_p7qy1"]
+[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/player/player_indicators.tscn" id="18_indic"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dxdo2"]
 radius = 0.2524414
@@ -99,7 +99,7 @@ scale_max = 0.8
 scale_curve = SubResource("CurveTexture_raamo")
 alpha_curve = SubResource("CurveTexture_0o2vu")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_4mstr"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_p7qy1"]
 viewport_path = NodePath("ColorRing/SubViewport")
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_3dsh6"]
@@ -119,10 +119,6 @@ shield_vfx = NodePath("ShieldVFX")
 dash_particles = NodePath("CollisionShape3D/DashVFX")
 death_sound = NodePath("DeathSound")
 animation = NodePath("CollisionShape3D/skeleton/AnimationPlayer")
-poison_pulse_speed_min = 2.0
-poison_pulse_speed_max = 6.0
-poison_pulse_amplitude_min = 0.1
-poison_pulse_amplitude_max = 0.2
 
 [node name="Hurtbox" type="Area3D" parent="." unique_id=1131967096]
 collision_layer = 32
@@ -234,7 +230,7 @@ script = ExtResource("8_ffq0p")
 
 [node name="ColorRing" parent="." unique_id=1233288472 instance=ExtResource("6_irk2m")]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.057024956, 0)
-texture = SubResource("ViewportTexture_4mstr")
+texture = SubResource("ViewportTexture_p7qy1")
 
 [node name="DashSound" type="AudioStreamPlayer" parent="." unique_id=1002373996]
 stream = ExtResource("13_hl7qv")
@@ -267,12 +263,8 @@ script = ExtResource("7_yjct3")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PoisonInjectArea" unique_id=285447301]
 shape = SubResource("SphereShape3D_3dsh6")
 
-[node name="PoisonIcon" type="Label3D" parent="." unique_id=128283787]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5298612, 0.107263505)
-billboard = 1
-text = "☠"
-font = ExtResource("17_p7qy1")
-font_size = 64
+[node name="PlayerIndicators" parent="." unique_id=128283787 instance=ExtResource("18_indic")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6334599, 0.107263505)
 
 [node name="DeathTimer" type="Timer" parent="." unique_id=958510232]
 wait_time = 3.0
