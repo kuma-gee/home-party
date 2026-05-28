@@ -45,8 +45,16 @@ func _on_area_entered(area: Area3D) -> void:
 
 func activate_effect():
 	if element not in ELEMENT_SCENE: return
+
+	var spawn_pos := global_position
+	var space_state := get_world_3d().direct_space_state
+	var query := PhysicsRayQueryParameters3D.create(spawn_pos, spawn_pos + Vector3.DOWN * 50.0, 1 | 512)
+	var hit := space_state.intersect_ray(query)
+	if not hit.is_empty():
+		spawn_pos = hit.position
+
 	var scene = ELEMENT_SCENE[element].instantiate()
-	scene.position = global_position
+	scene.position = spawn_pos
 	scene.rotation.y = global_rotation.y
 	Staging.add_scene_child(scene)
 	
