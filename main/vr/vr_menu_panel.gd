@@ -18,6 +18,12 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
+	var screen := _viewport_2d.get_node("Screen") as MeshInstance3D
+	if screen:
+		var mat := screen.get_surface_override_material(0) as StandardMaterial3D
+		if mat:
+			mat.render_priority = 100
+
 	var ui: Control = _viewport_2d.get_scene_instance()
 	if ui == null:
 		push_error("VRMenuPanel: could not get viewport scene instance")

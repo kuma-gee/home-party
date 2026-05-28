@@ -13,3 +13,4 @@ screen_size = Vector2(0.8, 1)
 scene = ExtResource("3")
 viewport_size = Vector2(320, 400)
 unshaded = true
+unshaded = true
