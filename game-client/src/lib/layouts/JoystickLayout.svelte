@@ -85,17 +85,6 @@
 
 	<div class="action-buttons">
 		<button
-			class="action-btn secondary-btn"
-			class:pressed={secondaryButtonPressed}
-			onmousedown={() => handleActionButtonMouseDown('secondary')}
-			onmouseup={() => handleActionButtonMouseUp('secondary')}
-			ontouchstart={(e) => handleActionButtonTouchStart(e, 'secondary')}
-			ontouchend={(e) => handleActionButtonTouchEnd(e, 'secondary')}
-			ontouchcancel={(e) => handleActionButtonTouchEnd(e, 'secondary')}
-		>
-			B
-		</button>
-		<button
 			class="action-btn primary-btn"
 			class:pressed={primaryButtonPressed}
 			onmousedown={() => handleActionButtonMouseDown('primary')}
@@ -105,6 +94,17 @@
 			ontouchcancel={(e) => handleActionButtonTouchEnd(e, 'primary')}
 		>
 			A
+		</button>
+		<button
+			class="action-btn secondary-btn"
+			class:pressed={secondaryButtonPressed}
+			onmousedown={() => handleActionButtonMouseDown('secondary')}
+			onmouseup={() => handleActionButtonMouseUp('secondary')}
+			ontouchstart={(e) => handleActionButtonTouchStart(e, 'secondary')}
+			ontouchend={(e) => handleActionButtonTouchEnd(e, 'secondary')}
+			ontouchcancel={(e) => handleActionButtonTouchEnd(e, 'secondary')}
+		>
+			B
 		</button>
 	</div>
 </div>
@@ -168,13 +168,13 @@
 	}
 
 	.primary-btn {
-		background: linear-gradient(135deg, #FF6B6B 0%, #EE5A6F 100%);
+		background: linear-gradient(135deg, #5DC15B 0%, #4CAF50 100%);
 		width: 90px;
 		height: 90px;
 	}
 
 	.secondary-btn {
-		background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);
+		background: linear-gradient(135deg, #EE4B2B 0%, #C0392B 100%);
 	}
 
 	.message-display {

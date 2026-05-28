@@ -5,7 +5,7 @@ extends VBoxContainer
 
 func _ready() -> void:
 	var ip = get_ip_address()
-	var url = "%s:%d" % [ip, HttpServer.port]
+	var url = "http://%s:%d" % [ip, HttpServer.port]
 	url_label.text = url
 	
 	var code = QRCodeRect.QRCode.new()
