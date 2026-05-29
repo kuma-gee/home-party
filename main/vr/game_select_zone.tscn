@@ -8,9 +8,6 @@
 resource_local_to_scene = true
 radius = 0.12
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iak6b"]
-albedo_color = Color(0.27058825, 0.30980393, 0.23921569, 1)
-
 [node name="GameSelectZone" type="Node3D" unique_id=318897250]
 script = ExtResource("1_iak6b")
 
@@ -26,21 +23,5 @@ shape = SubResource("SphereShape3D_qmqi3")
 [node name="AudioStreamPlayer3D" parent="SnapZone" index="1" unique_id=2078457543]
 stream = ExtResource("3_qmqi3")
 volume_db = -10.0
-pitch_scale = 0.6
-
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="." unique_id=83522275]
-visible = false
-use_collision = true
-radius = 0.15
-height = 0.01
-sides = 32
-material = SubResource("StandardMaterial3D_iak6b")
-
-[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="CSGCylinder3D" unique_id=1188793051]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.006641332, 0)
-operation = 2
-radius = 0.11
-height = 0.02
-sides = 32
 
 [editable path="SnapZone"]

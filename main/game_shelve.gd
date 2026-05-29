@@ -13,6 +13,7 @@ signal started_game(game: GameResource)
 @onready var game_select_zone: GameSelectZone = $GameSelectZone
 @onready var games_root: Node3D = $GamesRoot
 @onready var tv_remote: XRToolsPickable = $TVRemote
+@onready var slot_highlight: MeshInstance3D = $SlotHighlight
 
 var selected_game: GameResource
 var games = []
@@ -74,5 +75,6 @@ func _populate() -> void:
 
 func _on_game_selected(game: GameResource) -> void:
 	selected_game = game
+	slot_highlight.visible = game == null
 	game_details_desktop.update_details(game)
 	game_details_vr.update_details(game)

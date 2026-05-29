@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bx2iy7qoqh4ve"
+path="res://.godot/imported/slot_highlight.obj-5a84f93191df56ae66b1fc81750ecbac.mesh"
+
+[deps]
+
+files=["res://.godot/imported/slot_highlight.obj-5a84f93191df56ae66b1fc81750ecbac.mesh"]
+
+source_file="res://assets/castle-defense/castle/slot_highlight.obj"
+dest_files=["res://.godot/imported/slot_highlight.obj-5a84f93191df56ae66b1fc81750ecbac.mesh", "res://.godot/imported/slot_highlight.obj-5a84f93191df56ae66b1fc81750ecbac.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false
