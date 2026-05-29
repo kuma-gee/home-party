@@ -5,10 +5,11 @@
 [ext_resource type="PackedScene" uid="uid://cm84cwcnok8s2" path="res://main/ui/player_icon.tscn" id="3_y8o30"]
 
 [node name="JoinedPlayer" type="Control" unique_id=1251273663 node_paths=PackedStringArray("container", "name_label", "player_icon")]
-custom_minimum_size = Vector2(320, 90)
+custom_minimum_size = Vector2(160, 80)
 layout_mode = 3
 anchors_preset = 0
-offset_bottom = 90.0
+offset_right = 100.0
+offset_bottom = 80.0
 size_flags_horizontal = 8
 theme = ExtResource("1_y8o30")
 script = ExtResource("1_7ry4l")
@@ -17,16 +18,22 @@ name_label = NodePath("HBoxContainer/Name")
 player_icon = NodePath("HBoxContainer/PlayerIcon")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=2030705900]
-custom_minimum_size = Vector2(300, 0)
+custom_minimum_size = Vector2(160, 0)
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
 anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -36.0
+offset_bottom = 36.0
+grow_horizontal = 0
 grow_vertical = 2
 alignment = 2
 
 [node name="Name" type="Label" parent="HBoxContainer" unique_id=1331900333]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Testasdasdasdasda"

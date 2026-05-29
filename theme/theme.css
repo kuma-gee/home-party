@@ -36,21 +36,21 @@ Button:hover, Button:hover_pressed, Button:focus {
   background: var(--primary-highlight-color);
 }
 
-Label {
+Label, Label.Large, Label.Small, Label.Smallest {
   color: var(--text-color);
   --const-outline-size: var(--label-outline);
 }
 
 Label.Large {
   font-size: 48;
-  color: var(--text-color);
-  --const-outline-size: var(--label-outline);
 }
 
 Label.Small {
   font-size: 24;
-  color: var(--text-color);
-  --const-outline-size: var(--label-outline);
+}
+
+Label.Smallest {
+  font-size: 18;
 }
 
 MarginContainer {
@@ -66,6 +66,7 @@ VBoxContainer, HBoxContainer {
 
 PanelContainer {
   background: var(--background-color);
+  border-radius: var(--default-border-radius);
 }
 
 ProgressBar.Health:background {

@@ -5,4 +5,4 @@ extends ColorRect
 
 func update(data: Dictionary):
 	color = PlayerList.get_color(PlayerManager.get_player_idx(data.client_id))
-	icon.text = data.icon
+	icon.text = "P%s" % (PlayerManager.get_player_idx(data.client_id) + 1)

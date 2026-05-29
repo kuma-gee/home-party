@@ -1,24 +1,26 @@
 [gd_scene format=3 uid="uid://cm84cwcnok8s2"]
 
 [ext_resource type="Shader" uid="uid://cdfjqx6ei5653" path="res://shader/circle_inner.gdshader" id="1_ltk76"]
+[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="2_ltk76"]
 [ext_resource type="Script" uid="uid://mig6jvs6x58q" path="res://main/ui/player_icon.gd" id="2_voot5"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1tk02"]
 shader = ExtResource("1_ltk76")
-shader_parameter/radius = 0.90000004275
+shader_parameter/radius = 1.0
 shader_parameter/inner_radius = 0.0
 shader_parameter/fill = 1.0
 shader_parameter/blur = 0.00499999987349999
 shader_parameter/bg_color = Color(0, 0, 0, 1)
 shader_parameter/inner_color = Color(0, 0, 0, 0)
-shader_parameter/outline_width = 0.050000002375
-shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/outline_width = 0.06000000285
+shader_parameter/outline_color = Color(0, 0, 0, 1)
 
 [node name="PlayerIcon" type="ColorRect" unique_id=115709656 node_paths=PackedStringArray("icon")]
 material = SubResource("ShaderMaterial_1tk02")
 custom_minimum_size = Vector2(72, 72)
 size_flags_horizontal = 4
 size_flags_vertical = 4
+theme = ExtResource("2_ltk76")
 color = Color(0.32915837, 0.3291584, 0.3291584, 1)
 script = ExtResource("2_voot5")
 icon = NodePath("MaterialIcon")
@@ -28,11 +30,9 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = -8.0
+offset_top = 11.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/outline_size = 0
-theme_override_font_sizes/font_size = 36
-text = "📱"
+text = "P1"
 horizontal_alignment = 1
 vertical_alignment = 1
