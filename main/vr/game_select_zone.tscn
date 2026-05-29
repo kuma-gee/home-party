@@ -2,6 +2,11 @@
 
 [ext_resource type="Script" uid="uid://ckoy4mkplkm7o" path="res://main/vr/game_select_zone.gd" id="1_iak6b"]
 [ext_resource type="PackedScene" uid="uid://ce7vysyvondf8" path="res://addons/godot-xr-tools/objects/snap_zone.tscn" id="2_qmqi3"]
+[ext_resource type="AudioStream" uid="uid://dnu2t0vumjg47" path="res://assets/sound/sfx/カーソル移動8.mp3" id="3_qmqi3"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_qmqi3"]
+resource_local_to_scene = true
+radius = 0.12
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iak6b"]
 albedo_color = Color(0.27058825, 0.30980393, 0.23921569, 1)
@@ -10,9 +15,18 @@ albedo_color = Color(0.27058825, 0.30980393, 0.23921569, 1)
 script = ExtResource("1_iak6b")
 
 [node name="SnapZone" parent="." unique_id=1883047161 instance=ExtResource("2_qmqi3")]
+stash_sound = ExtResource("3_qmqi3")
 grab_distance = 0.12
 snap_on_dropped = true
 snap_require = "game_select"
+
+[node name="CollisionShape3D" parent="SnapZone" index="0" unique_id=1451983608]
+shape = SubResource("SphereShape3D_qmqi3")
+
+[node name="AudioStreamPlayer3D" parent="SnapZone" index="1" unique_id=2078457543]
+stream = ExtResource("3_qmqi3")
+volume_db = -10.0
+pitch_scale = 0.6
 
 [node name="CSGCylinder3D" type="CSGCylinder3D" parent="." unique_id=83522275]
 visible = false
@@ -28,3 +42,5 @@ operation = 2
 radius = 0.11
 height = 0.02
 sides = 32
+
+[editable path="SnapZone"]

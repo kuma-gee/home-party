@@ -123,15 +123,6 @@ color_ramp = SubResource("GradientTexture1D_45ehh")
 
 [sub_resource type="SphereMesh" id="SphereMesh_4a37y"]
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_j3ks0"]
-size = Vector2(0.06, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j3ks0"]
-transparency = 1
-blend_mode = 1
-shading_mode = 0
-albedo_color = Color(1, 1, 1, 0.23529412)
-
 [node name="Bomb" type="RigidBody3D" unique_id=2006338049 node_paths=PackedStringArray("firepower_label", "power_sprite", "explode_timer", "fire_vfx") groups=["bomb"]]
 collision_layer = 4
 collision_mask = 196615
@@ -188,6 +179,7 @@ volume_db = -20.0
 
 [node name="Sprite3D" type="Sprite3D" parent="." unique_id=23121954]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.074181676, 0)
+visible = false
 layers = 524288
 billboard = 1
 double_sided = false
@@ -245,12 +237,3 @@ amount = 16
 lifetime = 0.3
 process_material = SubResource("ParticleProcessMaterial_153qm")
 draw_pass_1 = SubResource("SphereMesh_4a37y")
-
-[node name="GateDirection" type="Node3D" parent="." unique_id=1611517499]
-visible = false
-
-[node name="Line" type="MeshInstance3D" parent="GateDirection" unique_id=148467823]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.25)
-layers = 524288
-mesh = SubResource("PlaneMesh_j3ks0")
-surface_material_override/0 = SubResource("StandardMaterial3D_j3ks0")
