@@ -22,6 +22,7 @@ signal player_spawned
 var current_player: FPSPlayer
 var alive := false
 var player_spawner: PlayerSpawner
+var _game_started := false
 var selected_skill : = FPSPlayer.Skill.NONE:
 	set(v):
 		selected_skill = v
@@ -53,16 +54,16 @@ func can_respawn() -> bool:
 	return not alive and respawn_timer.is_stopped()
 
 func _handle_secondary() -> void:
-	if is_ready and get_tree().paused:
+	if is_ready and (not _game_started or get_tree().paused):
 		reset_ready()
 
 func _handle_click() -> void:
 	if not is_ready:
 		set_ready()
 	else:
-		if get_tree().paused:
+		if not _game_started:
 			reset_ready()
-		else:
+		elif not get_tree().paused:
 			spawn_player()
 
 func spawn_player():

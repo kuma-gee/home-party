@@ -1,6 +1,6 @@
 extends Node
 
-var volume_db := -20.0
+var volume_db := -25.0
 var fade_out_volume_db := -60.0
 var fade_time := 1.0
 

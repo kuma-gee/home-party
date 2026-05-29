@@ -55,7 +55,7 @@ func gameover(msg: String):
 	screen.set_rankings(rankings)
 
 func show_screen(screen: PackedScene, show_for_desktop = false):
-	overlay_mesh.show_overlay()
+	#overlay_mesh.show_overlay()
 	was_paused = get_tree().paused
 	get_tree().paused = true
 	vr_screen.set_scene(screen)
@@ -66,7 +66,7 @@ func show_screen(screen: PackedScene, show_for_desktop = false):
 
 func hide_screen():
 	get_tree().paused = false
-	overlay_mesh.hide_overlay()
+	#overlay_mesh.hide_overlay()
 	vr_screen.hide()
 	desktop_screen.hide()
 

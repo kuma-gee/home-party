@@ -90,7 +90,7 @@ text = "10"
 [node name="PlayerArea" type="Sprite3D" parent="." unique_id=153527297]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.045348823, 0)
 layers = 524288
-modulate = Color(1, 1, 1, 0.039215688)
+modulate = Color(1, 1, 1, 0.019607844)
 texture = SubResource("ViewportTexture_2giw1")
 
 [node name="SubViewport" type="SubViewport" parent="PlayerArea" unique_id=1047964041]

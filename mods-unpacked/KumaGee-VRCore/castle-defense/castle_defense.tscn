@@ -697,7 +697,6 @@ surface_material_override/0 = null
 
 [node name="Quiver" parent="VRSpace/SubViewport/XRPlayer/XRCamera3D" parent_id_path=PackedInt32Array(841158329, 227782039) index="0" unique_id=832813409 instance=ExtResource("5_5cd4w")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0658141e-14, -0.85153246, 0.21634197)
-visible = false
 
 [node name="AnimationTree" parent="VRSpace/SubViewport/XRPlayer/LeftHand/LeftHand" parent_id_path=PackedInt32Array(841158329, 801242371) index="1" unique_id=1971929839]
 tree_root = SubResource("AnimationNodeBlendTree_d36p2")
@@ -888,6 +887,15 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/Control/PrepareUI" unique_id=2032925484]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.7058824)
 
 [node name="CenterContainer" type="MarginContainer" parent="UI/Control/PrepareUI" unique_id=861934814]
 layout_mode = 1

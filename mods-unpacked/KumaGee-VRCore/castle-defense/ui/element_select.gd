@@ -2,6 +2,7 @@ class_name ElementSelect
 extends PanelContainer
 
 signal ready_pressed(elements: Array[Arrow.Element])
+signal selection_changed(elements: Array[Arrow.Element])
 
 const ELEMENT_DATA := [
 	[Arrow.Element.FIRE, "🔥 Fire"],
@@ -29,7 +30,7 @@ const ELEMENT_TEXT := {
 	Arrow.Element.POISON: "Poisons enemies in a large area",
 }
 
-var selected_elements: Array[Arrow.Element] = [Arrow.Element.FIRE, Arrow.Element.ICE, Arrow.Element.LIGHTNING]
+var selected_elements: Array[Arrow.Element] = [Arrow.Element.FIRE]
 var _mobile_ready := false
 
 @export var element_buttons_container: Control
@@ -85,6 +86,7 @@ func _toggle_element(element: Arrow.Element, btn: ElementButton) -> void:
 		btn.set_selected(false)
 	
 	_update()
+	selection_changed.emit(selected_elements)
 
 func _update():
 	title_label.text = "Select Elements (%d/%d)" % [selected_elements.size(), max_elements]

@@ -26,7 +26,7 @@ func _ready() -> void:
 	quiver.element_changed.connect(_on_element_changed)
 	_on_element_changed(Arrow.Element.NONE)
 
-	_set_bow_active(false)
+	_set_bow_active(true)
 	game_ui.hide()
 
 func _set_bow_active(active: bool) -> void:
@@ -37,15 +37,47 @@ func _on_element_changed(elem: Arrow.Element) -> void:
 		orb.set_selected(orb.element == elem)
 
 func _on_game_start() -> void:
-	arrow_types.hide()
+	arrow_types.show()
 	_tutorial = xr_player.show_screen(tutorial_scene, false) as VRTutorial
+	get_tree().paused = false
+
+	for i in orbs.size():
+		var element := _vr_elements[i] if i < _vr_elements.size() else Arrow.Element.NONE
+		orbs[i].set_element(element)
+		orbs[i].set_active(element != Arrow.Element.NONE)
+		orbs[i].reset_cooldown()
+
 	_element_select = _tutorial.element_select
 	_element_select.ready_pressed.connect(_on_vr_ready)
+	_element_select.selection_changed.connect(_on_elements_changed)
 	_check_all_ready()
 
 func _on_vr_ready(elements: Array[Arrow.Element]) -> void:
 	_vr_elements = elements
 	_check_all_ready(true)
+
+func _on_elements_changed(elements: Array[Arrow.Element]) -> void:
+	# Deactivate orbs whose element is no longer selected.
+	# Using element identity instead of array index preserves orb positions
+	# so deselecting a middle element doesn't shuffle the others for the VR player.
+	for orb in orbs:
+		if orb.element != Arrow.Element.NONE and orb.element not in elements:
+			orb.set_element(Arrow.Element.NONE)
+			orb.set_active(false)
+
+	# Assign newly selected elements to the first available inactive orb.
+	for elem in elements:
+		var already_assigned := false
+		for orb in orbs:
+			if orb.element == elem:
+				already_assigned = true
+				break
+		if not already_assigned:
+			for orb in orbs:
+				if orb.element == Arrow.Element.NONE:
+					orb.set_element(elem)
+					orb.set_active(true)
+					break
 
 func _on_all_players_ready() -> void:
 	_check_all_ready()
@@ -58,6 +90,9 @@ func _check_all_ready(start = false) -> void:
 
 func _start_game() -> void:
 	StatsManager.initialize(PlayerManager.playing_clients)
+	for child in player_list.get_children():
+		if child is CastlePlayerUI:
+			child._game_started = true
 	xr_player.hide_screen()
 	prepare_ui.hide()
 	play_time.start()
@@ -71,6 +106,7 @@ func _start_game() -> void:
 		var element := _vr_elements[i] if i < _vr_elements.size() else Arrow.Element.NONE
 		orbs[i].set_element(element)
 		orbs[i].set_active(element != Arrow.Element.NONE)
+		orbs[i].reset_cooldown()
 	arrow_types.show()
 
 func _on_gate_died() -> void:

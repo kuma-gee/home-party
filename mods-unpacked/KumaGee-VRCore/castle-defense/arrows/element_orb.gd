@@ -30,6 +30,7 @@ var _target_emission: float = 10.0
 var _current_emission: float = 0.0
 
 func _ready() -> void:
+	set_selected(false)
 	update_visual()
 	if vfx: vfx.element = element
 	cooldown_timer.timeout.connect(func(): update_visual())
@@ -52,6 +53,12 @@ func set_selected(active: bool):
 func set_active(active: bool):
 	visible = active
 	process_mode = Node.PROCESS_MODE_INHERIT if active else Node.PROCESS_MODE_DISABLED 
+
+func reset_cooldown() -> void:
+	cooldown_timer.stop()
+	var mat := visual.get_active_material(0) as ShaderMaterial
+	if mat:
+		mat.set_shader_parameter("fill_level", max_fill)
 
 func is_loaded():
 	return cooldown_timer.is_stopped()
