@@ -37,6 +37,8 @@ func _on_element_changed(elem: Arrow.Element) -> void:
 		orb.set_selected(orb.element == elem)
 
 func _on_game_start() -> void:
+	# Lower the BGM during the prepare/tutorial phase
+	BGMManager.set_volume_db(-40.0, true)
 	arrow_types.show()
 	_tutorial = xr_player.show_screen(tutorial_scene, false) as VRTutorial
 	get_tree().paused = false
@@ -89,6 +91,8 @@ func _check_all_ready(start = false) -> void:
 		_start_game()
 
 func _start_game() -> void:
+	# Restore BGM to default volume when game starts
+	BGMManager.set_volume_db(-25.0, false)
 	StatsManager.initialize(PlayerManager.playing_clients)
 	for child in player_list.get_children():
 		if child is CastlePlayerUI:
