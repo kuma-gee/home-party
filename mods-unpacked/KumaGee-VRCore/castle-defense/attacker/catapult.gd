@@ -34,9 +34,16 @@ func _ready() -> void:
 	charge = 0.0
 	power = 0
 
+func get_alive_players():
+	var result = []
+	for body in operating_zone.get_overlapping_bodies():
+		if body is FPSPlayer and body.is_dead: continue
+		result.append(body)
+	return result
+
 func get_total_power():
 	var total = 0
-	for body in operating_zone.get_overlapping_bodies():
+	for body in get_alive_players():
 		if body is FPSPlayer:
 			var player = body as FPSPlayer
 			total += player.firepower
@@ -46,7 +53,7 @@ func _process(delta: float) -> void:
 	power = get_total_power()
 
 	if power > 0 and cooldown_timer.is_stopped():
-		var player_count = operating_zone.get_overlapping_bodies().size()
+		var player_count = get_alive_players().size()
 		if charge < charge_time:
 			charge += delta * log(player_count * charge_speed) / log(10)
 		else:

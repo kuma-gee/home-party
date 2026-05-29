@@ -13,7 +13,7 @@ signal started_game(game: GameResource)
 @onready var game_select_zone: GameSelectZone = $GameSelectZone
 @onready var games_root: Node3D = $GamesRoot
 @onready var tv_remote: XRToolsPickable = $TVRemote
-@onready var slot_highlight: MeshInstance3D = $SlotHighlight
+@onready var slot_highlight: Node3D = $SlotHighlight
 
 var selected_game: GameResource
 var games = []
