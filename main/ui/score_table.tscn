@@ -10,11 +10,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_theme")
+alignment = 1
 script = ExtResource("2_script")
 
 [node name="TitleLabel" type="Label" parent="." unique_id=1101466463]
 layout_mode = 2
-theme_override_font_sizes/font_size = 28
 text = "Game Over"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -26,3 +26,4 @@ size_flags_vertical = 3
 [node name="RankingsList" type="VBoxContainer" parent="ScrollContainer" unique_id=1889856241]
 layout_mode = 2
 size_flags_horizontal = 3
+alignment = 1

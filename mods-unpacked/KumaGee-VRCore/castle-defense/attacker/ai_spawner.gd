@@ -23,8 +23,7 @@ var _agent_timers: Array[float] = []
 var _spawn_positions: Array[Vector3] = []
 var _agent_skill_cooldowns: Array[float] = []
 var _agent_personalities: Array[int] = []
-var _agent_wander_offsets: Array[Vector3] = []
-var _agent_wander_timers: Array[float] = []
+var _agent_bombs: Array[Bomb] = []
 
 var _gate: Node3D = null
 var _active := false
@@ -78,8 +77,7 @@ func _init_agents(scene: PackedScene, count: int):
 		_spawn_positions.append(spawn_pos)
 		_agent_skill_cooldowns.append(0.0)
 		_agent_personalities.append(randi() % 3)
-		_agent_wander_offsets.append(Vector3.ZERO)
-		_agent_wander_timers.append(randf_range(0.3, 1.0))
+		_agent_bombs.append(null)
 
 func _resolve_player_scene() -> PackedScene:
 	return player_spawner.player_scene
@@ -127,8 +125,7 @@ func _respawn_agent(i: int) -> void:
 	_agent_states[i] = _State.IDLE
 	_agent_timers[i] = randf_range(1.0, 2.5)
 	_agent_skill_cooldowns[i] = 0.0
-	_agent_wander_offsets[i] = Vector3.ZERO
-	_agent_wander_timers[i] = randf_range(0.3, 1.0)
+	_agent_bombs[i] = null
 
 
 func _process(delta: float) -> void:
@@ -155,17 +152,24 @@ func _update_agent(i: int, delta: float) -> void:
 			if _agent_timers[i] <= 0.0:
 				_decide_action(i)
 
-		_State.MOVE_TO_CATAPULT, _State.MOVE_TO_BOMB:
-			_update_wander(i, delta)
-			controller.target = _agent_targets[i] + _agent_wander_offsets[i]
+		_State.MOVE_TO_CATAPULT:
+			controller.target = _agent_targets[i]
+			var diff := player.global_position - _agent_targets[i]
+			diff.y = 0.0
+			if diff.length() < 0.5:
+				_on_arrived(i)
+
+		_State.MOVE_TO_BOMB:
+			if is_instance_valid(_agent_bombs[i]):
+				_agent_targets[i] = _agent_bombs[i].global_position
+			controller.target = _agent_targets[i]
 			var diff := player.global_position - _agent_targets[i]
 			diff.y = 0.0
 			if diff.length() < 0.5:
 				_on_arrived(i)
 
 		_State.CARRY_BOMB:
-			_update_wander(i, delta)
-			controller.target = _agent_targets[i] + _agent_wander_offsets[i]
+			controller.target = _agent_targets[i]
 			var diff := player.global_position - _agent_targets[i]
 			diff.y = 0.0
 			if diff.length() < 0.5:
@@ -176,24 +180,11 @@ func _update_agent(i: int, delta: float) -> void:
 			_agent_timers[i] -= delta
 			if _agent_timers[i] <= 0.0:
 				_agent_states[i] = _State.IDLE
-				_agent_timers[i] = _get_catapult_wait(i)
+				_agent_timers[i] = randf_range(1.0, 2.0)
 		_State.DEAD:
 			pass
 
 	_check_skill_dodge(i, delta)
-
-
-func _update_wander(i: int, delta: float) -> void:
-	_agent_wander_timers[i] -= delta
-	if _agent_wander_timers[i] <= 0.0:
-		var personality := _agent_personalities[i]
-		var wander_radius := 1.5 if personality == _Personality.CAUTIOUS else 2.5
-		_agent_wander_offsets[i] = Vector3(
-			randf_range(-wander_radius, wander_radius),
-			0.0,
-			randf_range(-wander_radius, wander_radius)
-		)
-		_agent_wander_timers[i] = randf_range(0.5, 1.5)
 
 
 func _get_catapult_wait(i: int) -> float:
@@ -283,12 +274,13 @@ func _head_to_catapult(i: int, catapults: Array) -> void:
 
 
 func _head_to_bomb(i: int, bomb: Bomb) -> void:
-	var offset := Vector3(randf_range(-0.5, 0.5), 0, randf_range(-0.5, 0.5))
-	_agent_targets[i] = bomb.global_position + offset
+	_agent_bombs[i] = bomb
+	_agent_targets[i] = bomb.global_position
 	_agent_states[i] = _State.MOVE_TO_BOMB
 
 
 func _pick_up_bomb(i: int) -> void:
+	_agent_bombs[i] = null
 	var gate_offset := Vector3(randf_range(-1.5, 1.5), 0, randf_range(-1.5, 1.5))
 	_agent_targets[i] = _gate.global_position + gate_offset
 	_agent_states[i] = _State.CARRY_BOMB

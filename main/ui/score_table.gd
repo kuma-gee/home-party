@@ -13,6 +13,8 @@ func set_rankings(rankings: Array) -> void:
 
 	var header := Label.new()
 	header.text = "%-4s %-4s %10s %14s %8s" % ["#", "P#", "Firepower", "Damage", "Score"]
+	header.theme_type_variation = "LabelSmall"
+	header.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	rankings_list.add_child(header)
 
 	for entry in rankings:
@@ -24,4 +26,6 @@ func set_rankings(rankings: Array) -> void:
 			entry["damage_dealt"],
 			entry["score"],
 		]
+		row.theme_type_variation = "LabelSmall"
+		row.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		rankings_list.add_child(row)
