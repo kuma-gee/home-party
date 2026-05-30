@@ -1,5 +1,7 @@
 extends XRToolsSceneBase
 
+signal game_started
+
 @export var gate_hurtbox: HurtBox
 @export var tutorial_scene: PackedScene
 @export var player_list: PlayerList
@@ -10,6 +12,7 @@ extends XRToolsSceneBase
 @export var game_ui: Control
 @export var prepare_ui: Control
 @export var spawn_hint: SpawnHint
+@export var ai_count_viewport: Node3D
 
 @onready var play_time: Timer = $PlayTime
 
@@ -24,13 +27,19 @@ func _ready() -> void:
 	gate_hurtbox.died.connect(_on_gate_died)
 	player_list.ready_changed.connect(_check_all_ready)
 	quiver.element_changed.connect(_on_element_changed)
+	PlayerManager.clients_changed.connect(_update_ai_count_visibility)
 	_on_element_changed(Arrow.Element.NONE)
+	_update_ai_count_visibility()
 
 	_set_bow_active(true)
 	game_ui.hide()
 
 func _set_bow_active(active: bool) -> void:
 	bow.visible = active
+
+func _update_ai_count_visibility() -> void:
+	if ai_count_viewport:
+		ai_count_viewport.visible = PlayerManager.playing_clients.is_empty()
 
 func _on_element_changed(elem: Arrow.Element) -> void:
 	for orb in orbs:
@@ -91,6 +100,7 @@ func _check_all_ready(start = false) -> void:
 		_start_game()
 
 func _start_game() -> void:
+	game_started.emit()
 	# Restore BGM to default volume when game starts
 	BGMManager.set_volume_db(-25.0, false)
 	StatsManager.initialize(PlayerManager.playing_clients)

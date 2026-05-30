@@ -6,7 +6,6 @@ enum _State { IDLE, MOVE_TO_CATAPULT, AT_CATAPULT, MOVE_TO_BOMB, CARRY_BOMB, DEA
 var logger := KumaLog.new("AISpawner")
 
 @export var player_spawner: PlayerSpawner
-@export var ai_player_count: int = 3
 @export var catapult_wait_min: float = 5.0
 @export var catapult_wait_max: float = 15.0
 @export var respawn_delay: float = 3.0
@@ -23,8 +22,18 @@ var _agent_skill_cooldowns: Array[float] = []
 
 var _gate: Node3D = null
 var _active := false
+var _game_started := false
 
 func _ready() -> void:
+	var castle_defense := get_parent()
+	if castle_defense and castle_defense.has_signal("game_started"):
+		castle_defense.game_started.connect(_on_game_started)
+	elif PlayerManager.playing_clients.is_empty():
+		# Fallback: if no castle_defense signal, start immediately (for backwards compat)
+		call_deferred("_start_ai")
+
+func _on_game_started() -> void:
+	_game_started = true
 	if PlayerManager.playing_clients.is_empty():
 		call_deferred("_start_ai")
 
@@ -35,19 +44,20 @@ func _start_ai() -> void:
 		return
 
 	_active = true
-	logger.info("No players connected — spawning %d AI agents" % ai_player_count)
+	var count := GameSettings.get_ai_count()
+	logger.info("No players connected — spawning %d AI agents" % count)
 
 	var catapults := get_tree().get_nodes_in_group("catapult")
 	if catapults.size() > 0:
 		_gate = (catapults[0] as Catapult).gate_target
 
 	await get_tree().create_timer(4.0).timeout
-	_init_agents(scene)
+	_init_agents(scene, count)
 
-func _init_agents(scene: PackedScene):
+func _init_agents(scene: PackedScene, count: int):
 	var spawn_origin := _get_spawn_origin()
-	for i in ai_player_count:
-		var spawn_pos := spawn_origin + Vector3.RIGHT * ((i - (ai_player_count - 1) / 2.0) * 1.5)
+	for i in count:
+		var spawn_pos := spawn_origin + Vector3.RIGHT * ((i - (count - 1) / 2.0) * 1.5)
 		var controller := AIClientController.new()
 		add_child(controller)
 		var player := _spawn_agent(scene, i, spawn_pos, controller)

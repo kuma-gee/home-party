@@ -30,6 +30,7 @@ func _ready() -> void:
 func _connect_menu(menu: VRMenuPanel):
 	menu.quit_pressed.connect(func(): back_to_home.emit())
 	menu.reset_space_pressed.connect(func(): reset_space())
+	menu.settings_pressed.connect(_on_settings_pressed)
 	overlay_mesh.show_overlay()
 	pause_menu.show()
 	was_paused = get_tree().paused
@@ -73,3 +74,6 @@ func hide_screen():
 func activate():
 	origin.current = true
 	camera.current = true
+
+func _on_settings_pressed():
+	pass  # Settings handled via debug keys (Shift++ / Shift+-)

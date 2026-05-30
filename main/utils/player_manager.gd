@@ -98,7 +98,12 @@ func remove_peer(client_id: String):
 	clients_changed.emit()
 
 func register_gamepad(device_id: int) -> void:
-	logger.debug("Gamepad Info: %s" % Input.get_joy_info(device_id))
+	var info = Input.get_joy_info(device_id)
+	logger.debug("Gamepad Info: %s" % info)
+	
+	var n = info.raw_name.to_lower()
+	if "wacom" in n or "intuos" in n:
+		return
 
 	var existing = find_player_by_device_id(device_id)
 	if existing:
