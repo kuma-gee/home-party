@@ -27,14 +27,7 @@ layout_mode = 2
 text = "Press"
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer" unique_id=1674154029]
-layout_mode = 2
-theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 0
-theme_override_constants/margin_bottom = 8
-
-[node name="TextureRect" type="TextureRect" parent="HBoxContainer/MarginContainer" unique_id=1376050325]
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer" unique_id=1376050325]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 size_flags_vertical = 4

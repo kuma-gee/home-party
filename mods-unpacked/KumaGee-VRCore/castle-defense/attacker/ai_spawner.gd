@@ -243,3 +243,10 @@ func _pick_up_bomb(i: int) -> void:
 func _deliver_bomb(i: int) -> void:
 	_agent_states[i] = _State.IDLE
 	_agent_timers[i] = randf_range(2.0, 5.0)
+
+
+func stop_and_clear() -> void:
+	_active = false
+	for i in _agents.size():
+		if is_instance_valid(_agents[i]) and not _agents[i].is_dead:
+			_agents[i].on_hurtbox_died()

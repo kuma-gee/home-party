@@ -34,14 +34,14 @@ shader_parameter/Color_1D_Gradient = SubResource("GradientTexture1D_qoexu")
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.75305617, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -3.5782049, 0.0, 0, 0]
 point_count = 3
 
-[sub_resource type="CurveTexture" id="curvetex_fade_out"]
+[sub_resource type="CurveTexture" id="CurveTexture_4amum"]
 curve = SubResource("curve_fade_out")
 
 [sub_resource type="Gradient" id="grad_fire_hot"]
 offsets = PackedFloat32Array(0, 0.08, 0.2, 0.4, 0.65)
 colors = PackedColorArray(1, 1, 1, 1, 1, 0.85, 0.3, 1, 1, 0.45, 0.15, 1, 0.6, 0.15, 0.05, 1, 0.14, 0.03051999, 0.011199998, 1)
 
-[sub_resource type="GradientTexture1D" id="gradtex_fire_hot"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_41aib"]
 gradient = SubResource("grad_fire_hot")
 
 [sub_resource type="ParticleProcessMaterial" id="proc_fire_trail"]
@@ -54,9 +54,9 @@ damping_min = 2.0
 damping_max = 3.0
 scale_min = 0.5
 scale_max = 0.79999995
-scale_curve = SubResource("curvetex_fade_out")
-color_ramp = SubResource("gradtex_fire_hot")
-alpha_curve = SubResource("curvetex_fade_out")
+scale_curve = SubResource("CurveTexture_4amum")
+color_ramp = SubResource("GradientTexture1D_41aib")
+alpha_curve = SubResource("CurveTexture_4amum")
 
 [sub_resource type="SphereMesh" id="SphereMesh_c8h85"]
 
@@ -77,6 +77,20 @@ diffuse_mode = 3
 specular_mode = 1
 vertex_color_use_as_albedo = true
 vertex_color_is_srgb = true
+
+[sub_resource type="Curve" id="Curve_uii5v"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.75305617, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -3.5782049, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="curvetex_fade_out"]
+curve = SubResource("Curve_uii5v")
+
+[sub_resource type="Gradient" id="Gradient_31fql"]
+offsets = PackedFloat32Array(0, 0.08, 0.2, 0.4, 0.65)
+colors = PackedColorArray(1, 1, 1, 1, 1, 0.85, 0.3, 1, 1, 0.45, 0.15, 1, 0.6, 0.15, 0.05, 1, 0.14, 0.03051999, 0.011199998, 1)
+
+[sub_resource type="GradientTexture1D" id="gradtex_fire_hot"]
+gradient = SubResource("Gradient_31fql")
 
 [sub_resource type="ParticleProcessMaterial" id="proc_ground_dust"]
 direction = Vector3(0, 1, 0)
@@ -497,7 +511,8 @@ stream = ExtResource("10_explosion")
 volume_db = -5.0
 pitch_scale = 0.7
 script = ExtResource("9_rnd_sfx")
-min_pitch = 0.6
-max_pitch = 0.9
+id = "meteorite-end"
+max_plays = 5
+max_pitch = 1.1
 
 [connection signal="timeout" from="CleanupTimer" to="." method="queue_free"]

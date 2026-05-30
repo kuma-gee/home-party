@@ -15,7 +15,14 @@ func spawn_bombs() -> void:
 		var pos: Vector3 = start_pos + offset * (i - mid)
 		_spawn_bomb(pos)
 
+var _stopped := false
+
+func stop() -> void:
+	_stopped = true
+
 func _spawn_bomb(pos: Vector3) -> void:
+	if _stopped:
+		return
 	var bomb = bomb_scene.instantiate() as XRToolsPickable
 	bomb.position = pos
 	bomb.picked_up.connect(func(_p):

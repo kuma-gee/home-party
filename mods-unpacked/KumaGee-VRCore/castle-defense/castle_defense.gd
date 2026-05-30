@@ -16,6 +16,8 @@ signal game_started
 @export var sieges: Node3D
 
 @onready var play_time: Timer = $PlayTime
+@onready var ai_spawner: AISpawner = $AISpawner
+@onready var bomb_spawner: BombSpawner = $AttackerArea/BombSpawner
 
 var logger := KumaLog.new("CastleDefense")
 
@@ -131,13 +133,29 @@ func _on_gate_died() -> void:
 @export var siege_delay_max: float = 1.5
 
 func _on_play_time_timeout() -> void:
+	gate_hurtbox.enabled = false
 	var children = sieges.get_children()
 	for i in children.size():
 		var child = children[i]
 		if child is Siege:
 			var time = randf_range(siege_delay_min, siege_delay_max)
 			get_tree().create_timer(time).timeout.connect(func(): child.start())
+	get_tree().create_timer(4.0).timeout.connect(_cleanup_after_siege)
 	_finish_game("Castle survived!")
+
+func _cleanup_after_siege() -> void:
+	for catapult in get_tree().get_nodes_in_group("catapult"):
+		if catapult is Catapult:
+			catapult.destroy()
+
+	for bomb in get_tree().get_nodes_in_group("bomb"):
+		bomb.queue_free()
+
+	if is_instance_valid(ai_spawner):
+		ai_spawner.stop_and_clear()
+
+	if is_instance_valid(bomb_spawner):
+		bomb_spawner.stop()
 
 func _finish_game(message: String) -> void:
 	logger.info("Game over: %s" % message)

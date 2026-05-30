@@ -19,6 +19,9 @@ enum State { EMPTY, LOADED }
 @onready var operating_zone: Area3D = $OperatingZone
 @onready var cooldown_timer: Timer = $CooldownTimer
 
+@onready var siege_catapult_2: Node3D = $"siege-catapult2"
+@onready var siege_catapult_demolished_2: Node3D = $"siege-catapult-demolished2"
+
 var charge := 0.0:
 	set(v):
 		charge = clamp(v, 0.0, charge_time)
@@ -33,6 +36,12 @@ var power := 0:
 func _ready() -> void:
 	charge = 0.0
 	power = 0
+	siege_catapult_demolished_2.hide()
+	siege_catapult_2.show()
+
+func destroy():
+	siege_catapult_demolished_2.show()
+	siege_catapult_2.hide()
 
 func get_alive_players():
 	var result = []
