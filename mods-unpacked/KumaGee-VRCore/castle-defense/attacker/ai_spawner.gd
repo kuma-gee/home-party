@@ -2,7 +2,6 @@ class_name AISpawner
 extends Node
 
 enum _State { IDLE, MOVE_TO_CATAPULT, AT_CATAPULT, MOVE_TO_BOMB, CARRY_BOMB, DEAD }
-enum _Personality { AGGRESSIVE, CAUTIOUS, BALANCED }
 
 var logger := KumaLog.new("AISpawner")
 
@@ -22,7 +21,6 @@ var _agent_targets: Array[Vector3] = []
 var _agent_timers: Array[float] = []
 var _spawn_positions: Array[Vector3] = []
 var _agent_skill_cooldowns: Array[float] = []
-var _agent_personalities: Array[int] = []
 var _agent_bombs: Array[Bomb] = []
 
 var _gate: Node3D = null
@@ -76,7 +74,6 @@ func _init_agents(scene: PackedScene, count: int):
 		_agent_timers.append(randf_range(0.5, 3.0))
 		_spawn_positions.append(spawn_pos)
 		_agent_skill_cooldowns.append(0.0)
-		_agent_personalities.append(randi() % 3)
 		_agent_bombs.append(null)
 
 func _resolve_player_scene() -> PackedScene:
@@ -109,7 +106,6 @@ func _spawn_agent(scene: PackedScene, i: int, spawn_pos: Vector3, controller: AI
 
 func _on_agent_died(i: int, respawn_time: float) -> void:
 	_controllers[i].clear_player()
-	_agents[i].queue_free()
 	_agent_states[i] = _State.DEAD
 	_agent_timers[i] = respawn_time + randf_range(-0.5, 0.5)
 
@@ -187,15 +183,8 @@ func _update_agent(i: int, delta: float) -> void:
 	_check_skill_dodge(i, delta)
 
 
-func _get_catapult_wait(i: int) -> float:
-	var base := randf_range(catapult_wait_min, catapult_wait_max)
-	match _agent_personalities[i]:
-		_Personality.AGGRESSIVE:
-			return base * 0.6
-		_Personality.CAUTIOUS:
-			return base * 1.4
-		_:
-			return base
+func _get_catapult_wait(_i: int) -> float:
+	return randf_range(catapult_wait_min, catapult_wait_max)
 
 
 func _check_skill_dodge(i: int, delta: float) -> void:
@@ -223,11 +212,6 @@ func _check_skill_dodge(i: int, delta: float) -> void:
 				break
 
 	var dodge_chance := skill_dodge_chance
-	match _agent_personalities[i]:
-		_Personality.CAUTIOUS:
-			dodge_chance *= 1.3
-		_Personality.AGGRESSIVE:
-			dodge_chance *= 0.7
 
 	if threat_found and randf() < dodge_chance:
 		_controllers[i].trigger_skill()
@@ -249,27 +233,22 @@ func _decide_action(i: int) -> void:
 	var catapults := get_tree().get_nodes_in_group("catapult")
 	var bombs := get_tree().get_nodes_in_group("bomb")
 
-	var personality := _agent_personalities[i]
-	var bomb_preference := 0.5
-	match personality:
-		_Personality.AGGRESSIVE:
-			bomb_preference = 0.7
-		_Personality.CAUTIOUS:
-			bomb_preference = 0.3
-
-	if not bombs.is_empty() and (catapults.is_empty() or randf() < bomb_preference):
-		_head_to_bomb(i, bombs[randi() % bombs.size()] as Bomb)
-	elif not catapults.is_empty():
-		_head_to_catapult(i, catapults)
-	else:
+	if bombs.is_empty() and catapults.is_empty():
 		_agent_states[i] = _State.IDLE
 		_agent_timers[i] = randf_range(2.0, 4.0)
+	elif bombs.is_empty():
+		_head_to_catapult(i, catapults)
+	elif catapults.is_empty():
+		_head_to_bomb(i, bombs[randi() % bombs.size()] as Bomb)
+	elif randf() < 0.5:
+		_head_to_bomb(i, bombs[randi() % bombs.size()] as Bomb)
+	else:
+		_head_to_catapult(i, catapults)
 
 
 func _head_to_catapult(i: int, catapults: Array) -> void:
 	var cat := catapults[randi() % catapults.size()] as Catapult
-	var offset := Vector3(randf_range(-2.0, 2.0), 0, randf_range(-2.0, 2.0))
-	_agent_targets[i] = cat.global_position + offset
+	_agent_targets[i] = cat.global_position
 	_agent_states[i] = _State.MOVE_TO_CATAPULT
 
 
@@ -281,8 +260,7 @@ func _head_to_bomb(i: int, bomb: Bomb) -> void:
 
 func _pick_up_bomb(i: int) -> void:
 	_agent_bombs[i] = null
-	var gate_offset := Vector3(randf_range(-1.5, 1.5), 0, randf_range(-1.5, 1.5))
-	_agent_targets[i] = _gate.global_position + gate_offset
+	_agent_targets[i] = _gate.global_position
 	_agent_states[i] = _State.CARRY_BOMB
 
 
