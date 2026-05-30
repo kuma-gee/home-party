@@ -10,6 +10,8 @@ signal player_spawned
 		firepower = v
 		if firepower_label:
 			firepower_label.text = "%d" % firepower
+		if game_client:
+			StatsManager.record_firepower(game_client.uuid, firepower)
 			
 @export var dash_cooldown := 3.0
 @export var shield_cooldown := 5.0

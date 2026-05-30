@@ -11,6 +11,7 @@ signal game_started
 @export var bow: Bow
 @export var game_ui: Control
 @export var prepare_ui: Control
+@export var desktop_gameover: DesktopGameover
 @export var spawn_hint: SpawnHint
 @export var ai_count_viewport: Node3D
 @export var sieges: Node3D
@@ -140,10 +141,19 @@ func _on_play_time_timeout() -> void:
 		if child is Siege:
 			var time = randf_range(siege_delay_min, siege_delay_max)
 			get_tree().create_timer(time).timeout.connect(func(): child.start())
-	get_tree().create_timer(4.0).timeout.connect(_cleanup_after_siege)
+	get_tree().create_timer(4.0).timeout.connect(_on_siege_complete)
+
+func _on_siege_complete() -> void:
 	_finish_game("Castle survived!")
+	_cleanup_after_siege()
 
 func _cleanup_after_siege() -> void:
+	for child in player_list.get_children():
+		if child is CastlePlayerUI:
+			if is_instance_valid(child.current_player) and not child.current_player.is_dead:
+				child.current_player.on_hurtbox_died()
+			child.respawn_timer.stop()
+
 	for catapult in get_tree().get_nodes_in_group("catapult"):
 		if catapult is Catapult:
 			catapult.destroy()
@@ -160,4 +170,6 @@ func _cleanup_after_siege() -> void:
 func _finish_game(message: String) -> void:
 	logger.info("Game over: %s" % message)
 	xr_player.gameover(message)
+	if desktop_gameover:
+		desktop_gameover.show_gameover(message, StatsManager.get_rankings())
 	play_time.stop()

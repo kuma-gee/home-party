@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://c4pqwertyuiop"]
+
+[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="1_theme"]
+[ext_resource type="Script" uid="uid://c2fjb6yhaoxlc" path="res://main/ui/score_table.gd" id="2_script"]
+
+[node name="ScoreTable" type="Panel" unique_id=203069334]
+custom_minimum_size = Vector2(1200, 800)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_right = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_theme")
+script = ExtResource("2_script")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=807404426]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer" unique_id=1101466463]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Game Over"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" unique_id=1045786538]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RankingsList" type="VBoxContainer" parent="VBoxContainer/ScrollContainer" unique_id=1889856241]
+layout_mode = 2
+size_flags_horizontal = 3

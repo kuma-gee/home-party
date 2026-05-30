@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://tbx170onwvxm"]
+
+[ext_resource type="PackedScene" uid="uid://c4pqwertyuiop" path="res://main/ui/score_table.tscn" id="1_score"]
+[ext_resource type="Script" uid="uid://d3mcxierxk4y8" path="res://main/ui/desktop_gameover.gd" id="2_script"]
+
+[node name="DesktopGameover" type="Control" unique_id=2068257365]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2_script")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1509572773]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.7058824)
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1303237065]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScoreTable" parent="CenterContainer" unique_id=1516414800 instance=ExtResource("1_score")]
+layout_mode = 2

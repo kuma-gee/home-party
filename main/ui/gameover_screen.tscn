@@ -2,8 +2,9 @@
 
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="1_7htws"]
 [ext_resource type="Script" uid="uid://84vm3ojuip7r" path="res://main/ui/gameover_screen.gd" id="2_qcyic"]
+[ext_resource type="PackedScene" path="res://main/ui/score_table.tscn" id="3_score"]
 
-[node name="GameoverPanel" type="Panel" unique_id=1565900216]
+[node name="GameoverPanel" type="Panel"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -12,34 +13,36 @@ grow_vertical = 2
 theme = ExtResource("1_7htws")
 script = ExtResource("2_qcyic")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1056385446]
-layout_mode = 0
+[node name="ScoreTable" parent="." instance=ExtResource("3_score")]
+layout_mode = 1
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_bottom = -60.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuButton" type="Button" parent="."]
+layout_mode = 1
+anchor_left = 0.0
+anchor_right = 0.5
+anchor_top = 1.0
+anchor_bottom = 1.0
 offset_left = 20.0
-offset_top = 20.0
-offset_right = -20.0
-offset_bottom = -20.0
-
-[node name="GameoverLabel" type="Label" parent="VBoxContainer" unique_id=1679405526]
-layout_mode = 2
-theme_override_font_sizes/font_size = 28
-text = "Game Over"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" unique_id=1234567890]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="RankingsList" type="VBoxContainer" parent="VBoxContainer/ScrollContainer" unique_id=1234567891]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="MenuButton" type="Button" parent="VBoxContainer" unique_id=1145879621]
-layout_mode = 2
+offset_top = -50.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
 text = "Main Menu"
 
-[node name="RestartButton" type="Button" parent="VBoxContainer" unique_id=1159729685]
-layout_mode = 2
+[node name="RestartButton" type="Button" parent="."]
+layout_mode = 1
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = -50.0
+offset_right = -20.0
+offset_bottom = -10.0
+grow_horizontal = 2
 text = "Restart"
