@@ -13,8 +13,6 @@ signal player_spawned
 		if game_client:
 			StatsManager.record_firepower(game_client.uuid, firepower)
 			
-@export var dash_cooldown := 3.0
-@export var shield_cooldown := 5.0
 @export var dash_icon: Control
 @export var shield_icon: Control
 
@@ -30,7 +28,6 @@ var selected_skill : = FPSPlayer.Skill.NONE:
 		selected_skill = v
 		dash_icon.visible = v == FPSPlayer.Skill.DASH
 		shield_icon.visible = v == FPSPlayer.Skill.SHIELD
-		skill_timer.wait_time = dash_cooldown if v == FPSPlayer.Skill.DASH else shield_cooldown
 		skill_changed.emit(v)
 
 func _ready():
@@ -85,11 +82,6 @@ func spawn_player():
 		respawn_timer.start(player.respawn_time)
 		skill_timer.stop()
 	)
-	player.skill_activated.connect(func(): 
-		var cooldown = dash_cooldown if selected_skill == FPSPlayer.Skill.DASH else shield_cooldown
-		skill_timer.start(cooldown)
-	)
-
 	player.snap_zone.has_picked_up.connect(func(obj: XRToolsPickable):
 		if obj is Bomb:
 			(obj as Bomb).hit_box.attacker_uuid = game_client.uuid

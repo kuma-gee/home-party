@@ -4,9 +4,9 @@ extends Control
 signal back_to_menu()
 signal restart_game()
 
-@onready var score_table: ScoreTable = $ScoreTable
-@onready var menu_button: Button = $MenuButton
-@onready var restart_button: Button = $RestartButton
+@export var score_table: ScoreTable
+@export var menu_button: Button
+@export var restart_button: Button
 
 
 func _ready() -> void:

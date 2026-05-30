@@ -1,8 +1,8 @@
 class_name ScoreTable
 extends Control
 
-@onready var title_label: Label = $VBoxContainer/TitleLabel
-@onready var rankings_list: VBoxContainer = $VBoxContainer/ScrollContainer/RankingsList
+@onready var title_label: Label = $TitleLabel
+@onready var rankings_list: VBoxContainer = $ScrollContainer/RankingsList
 
 func set_title(txt: String) -> void:
 	title_label.text = txt

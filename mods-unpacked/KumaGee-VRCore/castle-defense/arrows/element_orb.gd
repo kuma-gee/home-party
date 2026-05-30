@@ -53,6 +53,7 @@ func set_selected(active: bool):
 func set_active(active: bool):
 	visible = active
 	process_mode = Node.PROCESS_MODE_INHERIT if active else Node.PROCESS_MODE_DISABLED 
+	set_selected(false)
 
 func reset_cooldown() -> void:
 	cooldown_timer.stop()

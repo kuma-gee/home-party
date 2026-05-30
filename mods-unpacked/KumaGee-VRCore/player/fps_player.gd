@@ -27,8 +27,10 @@ enum Skill {
 @export_category("Skills")
 @export var dash_speed := 8.0
 @export var dash_time := 0.15
+@export var dash_cooldown := 4.0
 @export var dash_sfx: AudioStreamPlayer
 @export var shield_duration := 1.0
+@export var shield_cooldown := 6.0
 @export var shield_activate_time := 0.5
 @export var shield_vfx: MeshInstance3D
 @export var dash_particles: GPUParticles3D
@@ -224,6 +226,7 @@ func dash() -> void:
 	await get_tree().create_timer(dash_time).timeout
 
 	skill_activated.emit()
+	skill_cooldown_timer.start(dash_cooldown)
 	is_dashing = false
 
 func set_shield(v: float):
@@ -246,5 +249,6 @@ func shield() -> void:
 	await get_tree().create_timer(shield_duration).timeout
 	
 	skill_activated.emit()
+	skill_cooldown_timer.start(shield_cooldown)
 	is_shielded = false
 	tween_shield(1.0, 0.0)

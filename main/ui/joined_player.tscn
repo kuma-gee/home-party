@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://cm84cwcnok8s2" path="res://main/ui/player_icon.tscn" id="3_y8o30"]
 
 [node name="JoinedPlayer" type="Control" unique_id=1251273663 node_paths=PackedStringArray("container", "name_label", "player_icon")]
-custom_minimum_size = Vector2(160, 80)
+custom_minimum_size = Vector2(260, 80)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 100.0
@@ -18,7 +18,7 @@ name_label = NodePath("HBoxContainer/Name")
 player_icon = NodePath("HBoxContainer/PlayerIcon")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=2030705900]
-custom_minimum_size = Vector2(160, 0)
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0

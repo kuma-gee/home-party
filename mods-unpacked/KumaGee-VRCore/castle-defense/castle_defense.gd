@@ -19,6 +19,7 @@ signal game_started
 @onready var play_time: Timer = $PlayTime
 @onready var ai_spawner: AISpawner = $AISpawner
 @onready var bomb_spawner: BombSpawner = $AttackerArea/BombSpawner
+@onready var win_sound: AudioStreamPlayer3D = $WinSound
 
 var logger := KumaLog.new("CastleDefense")
 
@@ -104,6 +105,8 @@ func _check_all_ready(start = false) -> void:
 		_start_game()
 
 func _start_game() -> void:
+	if ai_count_viewport:
+		ai_count_viewport.hide()
 	game_started.emit()
 	# Restore BGM to default volume when game starts
 	BGMManager.set_volume_db(-25.0, false)
@@ -134,13 +137,16 @@ func _on_gate_died() -> void:
 @export var siege_delay_max: float = 1.5
 
 func _on_play_time_timeout() -> void:
+	win_sound.play()
 	gate_hurtbox.enabled = false
+	
 	var children = sieges.get_children()
 	for i in children.size():
 		var child = children[i]
 		if child is Siege:
 			var time = randf_range(siege_delay_min, siege_delay_max)
 			get_tree().create_timer(time).timeout.connect(func(): child.start())
+	
 	get_tree().create_timer(4.0).timeout.connect(_on_siege_complete)
 
 func _on_siege_complete() -> void:

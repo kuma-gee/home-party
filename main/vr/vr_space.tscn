@@ -44,6 +44,7 @@ size = Vector2(4, 3)
 viewport_path = NodePath("SubViewport/CameraFollow3D/Viewport2Din3D2/Viewport")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eoj1g"]
+transparency = 1
 cull_mode = 2
 shading_mode = 0
 albedo_texture = SubResource("ViewportTexture_lisjs")
@@ -174,11 +175,9 @@ metadata/_custom_type_script = "uid://cjk3gsrbfomdh"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.5)
 screen_size = Vector2(4, 3)
 viewport_size = Vector2(720, 560)
-transparent = 0
 unshaded = true
 
 [node name="Viewport" parent="SubViewport/CameraFollow3D/Viewport2Din3D2" index="0" unique_id=434808864]
-transparent_bg = false
 size = Vector2i(720, 560)
 
 [node name="ElementSelect" parent="SubViewport/CameraFollow3D/Viewport2Din3D2/Viewport" index="0" unique_id=1552823357 instance=ExtResource("18_lisjs")]

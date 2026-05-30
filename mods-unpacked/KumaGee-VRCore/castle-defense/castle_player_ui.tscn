@@ -39,11 +39,10 @@ shader_parameter/circle_radius = 0.4150000197125
 shader_parameter/merge_empty_color = false
 
 [node name="CastlePlayerUI" unique_id=1251273663 node_paths=PackedStringArray("firepower_label", "dash_icon", "shield_icon") instance=ExtResource("1_cf4xi")]
+custom_minimum_size = Vector2(260, 80)
 script = ExtResource("2_oafew")
 firepower_label = NodePath("HBoxContainer/TextureRect2/PowerLabel")
 firepower = 1
-dash_cooldown = 3.0
-shield_cooldown = 5.0
 dash_icon = NodePath("HBoxContainer/TextureRect/DashIcon")
 shield_icon = NodePath("HBoxContainer/TextureRect/ShieldIcon")
 
@@ -56,10 +55,8 @@ wait_time = 5.0
 one_shot = true
 
 [node name="HBoxContainer" parent="." index="2" unique_id=2030705900]
+custom_minimum_size = Vector2(260, 0)
 theme_override_constants/separation = 0
-
-[node name="Name" parent="HBoxContainer" index="0" unique_id=1331900333]
-visible = false
 
 [node name="TextureRect" type="TextureRect" parent="HBoxContainer" index="1" unique_id=979290189]
 custom_minimum_size = Vector2(64, 64)

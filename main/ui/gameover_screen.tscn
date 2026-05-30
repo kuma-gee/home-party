@@ -2,9 +2,9 @@
 
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="1_7htws"]
 [ext_resource type="Script" uid="uid://84vm3ojuip7r" path="res://main/ui/gameover_screen.gd" id="2_qcyic"]
-[ext_resource type="PackedScene" path="res://main/ui/score_table.tscn" id="3_score"]
+[ext_resource type="PackedScene" uid="uid://c4pqwertyuiop" path="res://main/ui/score_table.tscn" id="3_score"]
 
-[node name="GameoverPanel" type="Panel"]
+[node name="GameoverPanel" type="Panel" unique_id=658525110 node_paths=PackedStringArray("score_table", "menu_button", "restart_button")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -12,37 +12,34 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_7htws")
 script = ExtResource("2_qcyic")
+score_table = NodePath("VBoxContainer/ScoreTable")
+menu_button = NodePath("VBoxContainer/MarginContainer/HBoxContainer/MenuButton")
+restart_button = NodePath("VBoxContainer/MarginContainer/HBoxContainer/RestartButton")
 
-[node name="ScoreTable" parent="." instance=ExtResource("3_score")]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=228814969]
 layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = -60.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MenuButton" type="Button" parent="."]
-layout_mode = 1
-anchor_left = 0.0
-anchor_right = 0.5
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = -50.0
-offset_right = -10.0
-offset_bottom = -10.0
-grow_horizontal = 2
+[node name="ScoreTable" parent="VBoxContainer" unique_id=1364246842 instance=ExtResource("3_score")]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer" unique_id=1335506024]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer" unique_id=470269045]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="MenuButton" type="Button" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=274828339]
+layout_mode = 2
 text = "Main Menu"
 
-[node name="RestartButton" type="Button" parent="."]
-layout_mode = 1
-anchor_left = 0.5
-anchor_right = 1.0
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 10.0
-offset_top = -50.0
-offset_right = -20.0
-offset_bottom = -10.0
-grow_horizontal = 2
+[node name="RestartButton" type="Button" parent="VBoxContainer/MarginContainer/HBoxContainer" unique_id=1165322932]
+layout_mode = 2
 text = "Restart"
