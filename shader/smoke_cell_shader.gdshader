@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode blend_mix, depth_draw_opaque, cull_disabled, diffuse_toon, specular_toon;
+render_mode blend_mix, depth_draw_opaque, cull_disabled, diffuse_toon, specular_toon, unshaded;
 
 uniform vec2 TextureScale = vec2(1.000000, 1.000000);
 uniform sampler2D DissolverTex : source_color;

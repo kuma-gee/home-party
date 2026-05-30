@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://bo8dkp1wvefbu" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/castle_defense.gd" id="1_cdef"]
 [ext_resource type="AudioStream" uid="uid://c6eyhenn5fbu4" path="res://assets/sound/死神のリスト.mp3" id="2_fkt18"]
 [ext_resource type="PackedScene" uid="uid://cjyy0uwrqgnj5" path="res://assets/castle-defense/castle/ground.glb" id="3_6gm0b"]
-[ext_resource type="PackedScene" uid="uid://cdd6171l52vtj" path="res://assets/castle-defense/castle/siege-trebuchet.glb" id="3_iwc37"]
 [ext_resource type="Texture2D" uid="uid://c2hm78gfyf65l" path="res://assets/castle-defense/grass_01_color_1k.png" id="4_lhggn"]
 [ext_resource type="Texture2D" uid="uid://b7f54c86re1vs" path="res://assets/textures/Sky_LowPoly_02_Night_a.png" id="4_v1y0d"]
 [ext_resource type="PackedScene" uid="uid://djoi8xbts60su" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/quiver.tscn" id="5_5cd4w"]
@@ -25,6 +24,7 @@
 [ext_resource type="Script" uid="uid://cc66tdjlk8c2n" path="res://addons/proton_scatter/src/shapes/sphere_shape.gd" id="17_se6x7"]
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="18_3sspo"]
 [ext_resource type="PackedScene" uid="uid://c0cmbpfpgdlpu" path="res://assets/castle-defense/castle/wall-corner-half-tower.glb" id="18_iwc37"]
+[ext_resource type="PackedScene" uid="uid://b3ifmr1lu6f4" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/siege.tscn" id="19_db7bw"]
 [ext_resource type="Script" uid="uid://3jl51qajvpsq" path="res://addons/proton_scatter/src/scatter.gd" id="24_0cjve"]
 [ext_resource type="PackedScene" uid="uid://dtwqu5m4nsy5r" path="res://assets/castle-defense/castle/wall-half.glb" id="24_bm3dj"]
 [ext_resource type="Script" uid="uid://dvplfck0ktjpo" path="res://addons/proton_scatter/src/stack/modifier_stack.gd" id="25_lhggn"]
@@ -136,14 +136,14 @@ viewport_path = NodePath("Castle/Gate/HealthSprite/SubViewport")
 size = Vector3(2.2001953, 2.074707, 0.6)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_a14ph"]
-size = Vector3(14.886963, 3.4404297, 15.631744)
+size = Vector3(14.886963, 3.4404297, 5.0632706)
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_sl1b2"]
 height = 3.637207
 radius = 0.99658203
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_sl1b2"]
-size = Vector3(1, 14.794922, 20.79126)
+size = Vector3(1, 10.146973, 20.79126)
 
 [sub_resource type="QuadMesh" id="QuadMesh_1yni0"]
 resource_local_to_scene = true
@@ -409,7 +409,7 @@ shader_parameter/outline_size = 1.0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bl5ky"]
 albedo_color = Color(0.5686275, 0.3254902, 0.16470589, 1)
 
-[node name="CastleDefense" type="Node3D" unique_id=1524346607 node_paths=PackedStringArray("gate_hurtbox", "player_list", "orbs", "arrow_types", "quiver", "bow", "game_ui", "prepare_ui", "spawn_hint", "ai_count_viewport", "xr_player")]
+[node name="CastleDefense" type="Node3D" unique_id=1524346607 node_paths=PackedStringArray("gate_hurtbox", "player_list", "orbs", "arrow_types", "quiver", "bow", "game_ui", "prepare_ui", "spawn_hint", "ai_count_viewport", "sieges", "xr_player")]
 script = ExtResource("1_cdef")
 gate_hurtbox = NodePath("Castle/Gate/GateHurtBox")
 tutorial_scene = ExtResource("50_vrtut")
@@ -422,6 +422,7 @@ game_ui = NodePath("UI/Control/GameUI")
 prepare_ui = NodePath("UI/Control/PrepareUI")
 spawn_hint = NodePath("UI/Control/SpawnHint")
 ai_count_viewport = NodePath("VRSpace/AICountViewport")
+sieges = NodePath("Castle/Sieges")
 xr_player = NodePath("VRSpace")
 bgm_audio = ExtResource("2_fkt18")
 
@@ -440,7 +441,7 @@ light_color = Color(0.279306, 0.65988404, 0.99999994, 1)
 light_energy = 0.1
 
 [node name="PlayTime" type="Timer" parent="." unique_id=96472218]
-wait_time = 300.0
+wait_time = 3.0
 one_shot = true
 
 [node name="ProtonScatter" type="Node3D" parent="." unique_id=1216591199]
@@ -505,98 +506,41 @@ current = true
 [node name="Sieges" type="Node3D" parent="Castle" unique_id=1340414529]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.1227534)
 
-[node name="siege-trebuchet2" parent="Castle/Sieges" unique_id=1073313458 instance=ExtResource("3_iwc37")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, -1.4057434)
+[node name="Siege" parent="Castle/Sieges" unique_id=1114204689 node_paths=PackedStringArray("target_pos") instance=ExtResource("19_db7bw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.4057434)
+target_pos = NodePath("../../Target")
 
-[node name="catapult2" parent="Castle/Sieges/siege-trebuchet2/siege-trebuchet" parent_id_path=PackedInt32Array(1073313458, 2108046839) index="1" unique_id=511407302]
-visible = false
+[node name="Siege2" parent="Castle/Sieges" unique_id=844545751 node_paths=PackedStringArray("target_pos") instance=ExtResource("19_db7bw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -1.4057434)
+target_pos = NodePath("../../Target")
 
-[node name="weight2" parent="Castle/Sieges/siege-trebuchet2/siege-trebuchet" parent_id_path=PackedInt32Array(1073313458, 2108046839) index="2" unique_id=1386307971]
-visible = false
+[node name="Siege3" parent="Castle/Sieges" unique_id=965723452 node_paths=PackedStringArray("target_pos") instance=ExtResource("19_db7bw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -1.4057434)
+target_pos = NodePath("../../Target")
 
-[node name="siege-trebuchet3" parent="Castle/Sieges" unique_id=1215668450 instance=ExtResource("3_iwc37")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -2, 0, -1.4057434)
+[node name="Siege4" parent="Castle/Sieges" unique_id=1275891654 node_paths=PackedStringArray("target_pos") instance=ExtResource("19_db7bw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -1.4057434)
+target_pos = NodePath("../../Target")
 
-[node name="catapult2" parent="Castle/Sieges/siege-trebuchet3/siege-trebuchet" parent_id_path=PackedInt32Array(1215668450, 2108046839) index="1" unique_id=511407302]
-visible = false
+[node name="Siege5" parent="Castle/Sieges" unique_id=1461689863 node_paths=PackedStringArray("target_pos") instance=ExtResource("19_db7bw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -1.4057434)
+target_pos = NodePath("../../Target")
 
-[node name="weight2" parent="Castle/Sieges/siege-trebuchet3/siege-trebuchet" parent_id_path=PackedInt32Array(1215668450, 2108046839) index="2" unique_id=1386307971]
-visible = false
+[node name="Siege6" parent="Castle/Sieges" unique_id=230589461 node_paths=PackedStringArray("target_pos") instance=ExtResource("19_db7bw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -1.4057434)
+target_pos = NodePath("../../Target")
 
-[node name="siege-trebuchet4" parent="Castle/Sieges" unique_id=134116394 instance=ExtResource("3_iwc37")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 2, 0, -1.4057434)
+[node name="Siege7" parent="Castle/Sieges" unique_id=2023353571 node_paths=PackedStringArray("target_pos") instance=ExtResource("19_db7bw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -1.4057434)
+target_pos = NodePath("../../Target")
 
-[node name="catapult2" parent="Castle/Sieges/siege-trebuchet4/siege-trebuchet" parent_id_path=PackedInt32Array(134116394, 2108046839) index="1" unique_id=511407302]
-visible = false
+[node name="Siege8" parent="Castle/Sieges" unique_id=1161892 node_paths=PackedStringArray("target_pos") instance=ExtResource("19_db7bw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -1.4057434)
+target_pos = NodePath("../../Target")
 
-[node name="weight2" parent="Castle/Sieges/siege-trebuchet4/siege-trebuchet" parent_id_path=PackedInt32Array(134116394, 2108046839) index="2" unique_id=1386307971]
-visible = false
-
-[node name="siege-trebuchet5" parent="Castle/Sieges" unique_id=1504630881 instance=ExtResource("3_iwc37")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 4, 0, -1.4057434)
-
-[node name="catapult2" parent="Castle/Sieges/siege-trebuchet5/siege-trebuchet" parent_id_path=PackedInt32Array(1504630881, 2108046839) index="1" unique_id=511407302]
-visible = false
-
-[node name="weight2" parent="Castle/Sieges/siege-trebuchet5/siege-trebuchet" parent_id_path=PackedInt32Array(1504630881, 2108046839) index="2" unique_id=1386307971]
-visible = false
-
-[node name="siege-trebuchet6" parent="Castle/Sieges" unique_id=1679435474 instance=ExtResource("3_iwc37")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -4, 0, -1.4057434)
-
-[node name="catapult2" parent="Castle/Sieges/siege-trebuchet6/siege-trebuchet" parent_id_path=PackedInt32Array(1679435474, 2108046839) index="1" unique_id=511407302]
-visible = false
-
-[node name="weight2" parent="Castle/Sieges/siege-trebuchet6/siege-trebuchet" parent_id_path=PackedInt32Array(1679435474, 2108046839) index="2" unique_id=1386307971]
-visible = false
-
-[node name="Sieges2" type="Node3D" parent="Castle" unique_id=1438539994]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.8772466)
-
-[node name="siege-trebuchet2" parent="Castle/Sieges2" unique_id=58061559 instance=ExtResource("3_iwc37")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, -1.4057434)
-
-[node name="catapult2" parent="Castle/Sieges2/siege-trebuchet2/siege-trebuchet" parent_id_path=PackedInt32Array(58061559, 2108046839) index="1" unique_id=511407302]
-visible = false
-
-[node name="weight2" parent="Castle/Sieges2/siege-trebuchet2/siege-trebuchet" parent_id_path=PackedInt32Array(58061559, 2108046839) index="2" unique_id=1386307971]
-visible = false
-
-[node name="siege-trebuchet3" parent="Castle/Sieges2" unique_id=1526813456 instance=ExtResource("3_iwc37")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -2, 0, -1.4057434)
-
-[node name="catapult2" parent="Castle/Sieges2/siege-trebuchet3/siege-trebuchet" parent_id_path=PackedInt32Array(1526813456, 2108046839) index="1" unique_id=511407302]
-visible = false
-
-[node name="weight2" parent="Castle/Sieges2/siege-trebuchet3/siege-trebuchet" parent_id_path=PackedInt32Array(1526813456, 2108046839) index="2" unique_id=1386307971]
-visible = false
-
-[node name="siege-trebuchet4" parent="Castle/Sieges2" unique_id=1143377672 instance=ExtResource("3_iwc37")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 2, 0, -1.4057434)
-
-[node name="catapult2" parent="Castle/Sieges2/siege-trebuchet4/siege-trebuchet" parent_id_path=PackedInt32Array(1143377672, 2108046839) index="1" unique_id=511407302]
-visible = false
-
-[node name="weight2" parent="Castle/Sieges2/siege-trebuchet4/siege-trebuchet" parent_id_path=PackedInt32Array(1143377672, 2108046839) index="2" unique_id=1386307971]
-visible = false
-
-[node name="siege-trebuchet5" parent="Castle/Sieges2" unique_id=2002407733 instance=ExtResource("3_iwc37")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 4, 0, -1.4057434)
-
-[node name="catapult2" parent="Castle/Sieges2/siege-trebuchet5/siege-trebuchet" parent_id_path=PackedInt32Array(2002407733, 2108046839) index="1" unique_id=511407302]
-visible = false
-
-[node name="weight2" parent="Castle/Sieges2/siege-trebuchet5/siege-trebuchet" parent_id_path=PackedInt32Array(2002407733, 2108046839) index="2" unique_id=1386307971]
-visible = false
-
-[node name="siege-trebuchet6" parent="Castle/Sieges2" unique_id=54790022 instance=ExtResource("3_iwc37")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -4, 0, -1.4057434)
-
-[node name="catapult2" parent="Castle/Sieges2/siege-trebuchet6/siege-trebuchet" parent_id_path=PackedInt32Array(54790022, 2108046839) index="1" unique_id=511407302]
-visible = false
-
-[node name="weight2" parent="Castle/Sieges2/siege-trebuchet6/siege-trebuchet" parent_id_path=PackedInt32Array(54790022, 2108046839) index="2" unique_id=1386307971]
-visible = false
+[node name="Siege9" parent="Castle/Sieges" unique_id=1853180231 node_paths=PackedStringArray("target_pos") instance=ExtResource("19_db7bw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -1.4057434)
+target_pos = NodePath("../../Target")
 
 [node name="Meshes" type="Node3D" parent="Castle" unique_id=577322639]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 9)
@@ -731,7 +675,7 @@ shape = SubResource("Shape_GateHurt")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.875063, 7.955576)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Castle/VRPlatform" unique_id=679345197]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.2202148, -5.7612457)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.2202148, -0.47700882)
 shape = SubResource("BoxShape3D_a14ph")
 debug_color = Color(0.9933772, 0, 0.24780053, 1)
 
@@ -753,7 +697,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.85961, 0, 0)
 shape = SubResource("BoxShape3D_sl1b2")
 
 [node name="CollisionShape3D3" type="CollisionShape3D" parent="Castle/DesktopWalls" unique_id=1039609530]
-transform = Transform3D(0, 0, 1.0000001, 0, 1, 0, -1.0000001, 0, 0, -0.18380165, 0, -10.653589)
+transform = Transform3D(0, 0, 1.0000001, 0, 1, 0, -1.0000001, 0, 0, -0.18380165, -0.018556595, -10.653589)
 shape = SubResource("BoxShape3D_sl1b2")
 
 [node name="CollisionShape3D4" type="CollisionShape3D" parent="Castle/DesktopWalls" unique_id=1533091175]
@@ -763,6 +707,9 @@ shape = SubResource("BoxShape3D_sl1b2")
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="Castle/DesktopWalls" unique_id=62748941]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.541611, 0, 0)
 shape = SubResource("BoxShape3D_sl1b2")
+
+[node name="Target" type="Marker3D" parent="Castle" unique_id=1411823520]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.708035, 18.106611)
 
 [node name="VRSpace" parent="." unique_id=841158329 instance=ExtResource("10_a14ph")]
 
@@ -914,7 +861,7 @@ omni_range = 8.0
 omni_attenuation = 0.3
 
 [node name="DebugCam" type="Camera3D" parent="." unique_id=16717419]
-transform = Transform3D(-1, 0, 8.742278e-08, 2.262668e-08, 0.9659259, 0.25881907, -8.444392e-08, 0.25881907, -0.9659258, 0, 5.0186462, 7.24469)
+transform = Transform3D(-2.3962064e-08, 0.7071068, -0.7071067, 3.996154e-08, 0.70710677, 0.7071068, 1, -1.1313338e-08, -4.5200814e-08, -13.407134, 14.789278, 9.832031)
 
 [node name="PlayerSpawner" type="Node3D" parent="." unique_id=290112290 groups=["player_spawner"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 27)
@@ -1170,16 +1117,6 @@ script = ExtResource("39_ofmg5")
 player_spawner = NodePath("../PlayerSpawner")
 
 [editable path="ground2"]
-[editable path="Castle/Sieges/siege-trebuchet2"]
-[editable path="Castle/Sieges/siege-trebuchet3"]
-[editable path="Castle/Sieges/siege-trebuchet4"]
-[editable path="Castle/Sieges/siege-trebuchet5"]
-[editable path="Castle/Sieges/siege-trebuchet6"]
-[editable path="Castle/Sieges2/siege-trebuchet2"]
-[editable path="Castle/Sieges2/siege-trebuchet3"]
-[editable path="Castle/Sieges2/siege-trebuchet4"]
-[editable path="Castle/Sieges2/siege-trebuchet5"]
-[editable path="Castle/Sieges2/siege-trebuchet6"]
 [editable path="VRSpace"]
 [editable path="VRSpace/StartXR"]
 [editable path="VRSpace/SubViewport/CameraFollow3D/Viewport2Din3D2"]

@@ -13,6 +13,7 @@ signal game_started
 @export var prepare_ui: Control
 @export var spawn_hint: SpawnHint
 @export var ai_count_viewport: Node3D
+@export var sieges: Node3D
 
 @onready var play_time: Timer = $PlayTime
 
@@ -126,7 +127,16 @@ func _start_game() -> void:
 func _on_gate_died() -> void:
 	_finish_game("Attackers stormed the gate!")
 
+@export var siege_delay_min: float = 0.5
+@export var siege_delay_max: float = 1.5
+
 func _on_play_time_timeout() -> void:
+	var children = sieges.get_children()
+	for i in children.size():
+		var child = children[i]
+		if child is Siege:
+			var time = randf_range(siege_delay_min, siege_delay_max)
+			get_tree().create_timer(time).timeout.connect(func(): child.start())
 	_finish_game("Castle survived!")
 
 func _finish_game(message: String) -> void:
