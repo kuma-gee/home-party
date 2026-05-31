@@ -41,6 +41,11 @@ func _ready() -> void:
 	siege_catapult_2.show()
 	player_area.show()
 
+var disabled := false
+
+func disable() -> void:
+	disabled = true
+
 func destroy():
 	siege_catapult_demolished_2.show()
 	siege_catapult_2.hide()
@@ -62,6 +67,8 @@ func get_total_power():
 	return total
 
 func _process(delta: float) -> void:
+	if disabled:
+		return
 	power = get_total_power()
 
 	if power > 0 and cooldown_timer.is_stopped():

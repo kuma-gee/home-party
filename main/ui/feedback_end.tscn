@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://duvfm43b30g8e"]
+
+[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="1_icbg5"]
+
+[node name="FeedbackEnd" type="VBoxContainer" unique_id=605826142]
+theme = ExtResource("1_icbg5")
+theme_override_constants/separation = 32
+
+[node name="Label4" type="Label" parent="." unique_id=1099184865]
+layout_mode = 2
+theme_type_variation = &"LabelLarge"
+text = "GameOver"
+horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="." unique_id=1782285264]
+layout_mode = 2
+text = "Thanks for playing!"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="." unique_id=969034176]
+layout_mode = 2
+text = "If you don't mind, I would appreciate
+some feedback using the link below"
+horizontal_alignment = 1
+
+[node name="LinkButton" type="LinkButton" parent="." unique_id=1684441593]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Form"
+uri = "https://docs.google.com/forms/d/1IYgQq3APZuSU94lbNjOC7UGD2FD0i_oTIna3ghmMGFY"
+
+[node name="Label3" type="RichTextLabel" parent="." unique_id=941802723]
+layout_mode = 2
+bbcode_enabled = true
+text = "For the verification please select:
+Bear, cat"
+fit_content = true
+horizontal_alignment = 1

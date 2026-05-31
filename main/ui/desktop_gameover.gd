@@ -1,7 +1,7 @@
 class_name DesktopGameover
 extends Control
 
-@onready var score_table: ScoreTable = $CenterContainer/ScoreTable
+@export var score_table: ScoreTable
 
 func _ready() -> void:
 	hide()

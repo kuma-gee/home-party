@@ -267,6 +267,9 @@ func _deliver_bomb(i: int) -> void:
 	_agent_timers[i] = randf_range(2.0, 5.0)
 
 
+func stop() -> void:
+	_active = false
+
 func stop_and_clear() -> void:
 	_active = false
 	for i in _agents.size():

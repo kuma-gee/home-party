@@ -11,6 +11,10 @@
     --health-color: #37CF46;
 }
 
+LinkButton {
+  color: var(--primary-color);
+}
+
 body {
   font-size: 36;
   font-family: url(default_font.tres);

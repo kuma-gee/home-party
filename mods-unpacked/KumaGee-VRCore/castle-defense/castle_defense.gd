@@ -23,6 +23,7 @@ signal game_started
 @onready var win_sound: AudioStreamPlayer3D = $WinSound
 
 var logger := KumaLog.new("CastleDefense")
+var gate_destroyed := false
 
 var _tutorial: VRTutorial
 var _element_select: ElementSelect
@@ -114,6 +115,8 @@ func _start_game() -> void:
 	for child in player_list.get_children():
 		if child is CastlePlayerUI:
 			child._game_started = true
+	
+	gate_destroyed = false
 	xr_player.hide_screen()
 	prepare_ui.hide()
 	play_time.start()
@@ -131,11 +134,14 @@ func _start_game() -> void:
 	arrow_types.show()
 
 func _on_gate_died() -> void:
+	if gate_destroyed: return
+	gate_destroyed = true
 	if gate_destruction_vfx:
 		var vfx = gate_destruction_vfx.instantiate()
 		add_child(vfx)
 		vfx.global_position = gate_hurtbox.global_position
 	_finish_game("Attackers stormed the gate!")
+	_disable_attackers()
 
 @export var siege_delay_min: float = 0.5
 @export var siege_delay_max: float = 1.5
@@ -176,6 +182,13 @@ func _cleanup_after_siege() -> void:
 
 	if is_instance_valid(bomb_spawner):
 		bomb_spawner.stop()
+
+func _disable_attackers() -> void:
+	for catapult in get_tree().get_nodes_in_group("catapult"):
+		if catapult is Catapult:
+			catapult.disable()
+	if is_instance_valid(ai_spawner):
+		ai_spawner.stop()
 
 func _finish_game(message: String) -> void:
 	logger.info("Game over: %s" % message)
