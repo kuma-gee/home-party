@@ -77,6 +77,7 @@ func _init_controller(scene: PackedScene, count: int, i: int, spawn_origin: Vect
 	_spawn_positions.append(spawn_pos)
 	_agent_skill_cooldowns.append(0.0)
 	_agent_bombs.append(null)
+	player.snap_zone.has_picked_up.connect(func(obj): _on_agent_pickup(i, obj))
 	
 
 func _resolve_player_scene() -> PackedScene:
@@ -114,6 +115,7 @@ func _respawn_agent(i: int) -> void:
 		return
 	var spawn_pos := _spawn_positions[i] + Vector3(randf_range(-1.0, 1.0), 0, randf_range(-1.0, 1.0))
 	var player := _spawn_agent(scene, i, spawn_pos, _controllers[i])
+	player.snap_zone.has_picked_up.connect(func(obj): _on_agent_pickup(i, obj))
 	_connect_died(player, i)
 	_agents[i] = player
 	_agent_states[i] = _State.IDLE
@@ -154,20 +156,29 @@ func _update_agent(i: int, delta: float) -> void:
 				_on_arrived(i)
 
 		_State.MOVE_TO_BOMB:
-			if is_instance_valid(_agent_bombs[i]):
-				_agent_targets[i] = _agent_bombs[i].global_position
-			controller.target = _agent_targets[i]
-			var diff := player.global_position - _agent_targets[i]
-			diff.y = 0.0
-			if diff.length() < 0.5:
-				_on_arrived(i)
+			if not is_instance_valid(_agent_bombs[i]):
+				# bomb was taken by someone else — re-decide
+				_agent_states[i] = _State.IDLE
+				_agent_timers[i] = randf_range(0.5, 1.5)
+				controller.target = player.global_position
+			else:
+				controller.target = _agent_targets[i]
+				var diff := player.global_position - _agent_targets[i]
+				diff.y = 0.0
+				if diff.length() < 0.5:
+					_on_arrived(i)
 
 		_State.CARRY_BOMB:
-			controller.target = _agent_targets[i]
-			var diff := player.global_position - _agent_targets[i]
-			diff.y = 0.0
-			if diff.length() < 0.5:
-				_on_arrived(i)
+			if not _is_holding_bomb(i):
+				_agent_states[i] = _State.IDLE
+				_agent_timers[i] = randf_range(0.5, 1.5)
+				controller.target = player.global_position
+			else:
+				controller.target = _agent_targets[i]
+				var diff := player.global_position - _agent_targets[i]
+				diff.y = 0.0
+				if diff.length() < 0.5:
+					_on_arrived(i)
 
 		_State.AT_CATAPULT:
 			controller.target = player.global_position
@@ -256,8 +267,20 @@ func _head_to_bomb(i: int, bomb: Bomb) -> void:
 	_agent_states[i] = _State.MOVE_TO_BOMB
 
 
+func _is_holding_bomb(i: int) -> bool:
+	var player := _agents[i] if i < _agents.size() else null
+	if not is_instance_valid(player):
+		return false
+	var held := player.snap_zone.picked_up_object
+	return is_instance_valid(held) and held is Bomb
+
+
 func _pick_up_bomb(i: int) -> void:
 	_agent_bombs[i] = null
+	if not _is_holding_bomb(i):
+		_agent_states[i] = _State.IDLE
+		_agent_timers[i] = randf_range(0.5, 1.5)
+		return
 	_agent_targets[i] = _gate.global_position
 	_agent_states[i] = _State.CARRY_BOMB
 
@@ -265,6 +288,17 @@ func _pick_up_bomb(i: int) -> void:
 func _deliver_bomb(i: int) -> void:
 	_agent_states[i] = _State.IDLE
 	_agent_timers[i] = randf_range(2.0, 5.0)
+
+
+func _on_agent_pickup(i: int, obj: XRToolsPickable) -> void:
+	if not (obj is Bomb):
+		return
+	if _agent_states[i] == _State.MOVE_TO_BOMB or _agent_states[i] == _State.CARRY_BOMB:
+		return
+	# Accidental pickup — head straight for the gate with it
+	_agent_bombs[i] = obj as Bomb
+	_agent_targets[i] = _gate.global_position
+	_agent_states[i] = _State.CARRY_BOMB
 
 
 func stop() -> void:
