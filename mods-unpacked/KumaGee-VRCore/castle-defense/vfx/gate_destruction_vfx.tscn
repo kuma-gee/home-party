@@ -220,6 +220,7 @@ draw_pass_1 = SubResource("quad_spark")
 
 [node name="Embers" type="GPUParticles3D" parent="ImpactVFX" unique_id=616974977]
 material_override = SubResource("mat_embers")
+emitting = false
 amount = 48
 lifetime = 2.0
 one_shot = true
