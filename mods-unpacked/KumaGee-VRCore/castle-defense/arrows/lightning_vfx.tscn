@@ -192,7 +192,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.13333336, 0.56666666, 0.6666667),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [0.0, 20.0, 20.0, 0.0]
+"values": [0.0, 2.0, 2.0, 0.0]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -204,7 +204,7 @@ tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.13333336, 0.49666667, 0.6466667),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [Color(0, 0, 0, 1), Color(0.3, 0.3, 1, 1), Color(0.3, 0.3, 1, 1), Color(0, 0, 0, 1)]
+"values": [Color(0, 0, 0, 1), Color(1, 0.9764706, 0.3019608, 1), Color(1, 0.9764706, 0.3019608, 1), Color(0, 0, 0, 1)]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
@@ -216,7 +216,7 @@ tracks/5/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.6666667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [0.8, 0.8, 10.0]
+"values": [3.0, 5.0, 10.0]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
@@ -346,7 +346,7 @@ cull_mode = 2
 shading_mode = 0
 vertex_color_use_as_albedo = true
 vertex_color_is_srgb = true
-albedo_color = Color(1.5, 1.5, 4, 1)
+albedo_color = Color(3.917, 4, 1.502, 1)
 albedo_texture = ExtResource("2_lv1ow")
 billboard_keep_scale = true
 
@@ -434,12 +434,16 @@ size = Vector3(1, 1, 1)
 texture_albedo = ExtResource("3_ax7ia")
 texture_emission = ExtResource("4_7tf5t")
 emission_energy = 0.0
-modulate = Color(1.502, 1.502, 4, 1)
+modulate = Color(4, 3.126, 1.502, 1)
 albedo_mix = 0.0
 
 [node name="OmniLight3D" type="OmniLight3D" parent="LightningVFX" unique_id=111388069]
-light_color = Color(0.5, 0.7, 1, 1)
+light_color = Color(1, 0.73333335, 0.5019608, 1)
 light_energy = 0.0
 omni_range = 3.0
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=717701545]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.09307861, 0)
+size = Vector3(2.9853516, 0.110961914, 4.163086)
 
 [connection signal="timeout" from="CleanupTimer" to="." method="queue_free"]

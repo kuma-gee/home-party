@@ -5,10 +5,8 @@
 [ext_resource type="Shader" uid="uid://d1cis0r7gi5pm" path="res://shader/outline_3d.gdshader" id="4_dmd4i"]
 [ext_resource type="PackedScene" uid="uid://daucybh7twtqi" path="res://assets/castle-defense/weapons/bow_B.gltf" id="4_k2jsv"]
 [ext_resource type="Texture2D" uid="uid://bhtmbib4h42sn" path="res://assets/castle-defense/weapons/weapons_bits_texture.png" id="4_l2s5j"]
-[ext_resource type="PackedScene" uid="uid://c25yxb0vt53vc" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_left.tscn" id="6_k2jsv"]
 [ext_resource type="PackedScene" uid="uid://ce7vysyvondf8" path="res://addons/godot-xr-tools/objects/snap_zone.tscn" id="7_7iw86"]
 [ext_resource type="AudioStream" uid="uid://cqelolqme460j" path="res://assets/sound/sfx/弓矢を放つ.mp3" id="7_k2jsv"]
-[ext_resource type="PackedScene" uid="uid://ctw7nbntd5pcj" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_right.tscn" id="7_rvk8s"]
 [ext_resource type="AudioStream" uid="uid://4ir85xo53b5y" path="res://assets/sound/sfx/弓を引き絞る2.mp3" id="8_7iw86"]
 [ext_resource type="Script" uid="uid://cdl5kcr2wvnav" path="res://addons/godot-xr-tools/objects/highlight/highlight_material.gd" id="12_v4ixm"]
 [ext_resource type="Material" uid="uid://dyuaw57o8y3i" path="res://addons/godot-xr-tools/materials/highlight.tres" id="13_k2kj6"]
@@ -50,7 +48,7 @@ metadata/extras = {
 "targetNames": ["Draw"]
 }
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_k2kj6"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_v4ixm"]
 resource_local_to_scene = true
 radius = 0.3
 
@@ -109,27 +107,21 @@ snap_require = "arrow"
 grab_exclude = "invalid"
 
 [node name="CollisionShape3D" parent="ArrowPivot/ArrowMesh/SnapZone" index="0" unique_id=1451983608]
-shape = SubResource("SphereShape3D_k2kj6")
+shape = SubResource("SphereShape3D_v4ixm")
 
-[node name="GrabPointHandRight" parent="." index="3" unique_id=2131231232 instance=ExtResource("7_rvk8s")]
-transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0.016571045, 0, -0.10812378)
-
-[node name="GrabPointHandLeft" parent="." index="4" unique_id=1044959149 instance=ExtResource("6_k2jsv")]
-transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0.02668086, 0.004076129, -0.106446266)
-
-[node name="ShotSound" type="AudioStreamPlayer3D" parent="." index="5" unique_id=1544673079]
+[node name="ShotSound" type="AudioStreamPlayer3D" parent="." index="3" unique_id=1544673079]
 stream = ExtResource("7_k2jsv")
 
-[node name="PullSound" type="AudioStreamPlayer3D" parent="." index="6" unique_id=1785372075]
+[node name="PullSound" type="AudioStreamPlayer3D" parent="." index="4" unique_id=1785372075]
 stream = ExtResource("8_7iw86")
 
-[node name="TrajectoryMesh" type="MeshInstance3D" parent="." index="7" unique_id=831658236]
+[node name="TrajectoryMesh" type="MeshInstance3D" parent="." index="5" unique_id=831658236]
 layers = 262144
 material_override = SubResource("StandardMaterial3D_dmd4i")
 cast_shadow = 0
 mesh = SubResource("ImmediateMesh_dmd4i")
 
-[node name="XRToolsHighlightMaterial" type="Node" parent="." index="10" unique_id=655397715]
+[node name="XRToolsHighlightMaterial" type="Node" parent="." index="6" unique_id=655397715]
 script = ExtResource("12_v4ixm")
 highlight_mesh_instance = NodePath("../bow_B2/bow_B")
 highlight_material = ExtResource("13_k2kj6")

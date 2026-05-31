@@ -742,9 +742,7 @@ tree_root = SubResource("AnimationNodeBlendTree_v278o")
 
 [node name="FunctionPickup" parent="VRSpace/SubViewport/XRPlayer/LeftHand" parent_id_path=PackedInt32Array(841158329, 2106749189) index="1" unique_id=1924663514 instance=ExtResource("5_w0s4v")]
 
-[node name="MovementTurn" parent="VRSpace/SubViewport/XRPlayer/LeftHand" parent_id_path=PackedInt32Array(841158329, 2106749189) index="4" unique_id=583574780 instance=ExtResource("6_5cd4w")]
-
-[node name="Sprite3D" type="Sprite3D" parent="VRSpace/SubViewport/XRPlayer/LeftHand" parent_id_path=PackedInt32Array(841158329, 2106749189) index="5" unique_id=969936395]
+[node name="Sprite3D" type="Sprite3D" parent="VRSpace/SubViewport/XRPlayer/LeftHand" parent_id_path=PackedInt32Array(841158329, 2106749189) index="4" unique_id=969936395]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.06370425, 0, 0.050261497)
 billboard = 1
 texture = SubResource("ViewportTexture_88pht")

@@ -35,7 +35,7 @@ vfx = NodePath("ElementVFX")
 
 [node name="arrow_tip" parent="." unique_id=1477406399 instance=ExtResource("2_belai")]
 
-[node name="arrow_A" parent="arrow_tip" index="0" unique_id=1007366287]
+[node name="arrow_A" parent="arrow_tip" index="0" unique_id=949480658]
 surface_material_override/0 = SubResource("StandardMaterial3D_41yic")
 
 [node name="ElementIndicator" type="MeshInstance3D" parent="." unique_id=347226210]
@@ -49,6 +49,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.470748)
 shape = SubResource("SphereShape3D_me75u")
 
 [node name="ElementVFX" type="Node3D" parent="." unique_id=202000001]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.46645457)
 script = ExtResource("4_vfx00")
 
 [editable path="arrow_tip"]
