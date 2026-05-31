@@ -18,6 +18,7 @@ enum State { EMPTY, LOADED }
 
 @onready var operating_zone: Area3D = $OperatingZone
 @onready var cooldown_timer: Timer = $CooldownTimer
+@onready var player_area: Sprite3D = $PlayerArea
 
 @onready var siege_catapult_2: Node3D = $"siege-catapult2"
 @onready var siege_catapult_demolished_2: Node3D = $"siege-catapult-demolished2"
@@ -38,10 +39,12 @@ func _ready() -> void:
 	power = 0
 	siege_catapult_demolished_2.hide()
 	siege_catapult_2.show()
+	player_area.show()
 
 func destroy():
 	siege_catapult_demolished_2.show()
 	siege_catapult_2.hide()
+	player_area.hide()
 
 func get_alive_players():
 	var result = []

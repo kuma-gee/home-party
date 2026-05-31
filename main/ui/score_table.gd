@@ -2,30 +2,34 @@ class_name ScoreTable
 extends Control
 
 @onready var title_label: Label = $TitleLabel
-@onready var rankings_list: VBoxContainer = $ScrollContainer/RankingsList
+@onready var rankings_grid: GridContainer = $ScrollContainer/RankingsGrid
 
 func set_title(txt: String) -> void:
 	title_label.text = txt
 
 func set_rankings(rankings: Array) -> void:
-	for child in rankings_list.get_children():
+	for child in rankings_grid.get_children():
 		child.queue_free()
 
-	var header := Label.new()
-	header.text = "%-4s %-4s %10s %14s %8s" % ["#", "P#", "Firepower", "Damage", "Score"]
-	header.theme_type_variation = "LabelSmall"
-	header.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	rankings_list.add_child(header)
+	var headers := ["#", "P#", "Firepower", "Damage", "Score"]
+	for header_text in headers:
+		var header := Label.new()
+		header.text = header_text
+		header.theme_type_variation = "LabelSmall"
+		header.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		rankings_grid.add_child(header)
 
 	for entry in rankings:
-		var row := Label.new()
-		row.text = "%-4d %-4s %10d %14d %8d" % [
-			entry["rank"],
+		var cells := [
+			str(entry["rank"]),
 			entry["name"],
-			entry["firepower"],
-			entry["damage_dealt"],
-			entry["score"],
+			str(entry["firepower"]),
+			str(entry["damage_dealt"]),
+			str(entry["score"]),
 		]
-		row.theme_type_variation = "LabelSmall"
-		row.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		rankings_list.add_child(row)
+		for cell_text in cells:
+			var cell := Label.new()
+			cell.text = cell_text
+			cell.theme_type_variation = "LabelSmall"
+			cell.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			rankings_grid.add_child(cell)
