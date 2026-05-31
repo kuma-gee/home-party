@@ -442,8 +442,4 @@ light_color = Color(1, 0.73333335, 0.5019608, 1)
 light_energy = 0.0
 omni_range = 3.0
 
-[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=717701545]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.09307861, 0)
-size = Vector3(2.9853516, 0.110961914, 4.163086)
-
 [connection signal="timeout" from="CleanupTimer" to="." method="queue_free"]
