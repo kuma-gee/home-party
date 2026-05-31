@@ -14,7 +14,6 @@ signal back_to_home()
 
 @export_category("Gameover")
 @export var vr_screen: XRToolsViewport2DIn3D
-@export var desktop_screen: Node3D
 @export var gameover_scene: PackedScene
 
 var was_paused := false
@@ -24,7 +23,6 @@ func _ready() -> void:
 	menu_function.menu_closed.connect(_on_menu_closed)
 	reset_area.body_entered.connect(func(_b): reset_space())
 	vr_screen.hide()
-	desktop_screen.hide()
 	pause_menu.hide()
 
 func _connect_menu(menu: VRMenuPanel):
@@ -47,7 +45,7 @@ func _on_menu_closed():
 		overlay_mesh.hide_overlay()
 
 func gameover(msg: String):
-	var screen = show_screen(gameover_scene, true) as GameoverPanel
+	var screen = show_screen(gameover_scene) as GameoverPanel
 	screen.back_to_menu.connect(func(): back_to_home.emit())
 	screen.restart_game.connect(func(): restart_game.emit())
 	screen.set_title(msg)
@@ -55,18 +53,15 @@ func gameover(msg: String):
 	var rankings = StatsManager.get_rankings()
 	screen.set_rankings(rankings)
 
-func show_screen(screen: PackedScene, show_for_desktop = false):
+func show_screen(screen: PackedScene):
 	#overlay_mesh.show_overlay()
 	vr_screen.set_scene(screen)
 	vr_screen.show()
-	if show_for_desktop:
-		desktop_screen.show()
 	return vr_screen.get_scene_instance()
 
 func hide_screen():
 	#overlay_mesh.hide_overlay()
 	vr_screen.hide()
-	desktop_screen.hide()
 
 func activate():
 	origin.current = true

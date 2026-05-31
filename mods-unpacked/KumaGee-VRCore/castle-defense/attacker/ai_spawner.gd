@@ -9,7 +9,7 @@ var logger := KumaLog.new("AISpawner")
 @export var catapult_wait_min: float = 5.0
 @export var catapult_wait_max: float = 15.0
 @export var respawn_delay: float = 3.0
-@export var spawn_delay_min: float = 1.0
+@export var spawn_delay_min: float = 0.5
 @export var spawn_delay_max: float = 3.0
 @export var skill_dodge_chance: float = 0.4
 @export var skill_check_radius: float = 5.0
@@ -59,22 +59,25 @@ func _start_ai() -> void:
 func _init_agents(scene: PackedScene, count: int):
 	var spawn_origin := _get_spawn_origin()
 	for i in count:
-		if i > 0:
-			await get_tree().create_timer(randf_range(spawn_delay_min, spawn_delay_max)).timeout
-		var spawn_pos := spawn_origin + Vector3.RIGHT * ((i - (count - 1) / 2.0) * 1.5)
-		var controller := AIClientController.new()
-		add_child(controller)
-		var player := _spawn_agent(scene, i, spawn_pos, controller)
+		var delay = randf_range(spawn_delay_min, spawn_delay_max)
+		get_tree().create_timer(delay).timeout.connect(func(): _init_controller(scene, count, i, spawn_origin))
 
-		_controllers.append(controller)
-		_connect_died(player, i)
-		_agents.append(player)
-		_agent_states.append(_State.IDLE)
-		_agent_targets.append(spawn_pos)
-		_agent_timers.append(randf_range(0.5, 3.0))
-		_spawn_positions.append(spawn_pos)
-		_agent_skill_cooldowns.append(0.0)
-		_agent_bombs.append(null)
+func _init_controller(scene: PackedScene, count: int, i: int, spawn_origin: Vector3):
+	var spawn_pos := spawn_origin + Vector3.RIGHT * ((i - (count - 1) / 2.0) * 1.5)
+	var controller := AIClientController.new()
+	add_child(controller)
+	var player := _spawn_agent(scene, i, spawn_pos, controller)
+
+	_controllers.append(controller)
+	_connect_died(player, i)
+	_agents.append(player)
+	_agent_states.append(_State.IDLE)
+	_agent_targets.append(spawn_pos)
+	_agent_timers.append(randf_range(0.5, 3.0))
+	_spawn_positions.append(spawn_pos)
+	_agent_skill_cooldowns.append(0.0)
+	_agent_bombs.append(null)
+	
 
 func _resolve_player_scene() -> PackedScene:
 	return player_spawner.player_scene

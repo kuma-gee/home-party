@@ -121,10 +121,7 @@ nodes/Trigger/node = SubResource("AnimationNodeBlend2_ussne")
 nodes/Trigger/position = Vector2(-360, 40)
 node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_tic4c"]
-viewport_path = NodePath("SubViewport/CameraFollow3D/Viewport2Din3D2/Viewport")
-
-[node name="VRSpace" type="Node3D" unique_id=841158329 node_paths=PackedStringArray("origin", "camera", "pause_menu", "overlay_mesh", "menu_function", "reset_area", "vr_screen", "desktop_screen")]
+[node name="VRSpace" type="Node3D" unique_id=841158329 node_paths=PackedStringArray("origin", "camera", "pause_menu", "overlay_mesh", "menu_function", "reset_area", "vr_screen")]
 process_mode = 3
 script = ExtResource("1_2vxk7")
 origin = NodePath("SubViewport/XRPlayer")
@@ -134,7 +131,6 @@ overlay_mesh = NodePath("SubViewport/OverlayMesh")
 menu_function = NodePath("SubViewport/XRPlayer/LeftHand/FunctionMenu")
 reset_area = NodePath("SubViewport/ResetArea")
 vr_screen = NodePath("SubViewport/CameraFollow3D/Viewport2Din3D2")
-desktop_screen = NodePath("DesktopGameover")
 gameover_scene = ExtResource("18_icwxr")
 
 [node name="StartXR" parent="." unique_id=1916138429 node_paths=PackedStringArray("viewport") instance=ExtResource("2_ajv2u")]
@@ -425,12 +421,6 @@ layout_mode = 2
 [node name="Label" type="Label" parent="CanvasLayer/PauseMenu/CenterContainer/VBoxContainer" unique_id=1419257685]
 layout_mode = 2
 text = "Game Paused"
-
-[node name="DesktopGameover" type="Sprite3D" parent="." unique_id=841672726]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.225494, 0)
-layers = 524288
-billboard = 1
-texture = SubResource("ViewportTexture_tic4c")
 
 [editable path="StartXR"]
 [editable path="SubViewport/CameraFollow3D/Viewport2Din3D2"]
