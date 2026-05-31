@@ -1,7 +1,6 @@
 class_name CastlePlayerUI
 extends JoinedPlayer
 
-signal skill_changed(skill: FPSPlayer.Skill)
 signal player_spawned
 
 @export var firepower_label: Label
@@ -23,31 +22,14 @@ var current_player: FPSPlayer
 var alive := false
 var player_spawner: PlayerSpawner
 var _game_started := false
-var selected_skill : = FPSPlayer.Skill.NONE:
-	set(v):
-		selected_skill = v
-		dash_icon.visible = v == FPSPlayer.Skill.DASH
-		shield_icon.visible = v == FPSPlayer.Skill.SHIELD
-		skill_changed.emit(v)
+var selected_skill : = FPSPlayer.Skill.NONE
 
 func _ready():
 	super()
 	firepower = 1
-	selected_skill = FPSPlayer.Skill.DASH
 	player_spawner = get_tree().get_first_node_in_group("player_spawner")
 	game_client.primary_action_pressed.connect(_handle_click)
 	game_client.secondary_action_pressed.connect(_handle_secondary)
-	game_client.moved.connect(func(dir):
-		if is_ready: return
-		if dir.x > 0 and selected_skill == FPSPlayer.Skill.DASH:
-			selected_skill = FPSPlayer.Skill.SHIELD
-		elif dir.x < 0 and selected_skill == FPSPlayer.Skill.SHIELD:
-			selected_skill = FPSPlayer.Skill.DASH
-	)
-	skill_timer.timeout.connect(func():
-		if is_instance_valid(current_player):
-			current_player.indicators.set_skill_ready(selected_skill)
-	)
 
 func can_respawn() -> bool:
 	return not alive and respawn_timer.is_stopped()
@@ -73,14 +55,11 @@ func spawn_player():
 	var player = player_spawner.create_player(game_client)
 	player.global_rotation.y = PI
 	player.firepower = firepower
-	player.skill = selected_skill
-	player.skill_cooldown_timer = skill_timer
 	player.reached_gate.connect(func(): firepower += 1)
 	player.died.connect(func():
 		alive = false
 		StatsManager.record_death(game_client.uuid)
 		respawn_timer.start(player.respawn_time)
-		skill_timer.stop()
 	)
 	player.snap_zone.has_picked_up.connect(func(obj: XRToolsPickable):
 		if obj is Bomb:

@@ -3,7 +3,7 @@ class_name Siege
 
 @export var target_pos: Node3D
 @export var launch_pos: Node3D
-@export var spread_radius: float = 5.0
+@export var spread_radius: float = 8.0
 @onready var meteorite_launcher: MeteoriteLauncher = $MeteoriteLauncher
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 

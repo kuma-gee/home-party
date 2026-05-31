@@ -65,6 +65,7 @@ expand_mode = 5
 stretch_mode = 5
 
 [node name="DashIcon" type="Label" parent="HBoxContainer/TextureRect" index="0" unique_id=973407352]
+visible = false
 material = SubResource("ShaderMaterial_dash")
 layout_mode = 1
 anchors_preset = 15

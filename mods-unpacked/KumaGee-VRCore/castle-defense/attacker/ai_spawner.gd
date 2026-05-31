@@ -92,12 +92,7 @@ func _spawn_agent(scene: PackedScene, i: int, spawn_pos: Vector3, controller: AI
 	player.player_num = i
 	player.position = spawn_pos
 
-	var chosen_skill: FPSPlayer.Skill = FPSPlayer.Skill.DASH if randi() % 2 == 0 else FPSPlayer.Skill.SHIELD
-	player.skill = chosen_skill
-
-	player.skill_cooldown_timer = Timer.new()
-	player.skill_cooldown_timer.one_shot = true
-	player.add_child(player.skill_cooldown_timer)
+	player.skill = FPSPlayer.Skill.NONE
 
 	controller.bind_player(player)
 	Staging.add_scene_child(player)
