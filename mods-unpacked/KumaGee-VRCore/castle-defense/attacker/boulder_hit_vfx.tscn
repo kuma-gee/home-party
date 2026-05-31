@@ -1,0 +1,257 @@
+[gd_scene format=3 uid="uid://b85rvd1ap28gi"]
+
+[ext_resource type="Script" uid="uid://bkrembvwcg1br" path="res://main/utils/PlayParticleSystems.gd" id="1_play"]
+[ext_resource type="ArrayMesh" uid="uid://d1bmmq7bguglq" path="res://assets/particles/shapes/sphere_flat.obj" id="2_sphere"]
+[ext_resource type="Texture2D" uid="uid://ce37fcn8ptva0" path="res://assets/particles/course/Circle.png" id="3_circle"]
+[ext_resource type="Script" uid="uid://b4woodkg2nup8" path="res://main/utils/randomized_sfx.gd" id="5_sfx_script"]
+[ext_resource type="AudioStream" uid="uid://mgkt14i02t8h" path="res://assets/sound/sfx/Wood+Box+Break.wav" id="6_break_sfx"]
+
+[sub_resource type="StandardMaterial3D" id="mat_dust"]
+render_priority = 2
+transparency = 1
+diffuse_mode = 3
+specular_mode = 1
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+
+[sub_resource type="Curve" id="curve_fade_out"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.6, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -3.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="curvetex_fade_out"]
+curve = SubResource("curve_fade_out")
+
+[sub_resource type="Gradient" id="grad_dust"]
+offsets = PackedFloat32Array(0, 0.15, 0.5, 1)
+colors = PackedColorArray(0.45, 0.38, 0.3, 1, 0.35, 0.3, 0.25, 0.8, 0.25, 0.2, 0.17, 0.4, 0.15, 0.12, 0.1, 0)
+
+[sub_resource type="GradientTexture1D" id="gradtex_dust"]
+gradient = SubResource("grad_dust")
+
+[sub_resource type="ParticleProcessMaterial" id="proc_dust"]
+direction = Vector3(0, 1, 0)
+spread = 180.0
+flatness = 0.7
+initial_velocity_min = 2.0
+initial_velocity_max = 5.0
+angular_velocity_min = -0.5
+angular_velocity_max = 0.5
+radial_velocity_min = 1.5
+radial_velocity_max = 3.0
+gravity = Vector3(0, -6, 0)
+damping_min = 2.0
+damping_max = 3.5
+scale_min = 0.4
+scale_max = 1.0
+scale_curve = SubResource("curvetex_fade_out")
+color_ramp = SubResource("gradtex_dust")
+alpha_curve = SubResource("curvetex_fade_out")
+
+[sub_resource type="StandardMaterial3D" id="mat_debris"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+
+[sub_resource type="Curve" id="curve_debris_alpha"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.8, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="curvetex_debris_alpha"]
+curve = SubResource("curve_debris_alpha")
+
+[sub_resource type="Gradient" id="grad_debris"]
+offsets = PackedFloat32Array(0, 0.3, 1)
+colors = PackedColorArray(0.6, 0.5, 0.4, 1, 0.4, 0.35, 0.28, 1, 0.3, 0.25, 0.2, 0)
+
+[sub_resource type="GradientTexture1D" id="gradtex_debris"]
+gradient = SubResource("grad_debris")
+
+[sub_resource type="Curve" id="curve_debris_vel_xz"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="curve_debris_vel_y"]
+_limits = [0.0, 8.0, 0.0, 1.0]
+_data = [Vector2(0.2, 8), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="curvexyz_debris_vel"]
+curve_x = SubResource("curve_debris_vel_xz")
+curve_y = SubResource("curve_debris_vel_y")
+curve_z = SubResource("curve_debris_vel_xz")
+
+[sub_resource type="ParticleProcessMaterial" id="proc_debris"]
+particle_flag_align_y = true
+spread = 180.0
+initial_velocity_min = 4.0
+initial_velocity_max = 12.0
+gravity = Vector3(0, -15, 0)
+damping_min = 0.3
+damping_max = 0.8
+scale_min = 0.06
+scale_max = 0.18
+scale_curve = SubResource("curvexyz_debris_vel")
+color_ramp = SubResource("gradtex_debris")
+alpha_curve = SubResource("curvetex_debris_alpha")
+
+[sub_resource type="StandardMaterial3D" id="mat_sparks"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_color = Color(2, 1.5, 0.8, 1)
+albedo_texture = ExtResource("3_circle")
+
+[sub_resource type="Curve" id="curve_spark_alpha"]
+_data = [Vector2(0, 1), 0.0, -2.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="curvetex_spark_alpha"]
+curve = SubResource("curve_spark_alpha")
+
+[sub_resource type="ParticleProcessMaterial" id="proc_sparks"]
+particle_flag_align_y = true
+spread = 180.0
+initial_velocity_min = 3.0
+initial_velocity_max = 10.0
+gravity = Vector3(0, -10, 0)
+damping_min = 0.5
+damping_max = 1.0
+scale_min = 0.04
+scale_max = 0.12
+color = Color(3, 2.2, 1.2, 1)
+alpha_curve = SubResource("curvetex_spark_alpha")
+
+[sub_resource type="Animation" id="anim_start"]
+resource_name = "start"
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ImpactVFX")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"play"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ImpactVFX/OmniLight3D:light_energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.100000024, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [5.0, 3.0, 0.0]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CleanupTimer")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.8),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [-1],
+"method": &"start"
+}]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("ImpactSFX")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"play"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="animlib_main"]
+_data = {
+&"start": SubResource("anim_start")
+}
+
+[node name="BoulderHitVFX" type="Node3D"]
+
+[node name="ImpactVFX" type="Node3D" parent="."]
+script = ExtResource("1_play")
+delays = {
+&"GroundDust": 0.0,
+&"Debris": 0.0,
+&"Sparks": 0.0
+}
+metadata/_custom_type_script = "uid://bkrembvwcg1br"
+
+[node name="OmniLight3D" type="OmniLight3D" parent="ImpactVFX"]
+light_color = Color(0.9, 0.75, 0.5, 1)
+light_energy = 5.0
+omni_range = 3.0
+
+[node name="GroundDust" type="GPUParticles3D" parent="ImpactVFX"]
+material_override = SubResource("mat_dust")
+emitting = false
+amount = 24
+lifetime = 0.7
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("proc_dust")
+draw_pass_1 = ExtResource("2_sphere")
+
+[node name="Debris" type="GPUParticles3D" parent="ImpactVFX"]
+material_override = SubResource("mat_debris")
+emitting = false
+amount = 20
+lifetime = 0.6
+one_shot = true
+explosiveness = 1.0
+randomness = 1.0
+fixed_fps = 60
+process_material = SubResource("proc_debris")
+draw_pass_1 = ExtResource("2_sphere")
+
+[node name="Sparks" type="GPUParticles3D" parent="ImpactVFX"]
+material_override = SubResource("mat_sparks")
+emitting = false
+amount = 16
+lifetime = 0.3
+one_shot = true
+explosiveness = 1.0
+randomness = 1.0
+fixed_fps = 60
+process_material = SubResource("proc_sparks")
+draw_pass_1 = ExtResource("3_circle")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries/ = SubResource("animlib_main")
+autoplay = "start"
+
+[node name="CleanupTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="ImpactSFX" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("6_break_sfx")
+volume_db = -5.0
+pitch_scale = 1.2
+script = ExtResource("5_sfx_script")
+min_pitch = 0.9
+max_pitch = 1.3
+max_plays = 4
+
+[connection signal="timeout" from="CleanupTimer" to="." method="queue_free"]

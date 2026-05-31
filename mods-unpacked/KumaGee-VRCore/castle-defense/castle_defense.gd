@@ -54,8 +54,7 @@ func _on_game_start() -> void:
 	# Lower the BGM during the prepare/tutorial phase
 	BGMManager.set_volume_db(-40.0, true)
 	arrow_types.show()
-	_tutorial = xr_player.show_screen(tutorial_scene, false) as VRTutorial
-	get_tree().paused = false
+	_tutorial = xr_player.show_screen(tutorial_scene) as VRTutorial
 
 	for i in orbs.size():
 		var element := _vr_elements[i] if i < _vr_elements.size() else Arrow.Element.NONE

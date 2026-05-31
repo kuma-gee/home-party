@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dv3hkf3b1gmsh" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/attacker/boulder.gd" id="1_boulder"]
 [ext_resource type="PackedScene" uid="uid://dbmt2cjyth8a4" path="res://assets/castle-defense/weapons/projectile_catapult.gltf" id="2_a3hix"]
 [ext_resource type="Texture2D" uid="uid://bhtmbib4h42sn" path="res://assets/castle-defense/weapons/weapons_bits_texture.png" id="3_i8s5f"]
+[ext_resource type="PackedScene" uid="uid://boulderhitvfx01" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/attacker/boulder_hit_vfx.tscn" id="4_hit_vfx"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_body"]
 radius = 0.21401803
@@ -18,6 +19,7 @@ collision_layer = 2
 script = ExtResource("1_boulder")
 base_damage = 3
 high_arc = true
+hit_vfx = ExtResource("4_hit_vfx")
 
 [node name="BoulderShape" type="CollisionShape3D" parent="." unique_id=768478445]
 shape = SubResource("SphereShape3D_body")

@@ -5,6 +5,7 @@ extends CharacterBody3D
 @export var launch_speed: float = 18.0
 @export var gravity: float = 12.0
 @export var high_arc: bool = false
+@export var hit_vfx: PackedScene
 
 @onready var hit_area: Area3D = $HitArea
 @onready var free_timer: Timer = $FreeTimer
@@ -31,6 +32,10 @@ func _break() -> void:
 	if not active:
 		return
 	active = false
+	if hit_vfx:
+		var vfx = hit_vfx.instantiate()
+		vfx.position = global_position
+		Staging.add_scene_child(vfx)
 	hide()
 	set_collision_layer_value(1, false)
 	set_collision_mask_value(1, false)
