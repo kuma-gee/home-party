@@ -1,0 +1,255 @@
+[gd_scene format=3 uid="uid://ddfqcmo13o1he"]
+
+[ext_resource type="Script" uid="uid://bkrembvwcg1br" path="res://main/utils/PlayParticleSystems.gd" id="1_play"]
+[ext_resource type="ArrayMesh" uid="uid://d1bmmq7bguglq" path="res://assets/particles/shapes/sphere_flat.obj" id="2_sphere"]
+[ext_resource type="Texture2D" uid="uid://ce37fcn8ptva0" path="res://assets/particles/course/Circle.png" id="3_circle"]
+[ext_resource type="Texture2D" uid="uid://dbm5r0ya35uqy" path="res://assets/particles/explosion_decal_emission.png" id="4_decal"]
+[ext_resource type="Texture2D" uid="uid://dpy74naxllt47" path="res://assets/particles/flare_01.png" id="6_flare"]
+[ext_resource type="Script" uid="uid://b4woodkg2nup8" path="res://main/utils/randomized_sfx.gd" id="7_rnd_sfx"]
+[ext_resource type="AudioStream" uid="uid://dxta3ng0pxsil" path="res://assets/sound/sfx/爆発3.mp3" id="8_explosion"]
+
+[sub_resource type="StandardMaterial3D" id="mat_ground_dust"]
+render_priority = 2
+transparency = 1
+diffuse_mode = 3
+specular_mode = 1
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+
+[sub_resource type="Curve" id="curve_fade_out"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.6, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -3.5782049, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="curvetex_fade_out"]
+curve = SubResource("curve_fade_out")
+
+[sub_resource type="Gradient" id="grad_wood_debris"]
+offsets = PackedFloat32Array(0, 0.15, 0.4, 0.7, 1)
+colors = PackedColorArray(0.8, 0.6, 0.3, 1, 0.6, 0.4, 0.2, 1, 0.4, 0.3, 0.15, 1, 0.3, 0.2, 0.1, 0.8, 0.2, 0.15, 0.08, 0)
+
+[sub_resource type="GradientTexture1D" id="gradtex_wood_debris"]
+gradient = SubResource("grad_wood_debris")
+
+[sub_resource type="ParticleProcessMaterial" id="proc_ground_dust"]
+direction = Vector3(0, 1, 1)
+spread = 50.0
+flatness = 0.8
+initial_velocity_min = 3.0
+initial_velocity_max = 8.0
+angular_velocity_min = -0.5
+angular_velocity_max = 0.5
+radial_velocity_min = 2.0
+radial_velocity_max = 4.0
+gravity = Vector3(0, -6, 0)
+damping_min = 2.0
+damping_max = 3.5
+scale_min = 0.79999995
+scale_curve = SubResource("curvetex_fade_out")
+color_ramp = SubResource("gradtex_wood_debris")
+alpha_curve = SubResource("curvetex_fade_out")
+
+[sub_resource type="StandardMaterial3D" id="mat_impact_sparks"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_color = Color(3, 2, 1, 1)
+albedo_texture = ExtResource("3_circle")
+
+[sub_resource type="Curve" id="curve_spark_alpha"]
+_data = [Vector2(0, 1), 0.0, -2.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="curvetex_spark_alpha"]
+curve = SubResource("curve_spark_alpha")
+
+[sub_resource type="Curve" id="curve_spark_vel_xz"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="curve_spark_vel_y"]
+_limits = [0.0, 8.0, 0.0, 1.0]
+_data = [Vector2(0.2, 8), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="curvexyz_spark_vel"]
+curve_x = SubResource("curve_spark_vel_xz")
+curve_y = SubResource("curve_spark_vel_y")
+curve_z = SubResource("curve_spark_vel_xz")
+
+[sub_resource type="ParticleProcessMaterial" id="proc_impact_sparks"]
+particle_flag_align_y = true
+direction = Vector3(0, 1, 1)
+spread = 180.0
+initial_velocity_min = 8.0
+initial_velocity_max = 25.0
+gravity = Vector3(0, -10, 0)
+damping_min = 0.3
+damping_max = 0.8
+scale_min = 0.1
+scale_max = 0.35
+scale_curve = SubResource("curvexyz_spark_vel")
+color = Color(5, 3.5, 1.5, 1)
+alpha_curve = SubResource("curvetex_spark_alpha")
+
+[sub_resource type="QuadMesh" id="quad_spark"]
+size = Vector2(0.8, 1.2)
+
+[sub_resource type="StandardMaterial3D" id="mat_embers"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_color = Color(3, 1.8, 0.8, 1)
+albedo_texture = ExtResource("6_flare")
+
+[sub_resource type="Curve" id="curve_ember_alpha"]
+_data = [Vector2(0, 0.3), 0.0, 2.0, 0, 0, Vector2(0.3, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -1.5, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="curvetex_ember_alpha"]
+curve = SubResource("curve_ember_alpha")
+
+[sub_resource type="Gradient" id="grad_fire_hot"]
+offsets = PackedFloat32Array(0, 0.08, 0.2, 0.4, 0.65)
+colors = PackedColorArray(1, 1, 1, 1, 1, 0.85, 0.3, 1, 1, 0.45, 0.15, 1, 0.6, 0.15, 0.05, 1, 0.14, 0.03051999, 0.011199998, 1)
+
+[sub_resource type="GradientTexture1D" id="gradtex_fire_hot"]
+gradient = SubResource("grad_fire_hot")
+
+[sub_resource type="ParticleProcessMaterial" id="proc_embers"]
+particle_flag_align_y = true
+direction = Vector3(0, 1, 0.5)
+initial_velocity_min = 3.0
+initial_velocity_max = 12.0
+gravity = Vector3(0, 2, 0)
+damping_min = 1.0
+damping_max = 2.0
+scale_min = 0.15
+scale_max = 0.45
+scale_curve = SubResource("curvetex_ember_alpha")
+color_ramp = SubResource("gradtex_fire_hot")
+alpha_curve = SubResource("curvetex_ember_alpha")
+
+[sub_resource type="QuadMesh" id="quad_ember"]
+size = Vector2(0.6, 0.6)
+
+[sub_resource type="StandardMaterial3D" id="mat_wood_chunks"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_color = Color(0.6, 0.4, 0.2, 1)
+
+[sub_resource type="Curve" id="curve_chunk_alpha"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.8, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="curvetex_chunk_alpha"]
+curve = SubResource("curve_chunk_alpha")
+
+[sub_resource type="ParticleProcessMaterial" id="proc_wood_chunks"]
+spread = 180.0
+initial_velocity_min = 5.0
+initial_velocity_max = 15.0
+angular_velocity_min = -5.0
+angular_velocity_max = 5.0
+gravity = Vector3(0, -15, 0)
+damping_min = 0.5
+damping_max = 1.0
+scale_min = 0.5
+scale_max = 1.5
+color_ramp = SubResource("gradtex_wood_debris")
+alpha_curve = SubResource("curvetex_chunk_alpha")
+
+[sub_resource type="BoxMesh" id="box_wood_chunk"]
+size = Vector3(0.3, 0.1, 0.15)
+
+[node name="GateDestructionVFX" type="Node3D" unique_id=1865771418]
+
+[node name="ImpactVFX" type="Node3D" parent="." unique_id=1792308467]
+script = ExtResource("1_play")
+on_spawn = true
+delays = {
+&"Embers": 0.15,
+&"GroundDust": 0.1,
+&"ImpactSparks": 0.0,
+&"WoodChunks": 0.0
+}
+metadata/_custom_type_script = "uid://bkrembvwcg1br"
+
+[node name="Decal" type="Decal" parent="ImpactVFX" unique_id=1706191603]
+visible = false
+size = Vector3(6, 0.1, 6)
+texture_albedo = ExtResource("4_decal")
+modulate = Color(0.8, 0.5, 0.2, 0)
+cull_mask = 512
+
+[node name="OmniLight3D" type="OmniLight3D" parent="ImpactVFX" unique_id=1717412269]
+visible = false
+light_color = Color(1, 0.6, 0.2, 1)
+light_energy = 12.0
+omni_range = 12.0
+
+[node name="GroundDust" type="GPUParticles3D" parent="ImpactVFX" unique_id=1342454229]
+material_override = SubResource("mat_ground_dust")
+emitting = false
+amount = 64
+lifetime = 0.8
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("proc_ground_dust")
+draw_pass_1 = ExtResource("2_sphere")
+
+[node name="ImpactSparks" type="GPUParticles3D" parent="ImpactVFX" unique_id=1833045415]
+material_override = SubResource("mat_impact_sparks")
+emitting = false
+amount = 32
+lifetime = 0.6
+one_shot = true
+explosiveness = 1.0
+randomness = 1.0
+fixed_fps = 60
+process_material = SubResource("proc_impact_sparks")
+draw_pass_1 = SubResource("quad_spark")
+
+[node name="Embers" type="GPUParticles3D" parent="ImpactVFX" unique_id=616974977]
+material_override = SubResource("mat_embers")
+amount = 48
+lifetime = 2.0
+one_shot = true
+explosiveness = 0.5
+process_material = SubResource("proc_embers")
+draw_pass_1 = SubResource("quad_ember")
+
+[node name="WoodChunks" type="GPUParticles3D" parent="ImpactVFX" unique_id=1481556454]
+material_override = SubResource("mat_wood_chunks")
+emitting = false
+amount = 40
+lifetime = 1.5
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("proc_wood_chunks")
+draw_pass_1 = SubResource("box_wood_chunk")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1153268482]
+
+[node name="CleanupTimer" type="Timer" parent="." unique_id=1797814828]
+wait_time = 4.0
+one_shot = true
+
+[node name="ImpactSFX" type="AudioStreamPlayer3D" parent="." unique_id=1140420172]
+stream = ExtResource("8_explosion")
+pitch_scale = 0.6
+script = ExtResource("7_rnd_sfx")
+id = "gate-destroy"
+max_plays = 3
+min_pitch = 0.5
+max_pitch = 0.8
+
+[connection signal="timeout" from="CleanupTimer" to="." method="queue_free"]

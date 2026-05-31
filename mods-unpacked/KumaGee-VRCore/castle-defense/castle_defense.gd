@@ -3,6 +3,7 @@ extends XRToolsSceneBase
 signal game_started
 
 @export var gate_hurtbox: HurtBox
+@export var gate_destruction_vfx: PackedScene
 @export var tutorial_scene: PackedScene
 @export var player_list: PlayerList
 @export var orbs: Array[ElementOrb]
@@ -130,6 +131,10 @@ func _start_game() -> void:
 	arrow_types.show()
 
 func _on_gate_died() -> void:
+	if gate_destruction_vfx:
+		var vfx = gate_destruction_vfx.instantiate()
+		add_child(vfx)
+		vfx.global_position = gate_hurtbox.global_position
 	_finish_game("Attackers stormed the gate!")
 
 @export var siege_delay_min: float = 0.5
