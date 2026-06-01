@@ -10,7 +10,7 @@ offset_bottom = 81.0
 grow_horizontal = 2
 theme = ExtResource("1_crhtc")
 script = ExtResource("1_abc12")
-_emoji_label = NodePath("MarginContainer/HBoxContainer/EmojiLabel")
+_emoji_label = NodePath("MarginContainer/HBoxContainer/MarginContainer/EmojiLabel")
 _name_label = NodePath("MarginContainer/HBoxContainer/VBoxContainer/NameLabel")
 _description_label = NodePath("MarginContainer/HBoxContainer/VBoxContainer/DescriptionLabel")
 _button = NodePath("InternalButton")
@@ -38,7 +38,14 @@ theme_override_constants/margin_bottom = 0
 layout_mode = 2
 mouse_filter = 2
 
-[node name="EmojiLabel" type="Label" parent="MarginContainer/HBoxContainer" unique_id=269007584]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer" unique_id=1803291090]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = -8
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="EmojiLabel" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer" unique_id=269007584]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "🔥"

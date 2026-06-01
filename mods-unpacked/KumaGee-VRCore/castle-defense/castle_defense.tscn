@@ -631,15 +631,14 @@ transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
 
 [node name="HealthSprite" type="Sprite3D" parent="Castle/Gate" unique_id=1044044621]
-transform = Transform3D(-1, 0, 8.742278e-08, 7.5710346e-08, 0.49999997, 0.86602545, -4.3711385e-08, 0.86602545, -0.49999997, 0, 2.3026977, -0.44827747)
+transform = Transform3D(-0.39999965, -0.0005208181, -0.00012668983, -0.00036939012, 0.19934277, 0.3467886, -0.0003883977, 0.34678838, -0.19934309, 0, 2.565543, -0.46685505)
 layers = 262144
-no_depth_test = true
 texture = SubResource("ViewportTexture_ofmg5")
 
 [node name="SubViewport" type="SubViewport" parent="Castle/Gate/HealthSprite" unique_id=701243658]
 disable_3d = true
 transparent_bg = true
-size = Vector2i(160, 100)
+size = Vector2i(320, 200)
 
 [node name="MarginContainer" type="MarginContainer" parent="Castle/Gate/HealthSprite/SubViewport" unique_id=1897607104]
 anchors_preset = 15
@@ -660,7 +659,7 @@ theme = ExtResource("18_3sspo")
 theme_override_constants/separation = 4
 
 [node name="ProgressBar" type="ProgressBar" parent="Castle/Gate/HealthSprite/SubViewport/MarginContainer/VBoxContainer" unique_id=442806565 node_paths=PackedStringArray("hurtbox")]
-custom_minimum_size = Vector2(0, 16)
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 theme = ExtResource("18_3sspo")
 theme_type_variation = &"ProgressBarHealth"
@@ -671,7 +670,6 @@ hurtbox = NodePath("../../../../../GateHurtBox")
 
 [node name="Label" type="Label" parent="Castle/Gate/HealthSprite/SubViewport/MarginContainer/VBoxContainer" unique_id=1098344706 node_paths=PackedStringArray("timer")]
 layout_mode = 2
-theme_type_variation = &"LabelSmallest"
 text = "Test"
 horizontal_alignment = 1
 script = ExtResource("39_88pht")
@@ -755,6 +753,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0658141e-14, -0.85153246, 
 tree_root = SubResource("AnimationNodeBlendTree_4f4wv")
 
 [node name="FunctionPickup" parent="VRSpace/SubViewport/XRPlayer/LeftHand" parent_id_path=PackedInt32Array(841158329, 2106749189) index="1" unique_id=1924663514 instance=ExtResource("5_w0s4v")]
+ranged_angle = 25.0
 
 [node name="mesh_Hand_Nails_low_R" parent="VRSpace/SubViewport/XRPlayer/RightHand/RightHand/Hand_Nails_low_R/Armature/Skeleton3D" index="0" unique_id=1842009856]
 surface_material_override/0 = null
@@ -763,11 +762,12 @@ surface_material_override/0 = null
 tree_root = SubResource("AnimationNodeBlendTree_2hji6")
 
 [node name="FunctionPickup2" parent="VRSpace/SubViewport/XRPlayer/RightHand" parent_id_path=PackedInt32Array(841158329, 1667605568) index="1" unique_id=1988130203 instance=ExtResource("5_w0s4v")]
+ranged_angle = 25.0
 
 [node name="MovementTurn" parent="VRSpace/SubViewport/XRPlayer/RightHand" parent_id_path=PackedInt32Array(841158329, 1667605568) index="2" unique_id=2008313491 instance=ExtResource("6_5cd4w")]
 
 [node name="ArrowTypes" type="Node3D" parent="VRSpace" unique_id=900118082]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2884634, 9.864026)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8906732, 9.864026)
 
 [node name="FireOrb" parent="VRSpace/ArrowTypes" unique_id=107013500 instance=ExtResource("5_a14ph")]
 

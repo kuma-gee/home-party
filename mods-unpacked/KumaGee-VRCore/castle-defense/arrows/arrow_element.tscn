@@ -36,6 +36,8 @@ vfx = NodePath("ElementVFX")
 [node name="arrow_tip" parent="." unique_id=1477406399 instance=ExtResource("2_belai")]
 
 [node name="arrow_A" parent="arrow_tip" index="0" unique_id=949480658]
+cast_shadow = 0
+gi_mode = 2
 surface_material_override/0 = SubResource("StandardMaterial3D_41yic")
 
 [node name="ElementIndicator" type="MeshInstance3D" parent="." unique_id=347226210]

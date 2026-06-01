@@ -21,6 +21,7 @@ signal game_started
 @onready var ai_spawner: AISpawner = $AISpawner
 @onready var bomb_spawner: BombSpawner = $AttackerArea/BombSpawner
 @onready var win_sound: AudioStreamPlayer3D = $WinSound
+@onready var health_sprite: Sprite3D = $Castle/Gate/HealthSprite
 
 var logger := KumaLog.new("CastleDefense")
 var gate_destroyed := false
@@ -40,6 +41,7 @@ func _ready() -> void:
 
 	_set_bow_active(true)
 	game_ui.hide()
+	health_sprite.hide()
 
 func _set_bow_active(active: bool) -> void:
 	bow.visible = active
@@ -121,6 +123,7 @@ func _start_game() -> void:
 	prepare_ui.hide()
 	play_time.start()
 	game_ui.show()
+	health_sprite.show()
 	spawn_hint.start(player_list)
 	logger.info("Game started — %.0f seconds to survive" % play_time.wait_time)
 
