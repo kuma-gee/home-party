@@ -3,6 +3,7 @@ extends Node3D
 
 signal started_game(game: GameResource)
 
+@export var game_details_desktop_root: Control
 @export var game_details_desktop: GameDetailsPanel
 @export var game_details_vr: GameDetailsPanel
 @export var scene: PackedScene
@@ -78,3 +79,4 @@ func _on_game_selected(game: GameResource) -> void:
 	slot_highlight.visible = game == null
 	game_details_desktop.update_details(game)
 	game_details_vr.update_details(game)
+	game_details_desktop_root.visible = game != null
