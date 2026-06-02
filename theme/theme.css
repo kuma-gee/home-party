@@ -74,6 +74,10 @@ PanelContainer {
   border-radius: var(--default-border-radius);
 }
 
+PanelContainer.Primary {
+  background: var(--primary-color);
+}
+
 ProgressBar.Health:background {
   background: var(--secondary-color);
   border-radius: var(--default-border-radius);

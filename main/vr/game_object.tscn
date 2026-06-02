@@ -7,8 +7,9 @@
 [ext_resource type="Shader" uid="uid://d1cis0r7gi5pm" path="res://shader/outline_3d.gdshader" id="4_vkcnx"]
 [ext_resource type="PackedScene" uid="uid://c25yxb0vt53vc" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_left.tscn" id="5_vkcnx"]
 [ext_resource type="PackedScene" uid="uid://ctw7nbntd5pcj" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_right.tscn" id="6_ul6vm"]
-[ext_resource type="Texture2D" uid="uid://cgqwlrol4v7xg" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/desktop_preview.png" id="9_wqosv"]
 [ext_resource type="Script" uid="uid://cdl5kcr2wvnav" path="res://addons/godot-xr-tools/objects/highlight/highlight_material.gd" id="10_nnut3"]
+[ext_resource type="Texture2D" uid="uid://dgobvh3rfbhtb" path="res://assets/castle-defense/siege-catapult.png" id="11_5tn1g"]
+[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="11_6yqel"]
 [ext_resource type="Material" uid="uid://dyuaw57o8y3i" path="res://addons/godot-xr-tools/materials/highlight.tres" id="11_dbu0t"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ul6vm"]
@@ -24,8 +25,13 @@ shader = ExtResource("4_vkcnx")
 shader_parameter/color = Color(1, 1, 1, 1)
 shader_parameter/outline_size = 1.0
 
-[node name="GameObject" unique_id=777328390 groups=["game_select"] instance=ExtResource("1_u8ifv")]
+[sub_resource type="ViewportTexture" id="ViewportTexture_5tn1g"]
+viewport_path = NodePath("Sprite3D/SubViewport")
+
+[node name="GameObject" unique_id=777328390 node_paths=PackedStringArray("icon_viewport", "label") groups=["game_select"] instance=ExtResource("1_u8ifv")]
 script = ExtResource("2_r842p")
+icon_viewport = NodePath("Sprite3D/SubViewport/Control/PanelContainer2/CenterContainer/SubViewportContainer/SubViewport")
+label = NodePath("Sprite3D/SubViewport/Control/PanelContainer/MarginContainer/GameName")
 ranged_grab_method = 2
 second_hand_grab = 1
 
@@ -50,8 +56,64 @@ sides = 32
 [node name="GrabPointSnap" parent="." index="4" unique_id=1846373347 instance=ExtResource("2_piqj4")]
 
 [node name="Sprite3D" type="Sprite3D" parent="." index="5" unique_id=114718724]
-transform = Transform3D(0.004, 0, 0, 0, 0.004, 0, 0, 0, 0.004, 0, -0.004, 0.013559315)
-texture = ExtResource("9_wqosv")
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, -0.004, 0.013559315)
+texture = SubResource("ViewportTexture_5tn1g")
+
+[node name="SubViewport" type="SubViewport" parent="Sprite3D" index="0" unique_id=1432712968]
+size = Vector2i(900, 600)
+
+[node name="Control" type="VBoxContainer" parent="Sprite3D/SubViewport" index="0" unique_id=900544420]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("11_6yqel")
+theme_override_constants/separation = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="Sprite3D/SubViewport/Control" index="0" unique_id=1847850787]
+layout_mode = 2
+theme_type_variation = &"PanelContainerPrimary"
+
+[node name="MarginContainer" type="MarginContainer" parent="Sprite3D/SubViewport/Control/PanelContainer" index="0" unique_id=510639006]
+layout_mode = 2
+
+[node name="GameName" type="Label" parent="Sprite3D/SubViewport/Control/PanelContainer/MarginContainer" index="0" unique_id=984585187]
+layout_mode = 2
+theme_type_variation = &"LabelLarge"
+text = "Castle defense"
+horizontal_alignment = 1
+
+[node name="PanelContainer2" type="PanelContainer" parent="Sprite3D/SubViewport/Control" index="1" unique_id=659485169]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CenterContainer" type="CenterContainer" parent="Sprite3D/SubViewport/Control/PanelContainer2" index="0" unique_id=1003917329]
+layout_mode = 2
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Sprite3D/SubViewport/Control/PanelContainer2/CenterContainer" index="0" unique_id=890321984]
+layout_mode = 2
+
+[node name="SubViewport" type="SubViewport" parent="Sprite3D/SubViewport/Control/PanelContainer2/CenterContainer/SubViewportContainer" index="0" unique_id=944865848]
+own_world_3d = true
+transparent_bg = true
+handle_input_locally = false
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="Sprite3D/SubViewport/Control/PanelContainer2/CenterContainer/SubViewportContainer/SubViewport" index="0" unique_id=1160406703]
+transform = Transform3D(1, 0, 0, 0, 0.8660254, 0.5, 0, -0.5, 0.8660254, 0, 0.10673338, 0.12828805)
+projection = 1
+size = 0.23
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Sprite3D/SubViewport/Control/PanelContainer2/CenterContainer/SubViewportContainer/SubViewport" index="1" unique_id=1356944321]
+transform = Transform3D(1, 0, 0, 0, 0.8708108, 0.49161828, 0, -0.49161828, 0.8708108, 0, 0, 0)
+
+[node name="TextureRect" type="TextureRect" parent="Sprite3D/SubViewport/Control/PanelContainer2/CenterContainer" index="1" unique_id=983330721]
+visible = false
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+texture = ExtResource("11_5tn1g")
+expand_mode = 5
 
 [node name="GrabPointHandLeft" parent="." index="6" unique_id=373562343 instance=ExtResource("5_vkcnx")]
 transform = Transform3D(0.9316151, 0, -0.36344638, 0, 1, 0, 0.36344638, 0, 0.9316151, -0.012092922, 0.052954406, -0.09176138)

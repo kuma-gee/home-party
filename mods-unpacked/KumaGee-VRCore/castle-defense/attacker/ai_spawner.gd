@@ -237,7 +237,6 @@ func _on_arrived(i: int) -> void:
 		_State.CARRY_BOMB:
 			_deliver_bomb(i)
 
-
 func _decide_action(i: int) -> void:
 	var catapults := get_tree().get_nodes_in_group("catapult")
 	var bombs := get_tree().get_nodes_in_group("bomb")
