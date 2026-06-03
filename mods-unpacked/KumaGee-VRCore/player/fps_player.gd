@@ -36,7 +36,7 @@ enum Skill {
 @export var dash_particles: GPUParticles3D
 
 @export_category("Death")
-@export var min_respawn_time := 3.0
+@export var min_respawn_time := 2.0
 @export var max_respawn_time := 6.0
 @export var explosion_respawn_time := 2.0
 @export var death_sound: RandomizedSfx

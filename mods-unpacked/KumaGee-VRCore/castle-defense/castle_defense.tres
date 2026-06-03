@@ -8,8 +8,7 @@
 [resource]
 script = ExtResource("2_5o8ye")
 name = "Castle Defense"
-description = "VR: Defend the castle using bow and arrow
-Desktop: Attack and destroy the castle"
+description = "Defends the castle using a bow and arrows from a horde of skeletons"
 scene = ExtResource("1_cdef")
 icon = ExtResource("1_yjh8u")
 min_recommended_players = 4

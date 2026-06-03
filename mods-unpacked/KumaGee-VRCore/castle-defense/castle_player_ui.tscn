@@ -27,6 +27,10 @@ shader_parameter/circle_shape = false
 shader_parameter/circle_radius = 0.5
 shader_parameter/merge_empty_color = true
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pqlag"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lkh84"]
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_respawn"]
 resource_local_to_scene = true
 shader = ExtResource("3_fill")
@@ -39,10 +43,9 @@ shader_parameter/circle_radius = 0.4150000197125
 shader_parameter/merge_empty_color = false
 
 [node name="CastlePlayerUI" unique_id=1251273663 node_paths=PackedStringArray("firepower_label", "dash_icon", "shield_icon") instance=ExtResource("1_cf4xi")]
-custom_minimum_size = Vector2(260, 80)
 script = ExtResource("2_oafew")
-firepower_label = NodePath("HBoxContainer/TextureRect2/PowerLabel")
-firepower = 1
+firepower_label = NodePath("HBoxContainer/TextureRect2/MarginContainer2/MarginContainer/PowerLabel")
+firepower = 3
 dash_icon = NodePath("HBoxContainer/TextureRect/DashIcon")
 shield_icon = NodePath("HBoxContainer/TextureRect/ShieldIcon")
 
@@ -54,11 +57,7 @@ one_shot = true
 wait_time = 5.0
 one_shot = true
 
-[node name="HBoxContainer" parent="." index="2" unique_id=2030705900]
-custom_minimum_size = Vector2(260, 0)
-theme_override_constants/separation = 0
-
-[node name="TextureRect" type="TextureRect" parent="HBoxContainer" index="1" unique_id=979290189]
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer" parent_id_path=PackedInt32Array(2030705900) index="1" unique_id=979290189]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 expand_mode = 5
@@ -104,39 +103,47 @@ vertical_alignment = 1
 script = ExtResource("4_itimer")
 timer = NodePath("../../../../SkillTimer")
 
-[node name="TextureRect2" type="TextureRect" parent="HBoxContainer" index="2" unique_id=486480224]
+[node name="TextureRect2" type="TextureRect" parent="HBoxContainer" parent_id_path=PackedInt32Array(2030705900) index="2" unique_id=486480224]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 expand_mode = 5
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="HBoxContainer/TextureRect2" index="0" unique_id=442634362]
+[node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer/TextureRect2" index="0" unique_id=184575696]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 48
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = -8
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Label" type="Label" parent="HBoxContainer/TextureRect2/MarginContainer2" index="0" unique_id=442634362]
+layout_mode = 2
+theme_override_font_sizes/font_size = 58
+theme_override_styles/normal = SubResource("StyleBoxEmpty_pqlag")
 text = "🔥"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PowerLabel" type="Label" parent="HBoxContainer/TextureRect2" index="1" unique_id=1062392852]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -18.5
-offset_top = -43.0
-offset_right = 18.5
-grow_horizontal = 2
-grow_vertical = 0
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/TextureRect2/MarginContainer2" index="1" unique_id=99600978]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = -14
+
+[node name="PowerLabel" type="Label" parent="HBoxContainer/TextureRect2/MarginContainer2/MarginContainer" index="0" unique_id=1062392852]
+custom_minimum_size = Vector2(36, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/normal = SubResource("StyleBoxEmpty_lkh84")
 text = "10"
-horizontal_alignment = 2
 
 [node name="RespawnTime" type="ColorRect" parent="HBoxContainer/PlayerIcon" parent_id_path=PackedInt32Array(115709656) index="1" unique_id=1998324057]
 material = SubResource("ShaderMaterial_respawn")

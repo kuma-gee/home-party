@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://yio7fkb0jw5m"]
+
+[ext_resource type="Script" uid="uid://bkptmydk5lvou" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/health_bar.gd" id="1_1ywxs"]
+[ext_resource type="Script" uid="uid://dld3adjtbigjl" path="res://main/ui/time_bar.gd" id="2_h0c2x"]
+[ext_resource type="Script" uid="uid://df24q4em1jso7" path="res://main/utils/blink_on_low.gd" id="3_h0c2x"]
+
+[node name="GameInfo" type="VBoxContainer" unique_id=107870123]
+theme_override_constants/separation = 0
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=863764442]
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+theme_type_variation = &"ProgressBarHealth"
+value = 30.0
+show_percentage = false
+script = ExtResource("1_1ywxs")
+
+[node name="PlayTime" type="ProgressBar" parent="." unique_id=1401510058]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+theme_type_variation = &"ProgressBarTime"
+value = 30.0
+show_percentage = false
+script = ExtResource("2_h0c2x")
+
+[node name="BlinkOnLow" type="Node" parent="PlayTime" unique_id=575451819]
+script = ExtResource("3_h0c2x")
+blink_color = Color(1, 0.45882353, 0.45882353, 1)

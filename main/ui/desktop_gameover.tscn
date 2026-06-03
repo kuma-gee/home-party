@@ -7,10 +7,10 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hlcs0"]
 shader = ExtResource("2_cd3l8")
-shader_parameter/lod = 5.0
+shader_parameter/lod = 1.0
 shader_parameter/mix_percentage = 0.3
 
-[node name="DesktopGameover" type="Control" unique_id=2068257365 node_paths=PackedStringArray("score_table")]
+[node name="DesktopGameover" type="Control" unique_id=2068257365 node_paths=PackedStringArray("score_table", "background", "container")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,6 +20,8 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("2_script")
 score_table = NodePath("CenterContainer/VBoxContainer/ScoreTable")
+background = NodePath("ColorRect")
+container = NodePath("CenterContainer")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1509572773]
 material = SubResource("ShaderMaterial_hlcs0")

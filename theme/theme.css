@@ -80,9 +80,18 @@ PanelContainer.Primary {
 
 ProgressBar.Health:background {
   background: var(--secondary-color);
-  border-radius: var(--default-border-radius);
+  border-radius: var(--default-border-radius) var(--default-border-radius) 0 0;
 }
 ProgressBar.Health:fill {
   background: var(--health-color);
-  border-radius: var(--default-border-radius);
+  border-radius: var(--default-border-radius) var(--default-border-radius) 0 0;
+}
+
+ProgressBar.Time:background {
+  background: var(--secondary-color);
+  border-radius: 0 0 var(--default-border-radius) var(--default-border-radius) ;
+}
+ProgressBar.Time:fill {
+  background: var(--text-color);
+  border-radius: 0 0 var(--default-border-radius) var(--default-border-radius) ;
 }

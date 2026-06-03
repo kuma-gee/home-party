@@ -21,6 +21,10 @@ func hit(dmg = 1, attacker_uuid: String = ""):
 		StatsManager.record_damage(attacker_uuid, dmg)
 	current_health -= dmg
 
+func set_max_health(v: int) -> void:
+	health = v
+	current_health = v
+
 func invulnerable(duration: float):
 	enabled = false
 	await get_tree().create_timer(duration).timeout

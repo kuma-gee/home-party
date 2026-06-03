@@ -9,4 +9,5 @@ func _ready() -> void:
 	_update()
 
 func _update():
+	max_value = hurtbox.health
 	value = hurtbox.current_health

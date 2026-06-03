@@ -26,7 +26,7 @@ var selected_skill : = FPSPlayer.Skill.NONE
 
 func _ready():
 	super()
-	firepower = 1
+	self.firepower = firepower
 	player_spawner = get_tree().get_first_node_in_group("player_spawner")
 	game_client.primary_action_pressed.connect(_handle_click)
 	game_client.secondary_action_pressed.connect(_handle_secondary)

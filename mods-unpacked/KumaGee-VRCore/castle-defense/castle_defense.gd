@@ -42,6 +42,7 @@ func _ready() -> void:
 	_set_bow_active(true)
 	game_ui.hide()
 	health_sprite.hide()
+	prepare_ui.show()
 
 func _set_bow_active(active: bool) -> void:
 	bow.visible = active
@@ -107,17 +108,36 @@ func _check_all_ready(start = false) -> void:
 	if start and player_list.is_all_ready():
 		_start_game()
 
+func _get_gate_hp(player_count: int) -> int:
+	if player_count <= 2:
+		return 40
+	elif player_count <= 4:
+		return 55
+	elif player_count <= 6:
+		return 75
+	else:
+		return 100
+
 func _start_game() -> void:
+	if not play_time.is_stopped(): return
+	
 	if ai_count_viewport:
 		ai_count_viewport.hide()
 	game_started.emit()
+	
 	# Restore BGM to default volume when game starts
 	BGMManager.set_volume_db(-25.0, false)
 	StatsManager.initialize(PlayerManager.playing_clients)
 	for child in player_list.get_children():
 		if child is CastlePlayerUI:
 			child._game_started = true
-	
+
+	var player_count = PlayerManager.playing_clients.size()
+	if player_count == 0:
+		player_count = GameSettings.get_ai_count()
+	gate_hurtbox.set_max_health(_get_gate_hp(player_count))
+	logger.info("Gate HP set to %d for %d agents" % [gate_hurtbox.health, player_count])
+
 	gate_destroyed = false
 	xr_player.hide_screen()
 	prepare_ui.hide()

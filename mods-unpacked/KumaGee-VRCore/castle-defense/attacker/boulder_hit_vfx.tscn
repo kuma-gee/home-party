@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://b85rvd1ap28gi"]
+[gd_scene format=3 uid="uid://bsaiqi18a463d"]
 
 [ext_resource type="Script" uid="uid://bkrembvwcg1br" path="res://main/utils/PlayParticleSystems.gd" id="1_play"]
 [ext_resource type="ArrayMesh" uid="uid://d1bmmq7bguglq" path="res://assets/particles/shapes/sphere_flat.obj" id="2_sphere"]
@@ -42,7 +42,6 @@ gravity = Vector3(0, -6, 0)
 damping_min = 2.0
 damping_max = 3.5
 scale_min = 0.4
-scale_max = 1.0
 scale_curve = SubResource("curvetex_fade_out")
 color_ramp = SubResource("gradtex_dust")
 alpha_curve = SubResource("curvetex_fade_out")
@@ -187,23 +186,22 @@ _data = {
 &"start": SubResource("anim_start")
 }
 
-[node name="BoulderHitVFX" type="Node3D"]
+[node name="BoulderHitVFX" type="Node3D" unique_id=272613566]
 
-[node name="ImpactVFX" type="Node3D" parent="."]
+[node name="ImpactVFX" type="Node3D" parent="." unique_id=93582174]
 script = ExtResource("1_play")
 delays = {
-&"GroundDust": 0.0,
 &"Debris": 0.0,
+&"GroundDust": 0.0,
 &"Sparks": 0.0
 }
 metadata/_custom_type_script = "uid://bkrembvwcg1br"
 
-[node name="OmniLight3D" type="OmniLight3D" parent="ImpactVFX"]
+[node name="OmniLight3D" type="OmniLight3D" parent="ImpactVFX" unique_id=1908328105]
 light_color = Color(0.9, 0.75, 0.5, 1)
-light_energy = 5.0
 omni_range = 3.0
 
-[node name="GroundDust" type="GPUParticles3D" parent="ImpactVFX"]
+[node name="GroundDust" type="GPUParticles3D" parent="ImpactVFX" unique_id=1647203715]
 material_override = SubResource("mat_dust")
 emitting = false
 amount = 24
@@ -213,7 +211,7 @@ explosiveness = 1.0
 process_material = SubResource("proc_dust")
 draw_pass_1 = ExtResource("2_sphere")
 
-[node name="Debris" type="GPUParticles3D" parent="ImpactVFX"]
+[node name="Debris" type="GPUParticles3D" parent="ImpactVFX" unique_id=482390574]
 material_override = SubResource("mat_debris")
 emitting = false
 amount = 20
@@ -225,7 +223,7 @@ fixed_fps = 60
 process_material = SubResource("proc_debris")
 draw_pass_1 = ExtResource("2_sphere")
 
-[node name="Sparks" type="GPUParticles3D" parent="ImpactVFX"]
+[node name="Sparks" type="GPUParticles3D" parent="ImpactVFX" unique_id=762900618]
 material_override = SubResource("mat_sparks")
 emitting = false
 amount = 16
@@ -235,23 +233,21 @@ explosiveness = 1.0
 randomness = 1.0
 fixed_fps = 60
 process_material = SubResource("proc_sparks")
-draw_pass_1 = ExtResource("3_circle")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2037197510]
 libraries/ = SubResource("animlib_main")
-autoplay = "start"
+autoplay = &"start"
 
-[node name="CleanupTimer" type="Timer" parent="."]
+[node name="CleanupTimer" type="Timer" parent="." unique_id=2014659042]
 wait_time = 2.0
 one_shot = true
 
-[node name="ImpactSFX" type="AudioStreamPlayer3D" parent="."]
+[node name="ImpactSFX" type="AudioStreamPlayer3D" parent="." unique_id=1106099313]
 stream = ExtResource("6_break_sfx")
 volume_db = -5.0
 pitch_scale = 1.2
 script = ExtResource("5_sfx_script")
 min_pitch = 0.9
 max_pitch = 1.3
-max_plays = 4
 
 [connection signal="timeout" from="CleanupTimer" to="." method="queue_free"]
