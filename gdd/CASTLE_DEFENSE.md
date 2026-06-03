@@ -28,8 +28,8 @@ a no-cooldown fallback while elemental orbs recharge.
 |-----------|----------|--------|
 | Normal    | None     | Single target |
 | Fire      | 1s       | Explosion on hit — kills all skeletons in a small radius (~2m) |
-| Ice       | 2s       | Kills hit target; freezes all skeletons in a medium radius (~4m) for 2s; lingering slow for 3s after |
-| Wind      | 3s       | Doesn't kill — create a moving tornado that pulls all skeletons within the area (~6m) ; bomb carriers keep their fuse ticking |
+| Ice       | 3s       | Kills hit target; freezes all skeletons in a medium radius (~4m) for 3s; lingering slow for 6s after |
+| Wind      | 2s       | Doesn't kill — create a moving tornado that pulls all skeletons within the area (~6m) ; bomb carriers keep their fuse ticking |
 | Lightning | 4s       | Kills hit target; chains to up to 3 nearby skeletons within ~5m |
 | Poison    | 2.5s     | Kills hit target; corpse emits a cloud for 4s — skeletons entering the cloud (~4m) die after 4s unless they leave |
 
@@ -41,7 +41,6 @@ a no-cooldown fallback while elemental orbs recharge.
 - **Wind** — denial tool; resets runner and catapult progress without killing; especially punishing against bomb carriers whose fuse keeps ticking during knockback
 - **Lightning** — crowd clearer; one shot can wipe a full catapult crew, but the long cooldown makes it a commitment
 - **Poison** — punishes clustering; tag one skeleton heading to a catapult and let the cloud do the work; useless against solo runners
-- **Void** — comeback button; highest cooldown, highest payoff; one well-placed shot can wipe a coordinated multi-threat push; Dash can escape the pull
 
 ## Mobile Players
 
@@ -60,10 +59,11 @@ Respawn time scales with player count, spawning at a fixed point away from the g
 ### Firepower
 
 All mobile weapon damage is multiplied by the player's personal **firepower** value.
-Each player tracks their own firepower independently — a powered-up player at a catapult
-deals more damage.
+Each player tracks their own firepower independently — a powered-up player at a
+catapult deals more damage.
 
-Firepower increases by +1 each time that player successfully delivers a bomb to the gate. Everyone starts with a firepower of 3.
+Firepower increases by +1 each time that player successfully delivers a bomb
+to the gate. Everyone starts with a firepower of 3.
 
 ### Catapults
 

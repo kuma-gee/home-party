@@ -3,7 +3,7 @@ extends Node3D
 signal bounced(from_pos, to_pos)
 
 @export var damage := 1
-@export var max_bounces := 3
+@export var max_bounces := 2
 @export var bounce_delay := 0.2
 @export var lightning_scene: PackedScene
 
@@ -21,7 +21,7 @@ func bounce_to(pos: Vector3 = global_position, bounce_count: int = 0) -> void:
 	var closest_dist := INF
 
 	for area in hit_area.get_overlapping_areas():
-		if area is HurtBox and area not in _hit_hurtboxes:
+		if area is HurtBox and area.enabled and area not in _hit_hurtboxes:
 			var dist := pos.distance_to(area.global_position)
 			if dist < closest_dist:
 				closest_dist = dist

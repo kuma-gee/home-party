@@ -11,6 +11,7 @@ signal died()
 		health_changed.emit()
 		
 		if current_health <= 0:
+			enabled = false
 			died.emit()
 
 @export var enabled := true
