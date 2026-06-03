@@ -53,6 +53,7 @@
 [ext_resource type="PackedScene" uid="uid://tbx170onwvxm" path="res://main/ui/desktop_gameover.tscn" id="53_dkgov"]
 [ext_resource type="AudioStream" uid="uid://dlltwfjjn4ffv" path="res://assets/sound/sfx/お寺の鐘.mp3" id="53_dwc66"]
 [ext_resource type="PackedScene" uid="uid://ddfqcmo13o1he" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/vfx/gate_destruction_vfx.tscn" id="54_gatevfx"]
+[ext_resource type="Script" uid="uid://nxdpp3mdtdtw" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/arrow_spawner.gd" id="54_l2qex"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_3sspo"]
 panorama = ExtResource("4_v1y0d")
@@ -1037,6 +1038,10 @@ layout_mode = 1
 [node name="AISpawner" type="Node" parent="." unique_id=1649809598 node_paths=PackedStringArray("player_spawner")]
 script = ExtResource("39_ofmg5")
 player_spawner = NodePath("../PlayerSpawner")
+
+[node name="ArrowSpawner" type="Node" parent="." unique_id=2125171714]
+script = ExtResource("54_l2qex")
+metadata/_custom_type_script = "uid://nxdpp3mdtdtw"
 
 [node name="WinSound" type="AudioStreamPlayer3D" parent="." unique_id=1769420737]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1002827, 0)
