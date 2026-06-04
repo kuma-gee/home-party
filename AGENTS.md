@@ -6,7 +6,7 @@
 
 - `main/` - Core VR game, menu system, autoloads (HttpServer, LobbyServer, PlayerManager, etc.)
 - `game-client/` - SvelteKit TypeScript app, builds to `build/web`, copied by Godot's HttpServer
-- `mods-unpacked/KumaGee-VRCore/` - Mod system with game modes (castle-defense, pirate, whack-a-mole)
+- `mods-unpacked/KumaGee-VRCore/` - Mini games as mod system
 - `addons/` - Godot plugins: mod_loader (autoloaded), godot-xr-tools, webrtc, barcode, qr_code, proton_scatter
 
 ## Build & Dev Commands
