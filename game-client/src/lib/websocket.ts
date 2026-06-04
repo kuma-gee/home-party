@@ -1,4 +1,3 @@
-import { getIconForPlayer } from "./icons";
 import { WebRTCClient, type WebRTCConfig } from "./webrtc";
 
 // Fallback UUID generator for browsers that don't support crypto.randomUUID()
@@ -91,7 +90,6 @@ export class WebSocketClient {
   private reconnectDelay = 1000;
   private intentionalDisconnect = false;
   private webrtcClient: WebRTCClient | null = null;
-  private playerName: string = "";
   private isReconnecting = false;
 
   onConnected?: () => void;
@@ -106,10 +104,6 @@ export class WebSocketClient {
   onReconnecting?: (isReconnecting: boolean, attempts: number, maxAttempts: number) => void;
 
   constructor(private serverIp: string, private port: number = 14412) {}
-
-  setPlayerName(name: string) {
-    this.playerName = name;
-  }
 
   connect(): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -197,14 +191,12 @@ export class WebSocketClient {
           console.log(`Using existing client ID: ${clientId}`);
         }
 
-        // Send back the ID message with player data and client UUID
+        // Send back the ID message with client UUID
         this.send({
           msg: MessageType.Id,
           peer_id: this.peerId,
           client_id: clientId,
-          name: this.playerName || "Player " + this.peerId,
           number: msg.number,
-          icon: getIconForPlayer(msg.number),
         });
 
         this.initializeWebRTC();

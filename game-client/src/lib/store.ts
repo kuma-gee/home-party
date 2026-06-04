@@ -9,7 +9,6 @@ export interface ConnectionState {
 	inputLayout: 'joystick' | 'buttons';
 	webrtcState: RTCPeerConnectionState | null;
 	webrtcDataChannelOpen: boolean;
-	dataChannelMessage: string | null;
 	reconnecting: boolean;
 	reconnectAttempts: number;
 	maxReconnectAttempts: number;
@@ -24,7 +23,6 @@ function createConnectionStore() {
 		inputLayout: 'joystick',
 		webrtcState: null,
 		webrtcDataChannelOpen: false,
-		dataChannelMessage: null,
 		reconnecting: false,
 		reconnectAttempts: 0,
 		maxReconnectAttempts: 5,
@@ -34,13 +32,12 @@ function createConnectionStore() {
 
 	return {
 		subscribe,
-		connect: async (serverIp: string, playerName: string = '') => {
+		connect: async (serverIp: string) => {
 			if (client) {
 				client.disconnect();
 			}
 
 			client = new WebSocketClient(serverIp);
-			client.setPlayerName(playerName);
 
 			client.onConnected = () => {
 				update(state => ({ ...state, connected: true, serverIp, error: null }));
@@ -75,10 +72,6 @@ function createConnectionStore() {
 				update(state => ({ ...state, webrtcDataChannelOpen: true }));
 			};
 
-			client.onDataChannelMessage = (data: string) => {
-				update(state => ({ ...state, dataChannelMessage: data }));
-			};
-
 			client.onReconnecting = (isReconnecting: boolean, attempts: number, maxAttempts: number) => {
 				update(state => ({ 
 					...state, 
@@ -108,7 +101,6 @@ function createConnectionStore() {
 				inputLayout: 'joystick',
 				webrtcState: null,
 				webrtcDataChannelOpen: false,
-				dataChannelMessage: null,
 				reconnecting: false,
 				reconnectAttempts: 0,
 				maxReconnectAttempts: 5,
@@ -160,11 +152,6 @@ export const webrtcState = derived(
 export const webrtcDataChannelOpen = derived(
 	connectionStore,
 	$connectionStore => $connectionStore.webrtcDataChannelOpen
-);
-
-export const dataChannelMessage = derived(
-	connectionStore,
-	$connectionStore => $connectionStore.dataChannelMessage
 );
 
 export const reconnecting = derived(

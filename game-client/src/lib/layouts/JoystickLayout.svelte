@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { connectionStore, dataChannelMessage } from '../store';
+	import { connectionStore } from '../store';
 	import VirtualJoystick from '../VirtualJoystick.svelte';
 
 	interface Props {
@@ -76,12 +76,6 @@
 	<div class="joystick-container-wrapper">
 		<VirtualJoystick inputMode={inputLayout} onmove={(e) => handleJoystickMove(e.detail)} />
 	</div>
-
-	{#if $dataChannelMessage}
-		<div class="message-display">
-			<p>{$dataChannelMessage}</p>
-		</div>
-	{/if}
 
 	<div class="action-buttons">
 		<button
@@ -175,41 +169,6 @@
 
 	.secondary-btn {
 		background: linear-gradient(135deg, #EE4B2B 0%, #C0392B 100%);
-	}
-
-	.message-display {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		background: rgba(0, 0, 0, 0.8);
-		backdrop-filter: blur(10px);
-		color: white;
-		padding: 1.5rem 2rem;
-		border-radius: 20px;
-		max-width: 80vw;
-		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-		text-align: center;
-		animation: fadeIn 0.3s ease-in;
-		z-index: 50;
-	}
-
-	.message-display p {
-		margin: 0;
-		font-size: 1.25rem;
-		font-weight: 500;
-		line-height: 1.5;
-	}
-
-	@keyframes fadeIn {
-		from {
-			opacity: 0;
-			transform: translate(-50%, -40%);
-		}
-		to {
-			opacity: 1;
-			transform: translate(-50%, -50%);
-		}
 	}
 
 	@media (max-width: 768px), (max-height: 450px) {

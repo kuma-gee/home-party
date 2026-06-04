@@ -18,38 +18,9 @@
 - `theme/` - Godot theme resources
 - `gdd/` - Design docs and task files
 
-### Autoloads (project.godot)
-
-| Singleton | Script | Role |
-|---|---|---|
-| ModLoaderStore | `addons/mod_loader/mod_loader_store.gd` | Mod list state |
-| ModLoader | `addons/mod_loader/mod_loader.gd` | Scans and loads mods from `mods-unpacked/` |
-| HttpServer | `main/utils/http_server.gd` | Serves `build/web` on port 8484 |
-| LobbyServer | `main/utils/lobby_server.gd` | WebSocket signaling server on port 14412 |
-| PlayerManager | `main/utils/player_manager.gd` | Manages all connected clients (WebRTC + gamepads) |
-| StatsManager | `main/utils/stats_manager.gd` | Per-player deaths, damage, score tracking |
-| BGMManager | `main/utils/bgm_manager.gd` | Background music with volume control |
-| GameSettings | `main/utils/game_settings.gd` | Game configuration (AI count, etc.) |
-| AudioManager | `main/utils/audio_manager.gd` | SFX bus management |
-| Staging | `addons/godot-xr-tools/...` | Scene lifecycle helper |
-| XRToolsUserSettings | godot-xr-tools | XR user settings |
-| XRToolsRumbleManager | godot-xr-tools | Controller rumble |
-
 ## Mini-Game Structure
 
 **Registration:** A mini-game is a `.tres` file of class `GameResource` (`main/game_resource.gd`):
-
-```gdscript
-class_name GameResource extends Resource
-@export var name: String
-@export_multiline var description: String
-@export var scene: PackedScene        # game scene to load
-@export var icon: PackedScene         # 3D icon for VR shelf
-@export var min_recommended_players := 2
-@export var max_recommended_players := -1
-@export var vr_preview: Texture2D
-@export var desktop_preview: Texture2D
-```
 
 `GameLoader.list_games()` (`main/utils/game_loader.gd`) recursively scans every enabled mod's folder in `mods-unpacked/` for any `.tres` that loads as `GameResource`. No explicit registration needed — just drop a `.tres` file anywhere inside a mod folder.
 
@@ -62,15 +33,6 @@ class_name GameResource extends Resource
 - `ClientController` — abstract base with signals `primary_action_pressed`, `secondary_action_pressed`, and method `get_move() -> Vector2`
 - Three implementations: `GameClient` (WebRTC phone), `GamepadController` (physical gamepad), `AIClientController` (AI bot)
 - `FPSPlayer` holds a `game_client: ClientController` and calls `get_move()` each physics frame. Game code never knows which controller type it's talking to.
-
-## Build & Dev Commands
-
-### SvelteKit Controller
-```bash
-cd game-client
-bun run dev      # Dev server on port 8080
-bun run build    # Builds to build/, then copies to ../build/web
-```
 
 ## Communication Flow
 

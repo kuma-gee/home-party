@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-	import { connectionStore, isConnected, inputLayout, webrtcState, webrtcDataChannelOpen, reconnecting, reconnectAttempts } from '../lib/store';
+	import { connectionStore, isConnected, inputLayout, webrtcDataChannelOpen, reconnecting, reconnectAttempts } from '../lib/store';
 	import JoystickLayout from '../lib/layouts/JoystickLayout.svelte';
 
 	let serverIp = $state('');
@@ -8,7 +8,6 @@
 	let errorMessage = $state('');
 	let isFullscreen = $state(false);
 	let showFullscreenButton = $state(false);
-	let playerName = $state('');
 
 	async function requestFullscreen() {
 		try {
@@ -51,11 +50,6 @@
 			serverIp = window.location.hostname || 'localhost';
 		}
 
-		const savedName = localStorage.getItem('playerName');
-		if (savedName) {
-			playerName = savedName;
-		}
-
 		document.addEventListener('fullscreenchange', handleFullscreenChange);
 		document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
 		document.addEventListener('mozfullscreenchange', handleFullscreenChange);
@@ -83,17 +77,11 @@
 			return;
 		}
 
-		if (!playerName.trim()) {
-			errorMessage = 'Please enter your name';
-			return;
-		}
-
 		connecting = true;
 		errorMessage = '';
 
 		try {
-			localStorage.setItem('playerName', playerName.trim());
-			await connectionStore.connect(serverIp, playerName.trim());
+			await connectionStore.connect(serverIp);
 			await requestFullscreen();
 		} catch (error) {
 			errorMessage = 'Failed to connect to server';
@@ -114,17 +102,6 @@
 		<div class="connection-form">
 			<h2>Connect to Game Server</h2>
 			<div class="input-group">
-				<label for="player-name">Your Name:</label>
-				<input
-					id="player-name"
-					type="text"
-					bind:value={playerName}
-					placeholder="Enter your name"
-					disabled={connecting}
-					maxlength="20"
-				/>
-			</div>
-			<div class="input-group">
 				<label for="server-ip">Server IP Address:</label>
 				<input
 					id="server-ip"
@@ -135,30 +112,17 @@
 				/>
 			</div>
 
-			<button onclick={handleConnect} disabled={connecting || !serverIp || !playerName || $reconnecting}>
+			<button onclick={handleConnect} disabled={connecting || !serverIp || $reconnecting}>
 				{connecting ? 'Connecting...' : $reconnecting ? 'Reconnecting...' : 'Connect'}
 			</button>
 
 			{#if errorMessage}
 				<p class="error">{errorMessage}</p>
 			{/if}
-
-			{#if $reconnecting}
-				<div class="reconnect-indicator">
-					<div class="spinner-small"></div>
-					<p class="reconnect-text">
-						Attempting to reconnect ({$reconnectAttempts.current}/{$reconnectAttempts.max})...
-					</p>
-				</div>
-			{/if}
 		</div>
 	{:else}
 		{#if $webrtcDataChannelOpen}
 			<div class="status-corner">
-				<div class="status-indicator connected">
-					<span class="status-dot"></span>
-					<span class="status-text">Connected</span>
-				</div>
 				<button onclick={handleDisconnect} class="disconnect-icon" title="Disconnect">✕</button>
 				{#if showFullscreenButton}
 					<button onclick={requestFullscreen} class="fullscreen-icon" title="Enter Fullscreen">⛶</button>
@@ -170,27 +134,12 @@
 			<div class="connecting-screen">
 				<div class="connecting-content">
 					<div class="spinner"></div>
-					<h2>{$reconnecting ? 'Reconnecting to Game Server' : 'Connecting to Game Server'}</h2>
+					<h2>{$reconnecting ? 'Reconnecting...' : 'Connecting...'}</h2>
 					{#if $reconnecting}
 						<p class="reconnect-attempts">
 							Attempt {$reconnectAttempts.current} of {$reconnectAttempts.max}
 						</p>
 					{/if}
-					<div class="connection-steps">
-						<div class="step" class:active={$isConnected}>
-							<span class="step-icon">{$isConnected ? '✓' : '○'}</span>
-							<span class="step-text">WebSocket Connection</span>
-						</div>
-						<div class="step" class:active={$webrtcState === 'connected'}>
-							<span class="step-icon">{$webrtcState === 'connected' ? '✓' : '○'}</span>
-							<span class="step-text">WebRTC Connection</span>
-						</div>
-						<div class="step" class:active={$webrtcDataChannelOpen}>
-							<span class="step-icon">{$webrtcDataChannelOpen ? '✓' : '○'}</span>
-							<span class="step-text">Data Channel</span>
-						</div>
-					</div>
-					<p class="connecting-hint">{$reconnecting ? 'Please wait while we try to reconnect...' : 'Please wait...'}</p>
 					<button onclick={handleDisconnect} class="cancel-btn">Cancel</button>
 				</div>
 			</div>
@@ -328,64 +277,6 @@
 		font-size: 1.5rem;
 	}
 
-	.connection-steps {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-		margin-bottom: 2rem;
-		text-align: left;
-	}
-
-	.step {
-		display: flex;
-		align-items: center;
-		gap: 1rem;
-		padding: 0.75rem;
-		border-radius: 8px;
-		background: rgba(0, 0, 0, 0.05);
-		transition: all 0.3s ease;
-	}
-
-	.step.active {
-		background: rgba(76, 175, 80, 0.15);
-	}
-
-	.step-icon {
-		width: 24px;
-		height: 24px;
-		border-radius: 50%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 0.875rem;
-		font-weight: 700;
-		background: rgba(0, 0, 0, 0.1);
-		color: #666;
-		flex-shrink: 0;
-	}
-
-	.step.active .step-icon {
-		background: #4CAF50;
-		color: white;
-	}
-
-	.step-text {
-		flex: 1;
-		color: #666;
-		font-size: 0.95rem;
-	}
-
-	.step.active .step-text {
-		color: #333;
-		font-weight: 600;
-	}
-
-	.connecting-hint {
-		color: #666;
-		font-size: 0.9rem;
-		margin-bottom: 1.5rem;
-	}
-
 	.cancel-btn {
 		background-color: #f44336;
 		max-width: 200px;
@@ -404,36 +295,6 @@
 		align-items: center;
 		gap: 0.5rem;
 		z-index: 100;
-	}
-
-	.status-indicator {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		background: rgba(0, 0, 0, 0.6);
-		backdrop-filter: blur(10px);
-		padding: 0.5rem 1rem;
-		border-radius: 20px;
-		color: white;
-		font-size: 0.875rem;
-		font-weight: 500;
-	}
-
-	.status-indicator.connected {
-		background: rgba(76, 175, 80, 0.8);
-	}
-
-	.status-dot {
-		width: 8px;
-		height: 8px;
-		background: #4CAF50;
-		border-radius: 50%;
-		animation: pulse 2s infinite;
-	}
-
-	@keyframes pulse {
-		0%, 100% { opacity: 1; }
-		50% { opacity: 0.5; }
 	}
 
 	.disconnect-icon {
@@ -474,34 +335,6 @@
 		transform: scale(1.1);
 	}
 
-	.reconnect-indicator {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 0.75rem;
-		margin-top: 1rem;
-		padding: 0.75rem;
-		background-color: #fff3cd;
-		border: 1px solid #ffc107;
-		border-radius: 4px;
-		color: #856404;
-	}
-
-	.spinner-small {
-		width: 20px;
-		height: 20px;
-		border: 3px solid rgba(255, 193, 7, 0.3);
-		border-top-color: #ffc107;
-		border-radius: 50%;
-		animation: spin 1s linear infinite;
-	}
-
-	.reconnect-text {
-		margin: 0;
-		font-size: 0.9rem;
-		font-weight: 500;
-	}
-
 	.reconnect-attempts {
 		color: #ff9800;
 		font-size: 1rem;
@@ -513,14 +346,6 @@
 		.status-corner {
 			top: 0.75rem;
 			right: 0.75rem;
-		}
-
-		.status-text {
-			display: none;
-		}
-
-		.status-indicator {
-			padding: 0.5rem;
 		}
 	}
 
