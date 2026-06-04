@@ -7,3 +7,4 @@ through a simple local website.
 ## Games
 
 - [Castle Defense](./CASTLE_DEFENSE.md)
+- [Draw & Guess](./DRAW_AND_GUESS.md)
