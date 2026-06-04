@@ -27,7 +27,7 @@ horizontal_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Form"
-uri = "https://docs.google.com/forms/d/1IYgQq3APZuSU94lbNjOC7UGD2FD0i_oTIna3ghmMGFY"
+uri = "https://forms.gle/qTEWdVujwCydXKbv5"
 
 [node name="Label3" type="RichTextLabel" parent="." unique_id=941802723]
 layout_mode = 2

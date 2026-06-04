@@ -263,6 +263,7 @@ theme_override_constants/margin_bottom = 4
 custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
 size_flags_vertical = 4
+theme_override_constants/separation = 4
 script = ExtResource("7_sxu1o")
 qr_code = NodePath("QRCodeRect")
 url_label = NodePath("URL")
