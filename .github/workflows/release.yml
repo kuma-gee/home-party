@@ -71,7 +71,7 @@ jobs:
 
   release-itch:
     uses: kuma-gee/actions/.github/workflows/itch-release.yml@main
-    needs: build-godot
+    needs: [build-godot, build-info]
     if: ${{ inputs.release-itch }}
     with:
       channels: ${{ needs.build-info.outputs.channels }}
