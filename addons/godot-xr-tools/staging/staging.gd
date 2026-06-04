@@ -175,7 +175,7 @@ func wait_for_scene_load(p_scene_path : String) -> ResourceLoader.ThreadLoadStat
 		if res != ResourceLoader.THREAD_LOAD_IN_PROGRESS:
 			break
 
-		loading.progress = progress[0]
+		#loading.progress = progress[0]
 		await get_tree().create_timer(0.1).timeout
 
 	return res

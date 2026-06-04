@@ -325,7 +325,6 @@ size = 6.0625043
 
 [node name="GameDetails" type="Sprite3D" parent="." unique_id=40414504]
 transform = Transform3D(-6.5567085e-09, 0, -0.15, 0, 0.15, 0, 0.15, 0, -6.5567085e-09, 1.2006073, 1.6233156, -0.5303985)
-visible = false
 texture = SubResource("ViewportTexture_ve3ly")
 script = ExtResource("11_67j6m")
 

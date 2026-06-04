@@ -24,8 +24,8 @@ const ELEMENT_EMOJIS := {
 
 const ELEMENT_TEXT := {
 	Arrow.Element.FIRE: "Explodes and hit enemies in a small area",
-	Arrow.Element.ICE: "Freezes in impact and slows enemies in an area",
-	Arrow.Element.LIGHTNING: "Hits the closest enemy and bounces up to 3 times",
+	Arrow.Element.ICE: "Freezes on impact and slows enemies in an area",
+	Arrow.Element.LIGHTNING: "Hits the closest enemy and bounces up to 2 times",
 	Arrow.Element.WIND: "Creating a tornado pulling enemies towards it",
 	Arrow.Element.POISON: "Poisons enemies in a large area",
 }
