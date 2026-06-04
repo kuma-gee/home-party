@@ -45,6 +45,7 @@ func _start_ai() -> void:
 		logger.warn("No player_scene set — AI spawner disabled")
 		return
 
+	_clear_agents()
 	_active = true
 	var count := GameSettings.get_ai_count()
 	logger.info("No players connected — spawning %d AI agents" % count)
@@ -134,6 +135,8 @@ func _process(delta: float) -> void:
 				_respawn_agent(i)
 		elif is_instance_valid(_agents[i]):
 			_update_agent(i, delta)
+		else:
+			_respawn_agent(i)
 
 
 func _update_agent(i: int, delta: float) -> void:
@@ -305,6 +308,17 @@ func stop() -> void:
 
 func stop_and_clear() -> void:
 	_active = false
-	for i in _agents.size():
-		if is_instance_valid(_agents[i]) and not _agents[i].is_dead:
-			_agents[i].on_hurtbox_died()
+	_clear_agents()
+
+func _clear_agents() -> void:
+	for agent in _agents:
+		if is_instance_valid(agent):
+			agent.queue_free()
+	_agents.clear()
+	_controllers.clear()
+	_agent_states.clear()
+	_agent_targets.clear()
+	_agent_timers.clear()
+	_spawn_positions.clear()
+	_agent_skill_cooldowns.clear()
+	_agent_bombs.clear()

@@ -252,7 +252,7 @@ one_shot = true
 one_shot = true
 
 [node name="PoisonTimer" type="Timer" parent="." unique_id=664187711]
-wait_time = 5.0
+wait_time = 4.0
 one_shot = true
 
 [node name="PoisonInjectArea" type="Area3D" parent="." unique_id=107468239]
