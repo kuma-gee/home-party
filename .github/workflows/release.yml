@@ -42,12 +42,6 @@ jobs:
 
           if [ $RELEASE_STEAM = false ] && [ $RELEASE_GITHUB = false ]; then
             CHANNELS=''
-
-            if [ $RELEASE_ITCH = true ]; then
-              CHANNELS='"web"'
-            fi
-          elif [ $RELEASE_ITCH = true ]; then
-            CHANNELS+=', "web"'
           fi
 
           if [ $IS_DEMO = true ] || [[ "$REF" =~ "-demo" ]]; then
