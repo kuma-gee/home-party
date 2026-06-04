@@ -9,6 +9,7 @@ enum Element { NONE, FIRE, ICE, LIGHTNING, WIND, POISON, VOID }
 @export var damage := 1
 @export var element_area: ArrowElement
 @onready var lifetime_timer: Timer = $LifetimeTimer
+@onready var hit_box: HitBox = $HitBox
 
 var _hit := false
 var fired := false
@@ -31,6 +32,7 @@ func fire(force: Vector3):
 	linear_velocity = force
 	fired = true
 	element_area.fired()
+	hit_box.hit_on_enter = element_area.element == Element.NONE
 
 func _physics_process(_delta: float) -> void:
 	if linear_velocity.length() > 0.5 and fired:

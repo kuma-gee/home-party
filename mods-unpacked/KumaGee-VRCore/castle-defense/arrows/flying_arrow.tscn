@@ -17,7 +17,7 @@ height = 0.75
 radius = 0.08
 
 [node name="FlyingArrow" unique_id=777328390 node_paths=PackedStringArray("element_area") groups=["arrow"] instance=ExtResource("1_7uchs")]
-collision_mask = 3
+collision_mask = 32771
 freeze = true
 freeze_mode = 0
 contact_monitor = true
