@@ -24,3 +24,22 @@ The VR player can:
 Players on their phones (spectators) see the same game details mirrored on a desktop screen, so everyone's on the same page before the game starts.
 
 When a game ends, everyone returns here to pick the next one. The loop is simple: arrive, browse, pick, play, repeat.
+
+### Plushie Players
+
+When mobile players join the lobby, they don't just spectate — they **spawn as plushies** scattered around the living room.
+These are soft, grabable toys that the VR player can pick up, squeeze, toss, or stack. Each plushie is a random animal.
+The player numbers is shown as a tag around the animals neck. Mobile players can click any button and the plushie will
+make a sound and some visual cue for some basic interactions.
+
+1. VR player arrives in the living room
+2. Mobile players join and **pop in as plushies** on the couch/floor
+3. VR player can **browse games** while also **tossing plushies** around
+4. Mobile players **squeak and glow** to grab attention / react to game choices
+5. VR player slots a game and presses start → loads game
+
+**States**
+
+- CONNECTED: player is connected and can join the games. The default state.
+- UNPLAYABLE: for phone-only games, if a player is connected via controller. Show an icon on top of the plushie that they cannot join this specific game.
+- DISCONNECTED: plushies become gray and the player number tag becomes a disconnected icon. Physics still all work. Player can reconnect to restore the state
