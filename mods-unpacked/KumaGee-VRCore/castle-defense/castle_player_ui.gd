@@ -4,7 +4,7 @@ extends JoinedPlayer
 signal player_spawned
 
 @export var firepower_label: Label
-@export var firepower := 1:
+@export var firepower := 3:
 	set(v):
 		firepower = v
 		if firepower_label:

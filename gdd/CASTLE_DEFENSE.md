@@ -50,11 +50,8 @@ life: charging a catapult shot or running a bomb to the gate.
 ### Respawn
 
 Respawn time scales with player count, spawning at a fixed point away from the gate.
-
-| Players | Respawn Time |
-|---------|-------------|
-| 2       | 2s          |
-| 8+      | 6s          |
+- min 2 Players - 2s
+- max 6 Players - 6s
 
 ### Firepower
 
@@ -72,7 +69,8 @@ can crew the same catapult to charge faster and increase the damage
 
 ### Bombs
 
-Four bombs spawn in the middle of the map with a faster respawn rate than skeletons. Only 1 bomb can be carried at a time.
+Four bombs spawn in the middle of the map with a 3s respawn rate. Only 1 bomb can be carried at a time.
+Taking the bomb to the gate, damages it and the player can respawn at a faster spawn time.
 
 - Picking up a bomb starts an **10s fuse** — it explodes on the carrier if not delivered in time
 - **Successful delivery:** deals `1 × firepower` damage to the gate and grants the carrier **+1 firepower**

@@ -586,7 +586,7 @@ radius = 2.0
 [node name="blizzard_area" type="Node3D" unique_id=603795471]
 
 [node name="CleanupTimer" type="Timer" parent="." unique_id=1452428118]
-wait_time = 6.0
+wait_time = 5.0
 one_shot = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=865820762]
@@ -679,6 +679,8 @@ size = Vector3(5, 0.028, 5)
 collision_layer = 0
 collision_mask = 32768
 script = ExtResource("8_e0gft")
+freeze_time = 2.0
+slow_amount = 0.5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="FreezeArea" unique_id=967835598]
 shape = SubResource("SphereShape3D_hq7le")

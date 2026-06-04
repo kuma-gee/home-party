@@ -2,7 +2,7 @@ class_name BombSpawner
 extends Node3D
 
 @export var bomb_scene: PackedScene
-@export var bomb_count: int = 5
+@export var bomb_count: int = 4
 @export var offset: Vector3 = Vector3(0.8, 0, 0)
 
 func _ready() -> void:

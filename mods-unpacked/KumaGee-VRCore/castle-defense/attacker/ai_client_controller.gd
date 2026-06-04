@@ -5,7 +5,7 @@ const ARRIVED_SQ := 0.25
 
 var target: Vector3 = Vector3.ZERO
 var _player: FPSPlayer = null
-var firepower := 1
+var firepower := 3
 
 func bind_player(player: FPSPlayer) -> void:
 	clear_player()

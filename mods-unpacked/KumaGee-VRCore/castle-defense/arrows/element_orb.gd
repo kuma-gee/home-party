@@ -2,10 +2,10 @@ class_name ElementOrb
 extends Area3D
 
 const COOLDOWN_TIME = {
-	Arrow.Element.FIRE: 1.0,
-	Arrow.Element.ICE: 3.0,
-	Arrow.Element.LIGHTNING: 4.0,
-	Arrow.Element.WIND: 2.0,
+	Arrow.Element.FIRE: 1.5,
+	Arrow.Element.ICE: 4.0,
+	Arrow.Element.LIGHTNING: 4.5,
+	Arrow.Element.WIND: 3.5,
 	Arrow.Element.POISON: 2.5,
 	Arrow.Element.VOID: 5.0
 }
