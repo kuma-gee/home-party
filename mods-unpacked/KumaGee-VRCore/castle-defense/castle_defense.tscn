@@ -446,7 +446,7 @@ light_color = Color(0.2784314, 0.65882355, 1, 1)
 light_energy = 0.1
 
 [node name="PlayTime" type="Timer" parent="." unique_id=96472218]
-wait_time = 210.0
+wait_time = 10.0
 one_shot = true
 
 [node name="ProtonScatter" type="Node3D" parent="." unique_id=1216591199]

@@ -4,7 +4,7 @@ The VR player defends a castle gate using a bow and elemental arrows against a h
 of skeletons. Mobile players control the skeletons, using catapults and bombs to
 destroy the gate before the time runs out.
 
-- **Time Limit:** 5 minutes
+- **Time Limit:** 3 minutes
 - **Win Condition (VR):** Gate survives to time
 - **Win Condition (Mobile):** Gate reaches 0 HP
 - **Recommended Players:** 4+

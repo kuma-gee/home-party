@@ -105,6 +105,7 @@ func _spawn_agent(scene: PackedScene, i: int, spawn_pos: Vector3, controller: AI
 
 
 func _on_agent_died(i: int, respawn_time: float) -> void:
+	if _controllers.size() < i or not _active: return
 	_controllers[i].clear_player()
 	_agent_states[i] = _State.DEAD
 	_agent_timers[i] = respawn_time + randf_range(-0.5, 0.5)
