@@ -74,7 +74,7 @@ jobs:
     needs: build-godot
     if: ${{ inputs.release-itch }}
     with:
-      channels: '["web"]'
+      channels: ${{ needs.build-info.outputs.channels }}
       game: ${{ needs.build-godot.outputs.game }}
       itch-user: kuma-gee
     secrets:
