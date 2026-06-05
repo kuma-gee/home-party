@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://tgxwydvjpkvx"]
+
+[ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_pickable"]
+[ext_resource type="Script" uid="uid://cye53pft22yf1" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/vr_3d_pen.gd" id="2_script"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pen"]
+radius = 0.030273438
+height = 0.43936524
+
+[sub_resource type="StandardMaterial3D" id="Mat_pen_body"]
+albedo_color = Color(0.15, 0.15, 0.18, 1)
+metallic = 0.2
+roughness = 0.5
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pen"]
+top_radius = 0.03
+bottom_radius = 0.03
+height = 0.4
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="Mat_pen_tip"]
+albedo_color = Color(0.9, 0.9, 0.9, 1)
+metallic = 0.1
+roughness = 0.3
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_bfq2t"]
+top_radius = 0.03
+bottom_radius = 0.0
+height = 0.05
+
+[node name="Pen" unique_id=1045651359 node_paths=PackedStringArray("pen_tip") instance=ExtResource("1_pickable")]
+freeze = true
+script = ExtResource("2_script")
+line_thickness = 0.03
+line_color = Color(0, 0, 0, 1)
+pen_tip = NodePath("PenTip")
+release_mode = 1
+
+[node name="CollisionShape3D" parent="." index="0" unique_id=1198871219]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22967915, 0)
+shape = SubResource("CapsuleShape3D_pen")
+
+[node name="PenBody" type="MeshInstance3D" parent="." index="1" unique_id=1455058128]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25128597, 0)
+material_override = SubResource("Mat_pen_body")
+mesh = SubResource("CylinderMesh_pen")
+
+[node name="PenTipMesh" type="MeshInstance3D" parent="." index="2" unique_id=2073531270]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.026187316, 0)
+material_override = SubResource("Mat_pen_tip")
+mesh = SubResource("CylinderMesh_bfq2t")
+
+[node name="PenTip" type="Node3D" parent="." index="3" unique_id=1982946823]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0.0010055415, 0)

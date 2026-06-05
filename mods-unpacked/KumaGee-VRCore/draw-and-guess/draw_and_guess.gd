@@ -3,13 +3,15 @@ extends XRToolsSceneBase
 @export var prepare_ui: Control
 @export var game_ui: Control
 @export var vr_prepare_scene: PackedScene
+@export var pen_scene: PackedScene
 
 var logger := KumaLog.new("DrawAndGuess")
 var word_pool: Array[String] = []
 var submitted_players: Dictionary = {}
 var vr_player_ready := false
 var prepare_scene: DrawPrepareScene
-var is_started := false
+var is_drawing_phase := false
+var vr_3d_pen: VR3DPen = null
 
 func _ready() -> void:
 	prepare_ui.show()
@@ -32,7 +34,7 @@ func _on_clients_changed() -> void:
 		if client is GameClient:
 			if not client.input_received.is_connected(_on_client_input_received.bind(client)):
 				client.input_received.connect(_on_client_input_received.bind(client))
-	LobbyServer.send_layout("word_submit" if not is_started else "guess")
+	LobbyServer.send_layout("word_submit" if not is_drawing_phase else "guess")
 	_update_ui()
 
 func _on_client_input_received(input: String, value, client: GameClient) -> void:
@@ -103,7 +105,22 @@ func _on_vr_ready_pressed() -> void:
 
 func _start_game() -> void:
 	logger.info("Starting game with %d words in pool" % word_pool.size())
-	is_started = true
+	is_drawing_phase = true
 	prepare_ui.hide()
 	game_ui.show()
 	_on_clients_changed()
+	_setup_drawing_pen()
+
+func _setup_drawing_pen():
+	if not pen_scene:
+		logger.warn("Pen scene not configured")
+		return
+	
+	if vr_3d_pen:
+		vr_3d_pen.queue_free()
+	
+	vr_3d_pen = pen_scene.instantiate()
+	add_child(vr_3d_pen)
+	
+	var spawn_pos = xr_player.origin.global_transform.origin + Vector3(0.5, 1.2, -0.5)
+	vr_3d_pen.global_position = spawn_pos
