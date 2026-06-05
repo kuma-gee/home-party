@@ -124,3 +124,8 @@ func _end_stroke():
 	current_stroke = null
 	current_mesh = null
 	current_material = null
+
+func set_drawing_enabled(enabled: bool) -> void:
+	if not enabled and is_drawing:
+		_end_stroke()
+	is_drawing = enabled

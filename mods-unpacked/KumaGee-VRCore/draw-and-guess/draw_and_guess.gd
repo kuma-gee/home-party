@@ -1,22 +1,41 @@
 extends XRToolsSceneBase
 
+signal game_ended()
+signal round_started(word: String, round_number: int, total_rounds: int)
+signal round_ended(word: String)
+
+const ROUND_DURATION := 60.0
+const REVEAL_DURATION := 5.0
+
 @export var prepare_ui: Control
 @export var game_ui: Control
 @export var vr_prepare_scene: PackedScene
 @export var pen_scene: PackedScene
+@export var word_label: Label
+@export var timer_label: Label
+@export var progress_label: Label
+@export var reveal_label: Label
+@export var round_timer: Timer
+@export var reveal_timer: Timer
 
 var logger := KumaLog.new("DrawAndGuess")
 var word_pool: Array[String] = []
 var submitted_players: Dictionary = {}
-var vr_player_ready := false
 var prepare_scene: DrawPrepareScene
 var is_drawing_phase := false
 var vr_3d_pen: VR3DPen = null
+
+var current_word: String = ""
+var current_round: int = 0
+var total_rounds: int = 0
+var is_revealing := false
 
 func _ready() -> void:
 	prepare_ui.show()
 	game_ui.hide()
 	PlayerManager.clients_changed.connect(_on_clients_changed)
+	round_timer.timeout.connect(_on_round_timer_expired)
+	reveal_timer.timeout.connect(_on_reveal_timer_expired)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey:
@@ -34,12 +53,15 @@ func _on_clients_changed() -> void:
 		if client is GameClient:
 			if not client.input_received.is_connected(_on_client_input_received.bind(client)):
 				client.input_received.connect(_on_client_input_received.bind(client))
-	LobbyServer.send_layout("word_submit" if not is_drawing_phase else "guess")
+				
+	LobbyServer.send_layout("guess" if is_drawing_phase else "word_submit")
 	_update_ui()
-
+	
 func _on_client_input_received(input: String, value, client: GameClient) -> void:
 	if input == "word":
 		_handle_word_submission(value, client)
+	elif input == "guess":
+		_handle_guess(value, client)
 
 func _handle_word_submission(word: String, client: GameClient) -> void:
 	var trimmed_word = word.strip_edges()
@@ -75,19 +97,20 @@ func _handle_word_submission(word: String, client: GameClient) -> void:
 	_check_all_submitted()
 
 func _update_ui() -> void:
-	var active_client_count = 0
-	for client in PlayerManager.get_children():
-		if client is GameClient and client.active:
-			active_client_count += 1
-	
-	var text = "Players connected: %d\nWords submitted: %d / %d" % [
-		active_client_count,
-		submitted_players.size(),
-		active_client_count
-	]
-	prepare_scene.count_label.text = text
+	if not is_drawing_phase:
+		var active_client_count = 0
+		for client in PlayerManager.get_children():
+			if client is GameClient and client.active:
+				active_client_count += 1
+		
+		var text = "Players connected: %d\nWords submitted: %d / %d" % [
+			active_client_count,
+			submitted_players.size(),
+			active_client_count
+		]
+		prepare_scene.count_label.text = text
 
-func _check_all_submitted() -> void:
+func _check_all_submitted(vr_ready = false) -> void:
 	var all_submitted = true
 	for client in PlayerManager.get_children():
 		if client is GameClient and client.active:
@@ -95,13 +118,12 @@ func _check_all_submitted() -> void:
 				all_submitted = false
 				break
 	
-	if all_submitted and vr_player_ready and PlayerManager.playing_clients.size() > 0:
+	if all_submitted and vr_ready and PlayerManager.playing_clients.size() > 0:
 		_start_game()
 
 func _on_vr_ready_pressed() -> void:
-	vr_player_ready = true
 	logger.info("VR player ready")
-	_check_all_submitted()
+	_check_all_submitted(true)
 
 func _start_game() -> void:
 	logger.info("Starting game with %d words in pool" % word_pool.size())
@@ -110,6 +132,10 @@ func _start_game() -> void:
 	game_ui.show()
 	_on_clients_changed()
 	_setup_drawing_pen()
+	
+	total_rounds = word_pool.size()
+	current_round = 0
+	_start_next_round()
 
 func _setup_drawing_pen():
 	if not pen_scene:
@@ -124,3 +150,73 @@ func _setup_drawing_pen():
 	
 	var spawn_pos = xr_player.origin.global_transform.origin + Vector3(0.5, 1.2, -0.5)
 	vr_3d_pen.global_position = spawn_pos
+
+func _start_next_round() -> void:
+	if word_pool.is_empty():
+		_end_game()
+		return
+	
+	current_round += 1
+	var word_index = randi() % word_pool.size()
+	current_word = word_pool[word_index]
+	word_pool.remove_at(word_index)
+	
+	logger.info("Round %d/%d: Word assigned" % [current_round, total_rounds])
+	
+	if word_label:
+		word_label.text = current_word
+	if progress_label:
+		progress_label.text = "Word %d of %d" % [current_round, total_rounds]
+	
+	reveal_label.hide()
+	round_started.emit(current_word, current_round, total_rounds)
+	round_timer.start()
+
+func _on_round_timer_expired() -> void:
+	logger.info("Round %d timer expired, revealing word: %s" % [current_round, current_word])
+	round_ended.emit(current_word)
+	_reveal_word()
+
+func _reveal_word() -> void:
+	is_revealing = true
+	if reveal_label:
+		reveal_label.text = "The word was: %s" % current_word
+		reveal_label.show()
+	
+	if vr_3d_pen:
+		vr_3d_pen.set_drawing_enabled(false)
+	
+	reveal_timer.start(REVEAL_DURATION)
+
+func _on_reveal_timer_expired() -> void:
+	is_revealing = false
+	if vr_3d_pen:
+		vr_3d_pen.set_drawing_enabled(true)
+	
+	_start_next_round()
+
+func _end_game() -> void:
+	logger.info("Game ended - all words used")
+	game_ended.emit()
+
+func _update_timer_label(time_left: float) -> void:
+	if timer_label:
+		var minutes = int(time_left) / 60
+		var seconds = int(time_left) % 60
+		timer_label.text = "%d:%02d" % [minutes, seconds]
+
+func _process(_delta: float) -> void:
+	if round_timer and not round_timer.is_stopped():
+		_update_timer_label(round_timer.time_left)
+
+func _handle_guess(guess: String, client: GameClient) -> void:
+	if not is_drawing_phase or is_revealing:
+		return
+	
+	var trimmed_guess = guess.strip_edges().to_lower()
+	if trimmed_guess == current_word.to_lower():
+		logger.info("Correct guess from %s: %s" % [client.uuid, guess])
+		client.send_text("guess_ack;correct")
+	else:
+		logger.debug("Incorrect guess from %s: %s" % [client.uuid, guess])
+		client.send_text("guess_ack;incorrect")

@@ -47,4 +47,6 @@
 - Don't create any documentation markdown files unless explicitly requested
 - Don't add comments unless it's really not clear why it's been done that way
 - Prefer creating nodes in the scenes directly if it's not dynamic
+- Create nodes in the scenes and not via code
+- Use `@export` for nodes deeper than one levele inside the tree
 - Use the `theme.css` resource for all root control nodes
