@@ -8,6 +8,8 @@ signal stroke_created(stroke: Node3D)
 @export var line_color := Color.BLACK
 @export var pen_tip: Node3D
 
+const CIRCLE_SEGMENTS := 8
+
 var is_drawing := false
 var current_stroke: Node3D = null
 var current_mesh: ImmediateMesh = null
@@ -86,18 +88,19 @@ func _start_stroke():
 	strokes_container.add_child(current_stroke)
 	
 	last_point = _get_tip_position()
-	current_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLE_STRIP)
 	
 	stroke_created.emit(current_stroke)
 
 func _add_segment_point(point: Vector3):
+	current_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
+	
 	var half_thickness = line_thickness * 0.5
 	
-	var up = Vector3.UP
 	var forward = (point - last_point).normalized()
 	if forward.length() < 0.001:
 		forward = Vector3.FORWARD
 	
+	var up = Vector3.UP
 	var right = forward.cross(up).normalized()
 	if right.length() < 0.001:
 		right = Vector3.RIGHT
@@ -105,20 +108,33 @@ func _add_segment_point(point: Vector3):
 	else:
 		up = right.cross(forward).normalized()
 	
-	right *= half_thickness
-	up *= half_thickness
+	var angle_step = TAU / CIRCLE_SEGMENTS
+	for i in range(CIRCLE_SEGMENTS):
+		var angle = angle_step * i
+		var circle_vec = right * cos(angle) + up * sin(angle)
+		
+		var v1 = last_point + circle_vec * half_thickness
+		var v2 = point + circle_vec * half_thickness
+		
+		var next_angle = angle_step * ((i + 1) % CIRCLE_SEGMENTS)
+		var next_circle_vec = right * cos(next_angle) + up * sin(next_angle)
+		
+		var v3 = point + next_circle_vec * half_thickness
+		var v4 = last_point + next_circle_vec * half_thickness
+		
+		current_mesh.surface_add_vertex(v1)
+		current_mesh.surface_add_vertex(v2)
+		current_mesh.surface_add_vertex(v3)
+		
+		current_mesh.surface_add_vertex(v4)
+		current_mesh.surface_add_vertex(v3)
+		current_mesh.surface_add_vertex(v1)
 	
-	current_mesh.surface_add_vertex(last_point + up + right)
-	current_mesh.surface_add_vertex(last_point + up - right)
-	current_mesh.surface_add_vertex(point + up + right)
-	current_mesh.surface_add_vertex(point + up - right)
+	current_mesh.surface_end()
 
 func _end_stroke():
 	if not is_drawing:
 		return
-	
-	if current_mesh:
-		current_mesh.surface_end()
 	
 	is_drawing = false
 	current_stroke = null

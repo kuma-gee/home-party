@@ -1,7 +1,7 @@
 # Draw & Guess
 
-Mobile players each submit one word into a shared pool. The VR player draws each
-word in freeform 3D space while the drawing is projected live on a shared desktop
+Mobile players all submit words into a shared pool. The VR player draws each
+word in freeform 3D space while the drawing visible live on a shared desktop
 screen (TV/monitor) for everyone to see. Mobile players race to type the correct
 guess on their phones — the phone is purely a text input device.
 Rounds end on a timer — the faster you guess, the more points you earn.
