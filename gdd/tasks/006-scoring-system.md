@@ -17,7 +17,7 @@ Implement the scoring formulas for both mobile and VR players. Accumulate scores
 
 **Tracked per player**: total points, number of rounds guessed correctly.
 
-Reuse or extend `StatsManager` (`main/utils/stats_manager.gd`) or create a new scoring autoload for Draw & Guess. Scores persist across rounds and are fed into the leaderboard (012).
+Track the scoring the the main `draw_and_guess.gd` script. Scores persist across rounds and are fed into the leaderboard (012).
 
 ## Acceptance criteria
 

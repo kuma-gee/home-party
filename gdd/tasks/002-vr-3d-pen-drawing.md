@@ -10,12 +10,12 @@ The pen controller is a 3D mesh (simple cylinder/cone representing a marker tip)
 
 ## Acceptance criteria
 
-- [ ] VR player grips + holds trigger → a continuous 3D line follows the controller tip
-- [ ] Releasing trigger ends the current stroke
-- [ ] Multiple strokes are independent and visible in VR space
-- [ ] Strokes persist in world space (they don't follow the controller)
-- [ ] Line thickness is comfortable to see (~0.02–0.05 units)
-- [ ] Works in the Draw & Guess scene when the drawing phase is active
+- [x] VR player grips + holds trigger → a continuous 3D line follows the controller tip
+- [x] Releasing trigger ends the current stroke
+- [x] Multiple strokes are independent and visible in VR space
+- [x] Strokes persist in world space (they don't follow the controller)
+- [x] Line thickness is comfortable to see (~0.02–0.05 units)
+- [x] Works in the Draw & Guess scene when the drawing phase is active
 
 ## Blocked by
 

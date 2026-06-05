@@ -12,12 +12,12 @@ No scoring logic yet — just end-of-round state transition and word tracking.
 
 ## Acceptance criteria
 
-- [ ] On game start, a random word is pulled from the pool and assigned to the current round
-- [ ] A 60-second countdown timer begins (visual feedback not required yet — just the internal clock)
-- [ ] When timer expires, the current round ends and the word is revealed on the shared screen
-- [ ] After a brief reveal delay (~5s), the next word is drawn — continues until pool is empty
-- [ ] When all words are used, the game fires a `game_ended` signal (to be caught by leaderboard slice)
-- [ ] Word progress is tracked internally (e.g., "word 3 of 7")
+- [x] On game start, a random word is pulled from the pool and assigned to the current round
+- [x] A 60-second countdown timer begins (visual feedback not required yet — just the internal clock)
+- [x] When timer expires, the current round ends and the word is revealed on the shared screen
+- [x] After a brief reveal delay (~5s), the next word is drawn — continues until pool is empty
+- [x] When all words are used, the game fires a `game_ended` signal (to be caught by leaderboard slice)
+- [x] Word progress is tracked internally (e.g., "word 3 of 7")
 
 ## Blocked by
 

@@ -10,12 +10,12 @@ Define a new WebRPC message from phone to Godot: `word;<text>` (string). Godot r
 
 ## Acceptance criteria
 
-- [ ] Game resource `.tres` file registers "Draw & Guess" in the shelf with a placeholder scene
-- [ ] Mobile phone shows a word input field with character counter (min 3, max 20) and submit button
-- [ ] Words are sent to Godot via `word;<text>` and validated (alphanumeric, length, dedup)
-- [ ] Duplicate/invalid words show an error on the phone; valid words are accepted and the phone shows "Word submitted"
-- [ ] VR player sees a waiting panel with player count and a "Ready" button
-- [ ] When all mobile players have submitted and VR confirms ready, the game starts and mobile players see a text input for submitting guesses
+- [x] Game resource `.tres` file registers "Draw & Guess" in the shelf with a placeholder scene
+- [x] Mobile phone shows a word input field with character counter (min 3, max 20) and submit button
+- [x] Words are sent to Godot via `word;<text>` and validated (alphanumeric, length, dedup)
+- [x] Duplicate/invalid words show an error on the phone; valid words are accepted and the phone shows "Word submitted"
+- [x] VR player sees a waiting panel with player count and a "Ready" button
+- [x] When all mobile players have submitted and VR confirms ready, the game starts and mobile players see a text input for submitting guesses
 
 ## Blocked by
 
