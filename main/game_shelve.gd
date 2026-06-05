@@ -62,7 +62,7 @@ func _populate() -> void:
 
 	for i in range(n):
 		var g = games[i]
-		if not g or not g.icon:
+		if not g:
 			continue
 
 		var inst = scene.instantiate() as GameSelectArea

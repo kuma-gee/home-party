@@ -42,7 +42,8 @@
 4. **WebRTC data channel** (pre-negotiated, id=1) — all real-time input data flows here
 5. **Godot receives inputs** via semicolon-delimited string protocol: `"move;x;y"` (joystick), `"name;1/0"` (buttons)
 
-## Guidelines
+## MUST FOLLOW
 
 - Don't create any documentation markdown files unless explicitly requested
 - Don't add comments unless it's really not clear why it's been done that way
+- Prefer creating nodes in the scenes directly if it's not dynamic

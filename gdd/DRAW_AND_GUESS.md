@@ -13,6 +13,8 @@ After all words are drawn, a leaderboard reveals the winner.
 
 ## Core Loop
 
+Preparation, the game and the end are all inside a single scene without transitioning.
+
 ### Pre-Game: Word Collection
 Each mobile player submits **1 word** into a shared pool. Words are hidden from
 everyone. Words must be at least 3 characters long and are deduplicated automatically.
