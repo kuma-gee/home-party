@@ -3,7 +3,7 @@
 	import VirtualJoystick from '../VirtualJoystick.svelte';
 
 	interface Props {
-		inputLayout: 'joystick' | 'buttons';
+		inputLayout: string;
 	}
 
 	let { inputLayout }: Props = $props();

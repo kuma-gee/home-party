@@ -137,6 +137,15 @@ export class WebRTCClient {
 		this.dataChannel.send(data);
 	}
 
+	sendText(text: string) {
+		if (!this.dataChannel || this.dataChannel.readyState !== 'open') {
+			console.warn('Data channel is not open');
+			return;
+		}
+
+		this.dataChannel.send(text);
+	}
+
 	getConnectionState(): RTCPeerConnectionState | null {
 		return this.peerConnection?.connectionState || null;
 	}

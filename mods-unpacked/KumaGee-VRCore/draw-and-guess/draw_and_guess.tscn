@@ -1,0 +1,93 @@
+[gd_scene format=3 uid="uid://dag0001"]
+
+[ext_resource type="Script" uid="uid://dnxs1rt08vt83" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_and_guess.gd" id="1_dag"]
+[ext_resource type="PackedScene" uid="uid://nfb07g0lpf00" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/prepare_ui.tscn" id="2_56ffu"]
+[ext_resource type="PackedScene" uid="uid://btlljhtniv3dr" path="res://main/vr/vr_space.tscn" id="2_vr"]
+[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="3_theme"]
+
+[sub_resource type="Environment" id="env_dag"]
+background_mode = 1
+background_color = Color(0.5, 0.7, 1, 1)
+ambient_light_source = 1
+ambient_light_color = Color(1, 1, 1, 1)
+
+[sub_resource type="CameraAttributesPractical" id="camera_attr_dag"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_56ffu"]
+size = Vector3(10, 0.283, 10)
+
+[node name="DrawAndGuess" type="Node3D" unique_id=1837794635 node_paths=PackedStringArray("prepare_ui", "game_ui", "xr_player")]
+script = ExtResource("1_dag")
+prepare_ui = NodePath("CanvasLayer/PrepareUI")
+game_ui = NodePath("CanvasLayer/GameUI")
+vr_prepare_scene = ExtResource("2_56ffu")
+xr_player = NodePath("XRPlayer")
+
+[node name="XRPlayer" parent="." unique_id=1799871270 instance=ExtResource("2_vr")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=437681335]
+environment = SubResource("env_dag")
+camera_attributes = SubResource("camera_attr_dag")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1728554819]
+transform = Transform3D(0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, -0.75, 0.433013, 0, 5, 0)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1593987021]
+
+[node name="PrepareUI" type="Control" parent="CanvasLayer" unique_id=529741707]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_theme")
+
+[node name="Label" type="Label" parent="CanvasLayer/PrepareUI" unique_id=577374614]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -26.5
+offset_right = 20.0
+offset_bottom = 26.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Submit your words!"
+
+[node name="GameUI" type="Control" parent="CanvasLayer" unique_id=1634530868]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_theme")
+
+[node name="Label" type="Label" parent="CanvasLayer/GameUI" unique_id=1502667680]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -50.0
+offset_right = 100.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_theme")
+text = "Game Started!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=2096665353]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=440244085]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.14160156, 0)
+shape = SubResource("BoxShape3D_56ffu")

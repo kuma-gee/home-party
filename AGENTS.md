@@ -47,3 +47,4 @@
 - Don't create any documentation markdown files unless explicitly requested
 - Don't add comments unless it's really not clear why it's been done that way
 - Prefer creating nodes in the scenes directly if it's not dynamic
+- Use the `theme.css` resource for all root control nodes

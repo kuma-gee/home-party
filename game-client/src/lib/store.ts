@@ -6,12 +6,13 @@ export interface ConnectionState {
 	peerId: number | null;
 	serverIp: string | null;
 	error: string | null;
-	inputLayout: 'joystick' | 'buttons';
+	inputLayout: string;
 	webrtcState: RTCPeerConnectionState | null;
 	webrtcDataChannelOpen: boolean;
 	reconnecting: boolean;
 	reconnectAttempts: number;
 	maxReconnectAttempts: number;
+	serverMessage: string | null;
 }
 
 function createConnectionStore() {
@@ -26,6 +27,7 @@ function createConnectionStore() {
 		reconnecting: false,
 		reconnectAttempts: 0,
 		maxReconnectAttempts: 5,
+		serverMessage: null,
 	});
 
 	let client: WebSocketClient | null = null;
@@ -60,8 +62,12 @@ function createConnectionStore() {
 				update(state => ({ ...state, peerId: id }));
 			};
 
-			client.onInputLayoutReceived = (layout: 'joystick' | 'buttons') => {
+			client.onInputLayoutReceived = (layout: string) => {
 				update(state => ({ ...state, inputLayout: layout }));
+			};
+
+			client.onDataChannelMessage = (message: string) => {
+				update(state => ({ ...state, serverMessage: message }));
 			};
 
 			client.onWebRTCStateChange = (webrtcState: RTCPeerConnectionState) => {
@@ -104,6 +110,7 @@ function createConnectionStore() {
 				reconnecting: false,
 				reconnectAttempts: 0,
 				maxReconnectAttempts: 5,
+				serverMessage: null,
 			});
 		},
 		send: (data: any) => {
@@ -121,6 +128,12 @@ function createConnectionStore() {
 			const webrtc = client?.getWebRTCClient();
 			if (webrtc) {
 				webrtc.sendMove(input, vector);
+			}
+		},
+		sendText: (text: string) => {
+			const webrtc = client?.getWebRTCClient();
+			if (webrtc) {
+				webrtc.sendText(text);
 			}
 		},
 		getClient: () => client,
@@ -165,4 +178,9 @@ export const reconnectAttempts = derived(
 		current: $connectionStore.reconnectAttempts, 
 		max: $connectionStore.maxReconnectAttempts 
 	})
+);
+
+export const serverMessage = derived(
+	connectionStore,
+	$connectionStore => $connectionStore.serverMessage
 );

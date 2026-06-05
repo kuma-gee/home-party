@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="GameResource" format=3 uid="uid://dagresource"]
+
+[ext_resource type="PackedScene" uid="uid://dag0001" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_and_guess.tscn" id="1_dag"]
+[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_and_guess_icon.tscn" id="2_icon"]
+[ext_resource type="Script" uid="uid://bwykg0o4vosvn" path="res://main/game_resource.gd" id="3_res"]
+
+[resource]
+script = ExtResource("3_res")
+name = "Draw & Guess"
+description = "Mobile players submit words, VR player draws them in 3D while others guess!"
+scene = ExtResource("1_dag")
+icon = ExtResource("2_icon")
+min_recommended_players = 3
+max_recommended_players = 8
+metadata/_custom_type_script = "uid://bwykg0o4vosvn"

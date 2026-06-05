@@ -51,8 +51,12 @@ func _process(_delta):
 			var parts = data.split(";")
 			if parts.size() == 2:
 				var input = parts[0]
-				var pressed = parts[1].to_float() == 1.0
-				input_received.emit(input, pressed)
+				var value = parts[1]
+				if value.is_valid_float():
+					var pressed = parts[1].to_float() == 1.0
+					input_received.emit(input, pressed)
+				else:
+					input_received.emit(input, value)
 			elif parts.size() == 3:
 				var input = parts[0]
 				var v = Vector2(parts[1].to_float(), parts[2].to_float())
@@ -60,6 +64,8 @@ func _process(_delta):
 					moved.emit(v)
 				inputs[input] = v
 				input_received.emit(input, v)
+			else:
+				input_received.emit(data, null)
 
 func add_ice_candidate(mid: String, index: int, sdp: String):
 	peer.add_ice_candidate(mid, index, sdp)
