@@ -16,9 +16,10 @@ var data = {}
 func _ready():
 	initialize()
 	input_received.connect(func(input, value):
-		if input == "action" and value:
+		var pressed = value.to_float() == 1.0 
+		if input == "action" and pressed:
 			primary_action_pressed.emit()
-		elif input == "secondary" and value:
+		elif input == "secondary" and pressed:
 			secondary_action_pressed.emit()
 	)
 
@@ -52,11 +53,7 @@ func _process(_delta):
 			if parts.size() == 2:
 				var input = parts[0]
 				var value = parts[1]
-				if value.is_valid_float():
-					var pressed = parts[1].to_float() == 1.0
-					input_received.emit(input, pressed)
-				else:
-					input_received.emit(input, value)
+				input_received.emit(input, value)
 			elif parts.size() == 3:
 				var input = parts[0]
 				var v = Vector2(parts[1].to_float(), parts[2].to_float())

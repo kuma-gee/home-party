@@ -28,6 +28,11 @@
 			} else if (msg === 'word_ack;incorrect') {
 				showFeedback('incorrect');
 				inputText = '';
+			} else if (msg === 'word_ack;reset') {
+				submitted = false;
+				feedback = null;
+				message = '';
+				inputText = '';
 			}
 		});
 

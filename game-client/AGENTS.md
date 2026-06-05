@@ -5,12 +5,8 @@ No game state, scores, graphics, or info is displayed here —
 all visual feedback is shown on the shared desktop view.
 The controller is strictly a gamepad replacement.
 
-## Routing
-
-Single route `/` — no sub-routes. The entire app is one page.
-
-- `+page.svelte` — main controller UI. On mount, reads `?ip=` from query params and auto-connects.
-- `+layout.svelte` — sets page title and global body styles (black background).
+Everything is in a single route and the layout of it can be
+switched by the game to match the needed inputs.
 
 ## Connection Flow
 
@@ -56,3 +52,11 @@ Godot can switch the controller layout mid-session by sending `msg type 3` with 
 ## Player Identity
 
 - **UUID:** generated on first connect via `crypto.randomUUID()`, persisted in `localStorage("clientId")` — reused on reconnect so `PlayerManager` recognizes returning players
+
+## Building
+
+Run this command to create a clean build for the game
+
+```
+bun run build
+```

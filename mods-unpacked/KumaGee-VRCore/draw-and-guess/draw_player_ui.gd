@@ -51,3 +51,5 @@ func reset_for_round() -> void:
 	has_guessed_correctly = false
 	errormark.hide()
 	checkmark.hide()
+	if game_client is GameClient:
+		game_client.send_text("word_ack;reset")
