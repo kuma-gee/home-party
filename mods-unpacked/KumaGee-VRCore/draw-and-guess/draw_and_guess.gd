@@ -3,6 +3,7 @@ extends XRToolsSceneBase
 signal game_ended()
 signal round_started(word: String, round_number: int, total_rounds: int)
 signal round_ended(word: String)
+signal player_guessed_correctly(client: GameClient)
 
 const ROUND_DURATION := 60.0
 const REVEAL_DURATION := 5.0
@@ -17,6 +18,7 @@ const REVEAL_DURATION := 5.0
 @export var reveal_label: Label
 @export var round_timer: Timer
 @export var reveal_timer: Timer
+@export var player_list: PlayerList
 
 var logger := KumaLog.new("DrawAndGuess")
 var word_pool: Array[String] = []
@@ -29,6 +31,7 @@ var current_word: String = ""
 var current_round: int = 0
 var total_rounds: int = 0
 var is_revealing := false
+var guessed_players: Array[String] = []
 
 func _ready() -> void:
 	prepare_ui.show()
@@ -36,6 +39,7 @@ func _ready() -> void:
 	PlayerManager.clients_changed.connect(_on_clients_changed)
 	round_timer.timeout.connect(_on_round_timer_expired)
 	reveal_timer.timeout.connect(_on_reveal_timer_expired)
+	player_list.player_created.connect(_on_player_created)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey:
@@ -49,74 +53,89 @@ func _on_game_start():
 	_on_clients_changed()
 	
 func _on_clients_changed() -> void:
-	for client in PlayerManager.get_children():
-		if client is GameClient:
-			if not client.input_received.is_connected(_on_client_input_received.bind(client)):
-				client.input_received.connect(_on_client_input_received.bind(client))
-				
 	LobbyServer.send_layout("guess" if is_drawing_phase else "word_submit")
 	_update_ui()
 	
-func _on_client_input_received(input: String, value, client: GameClient) -> void:
-	if input == "word":
-		_handle_word_submission(value, client)
-	elif input == "guess":
-		_handle_guess(value, client)
+func _on_player_created(uuid: String) -> void:
+	var player_ui = player_list.find_existing_node(uuid) as DrawPlayerUI
+	if player_ui:
+		player_ui.word_submitted.connect(_on_player_word_submitted.bind(player_ui))
+		player_ui.guessed.connect(_on_player_guessed.bind(player_ui))
 
-func _handle_word_submission(word: String, client: GameClient) -> void:
+func _on_player_word_submitted(word: String, player_ui: DrawPlayerUI) -> void:
 	var trimmed_word = word.strip_edges()
 	
 	if trimmed_word.length() < 3:
-		client.send_text("word_ack;invalid")
-		logger.debug("Word too short from %s: %s" % [client.uuid, trimmed_word])
+		player_ui.game_client.send_text("word_ack;invalid")
+		logger.debug("Word too short from %s: %s" % [player_ui.uuid, trimmed_word])
 		return
 	
 	if trimmed_word.length() > 20:
-		client.send_text("word_ack;invalid")
-		logger.debug("Word too long from %s: %s" % [client.uuid, trimmed_word])
+		player_ui.game_client.send_text("word_ack;invalid")
+		logger.debug("Word too long from %s: %s" % [player_ui.uuid, trimmed_word])
 		return
 	
 	var alphanumeric_regex = RegEx.new()
 	alphanumeric_regex.compile("^[a-zA-Z0-9]+$")
 	if not alphanumeric_regex.search(trimmed_word):
-		client.send_text("word_ack;invalid")
-		logger.debug("Word not alphanumeric from %s: %s" % [client.uuid, trimmed_word])
+		player_ui.game_client.send_text("word_ack;invalid")
+		logger.debug("Word not alphanumeric from %s: %s" % [player_ui.uuid, trimmed_word])
 		return
 	
 	if trimmed_word.to_lower() in word_pool.map(func(w): return w.to_lower()):
-		client.send_text("word_ack;duplicate")
-		logger.debug("Duplicate word from %s: %s" % [client.uuid, trimmed_word])
+		player_ui.game_client.send_text("word_ack;duplicate")
+		logger.debug("Duplicate word from %s: %s" % [player_ui.uuid, trimmed_word])
 		return
 	
 	word_pool.append(trimmed_word)
-	submitted_players[client.uuid] = true
-	client.send_text("word_ack;ok")
-	logger.info("Word accepted from %s: %s" % [client.uuid, trimmed_word])
+	submitted_players[player_ui.uuid] = true
+	player_ui.game_client.send_text("word_ack;ok")
+	player_ui.mark_word_submitted()
+	logger.info("Word accepted from %s: %s" % [player_ui.uuid, trimmed_word])
 	
 	_update_ui()
 	_check_all_submitted()
 
+func _on_player_guessed(guess: String, player_ui: DrawPlayerUI) -> void:
+	if not is_drawing_phase or is_revealing:
+		return
+	
+	if player_ui.uuid in guessed_players:
+		return
+	
+	var trimmed_guess = guess.strip_edges().to_lower()
+	if trimmed_guess == current_word.to_lower():
+		logger.info("Correct guess from %s: %s" % [player_ui.uuid, guess])
+		guessed_players.append(player_ui.uuid)
+		player_ui.game_client.send_text("guess_ack;correct")
+		player_ui.mark_guessed_correctly()
+		player_guessed_correctly.emit(player_ui.game_client)
+	else:
+		logger.debug("Incorrect guess from %s: %s" % [player_ui.uuid, guess])
+		player_ui.game_client.send_text("guess_ack;incorrect")
+		player_ui.mark_guessed_incorrectly()
+
 func _update_ui() -> void:
 	if not is_drawing_phase:
 		var active_client_count = 0
-		for client in PlayerManager.get_children():
-			if client is GameClient and client.active:
+		for child in player_list.get_children():
+			if child is DrawPlayerUI and child.has_submitted_word:
 				active_client_count += 1
 		
+		var total_players = player_list.get_player_count()
 		var text = "Players connected: %d\nWords submitted: %d / %d" % [
+			total_players,
 			active_client_count,
-			submitted_players.size(),
-			active_client_count
+			total_players
 		]
 		prepare_scene.count_label.text = text
 
 func _check_all_submitted(vr_ready = false) -> void:
 	var all_submitted = true
-	for client in PlayerManager.get_children():
-		if client is GameClient and client.active:
-			if not submitted_players.has(client.uuid):
-				all_submitted = false
-				break
+	for child in player_list.get_children():
+		if child is DrawPlayerUI and not child.has_submitted_word:
+			all_submitted = false
+			break
 	
 	if all_submitted and vr_ready and PlayerManager.playing_clients.size() > 0:
 		_start_game()
@@ -132,6 +151,10 @@ func _start_game() -> void:
 	game_ui.show()
 	_on_clients_changed()
 	_setup_drawing_pen()
+	
+	for child in player_list.get_children():
+		if child is DrawPlayerUI:
+			child.set_phase("guess")
 	
 	total_rounds = word_pool.size()
 	current_round = 0
@@ -169,6 +192,12 @@ func _start_next_round() -> void:
 		progress_label.text = "Word %d of %d" % [current_round, total_rounds]
 	
 	reveal_label.hide()
+	guessed_players.clear()
+	
+	for child in player_list.get_children():
+		if child is DrawPlayerUI:
+			child.reset_for_round()
+	
 	round_started.emit(current_word, current_round, total_rounds)
 	round_timer.start()
 
@@ -208,15 +237,3 @@ func _update_timer_label(time_left: float) -> void:
 func _process(_delta: float) -> void:
 	if round_timer and not round_timer.is_stopped():
 		_update_timer_label(round_timer.time_left)
-
-func _handle_guess(guess: String, client: GameClient) -> void:
-	if not is_drawing_phase or is_revealing:
-		return
-	
-	var trimmed_guess = guess.strip_edges().to_lower()
-	if trimmed_guess == current_word.to_lower():
-		logger.info("Correct guess from %s: %s" % [client.uuid, guess])
-		client.send_text("guess_ack;correct")
-	else:
-		logger.debug("Incorrect guess from %s: %s" % [client.uuid, guess])
-		client.send_text("guess_ack;incorrect")

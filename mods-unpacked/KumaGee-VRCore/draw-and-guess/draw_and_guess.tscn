@@ -5,84 +5,87 @@
 [ext_resource type="PackedScene" uid="uid://btlljhtniv3dr" path="res://main/vr/vr_space.tscn" id="2_vr"]
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="3_theme"]
 [ext_resource type="PackedScene" uid="uid://tgxwydvjpkvx" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/pen.tscn" id="4_pen"]
+[ext_resource type="PackedScene" uid="uid://b4ysuy43poobf" path="res://addons/godot-xr-tools/functions/function_pickup.tscn" id="5_ecusb"]
+[ext_resource type="Script" uid="uid://dgfn4nv7yxows" path="res://main/ui/player_list.gd" id="6_onute"]
+[ext_resource type="PackedScene" uid="uid://du4rgg53c1er0" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_player_ui.tscn" id="7_player"]
 
-[sub_resource type="QuadMesh" id="QuadMesh_8673d"]
+[sub_resource type="QuadMesh" id="QuadMesh_ljwku"]
 resource_local_to_scene = true
 size = Vector2(4, 3)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_onute"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_ecusb"]
 viewport_path = NodePath("XRPlayer/SubViewport/CameraFollow3D/Viewport2Din3D2/Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ljwku"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kdp07"]
 transparency = 1
 cull_mode = 2
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_onute")
+albedo_texture = SubResource("ViewportTexture_ecusb")
 texture_filter = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_ecusb"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_7fss7"]
 resource_local_to_scene = true
 size = Vector3(4, 3, 0.02)
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_kdp07"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_toqx6"]
 animation = &"Grip"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7fss7"]
-animation = &"Grip"
-
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_toqx6"]
-filter_enabled = true
-filters = ["Armature/Skeleton3D:Little_Distal_L", "Armature/Skeleton3D:Little_Intermediate_L", "Armature/Skeleton3D:Little_Metacarpal_L", "Armature/Skeleton3D:Little_Proximal_L", "Armature/Skeleton3D:Middle_Distal_L", "Armature/Skeleton3D:Middle_Intermediate_L", "Armature/Skeleton3D:Middle_Metacarpal_L", "Armature/Skeleton3D:Middle_Proximal_L", "Armature/Skeleton3D:Ring_Distal_L", "Armature/Skeleton3D:Ring_Intermediate_L", "Armature/Skeleton3D:Ring_Metacarpal_L", "Armature/Skeleton3D:Ring_Proximal_L", "Armature/Skeleton3D:Thumb_Distal_L", "Armature/Skeleton3D:Thumb_Metacarpal_L", "Armature/Skeleton3D:Thumb_Proximal_L", "Armature/Skeleton:Little_Distal_L", "Armature/Skeleton:Little_Intermediate_L", "Armature/Skeleton:Little_Proximal_L", "Armature/Skeleton:Middle_Distal_L", "Armature/Skeleton:Middle_Intermediate_L", "Armature/Skeleton:Middle_Proximal_L", "Armature/Skeleton:Ring_Distal_L", "Armature/Skeleton:Ring_Intermediate_L", "Armature/Skeleton:Ring_Proximal_L", "Armature/Skeleton:Thumb_Distal_L", "Armature/Skeleton:Thumb_Proximal_L"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_emygo"]
-animation = &"Grip 5"
+animation = &"Grip"
 
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_c22f1"]
 filter_enabled = true
+filters = ["Armature/Skeleton3D:Little_Distal_L", "Armature/Skeleton3D:Little_Intermediate_L", "Armature/Skeleton3D:Little_Metacarpal_L", "Armature/Skeleton3D:Little_Proximal_L", "Armature/Skeleton3D:Middle_Distal_L", "Armature/Skeleton3D:Middle_Intermediate_L", "Armature/Skeleton3D:Middle_Metacarpal_L", "Armature/Skeleton3D:Middle_Proximal_L", "Armature/Skeleton3D:Ring_Distal_L", "Armature/Skeleton3D:Ring_Intermediate_L", "Armature/Skeleton3D:Ring_Metacarpal_L", "Armature/Skeleton3D:Ring_Proximal_L", "Armature/Skeleton3D:Thumb_Distal_L", "Armature/Skeleton3D:Thumb_Metacarpal_L", "Armature/Skeleton3D:Thumb_Proximal_L", "Armature/Skeleton:Little_Distal_L", "Armature/Skeleton:Little_Intermediate_L", "Armature/Skeleton:Little_Proximal_L", "Armature/Skeleton:Middle_Distal_L", "Armature/Skeleton:Middle_Intermediate_L", "Armature/Skeleton:Middle_Proximal_L", "Armature/Skeleton:Ring_Distal_L", "Armature/Skeleton:Ring_Intermediate_L", "Armature/Skeleton:Ring_Proximal_L", "Armature/Skeleton:Thumb_Distal_L", "Armature/Skeleton:Thumb_Proximal_L"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_wkbik"]
+animation = &"Grip 5"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_b3vk1"]
+filter_enabled = true
 filters = ["Armature/Skeleton3D:Index_Distal_L", "Armature/Skeleton3D:Index_Intermediate_L", "Armature/Skeleton3D:Index_Metacarpal_L", "Armature/Skeleton3D:Index_Proximal_L", "Armature/Skeleton:Index_Distal_L", "Armature/Skeleton:Index_Intermediate_L", "Armature/Skeleton:Index_Proximal_L"]
 
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_wkbik"]
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_fwb3k"]
 graph_offset = Vector2(-536, 11)
-nodes/ClosedHand1/node = SubResource("AnimationNodeAnimation_kdp07")
+nodes/ClosedHand1/node = SubResource("AnimationNodeAnimation_toqx6")
 nodes/ClosedHand1/position = Vector2(-600, 300)
-nodes/ClosedHand2/node = SubResource("AnimationNodeAnimation_7fss7")
+nodes/ClosedHand2/node = SubResource("AnimationNodeAnimation_emygo")
 nodes/ClosedHand2/position = Vector2(-360, 300)
-nodes/Grip/node = SubResource("AnimationNodeBlend2_toqx6")
+nodes/Grip/node = SubResource("AnimationNodeBlend2_c22f1")
 nodes/Grip/position = Vector2(0, 20)
-nodes/OpenHand/node = SubResource("AnimationNodeAnimation_emygo")
+nodes/OpenHand/node = SubResource("AnimationNodeAnimation_wkbik")
 nodes/OpenHand/position = Vector2(-600, 100)
-nodes/Trigger/node = SubResource("AnimationNodeBlend2_c22f1")
+nodes/Trigger/node = SubResource("AnimationNodeBlend2_b3vk1")
 nodes/Trigger/position = Vector2(-360, 20)
 node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1"]
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_b3vk1"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_6ki0f"]
 animation = &"Grip"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fwb3k"]
-animation = &"Grip"
-
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_6ki0f"]
-filter_enabled = true
-filters = ["Armature/Skeleton3D:Little_Distal_R", "Armature/Skeleton3D:Little_Intermediate_R", "Armature/Skeleton3D:Little_Metacarpal_R", "Armature/Skeleton3D:Little_Proximal_R", "Armature/Skeleton3D:Middle_Distal_R", "Armature/Skeleton3D:Middle_Intermediate_R", "Armature/Skeleton3D:Middle_Metacarpal_R", "Armature/Skeleton3D:Middle_Proximal_R", "Armature/Skeleton3D:Ring_Distal_R", "Armature/Skeleton3D:Ring_Intermediate_R", "Armature/Skeleton3D:Ring_Metacarpal_R", "Armature/Skeleton3D:Ring_Proximal_R", "Armature/Skeleton3D:Thumb_Distal_R", "Armature/Skeleton3D:Thumb_Metacarpal_R", "Armature/Skeleton3D:Thumb_Proximal_R", "Armature/Skeleton:Little_Distal_R", "Armature/Skeleton:Little_Intermediate_R", "Armature/Skeleton:Little_Proximal_R", "Armature/Skeleton:Middle_Distal_R", "Armature/Skeleton:Middle_Intermediate_R", "Armature/Skeleton:Middle_Proximal_R", "Armature/Skeleton:Ring_Distal_R", "Armature/Skeleton:Ring_Intermediate_R", "Armature/Skeleton:Ring_Proximal_R", "Armature/Skeleton:Thumb_Distal_R", "Armature/Skeleton:Thumb_Proximal_R"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_i4ls4"]
-animation = &"Grip 5"
+animation = &"Grip"
 
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_jdu6v"]
 filter_enabled = true
+filters = ["Armature/Skeleton3D:Little_Distal_R", "Armature/Skeleton3D:Little_Intermediate_R", "Armature/Skeleton3D:Little_Metacarpal_R", "Armature/Skeleton3D:Little_Proximal_R", "Armature/Skeleton3D:Middle_Distal_R", "Armature/Skeleton3D:Middle_Intermediate_R", "Armature/Skeleton3D:Middle_Metacarpal_R", "Armature/Skeleton3D:Middle_Proximal_R", "Armature/Skeleton3D:Ring_Distal_R", "Armature/Skeleton3D:Ring_Intermediate_R", "Armature/Skeleton3D:Ring_Metacarpal_R", "Armature/Skeleton3D:Ring_Proximal_R", "Armature/Skeleton3D:Thumb_Distal_R", "Armature/Skeleton3D:Thumb_Metacarpal_R", "Armature/Skeleton3D:Thumb_Proximal_R", "Armature/Skeleton:Little_Distal_R", "Armature/Skeleton:Little_Intermediate_R", "Armature/Skeleton:Little_Proximal_R", "Armature/Skeleton:Middle_Distal_R", "Armature/Skeleton:Middle_Intermediate_R", "Armature/Skeleton:Middle_Proximal_R", "Armature/Skeleton:Ring_Distal_R", "Armature/Skeleton:Ring_Intermediate_R", "Armature/Skeleton:Ring_Proximal_R", "Armature/Skeleton:Thumb_Distal_R", "Armature/Skeleton:Thumb_Proximal_R"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_3tsl1"]
+animation = &"Grip 5"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_onggx"]
+filter_enabled = true
 filters = ["Armature/Skeleton3D:Index_Distal_R", "Armature/Skeleton3D:Index_Intermediate_R", "Armature/Skeleton3D:Index_Metacarpal_R", "Armature/Skeleton3D:Index_Proximal_R", "Armature/Skeleton:Index_Distal_R", "Armature/Skeleton:Index_Intermediate_R", "Armature/Skeleton:Index_Proximal_R"]
 
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_3tsl1"]
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_6h1xh"]
 graph_offset = Vector2(-552.664, 107.301)
-nodes/ClosedHand1/node = SubResource("AnimationNodeAnimation_b3vk1")
+nodes/ClosedHand1/node = SubResource("AnimationNodeAnimation_6ki0f")
 nodes/ClosedHand1/position = Vector2(-600, 300)
-nodes/ClosedHand2/node = SubResource("AnimationNodeAnimation_fwb3k")
+nodes/ClosedHand2/node = SubResource("AnimationNodeAnimation_i4ls4")
 nodes/ClosedHand2/position = Vector2(-360, 300)
-nodes/Grip/node = SubResource("AnimationNodeBlend2_6ki0f")
+nodes/Grip/node = SubResource("AnimationNodeBlend2_jdu6v")
 nodes/Grip/position = Vector2(0, 40)
-nodes/OpenHand/node = SubResource("AnimationNodeAnimation_i4ls4")
+nodes/OpenHand/node = SubResource("AnimationNodeAnimation_3tsl1")
 nodes/OpenHand/position = Vector2(-600, 100)
-nodes/Trigger/node = SubResource("AnimationNodeBlend2_jdu6v")
+nodes/Trigger/node = SubResource("AnimationNodeBlend2_onggx")
 nodes/Trigger/position = Vector2(-360, 40)
 node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1"]
 
@@ -97,7 +100,7 @@ ambient_light_color = Color(1, 1, 1, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_56ffu"]
 size = Vector3(10, 0.283, 10)
 
-[node name="DrawAndGuess" type="Node3D" unique_id=1837794635 node_paths=PackedStringArray("prepare_ui", "game_ui", "word_label", "timer_label", "progress_label", "reveal_label", "round_timer", "reveal_timer", "xr_player")]
+[node name="DrawAndGuess" type="Node3D" unique_id=1837794635 node_paths=PackedStringArray("prepare_ui", "game_ui", "word_label", "timer_label", "progress_label", "reveal_label", "round_timer", "reveal_timer", "player_list", "xr_player")]
 script = ExtResource("1_dag")
 prepare_ui = NodePath("CanvasLayer/PrepareUI")
 game_ui = NodePath("CanvasLayer/GameUI")
@@ -109,22 +112,27 @@ progress_label = NodePath("CanvasLayer/GameUI/ProgressLabel")
 reveal_label = NodePath("CanvasLayer/GameUI/RevealLabel")
 round_timer = NodePath("RoundTimer")
 reveal_timer = NodePath("RevealTimer")
+player_list = NodePath("CanvasLayer/MarginContainer/PlayerList")
 xr_player = NodePath("XRPlayer")
 
 [node name="XRPlayer" parent="." unique_id=1799871270 instance=ExtResource("2_vr")]
 
 [node name="Screen" parent="XRPlayer/SubViewport/CameraFollow3D/Viewport2Din3D2" parent_id_path=PackedInt32Array(1799871270, 553147920) index="1" unique_id=1761931612]
-mesh = SubResource("QuadMesh_8673d")
-surface_material_override/0 = SubResource("StandardMaterial3D_ljwku")
+mesh = SubResource("QuadMesh_ljwku")
+surface_material_override/0 = SubResource("StandardMaterial3D_kdp07")
 
 [node name="CollisionShape3D" parent="XRPlayer/SubViewport/CameraFollow3D/Viewport2Din3D2/StaticBody3D" parent_id_path=PackedInt32Array(1799871270, 553147920, 1882660186) index="0" unique_id=507281989]
-shape = SubResource("BoxShape3D_ecusb")
+shape = SubResource("BoxShape3D_7fss7")
 
 [node name="AnimationTree" parent="XRPlayer/SubViewport/XRPlayer/LeftHand/LeftHand" parent_id_path=PackedInt32Array(1799871270, 801242371) index="1" unique_id=1971929839]
-tree_root = SubResource("AnimationNodeBlendTree_wkbik")
+tree_root = SubResource("AnimationNodeBlendTree_fwb3k")
+
+[node name="FunctionPickup" parent="XRPlayer/SubViewport/XRPlayer/LeftHand" parent_id_path=PackedInt32Array(1799871270, 2106749189) index="3" unique_id=1917759440 instance=ExtResource("5_ecusb")]
 
 [node name="AnimationTree" parent="XRPlayer/SubViewport/XRPlayer/RightHand/RightHand" parent_id_path=PackedInt32Array(1799871270, 40282269) index="1"]
-tree_root = SubResource("AnimationNodeBlendTree_3tsl1")
+tree_root = SubResource("AnimationNodeBlendTree_6h1xh")
+
+[node name="FunctionPickup" parent="XRPlayer/SubViewport/XRPlayer/RightHand" parent_id_path=PackedInt32Array(1799871270, 1667605568) index="2" unique_id=1007745583 instance=ExtResource("5_ecusb")]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=437681335]
 environment = SubResource("env_dag")
@@ -260,6 +268,19 @@ text = "The word was: "
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=1956286738]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
+theme = ExtResource("3_theme")
+
+[node name="PlayerList" type="VBoxContainer" parent="CanvasLayer/MarginContainer" unique_id=913786618]
+layout_mode = 2
+script = ExtResource("6_onute")
+player_scene = ExtResource("7_player")
+metadata/_custom_type_script = "uid://dgfn4nv7yxows"
+
 [node name="RoundTimer" type="Timer" parent="." unique_id=1502667685]
 wait_time = 60.0
 one_shot = true
@@ -273,6 +294,16 @@ one_shot = true
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=440244085]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.14160156, 0)
 shape = SubResource("BoxShape3D_56ffu")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1283096579]
+transform = Transform3D(0.0024837295, 0.8817421, -0.4717253, 0.001287785, 0.47172356, 0.8817456, 0.9999961, -0.0027974986, 3.6139496e-05, -16.5, 30.04, 0)
+cull_mask = 786431
+current = true
+fov = 25.0
+
+[node name="AudioListener3D" type="AudioListener3D" parent="Camera3D" unique_id=767881340]
+transform = Transform3D(0.99999654, 0.0012877854, -0.0024837758, -0.0027975384, 0.47172382, -0.88174284, 3.6159796e-05, 0.8817461, 0.47172576, 0.010317594, 3.3206139, -28.429482)
+current = true
 
 [editable path="XRPlayer"]
 [editable path="XRPlayer/StartXR"]

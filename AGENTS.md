@@ -33,6 +33,7 @@
 - `ClientController` — abstract base with signals `primary_action_pressed`, `secondary_action_pressed`, and method `get_move() -> Vector2`
 - Three implementations: `GameClient` (WebRTC phone), `GamepadController` (physical gamepad), `AIClientController` (AI bot)
 - `FPSPlayer` holds a `game_client: ClientController` and calls `get_move()` each physics frame. Game code never knows which controller type it's talking to.
+- Player input must be controlled by a `JoinedPlayer` class like `castle_player_ui.gd`
 
 ## Communication Flow
 

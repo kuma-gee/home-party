@@ -12,12 +12,12 @@ Only the first correct guess from each player counts. Track who has already gues
 
 ## Acceptance criteria
 
-- [ ] Mobile shows a text input + submit button during the drawing phase (hidden otherwise)
-- [ ] Submitting a guess sends `guess;<text>` to Godot via the data channel
-- [ ] Correct guess (case-insensitive match): phone flashes green screen briefly; first correct guess per player is tracked
-- [ ] Incorrect guess: phone flashes red briefly, input clears for retry
-- [ ] Already-guessed players cannot score again that round (no multiple guess farming)
-- [ ] `player_guessed;<name>` broadcast fires for the shared screen to display
+- [x] Mobile shows a text input + submit button during the drawing phase (hidden otherwise)
+- [x] Submitting a guess sends `guess;<text>` to Godot via the data channel
+- [x] Correct guess (case-insensitive match): phone flashes green screen briefly; first correct guess per player is tracked
+- [x] Incorrect guess: phone flashes red briefly, input clears for retry
+- [x] Already-guessed players cannot score again that round (no multiple guess farming)
+- [x] `player_guessed_correctly` signal fires for the shared screen to display
 
 ## Blocked by
 
