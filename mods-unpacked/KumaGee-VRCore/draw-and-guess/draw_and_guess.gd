@@ -107,12 +107,12 @@ func _on_player_guessed(guess: String, player_ui: DrawPlayerUI) -> void:
 	if trimmed_guess == current_word.to_lower():
 		logger.info("Correct guess from %s: %s" % [player_ui.uuid, guess])
 		guessed_players.append(player_ui.uuid)
-		player_ui.game_client.send_text("guess_ack;correct")
+		player_ui.game_client.send_text("word_ack;correct")
 		player_ui.mark_guessed_correctly()
 		player_guessed_correctly.emit(player_ui.game_client)
 	else:
 		logger.debug("Incorrect guess from %s: %s" % [player_ui.uuid, guess])
-		player_ui.game_client.send_text("guess_ack;incorrect")
+		player_ui.game_client.send_text("word_ack;incorrect")
 		player_ui.mark_guessed_incorrectly()
 
 func _update_ui() -> void:

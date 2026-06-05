@@ -2,8 +2,7 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { connectionStore, isConnected, inputLayout, webrtcDataChannelOpen, reconnecting, reconnectAttempts } from '../lib/store';
 	import JoystickLayout from '../lib/layouts/JoystickLayout.svelte';
-	import WordSubmitLayout from '../lib/layouts/WordSubmitLayout.svelte';
-	import GuessLayout from '../lib/layouts/GuessLayout.svelte';
+	import WordInputLayout from '../lib/layouts/WordInputLayout.svelte';
 
 	let serverIp = $state('');
 	let connecting = $state(false);
@@ -131,11 +130,8 @@
 				{/if}
 			</div>
 
-			{$inputLayout}
-			{#if $inputLayout == 'word_submit'}
-				<WordSubmitLayout />
-			{:else if $inputLayout == 'guess'}
-				<GuessLayout />
+			{#if $inputLayout == 'word_submit' || $inputLayout == 'guess'}
+				<WordInputLayout />
 			{:else}
 				<JoystickLayout inputLayout={$inputLayout} />
 			{/if}

@@ -2,36 +2,44 @@
 	import { connectionStore, serverMessage } from '../store';
 	import { onMount } from 'svelte';
 
-	let guessInput = $state('');
+	let inputText = $state('');
+	let submitted = $state(false);
 	let feedback = $state<'correct' | 'incorrect' | null>(null);
+	let message = $state('');
 	let feedbackTimer: number | null = null;
 
 	onMount(() => {
 		const unsubscribe = serverMessage.subscribe((msg) => {
 			if (!msg) return;
 
-			if (msg === 'guess_ack;correct') {
+			if (msg === 'word_ack;ok') {
+				submitted = true;
+				message = '';
+				inputText = '';
+			} else if (msg === 'word_ack;duplicate') {
+				message = 'There is already a similar word. Try another.';
+				inputText = '';
+			} else if (msg === 'word_ack;invalid') {
+				message = 'Invalid word! Use 3-20 alphanumeric characters.';
+				inputText = '';
+			} else if (msg === 'word_ack;correct') {
 				showFeedback('correct');
-				guessInput = '';
-			} else if (msg === 'guess_ack;incorrect') {
+				inputText = '';
+			} else if (msg === 'word_ack;incorrect') {
 				showFeedback('incorrect');
-				guessInput = '';
+				inputText = '';
 			}
 		});
 
 		return () => {
 			unsubscribe();
-			if (feedbackTimer !== null) {
-				clearTimeout(feedbackTimer);
-			}
+			if (feedbackTimer !== null) clearTimeout(feedbackTimer);
 		};
 	});
 
 	function showFeedback(type: 'correct' | 'incorrect') {
 		feedback = type;
-		if (feedbackTimer !== null) {
-			clearTimeout(feedbackTimer);
-		}
+		if (feedbackTimer !== null) clearTimeout(feedbackTimer);
 		feedbackTimer = window.setTimeout(() => {
 			feedback = null;
 			feedbackTimer = null;
@@ -39,8 +47,9 @@
 	}
 
 	function handleSubmit() {
-		if (guessInput.trim().length === 0) return;
-		connectionStore.sendText(`guess;${guessInput.trim()}`);
+		if (inputText.trim().length === 0) return;
+		message = '';
+		connectionStore.sendText(`word;${inputText.trim()}`);
 	}
 
 	function handleKeydown(e: KeyboardEvent) {
@@ -51,36 +60,43 @@
 	}
 </script>
 
-<div class="guess-container" class:correct-flash={feedback === 'correct'} class:incorrect-flash={feedback === 'incorrect'}>
-	<div class="guess-form">
-		<h2>What is it?</h2>
-		<p class="hint">Watch the screen and type your guess!</p>
-
-		<div class="input-group">
-			<input
-				type="text"
-				bind:value={guessInput}
-				onkeydown={handleKeydown}
-				placeholder="Type your guess..."
-				autocomplete="off"
-				autocorrect="off"
-				autocapitalize="off"
-				spellcheck="false"
-			/>
-			<button onclick={handleSubmit} disabled={guessInput.trim().length === 0}>
-				Submit
-			</button>
+<div
+	class="word-input-container"
+	class:correct-flash={feedback === 'correct'}
+	class:incorrect-flash={feedback === 'incorrect'}
+>
+	{#if submitted}
+		<div class="submitted-state">
+			<div class="checkmark-icon">✓</div>
+			<h2>Word Submitted!</h2>
+			<p>Waiting for others and VR player to start...</p>
 		</div>
+	{:else}
+		<div class="form-container">
+			<h2>Enter Text</h2>
+			<p class="instructions">Type a response and submit</p>
 
-		<div class="tips">
-			<p>💡 Tips:</p>
-			<ul>
-				<li>Guess as fast as you can for more points!</li>
-				<li>You can guess multiple times</li>
-				<li>Watch the shared screen for the drawing</li>
-			</ul>
+			<div class="input-group">
+				<input
+					type="text"
+					bind:value={inputText}
+					onkeydown={handleKeydown}
+					placeholder="Type here..."
+					autocomplete="off"
+					autocorrect="off"
+					autocapitalize="off"
+					spellcheck="false"
+				/>
+				<button onclick={handleSubmit} disabled={inputText.trim().length === 0}>
+					Submit
+				</button>
+			</div>
+
+			{#if message}
+				<div class="message-banner">{message}</div>
+			{/if}
 		</div>
-	</div>
+	{/if}
 
 	{#if feedback === 'correct'}
 		<div class="feedback-overlay correct">
@@ -96,7 +112,7 @@
 </div>
 
 <style>
-	.guess-container {
+	.word-input-container {
 		position: fixed;
 		top: 0;
 		left: 0;
@@ -111,15 +127,50 @@
 		transition: background 0.3s ease;
 	}
 
-	.guess-container.correct-flash {
+	.word-input-container.correct-flash {
 		background: linear-gradient(135deg, #5DC15B 0%, #4CAF50 100%);
 	}
 
-	.guess-container.incorrect-flash {
+	.word-input-container.incorrect-flash {
 		background: linear-gradient(135deg, #EE4B2B 0%, #C0392B 100%);
 	}
 
-	.guess-form {
+	.submitted-state {
+		text-align: center;
+		color: white;
+	}
+
+	.checkmark-icon {
+		width: 100px;
+		height: 100px;
+		border-radius: 50%;
+		background: linear-gradient(135deg, #5DC15B 0%, #4CAF50 100%);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 4rem;
+		margin: 0 auto 2rem;
+		animation: pop 0.4s ease-out;
+	}
+
+	@keyframes pop {
+		0% { transform: scale(0); }
+		50% { transform: scale(1.2); }
+		100% { transform: scale(1); }
+	}
+
+	.submitted-state h2 {
+		color: white;
+		font-size: 2rem;
+		margin-bottom: 1rem;
+	}
+
+	.submitted-state p {
+		color: rgba(255, 255, 255, 0.85);
+		font-size: 1.25rem;
+	}
+
+	.form-container {
 		background: rgba(255, 255, 255, 0.95);
 		border-radius: 16px;
 		padding: 2.5rem;
@@ -134,20 +185,18 @@
 		color: #333;
 		margin: 0 0 0.5rem;
 		font-size: 2rem;
-		text-align: center;
 	}
 
-	.hint {
+	.instructions {
 		color: #666;
 		margin: 0 0 2rem;
 		font-size: 1rem;
-		text-align: center;
 	}
 
 	.input-group {
 		display: flex;
 		gap: 0.75rem;
-		margin-bottom: 2rem;
+		margin-bottom: 1rem;
 	}
 
 	input {
@@ -193,29 +242,20 @@
 		opacity: 0.6;
 	}
 
-	.tips {
-		background: #f5f5f5;
-		padding: 1rem;
+	.message-banner {
+		background: #ffebee;
+		color: #c62828;
+		padding: 0.75rem 1rem;
 		border-radius: 8px;
+		font-weight: 500;
+		text-align: center;
+		animation: shake 0.3s ease-out;
 	}
 
-	.tips p {
-		margin: 0 0 0.5rem;
-		color: #333;
-		font-weight: 600;
-		font-size: 0.9rem;
-	}
-
-	.tips ul {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-	}
-
-	.tips li {
-		color: #666;
-		padding: 0.25rem 0;
-		font-size: 0.9rem;
+	@keyframes shake {
+		0%, 100% { transform: translateX(0); }
+		25% { transform: translateX(-10px); }
+		75% { transform: translateX(10px); }
 	}
 
 	.feedback-overlay {
@@ -234,18 +274,9 @@
 	}
 
 	@keyframes fadeInOut {
-		0% {
-			opacity: 0;
-			transform: scale(0.8);
-		}
-		50% {
-			opacity: 1;
-			transform: scale(1);
-		}
-		100% {
-			opacity: 0;
-			transform: scale(0.8);
-		}
+		0% { opacity: 0; transform: scale(0.8); }
+		50% { opacity: 1; transform: scale(1); }
+		100% { opacity: 0; transform: scale(0.8); }
 	}
 
 	.feedback-icon {
@@ -276,7 +307,7 @@
 	}
 
 	@media (max-width: 768px) {
-		.guess-form {
+		.form-container {
 			padding: 2rem;
 		}
 

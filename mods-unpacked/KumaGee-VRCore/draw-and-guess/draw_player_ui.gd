@@ -17,10 +17,11 @@ func update_data(data: Dictionary):
 		game_client.input_received.connect(_on_input_received)
 
 func _on_input_received(input: String, value) -> void:
-	if input == "word" and current_phase == "word_submit":
-		_handle_word_submission(str(value))
-	elif input == "guess" and current_phase == "guess":
-		_handle_guess(str(value))
+	if input == "word":
+		if current_phase == "word_submit":
+			_handle_word_submission(str(value))
+		elif current_phase == "guess":
+			_handle_guess(str(value))
 
 func _handle_word_submission(word: String) -> void:
 	word_submitted.emit(word)
