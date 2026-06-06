@@ -82,8 +82,6 @@ func _start_stroke():
 	current_material = StandardMaterial3D.new()
 	current_material.albedo_color = line_color
 	current_material.vertex_color_use_as_albedo = true
-	# current_material.transparency = BaseMaterial3D.TRANSPARENCY_DISABLED
-	# current_material.cull_mode = BaseMaterial3D.CULL_DISABLED
 	
 	mesh_instance.mesh = current_mesh
 	mesh_instance.material_override = current_material
@@ -229,12 +227,12 @@ func _add_segment_point(point: Vector3):
 		var v4 = last_point + next_circle_vec * half_thickness
 		
 		current_mesh.surface_add_vertex(v1)
+		current_mesh.surface_add_vertex(v3)
 		current_mesh.surface_add_vertex(v2)
-		current_mesh.surface_add_vertex(v3)
 		
-		current_mesh.surface_add_vertex(v3)
-		current_mesh.surface_add_vertex(v4)
 		current_mesh.surface_add_vertex(v1)
+		current_mesh.surface_add_vertex(v4)
+		current_mesh.surface_add_vertex(v3)
 	
 	current_mesh.surface_end()
 	
