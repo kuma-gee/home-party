@@ -29,6 +29,7 @@
 				showFeedback('incorrect');
 				inputText = '';
 			} else if (msg === 'word_ack;reset') {
+				console.log('Resetting word input state');
 				submitted = false;
 				feedback = null;
 				message = '';

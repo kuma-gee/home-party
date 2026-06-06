@@ -61,6 +61,7 @@ func _on_player_created(uuid: String) -> void:
 	if player_ui:
 		player_ui.word_submitted.connect(_on_player_word_submitted.bind(player_ui))
 		player_ui.guessed.connect(_on_player_guessed.bind(player_ui))
+		player_ui.reset_for_round()
 
 func _on_player_word_submitted(word: String, player_ui: DrawPlayerUI) -> void:
 	var trimmed_word = word.strip_edges()

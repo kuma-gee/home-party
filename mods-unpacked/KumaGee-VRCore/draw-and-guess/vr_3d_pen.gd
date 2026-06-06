@@ -15,6 +15,8 @@ var current_stroke: Node3D = null
 var current_mesh: ImmediateMesh = null
 var current_material: StandardMaterial3D = null
 var last_point: Vector3 = Vector3.ZERO
+var last_forward: Vector3 = Vector3.FORWARD
+var start_forward: Vector3 = Vector3.FORWARD
 var min_segment_length := 0.005
 
 var strokes_container: Node3D = null
@@ -80,6 +82,8 @@ func _start_stroke():
 	current_material = StandardMaterial3D.new()
 	current_material.albedo_color = line_color
 	current_material.vertex_color_use_as_albedo = true
+	# current_material.transparency = BaseMaterial3D.TRANSPARENCY_DISABLED
+	# current_material.cull_mode = BaseMaterial3D.CULL_DISABLED
 	
 	mesh_instance.mesh = current_mesh
 	mesh_instance.material_override = current_material
@@ -88,17 +92,119 @@ func _start_stroke():
 	strokes_container.add_child(current_stroke)
 	
 	last_point = _get_tip_position()
+	start_forward = Vector3.ZERO
+	last_forward = Vector3.FORWARD
 	
 	stroke_created.emit(current_stroke)
 
+func _add_start_cap(center: Vector3, forward: Vector3):
+	if not current_mesh: return
+	
+	var half_thickness = line_thickness * 0.5
+	
+	var up = Vector3.UP
+	var right = forward.cross(up).normalized()
+	if right.length() < 0.001:
+		right = Vector3.RIGHT
+		up = forward.cross(right).normalized()
+	else:
+		up = right.cross(forward).normalized()
+	
+	var angle_step = TAU / CIRCLE_SEGMENTS
+	var ring_count := 4
+	
+	for ring in range(ring_count):
+		var t1 = float(ring) / float(ring_count)
+		var t2 = float(ring + 1) / float(ring_count)
+		
+		var angle1 = t1 * PI * 0.5
+		var angle2 = t2 * PI * 0.5
+		
+		var r1 = sin(angle1)
+		var z1 = cos(angle1)
+		var r2 = sin(angle2)
+		var z2 = cos(angle2)
+		
+		for i in range(CIRCLE_SEGMENTS):
+			var a1 = angle_step * i
+			var a2 = angle_step * ((i + 1) % CIRCLE_SEGMENTS)
+			
+			var p1 = center + (right * cos(a1) + up * sin(a1)) * half_thickness * r1 - forward * half_thickness * z1
+			var p2 = center + (right * cos(a2) + up * sin(a2)) * half_thickness * r1 - forward * half_thickness * z1
+			var p3 = center + (right * cos(a2) + up * sin(a2)) * half_thickness * r2 - forward * half_thickness * z2
+			var p4 = center + (right * cos(a1) + up * sin(a1)) * half_thickness * r2 - forward * half_thickness * z2
+			
+			current_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
+			current_mesh.surface_add_vertex(p1)
+			current_mesh.surface_add_vertex(p2)
+			current_mesh.surface_add_vertex(p3)
+			
+			current_mesh.surface_add_vertex(p1)
+			current_mesh.surface_add_vertex(p3)
+			current_mesh.surface_add_vertex(p4)
+			current_mesh.surface_end()
+
+func _add_end_cap(center: Vector3, forward: Vector3):
+	if not current_mesh: return
+	
+	var half_thickness = line_thickness * 0.5
+	
+	var up = Vector3.UP
+	var right = forward.cross(up).normalized()
+	if right.length() < 0.001:
+		right = Vector3.RIGHT
+		up = forward.cross(right).normalized()
+	else:
+		up = right.cross(forward).normalized()
+	
+	var angle_step = TAU / CIRCLE_SEGMENTS
+	var ring_count := 4
+	
+	for ring in range(ring_count):
+		var t1 = float(ring) / float(ring_count)
+		var t2 = float(ring + 1) / float(ring_count)
+		
+		var angle1 = t1 * PI * 0.5
+		var angle2 = t2 * PI * 0.5
+		
+		var r1 = sin(angle1)
+		var z1 = cos(angle1)
+		var r2 = sin(angle2)
+		var z2 = cos(angle2)
+		
+		for i in range(CIRCLE_SEGMENTS):
+			var a1 = angle_step * i
+			var a2 = angle_step * ((i + 1) % CIRCLE_SEGMENTS)
+			
+			var p1 = center + (right * cos(a1) + up * sin(a1)) * half_thickness * r1 + forward * half_thickness * z1
+			var p2 = center + (right * cos(a2) + up * sin(a2)) * half_thickness * r1 + forward * half_thickness * z1
+			var p3 = center + (right * cos(a2) + up * sin(a2)) * half_thickness * r2 + forward * half_thickness * z2
+			var p4 = center + (right * cos(a1) + up * sin(a1)) * half_thickness * r2 + forward * half_thickness * z2
+			
+			current_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
+			current_mesh.surface_add_vertex(p1)
+			current_mesh.surface_add_vertex(p3)
+			current_mesh.surface_add_vertex(p2)
+			
+			current_mesh.surface_add_vertex(p1)
+			current_mesh.surface_add_vertex(p4)
+			current_mesh.surface_add_vertex(p3)
+			current_mesh.surface_end()
+
 func _add_segment_point(point: Vector3):
-	current_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
+	if not current_mesh: return
 	
 	var half_thickness = line_thickness * 0.5
 	
 	var forward = (point - last_point).normalized()
 	if forward.length() < 0.001:
 		forward = Vector3.FORWARD
+	
+	if start_forward == Vector3.ZERO:
+		start_forward = forward
+		_add_start_cap(last_point, forward)
+	
+	current_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
 	
 	var up = Vector3.UP
 	var right = forward.cross(up).normalized()
@@ -126,15 +232,20 @@ func _add_segment_point(point: Vector3):
 		current_mesh.surface_add_vertex(v2)
 		current_mesh.surface_add_vertex(v3)
 		
-		current_mesh.surface_add_vertex(v4)
 		current_mesh.surface_add_vertex(v3)
+		current_mesh.surface_add_vertex(v4)
 		current_mesh.surface_add_vertex(v1)
 	
 	current_mesh.surface_end()
+	
+	last_forward = forward
 
 func _end_stroke():
 	if not is_drawing:
 		return
+	
+	if start_forward != Vector3.ZERO:
+		_add_end_cap(last_point, last_forward)
 	
 	is_drawing = false
 	current_stroke = null
