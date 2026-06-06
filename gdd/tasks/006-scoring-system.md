@@ -21,11 +21,11 @@ Track the scoring the the main `draw_and_guess.gd` script. Scores persist across
 
 ## Acceptance criteria
 
-- [ ] Mobile players earn points by guess order per round (5/4/3/2/1)
-- [ ] VR player earns points based on % of players who guessed correctly that round
-- [ ] VR player gets +1 speed bonus if first guess is under 15 seconds
-- [ ] Accumulated scores persist across all rounds
-- [ ] Per-player stats (total points, rounds guessed) are queryable for the leaderboard
+- [x] Mobile players earn points by guess order per round (5/4/3/2/1)
+- [x] VR player earns points based on % of players who guessed correctly that round
+- [x] VR player gets +1 speed bonus if first guess is under 15 seconds
+- [x] Accumulated scores persist across all rounds
+- [x] Per-player stats (total points, rounds guessed) are queryable for the leaderboard
 
 ## Blocked by
 

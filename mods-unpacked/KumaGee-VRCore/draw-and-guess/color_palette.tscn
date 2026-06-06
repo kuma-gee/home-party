@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://b8ds0drxdot2s"]
+
+[ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_pickable"]
+[ext_resource type="Script" uid="uid://22pwe35c6mum" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/color_palette.gd" id="2_script"]
+[ext_resource type="PackedScene" uid="uid://cgw8ob24pdjiy" path="res://assets/drawing/palette.glb" id="3_palette"]
+[ext_resource type="PackedScene" uid="uid://bf5yr6l8pygaw" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/color_swatch.tscn" id="4_swatch"]
+[ext_resource type="Script" uid="uid://cdl5kcr2wvnav" path="res://addons/godot-xr-tools/objects/highlight/highlight_material.gd" id="5_ycwal"]
+[ext_resource type="Material" uid="uid://dyuaw57o8y3i" path="res://addons/godot-xr-tools/materials/highlight.tres" id="6_gr7lv"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_d4c3v"]
+height = 0.053710938
+radius = 0.31982422
+
+[node name="ColorPalette" unique_id=1048178413 instance=ExtResource("1_pickable")]
+freeze = true
+script = ExtResource("2_script")
+release_mode = 1
+
+[node name="CollisionShape3D" parent="." index="0" unique_id=1198871219]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16067076, 0, 0.1138931)
+shape = SubResource("CylinderShape3D_d4c3v")
+
+[node name="PaletteMesh" parent="." index="1" unique_id=1659976225 instance=ExtResource("3_palette")]
+
+[node name="SwatchBlack" parent="." index="2" unique_id=1743194055 instance=ExtResource("4_swatch")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0470528, 0.035777364, 0.23196433)
+
+[node name="SwatchRed" parent="." index="3" unique_id=770328514 instance=ExtResource("4_swatch")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.102348536, 0.05, 0.3303295)
+swatch_color = Color(1, 0, 0, 1)
+
+[node name="SwatchBlue" parent="." index="4" unique_id=514430684 instance=ExtResource("4_swatch")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.23414455, 0.05, -0.15103084)
+swatch_color = Color(0, 0, 1, 1)
+
+[node name="SwatchGreen" parent="." index="5" unique_id=814047855 instance=ExtResource("4_swatch")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.26740706, 0.05, 0.29156223)
+swatch_color = Color(0, 1, 0, 1)
+
+[node name="SwatchYellow" parent="." index="6" unique_id=2062005432 instance=ExtResource("4_swatch")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35882047, 0.05, 0.16637625)
+swatch_color = Color(1, 1, 0, 1)
+
+[node name="SwatchWhite" parent="." index="7" unique_id=964522980 instance=ExtResource("4_swatch")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.30647188, 0.05, -0.025037207)
+swatch_color = Color(1, 1, 1, 1)
+
+[node name="XRToolsHighlightMaterial" type="Node" parent="." index="8" unique_id=377057699]
+script = ExtResource("5_ycwal")
+highlight_mesh_instance = NodePath("../PaletteMesh/Palette")
+highlight_material = ExtResource("6_gr7lv")
+metadata/_custom_type_script = "uid://cdl5kcr2wvnav"
+
+[editable path="PaletteMesh"]

@@ -18,6 +18,7 @@ const MOBILE_SCORE_TABLE: Array[int] = [5, 4, 3, 2, 1]
 @export var game_ui: Control
 @export var vr_prepare_scene: PackedScene
 @export var pen_scene: PackedScene
+@export var palette_scene: PackedScene
 @export var word_label: Label
 @export var timer_label: Label
 @export var progress_label: Label
@@ -32,6 +33,7 @@ var submitted_players: Dictionary = {}
 var prepare_scene: DrawPrepareScene
 var is_drawing_phase := false
 var vr_3d_pen: VR3DPen = null
+var color_palette = null
 
 var current_word: String = ""
 var current_round: int = 0
@@ -251,6 +253,23 @@ func _setup_drawing_pen():
 	
 	var spawn_pos = xr_player.origin.global_transform.origin + Vector3(0.5, 1.2, -0.5)
 	vr_3d_pen.global_position = spawn_pos
+	
+	_setup_color_palette()
+
+func _setup_color_palette():
+	if not palette_scene:
+		logger.warn("Palette scene not configured")
+		return
+	
+	if color_palette:
+		color_palette.queue_free()
+	
+	color_palette = palette_scene.instantiate()
+	add_child(color_palette)
+	
+	var pal_pos = xr_player.origin.global_transform.origin + Vector3(-0.3, 1.0, -0.5)
+	color_palette.global_position = pal_pos
+	color_palette.pen = vr_3d_pen
 
 func _start_next_round() -> void:
 	if word_pool.is_empty():

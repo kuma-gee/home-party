@@ -12,12 +12,16 @@ height = 0.43936524
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r86rt"]
 
-[node name="Pen" unique_id=1045651359 node_paths=PackedStringArray("pen_tip") instance=ExtResource("1_pickable")]
+[sub_resource type="SphereShape3D" id="SphereShape3D_pen_tip"]
+radius = 0.02
+
+[node name="Pen" unique_id=1045651359 node_paths=PackedStringArray("pen_tip", "pen_tip_area") instance=ExtResource("1_pickable")]
 freeze = true
 script = ExtResource("2_script")
 line_thickness = 0.03
 line_color = Color(0, 0, 0, 1)
 pen_tip = NodePath("PenTip")
+pen_tip_area = NodePath("PenTip/PenTipArea")
 release_mode = 1
 
 [node name="CollisionShape3D" parent="." index="0" unique_id=1198871219]
@@ -32,6 +36,12 @@ surface_material_override/2 = SubResource("StandardMaterial3D_r86rt")
 
 [node name="PenTip" type="Node3D" parent="." index="2" unique_id=1982946823]
 transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0.0010055415, 0)
+
+[node name="PenTipArea" type="Area3D" parent="PenTip" index="0" unique_id=1177329407]
+collision_mask = 512
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PenTip/PenTipArea" index="0" unique_id=2010646051]
+shape = SubResource("SphereShape3D_pen_tip")
 
 [node name="XRToolsHighlightMaterial" type="Node" parent="." index="3" unique_id=2060584166]
 script = ExtResource("4_r86rt")

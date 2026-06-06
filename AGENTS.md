@@ -1,5 +1,13 @@
 # AGENTS.md
 
+The current state of the game is documents in the `docs/GDD.md`.
+Whenever there is a change, it should be updated there **always**.
+
+All tasks are documents in `docs/tasks/` as markdown files with
+acceptance criterias. If all AC are checked, that tasks is already
+finished. Whenever you are tasked to do one of them, **always**
+mark the AC as finished when you are done.
+
 ## Project Structure
 
 **Dual-runtime VR game:** Godot 4.6 VR game + SvelteKit smartphone controller (WebRTC connected)

@@ -42,14 +42,16 @@ projected live on the shared desktop screen for everyone to see.
 | Tool     | Input                          | Behavior |
 |----------|--------------------------------|----------|
 | Pen      | Grip + trigger hold            | Draws a continuous 3D line while trigger is held |
-| Color    | Point at color palette + grip  | Selects a new color from the palette floating beside the player |
+| Color    | Dip pen tip into color swatch  | Selects a new color from the palette floating beside the player |
 | Eraser   | Flip controller upside-down    | Erases the last stroke on release |
 | Clear    | Two-hand grab + pull apart     | Clears all drawn strokes (confirmation gesture) |
 
 ### Color Palette
 
-**6 colors** available on a floating palette beside the player:
+**6 colors** available on a grabbable floating palette beside the player:
 - Black (default), Red, Blue, Green, Yellow, White
+- The palette can be grabbed and repositioned freely
+- Current color is shown by a glowing ring around the selected swatch
 
 ### Word Display
 

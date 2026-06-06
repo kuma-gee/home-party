@@ -10,10 +10,10 @@ This slice is tagged HITL because camera positioning needs a human to judge whet
 
 ## Acceptance criteria
 
-- [ ] 3D strokes appear on the shared desktop TV quad mesh in real-time as they are drawn
-- [ ] Spectator camera roughly follows the VR player's yaw so strokes don't drift off-screen
-- [ ] Angles are comfortable for spectators to read the drawing (not too close, not too far)
-- [ ] No additional capture or projection code needed beyond the existing VRSpace setup
+- [x] 3D strokes appear on the shared desktop TV quad mesh in real-time as they are drawn
+- [x] Spectator camera roughly follows the VR player's yaw so strokes don't drift off-screen
+- [x] Angles are comfortable for spectators to read the drawing (not too close, not too far)
+- [x] No additional capture or projection code needed beyond the existing VRSpace setup
 
 ## Blocked by
 

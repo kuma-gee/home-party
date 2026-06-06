@@ -10,11 +10,11 @@ The palette is a `pickable.gd` with a mesh and a set of 3D spheres with trigger 
 
 ## Acceptance criteria
 
-- [ ] Grabbable palette with 6 color swatches appears beside the VR player during drawing phase
-- [ ] VR player grab and move the palette
-- [ ] Dipping the pen tip into one of the color changes it; subsequent strokes use the new color
-- [ ] Current selected color is visually indicated on the palette
-- [ ] Default color is black
+- [x] Grabbable palette with 6 color swatches appears beside the VR player during drawing phase
+- [x] VR player grab and move the palette
+- [x] Dipping the pen tip into one of the color changes it; subsequent strokes use the new color
+- [x] Current selected color is visually indicated on the palette
+- [x] Default color is black
 
 ## Blocked by
 

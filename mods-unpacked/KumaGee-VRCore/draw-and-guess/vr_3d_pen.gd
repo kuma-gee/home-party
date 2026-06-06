@@ -3,10 +3,12 @@ class_name VR3DPen
 extends XRToolsPickable
 
 signal stroke_created(stroke: Node3D)
+signal color_changed(color: Color)
 
 @export var line_thickness := 0.03
 @export var line_color := Color.BLACK
 @export var pen_tip: Node3D
+@export var pen_tip_area: Area3D
 @export var mesh: MeshInstance3D
 
 const CIRCLE_SEGMENTS := 8
@@ -29,6 +31,8 @@ func _ready():
 	_find_strokes_container()
 	action_pressed.connect(_on_action_pressed)
 	action_released.connect(_on_action_released)
+	if pen_tip_area:
+		pen_tip_area.area_entered.connect(_on_pen_tip_area_entered)
 	change_color(line_color)
 
 func _find_strokes_container():
@@ -47,6 +51,12 @@ func change_color(color: Color):
 	var color_mat = StandardMaterial3D.new()
 	color_mat.albedo_color = color
 	mesh.set_surface_override_material(2, color_mat)
+	color_changed.emit(color)
+
+func _on_pen_tip_area_entered(area: Area3D):
+	var swatch := area as DrawingColorSwatch
+	if swatch:
+		change_color(swatch.swatch_color)
 
 func _physics_process(_delta):
 	if Engine.is_editor_hint():

@@ -115,6 +115,7 @@ debug_ai_decrease={
 3d_physics/layer_7="EnemyHurtBox"
 3d_physics/layer_8="PowerUp"
 3d_physics/layer_9="Moveable"
+3d_physics/layer_10="Color Swatch"
 3d_physics/layer_16="Desktop Player"
 3d_physics/layer_17="Held Objects"
 3d_physics/layer_18="Player Hands"

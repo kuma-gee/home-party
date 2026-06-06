@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://du4rgg53c1er0" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_player_ui.tscn" id="7_player"]
 [ext_resource type="Texture2D" uid="uid://df1ngmp3ihrbs" path="res://assets/textures/sky_24_2k.png" id="9_emygo"]
 [ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="13_c22f1"]
+[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/color_palette.tscn" id="8_palette"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kdp07"]
 diffuse_mode = 3
@@ -123,6 +124,7 @@ prepare_ui = NodePath("CanvasLayer/PrepareUI")
 game_ui = NodePath("CanvasLayer/GameUI")
 vr_prepare_scene = ExtResource("2_56ffu")
 pen_scene = ExtResource("4_pen")
+palette_scene = ExtResource("8_palette")
 word_label = NodePath("CanvasLayer/GameUI/WordLabel")
 timer_label = NodePath("CanvasLayer/GameUI/TimerLabel")
 progress_label = NodePath("CanvasLayer/GameUI/ProgressLabel")
