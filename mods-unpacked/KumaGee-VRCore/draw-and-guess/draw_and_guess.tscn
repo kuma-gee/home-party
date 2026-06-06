@@ -134,13 +134,13 @@ xr_player = NodePath("XRPlayer")
 
 [node name="draw_room" parent="." unique_id=19219560 instance=ExtResource("4_kdp07")]
 
-[node name="Floor_001" parent="draw_room" index="9" unique_id=2033088829]
+[node name="Floor_001" parent="draw_room" index="9" unique_id=613316542]
 surface_material_override/0 = SubResource("StandardMaterial3D_kdp07")
 
-[node name="Glass_002" parent="draw_room" index="11" unique_id=40156923]
+[node name="Glass_002" parent="draw_room" index="11" unique_id=1877661892]
 surface_material_override/0 = ExtResource("6_toqx6")
 
-[node name="FrontWall" parent="draw_room" index="14" unique_id=768135934]
+[node name="FrontWall" parent="draw_room" index="14" unique_id=154105669]
 layers = 262144
 
 [node name="XRPlayer" parent="." unique_id=1799871270 instance=ExtResource("2_vr")]
@@ -185,6 +185,7 @@ light_energy = 0.25
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1593987021]
 
 [node name="PrepareUI" type="Control" parent="CanvasLayer" unique_id=529741707]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -209,7 +210,6 @@ grow_vertical = 2
 text = "Submit your words!"
 
 [node name="GameUI" type="Control" parent="CanvasLayer" unique_id=1634530868]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -219,6 +219,7 @@ grow_vertical = 2
 theme = ExtResource("3_theme")
 
 [node name="Label" type="Label" parent="CanvasLayer/GameUI" unique_id=1502667680]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -237,6 +238,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="WordLabel" type="Label" parent="CanvasLayer/GameUI" unique_id=1502667681]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5

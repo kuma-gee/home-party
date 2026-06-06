@@ -4,9 +4,15 @@ signal game_ended()
 signal round_started(word: String, round_number: int, total_rounds: int)
 signal round_ended(word: String)
 signal player_guessed_correctly(client: GameClient)
+signal scoring_completed(scores: Dictionary)
 
 const ROUND_DURATION := 60.0
 const REVEAL_DURATION := 5.0
+const SPEED_BONUS_THRESHOLD := 15.0  # seconds
+const VR_PLAYER_ID := "vr_player"
+
+# Scoring tables
+const MOBILE_SCORE_TABLE: Array[int] = [5, 4, 3, 2, 1]
 
 @export var prepare_ui: Control
 @export var game_ui: Control
@@ -32,6 +38,10 @@ var current_round: int = 0
 var total_rounds: int = 0
 var is_revealing := false
 var guessed_players: Array[String] = []
+var first_guess_elapsed: float = -1.0
+
+# Per-player scoring: uuid -> {total_points: int, rounds_guessed_correctly: int}
+var player_scores: Dictionary = {}
 
 func _ready() -> void:
 	prepare_ui.show()
@@ -62,6 +72,7 @@ func _on_player_created(uuid: String) -> void:
 		player_ui.word_submitted.connect(_on_player_word_submitted.bind(player_ui))
 		player_ui.guessed.connect(_on_player_guessed.bind(player_ui))
 		player_ui.reset_for_round()
+		_init_player_score(uuid)
 
 func _on_player_word_submitted(word: String, player_ui: DrawPlayerUI) -> void:
 	var trimmed_word = word.strip_edges()
@@ -111,10 +122,75 @@ func _on_player_guessed(guess: String, player_ui: DrawPlayerUI) -> void:
 		player_ui.game_client.send_text("word_ack;correct")
 		player_ui.mark_guessed_correctly()
 		player_guessed_correctly.emit(player_ui.game_client)
+		
+		# Award mobile player points based on guess order
+		_award_mobile_points(player_ui.uuid)
+		
+		# Track first guess elapsed time for VR speed bonus
+		if first_guess_elapsed < 0.0:
+			first_guess_elapsed = round_timer.wait_time - round_timer.time_left
 	else:
 		logger.debug("Incorrect guess from %s: %s" % [player_ui.uuid, guess])
 		player_ui.game_client.send_text("word_ack;incorrect")
 		player_ui.mark_guessed_incorrectly()
+
+func _init_player_score(uuid: String) -> void:
+	if not player_scores.has(uuid):
+		player_scores[uuid] = {
+			total_points = 0,
+			rounds_guessed_correctly = 0
+		}
+
+func _award_mobile_points(uuid: String) -> void:
+	_init_player_score(uuid)
+	var guess_index = guessed_players.find(uuid)
+	var points = MOBILE_SCORE_TABLE[guess_index] if guess_index < MOBILE_SCORE_TABLE.size() else 1
+	var entry = player_scores[uuid]
+	entry.total_points += points
+	entry.rounds_guessed_correctly += 1
+	logger.info("Mobile player %s scored %d pts (index %d), total: %d" % [uuid, points, guess_index, entry.total_points])
+
+func _calculate_vr_score() -> void:
+	_init_player_score(VR_PLAYER_ID)
+	
+	var total_mobile = 0
+	for child in player_list.get_children():
+		if child is DrawPlayerUI:
+			total_mobile += 1
+	
+	if total_mobile == 0:
+		return
+	
+	var correct_count = guessed_players.size()
+	var ratio = float(correct_count) / float(total_mobile)
+	
+	var points := 0
+	if ratio >= 1.0:
+		points = 5
+	elif ratio >= 0.75:
+		points = 4
+	elif ratio >= 0.5:
+		points = 3
+	elif ratio >= 0.25:
+		points = 2
+	elif ratio > 0.0:
+		points = 1
+	# else points stays 0
+	
+	# Speed bonus: +1 if first guess arrived under 15 seconds
+	var speed_bonus := 0
+	if first_guess_elapsed >= 0.0 and first_guess_elapsed < SPEED_BONUS_THRESHOLD:
+		speed_bonus = 1
+		logger.info("VR speed bonus earned (first guess at %.1fs)" % first_guess_elapsed)
+	
+	points += speed_bonus
+	
+	var entry = player_scores[VR_PLAYER_ID]
+	entry.total_points += points
+	logger.info("VR player scored %d pts (guess ratio %.0f%%), total: %d" % [points, ratio * 100, entry.total_points])
+
+func get_player_scores() -> Dictionary:
+	return player_scores.duplicate()
 
 func _update_ui() -> void:
 	if not is_drawing_phase:
@@ -152,6 +228,7 @@ func _start_game() -> void:
 	game_ui.show()
 	_on_clients_changed()
 	_setup_drawing_pen()
+	_init_player_score(VR_PLAYER_ID)
 	
 	for child in player_list.get_children():
 		if child is DrawPlayerUI:
@@ -194,6 +271,7 @@ func _start_next_round() -> void:
 	
 	reveal_label.hide()
 	guessed_players.clear()
+	first_guess_elapsed = -1.0
 	
 	for child in player_list.get_children():
 		if child is DrawPlayerUI:
@@ -205,6 +283,8 @@ func _start_next_round() -> void:
 func _on_round_timer_expired() -> void:
 	logger.info("Round %d timer expired, revealing word: %s" % [current_round, current_word])
 	round_ended.emit(current_word)
+	_calculate_vr_score()
+	scoring_completed.emit(player_scores.duplicate())
 	_reveal_word()
 
 func _reveal_word() -> void:
