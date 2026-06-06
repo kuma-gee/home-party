@@ -7,6 +7,7 @@ signal stroke_created(stroke: Node3D)
 @export var line_thickness := 0.03
 @export var line_color := Color.BLACK
 @export var pen_tip: Node3D
+@export var mesh: MeshInstance3D
 
 const CIRCLE_SEGMENTS := 8
 
@@ -28,6 +29,7 @@ func _ready():
 	_find_strokes_container()
 	action_pressed.connect(_on_action_pressed)
 	action_released.connect(_on_action_released)
+	change_color(line_color)
 
 func _find_strokes_container():
 	var root = get_tree().root
@@ -39,6 +41,12 @@ func _find_strokes_container():
 	strokes_container = Node3D.new()
 	strokes_container.name = "StrokesContainer"
 	Staging.add_scene_child(strokes_container)
+
+func change_color(color: Color):
+	line_color = color
+	var color_mat = StandardMaterial3D.new()
+	color_mat.albedo_color = color
+	mesh.set_surface_override_material(2, color_mat)
 
 func _physics_process(_delta):
 	if Engine.is_editor_hint():
