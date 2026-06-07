@@ -64,8 +64,9 @@ The panel shows:
 
 ### Skip
 
-The VR player gets **1 skip per game** — if they genuinely cannot draw the word,
-they can skip to get a new one. The skipped word returns to the pool.
+The VR player can press Skip to discard the current word and draw a new one
+from the pool. The skipped round ends immediately with no points awarded.
+If skip is used on the last remaining word, the game ends.
 
 ### VR Scoring
 

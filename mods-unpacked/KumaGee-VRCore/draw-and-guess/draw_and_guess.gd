@@ -62,6 +62,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func _on_game_start():
 	prepare_scene = vr_scene.get_scene_instance()
 	prepare_scene.ready_clicked.connect(_on_vr_ready_pressed)
+	prepare_scene.skipped.connect(_on_vr_skipped)
 	prepare_scene.round_timer = round_timer
 	_update_ui()
 	_on_clients_changed()
@@ -212,6 +213,16 @@ func _check_all_submitted(vr_ready = false) -> void:
 func _on_vr_ready_pressed() -> void:
 	logger.info("VR player ready")
 	_check_all_submitted(true)
+
+func _on_vr_skipped() -> void:
+	if not is_drawing_phase or is_revealing:
+		return
+	
+	round_timer.stop()
+	logger.info("VR player skipped word: %s" % current_word)
+	round_ended.emit(current_word)
+	scoring_completed.emit(player_scores.duplicate())
+	_start_next_round()
 
 func _start_game() -> void:
 	logger.info("Starting game with %d words in pool" % word_pool.size())
