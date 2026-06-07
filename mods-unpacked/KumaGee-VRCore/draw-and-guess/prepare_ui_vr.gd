@@ -13,6 +13,7 @@ signal skipped()
 @onready var round_label: Label = %Round
 @onready var word_label: Label = %Word
 @onready var time: Label = %Time
+@onready var leaderboard: Leaderboard = %Leaderboard
 
 var round_timer: Timer:
 	set(v):
@@ -22,15 +23,18 @@ var round_timer: Timer:
 func _ready() -> void:
 	ready_button.pressed.connect(func(): ready_clicked.emit())
 	skip_button.pressed.connect(func(): skipped.emit())
-	_show_prepare()
+	_show_container(prepare)
 
-func _show_prepare() -> void:
-	prepare.show()
-	in_game.hide()
-
-func _show_game() -> void:
+func _show_container(container) -> void:
 	prepare.hide()
-	in_game.show()
+	in_game.hide()
+	leaderboard.hide()
+	container.show()
+
+func show_leaderboard(title, entries):
+	leaderboard.set_title(title)
+	leaderboard.set_entries(entries)
+	_show_container(leaderboard)
 
 func update(list: Array):
 	var active_client_count = 0
@@ -47,6 +51,6 @@ func update(list: Array):
 	word_count.text = text
 
 func start_new_game(word: String, r: int, total_round: int):
-	_show_game()
+	_show_container(in_game)
 	round_label.text = "Word %d of %d" % [r, total_round]
 	word_label.text = word

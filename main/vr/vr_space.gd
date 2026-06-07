@@ -44,6 +44,7 @@ func _on_menu_closed():
 	if not get_tree().paused:
 		overlay_mesh.hide_overlay()
 
+# deprecated
 func gameover(msg: String):
 	var screen = show_screen(gameover_scene) as GameoverPanel
 	screen.back_to_menu.connect(func(): back_to_home.emit())

@@ -26,6 +26,7 @@ const MOBILE_SCORE_TABLE: Array[int] = [5, 4, 3, 2, 1]
 @export var reveal_timer: Timer
 
 @export var player_list: PlayerList
+@export var desktop_gameover: DesktopGameover
 
 var logger := KumaLog.new("DrawAndGuess")
 var word_pool: Array[String] = []
@@ -288,3 +289,16 @@ func _on_reveal_timer_expired() -> void:
 func _end_game() -> void:
 	logger.info("Game ended - all words used")
 	game_ended.emit()
+
+	var entries: Array = []
+	for uuid in player_scores:
+		var score = player_scores[uuid]
+		entries.append({
+			uuid = uuid,
+			total_points = score.total_points,
+			rounds_guessed_correctly = score.rounds_guessed_correctly
+		})
+
+	prepare_ui.show_leaderboard("Game Over!", entries)
+	if desktop_gameover:
+		desktop_gameover.show_leaderboard("Game Over!", entries)
