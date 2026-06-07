@@ -4,13 +4,41 @@
 [ext_resource type="Script" uid="uid://22pwe35c6mum" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/color_palette.gd" id="2_script"]
 [ext_resource type="PackedScene" uid="uid://cgw8ob24pdjiy" path="res://assets/drawing/palette.glb" id="3_palette"]
 [ext_resource type="PackedScene" uid="uid://bf5yr6l8pygaw" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/color_swatch.tscn" id="4_swatch"]
-[ext_resource type="PackedScene" uid="uid://bxjhcmtfg8l6n" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/drawing_clear_swatch.tscn" id="4_swatch_clear"]
 [ext_resource type="Script" uid="uid://cdl5kcr2wvnav" path="res://addons/godot-xr-tools/objects/highlight/highlight_material.gd" id="5_ycwal"]
 [ext_resource type="Material" uid="uid://dyuaw57o8y3i" path="res://addons/godot-xr-tools/materials/highlight.tres" id="6_gr7lv"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_d4c3v"]
 height = 0.053710938
-radius = 0.31982422
+radius = 0.2758789
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yyhed"]
+albedo_color = Color(0, 0, 0, 1)
+metallic = 0.3
+roughness = 0.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4djeq"]
+albedo_color = Color(1, 0, 0, 1)
+metallic = 0.3
+roughness = 0.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p5kxv"]
+albedo_color = Color(0, 0, 1, 1)
+metallic = 0.3
+roughness = 0.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e6uyl"]
+albedo_color = Color(0, 1, 0, 1)
+metallic = 0.3
+roughness = 0.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f54y1"]
+albedo_color = Color(1, 1, 0, 1)
+metallic = 0.3
+roughness = 0.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1psel"]
+metallic = 0.3
+roughness = 0.4
 
 [node name="ColorPalette" unique_id=1048178413 node_paths=PackedStringArray("palette_mesh") instance=ExtResource("1_pickable")]
 freeze = true
@@ -19,38 +47,44 @@ palette_mesh = NodePath("PaletteMesh/Palette")
 release_mode = 1
 
 [node name="CollisionShape3D" parent="." index="0" unique_id=1198871219]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16067076, 0, 0.1138931)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.099833965, 0, -0.11138766)
 shape = SubResource("CylinderShape3D_d4c3v")
 
 [node name="PaletteMesh" parent="." index="1" unique_id=1659976225 instance=ExtResource("3_palette")]
+transform = Transform3D(-3.4969112e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.4969112e-08, 0, 0, 0)
 
-[node name="SwatchBlack" parent="." index="2" unique_id=1743194055 instance=ExtResource("4_swatch")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0470528, 0.035777364, 0.23196433)
+[node name="Palette" parent="PaletteMesh" index="0" unique_id=1016833865]
+surface_material_override/0 = SubResource("StandardMaterial3D_yyhed")
+surface_material_override/1 = SubResource("StandardMaterial3D_4djeq")
+surface_material_override/2 = SubResource("StandardMaterial3D_p5kxv")
+surface_material_override/3 = SubResource("StandardMaterial3D_e6uyl")
+surface_material_override/4 = SubResource("StandardMaterial3D_f54y1")
+surface_material_override/5 = SubResource("StandardMaterial3D_1psel")
 
-[node name="SwatchRed" parent="." index="3" unique_id=770328514 instance=ExtResource("4_swatch")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.102348536, 0.05, 0.3303295)
+[node name="SwatchBlack" parent="PaletteMesh" index="1" unique_id=1743194055 instance=ExtResource("4_swatch")]
+transform = Transform3D(1.25, 0, -3.5527137e-15, 0, 1.25, 0, 3.5527137e-15, 0, 1.25, 0.04218771, 0.044721704, 0.22099698)
+
+[node name="SwatchRed" parent="PaletteMesh" index="2" unique_id=770328514 instance=ExtResource("4_swatch")]
+transform = Transform3D(1.25, 0, -3.5527137e-15, 0, 1.25, 0, 3.5527137e-15, 0, 1.25, -0.10152606, 0.0625, 0.32781422)
 swatch_color = Color(1, 0, 0, 1)
 
-[node name="SwatchBlue" parent="." index="4" unique_id=514430684 instance=ExtResource("4_swatch")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.23414455, 0.05, -0.15103084)
+[node name="SwatchBlue" parent="PaletteMesh" index="3" unique_id=514430684 instance=ExtResource("4_swatch")]
+transform = Transform3D(1.25, 0, -3.5527137e-15, 0, 1.25, 0, 3.5527137e-15, 0, 1.25, -0.23986146, 0.0625, -0.1501523)
 swatch_color = Color(0, 0, 1, 1)
 
-[node name="SwatchGreen" parent="." index="5" unique_id=814047855 instance=ExtResource("4_swatch")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.26740706, 0.05, 0.29156223)
+[node name="SwatchGreen" parent="PaletteMesh" index="4" unique_id=814047855 instance=ExtResource("4_swatch")]
+transform = Transform3D(1.25, 0, -3.5527137e-15, 0, 1.25, 0, 3.5527137e-15, 0, 1.25, -0.2706801, 0.0625, 0.3018522)
 swatch_color = Color(0, 1, 0, 1)
 
-[node name="SwatchYellow" parent="." index="6" unique_id=2062005432 instance=ExtResource("4_swatch")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35882047, 0.05, 0.16637625)
+[node name="SwatchYellow" parent="PaletteMesh" index="5" unique_id=2062005432 instance=ExtResource("4_swatch")]
+transform = Transform3D(1.25, 0, -3.5527137e-15, 0, 1.25, 0, 3.5527137e-15, 0, 1.25, -0.3590263, 0.0625, 0.1629761)
 swatch_color = Color(1, 1, 0, 1)
 
-[node name="SwatchWhite" parent="." index="7" unique_id=964522980 instance=ExtResource("4_swatch")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.30647188, 0.05, -0.025037207)
+[node name="SwatchWhite" parent="PaletteMesh" index="6" unique_id=964522980 instance=ExtResource("4_swatch")]
+transform = Transform3D(1.25, 0, -3.5527137e-15, 0, 1.25, 0, 3.5527137e-15, 0, 1.25, -0.30337197, 0.0625, -0.027873041)
 swatch_color = Color(1, 1, 1, 1)
 
-[node name="ClearSwatch" parent="." index="8" unique_id=2019214899 instance=ExtResource("4_swatch_clear")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.24, 0.05, 0)
-
-[node name="XRToolsHighlightMaterial" type="Node" parent="." index="9" unique_id=377057699]
+[node name="XRToolsHighlightMaterial" type="Node" parent="." index="2" unique_id=377057699]
 script = ExtResource("5_ycwal")
 highlight_mesh_instance = NodePath("../PaletteMesh/Palette")
 highlight_material = ExtResource("6_gr7lv")

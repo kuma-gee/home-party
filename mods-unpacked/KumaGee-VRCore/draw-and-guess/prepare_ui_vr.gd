@@ -4,7 +4,6 @@ extends Control
 signal ready_clicked()
 signal skipped()
 
-
 # Doesn't work as @export ?!?!?!
 @onready var ready_button: Button = %ReadyButton
 @onready var word_count: Label = %WordCount
@@ -12,10 +11,13 @@ signal skipped()
 @onready var in_game: VBoxContainer = %InGame
 @onready var prepare: VBoxContainer = %Prepare
 @onready var round_label: Label = %Round
-@onready var time_label: Label = %Time
 @onready var word_label: Label = %Word
+@onready var time: Label = %Time
 
-var round_timer: Timer
+var round_timer: Timer:
+	set(v):
+		round_timer = v
+		time.timer = v
 
 func _ready() -> void:
 	ready_button.pressed.connect(func(): ready_clicked.emit())
@@ -29,15 +31,6 @@ func _show_prepare() -> void:
 func _show_game() -> void:
 	prepare.hide()
 	in_game.show()
-
-func _process(_delta: float) -> void:
-	if round_timer == null or round_timer.is_stopped(): return
-	_update_timer_label(round_timer.time_left)
-
-func _update_timer_label(time_left: float) -> void:
-	var minutes = int(time_left) / 60
-	var seconds = int(time_left) % 60
-	time_label.text = "%d:%02d" % [minutes, seconds]
 
 func update(list: Array):
 	var active_client_count = 0
@@ -53,7 +46,7 @@ func update(list: Array):
 	]
 	word_count.text = text
 
-func start_new_game(word: String, round: int, total_round: int):
+func start_new_game(word: String, r: int, total_round: int):
 	_show_game()
-	round_label.text = "Word %d of %d" % [round, total_round]
+	round_label.text = "Word %d of %d" % [r, total_round]
 	word_label.text = word

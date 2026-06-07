@@ -6,31 +6,33 @@
 [ext_resource type="Material" uid="uid://dyuaw57o8y3i" path="res://addons/godot-xr-tools/materials/highlight.tres" id="4_high"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_5k70s"]
-radius = 0.055059418
+radius = 0.028358469
 
 [sub_resource type="SphereMesh" id="SphereMesh_5k70s"]
-radius = 0.05
-height = 0.1
+radius = 0.03
+height = 0.06
 
-[node name="EraserTool" unique_id=1045651359 node_paths=PackedStringArray("eraser_tip", "eraser_mesh") instance=ExtResource("1_pickable")]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6k6aq"]
+albedo_color = Color(0.796243, 0.796243, 0.796243, 1)
+
+[node name="EraserTool" unique_id=1045651359 node_paths=PackedStringArray("eraser_mesh") groups=["eraser"] instance=ExtResource("1_pickable")]
 freeze = true
 script = ExtResource("2_script")
-eraser_tip = NodePath("EraserTip")
 eraser_mesh = NodePath("EraserMesh")
+active_color = Color(0.70980394, 0.12156863, 0.12156863, 1)
+normal_color = Color(0.76862746, 0.76862746, 0.76862746, 1)
 release_mode = 1
 
 [node name="CollisionShape3D" parent="." index="0" unique_id=1198871219]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00085062534, 0)
 shape = SubResource("SphereShape3D_5k70s")
 
 [node name="EraserMesh" type="MeshInstance3D" parent="." index="1" unique_id=1694524629]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00085062534, 0)
 mesh = SubResource("SphereMesh_5k70s")
+surface_material_override/0 = SubResource("StandardMaterial3D_6k6aq")
 
-[node name="EraserTip" type="Node3D" parent="." index="2" unique_id=1982946824]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.03, 0)
-
-[node name="XRToolsHighlightMaterial" type="Node" parent="." index="3" unique_id=2060584167]
+[node name="XRToolsHighlightMaterial" type="Node" parent="." index="2" unique_id=2060584167]
 script = ExtResource("3_ycwal")
 highlight_mesh_instance = NodePath("../EraserMesh")
 highlight_material = ExtResource("4_high")

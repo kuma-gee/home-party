@@ -2,11 +2,13 @@
 class_name VR3DPen
 extends XRToolsPickable
 
+const STROKES_GROUP = "StrokesContainerGroup"
+
 signal stroke_created(stroke: DrawingStroke)
 signal color_changed(color: Color)
 
 @export var line_thickness := 0.03
-@export var line_color := Color.BLACK
+@export var line_color := Color.WHITE
 @export var pen_tip: Node3D
 @export var pen_tip_area: Area3D
 @export var mesh: MeshInstance3D
@@ -29,21 +31,23 @@ func _ready():
 	if Engine.is_editor_hint():
 		return
 	_find_strokes_container()
+	
 	action_pressed.connect(_on_action_pressed)
 	action_released.connect(_on_action_released)
 	if pen_tip_area:
 		pen_tip_area.area_entered.connect(_on_pen_tip_area_entered)
+	
 	change_color(line_color)
 
 func _find_strokes_container():
-	var root = get_tree().root
-	for child in root.get_children():
-		if child.name == "StrokesContainer":
-			strokes_container = child
-			return
+	var container = get_tree().get_first_node_in_group(STROKES_GROUP)
+	if container:
+		strokes_container = container
+		return
 	
 	strokes_container = Node3D.new()
 	strokes_container.name = "StrokesContainer"
+	strokes_container.add_to_group(STROKES_GROUP)
 	Staging.add_scene_child(strokes_container)
 
 func change_color(color: Color):
@@ -57,9 +61,6 @@ func _on_pen_tip_area_entered(area: Area3D):
 	var swatch := area as DrawingColorSwatch
 	if swatch:
 		change_color(swatch.swatch_color)
-		return
-	var _clear_btn := area as DrawingClearSwatch
-	if _clear_btn:
 		return
 
 func _physics_process(_delta):

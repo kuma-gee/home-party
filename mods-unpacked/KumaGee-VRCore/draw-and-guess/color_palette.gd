@@ -2,7 +2,9 @@
 class_name DrawingColorPalette
 extends XRToolsPickable
 
+@export var eraser: XRToolsPickable
 @export var palette_mesh: MeshInstance3D
+@onready var xr_tools_highlight_material: XRToolsHighlightMaterial = $XRToolsHighlightMaterial
 
 var pen: VR3DPen = null:
 	set(value):
@@ -16,6 +18,10 @@ var pen: VR3DPen = null:
 var swatches: Array[DrawingColorSwatch] = []
 
 func _ready():
+	#picked_up.connect(func(_p): eraser.enabled = true)
+	#dropped.connect(func(_p): eraser.enabled = false)
+	#eraser.enabled = false
+	
 	for child in get_children():
 		if child is DrawingColorSwatch:
 			swatches.append(child)
@@ -24,10 +30,12 @@ func _ready():
 		return
 	
 	_update_palette_materials()
+	xr_tools_highlight_material.save_surface_materials()
 
 func _update_palette_materials():
 	if not palette_mesh or not palette_mesh.mesh:
 		return
+	
 	var surface_count = palette_mesh.get_surface_override_material_count()
 	for i in min(swatches.size(), surface_count):
 		var mat = StandardMaterial3D.new()

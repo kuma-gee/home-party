@@ -16,12 +16,12 @@ HITL because eraser proximity threshold and confirmation dialog positioning/scal
 
 ## Acceptance criteria
 
-- [ ] Eraser tool is a pickable object grabbable in VR (spawned alongside pen and palette)
-- [ ] Holding trigger while eraser tip is near a stroke erases that stroke (one per trigger press)
-- [ ] Eraser mesh glows red when actively erasing, neutral gray when idle
-- [ ] Touching the Clear swatch on the palette with the pen tip shows a confirmation dialog
-- [ ] Selecting "Yes" removes all strokes; "No" / 5s timeout cancels
-- [ ] Both tools only work during the drawing phase
+- [x] Eraser tool is a pickable object grabbable in VR (spawned alongside pen and palette)
+- [x] Holding trigger while eraser tip is near a stroke erases that stroke (one per trigger press)
+- [x] Eraser mesh glows red when actively erasing, neutral gray when idle
+- [x] Touching the Clear swatch on the palette with the pen tip shows a confirmation dialog
+- [x] Selecting "Yes" removes all strokes; "No" / 5s timeout cancels
+- [x] Both tools only work during the drawing phase
 
 ## Blocked by
 

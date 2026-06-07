@@ -18,9 +18,6 @@ const MOBILE_SCORE_TABLE: Array[int] = [5, 4, 3, 2, 1]
 @export var game_ui: Control
 
 @export var vr_scene: XRToolsViewport2DIn3D
-@export var pen_scene: PackedScene
-@export var palette_scene: PackedScene
-@export var eraser_scene: PackedScene
 
 @export var timer_label: Label
 @export var progress_label: Label
@@ -222,7 +219,6 @@ func _start_game() -> void:
 	prepare_ui.hide()
 	game_ui.show()
 	_on_clients_changed()
-	_setup_drawing_pen()
 	_init_player_score(VR_PLAYER_ID)
 	
 	for child in player_list.get_children():
@@ -232,64 +228,6 @@ func _start_game() -> void:
 	total_rounds = word_pool.size()
 	current_round = 0
 	_start_next_round()
-
-func _setup_drawing_pen():
-	if not pen_scene:
-		logger.warn("Pen scene not configured")
-		return
-	
-	if vr_3d_pen:
-		vr_3d_pen.queue_free()
-	
-	vr_3d_pen = pen_scene.instantiate()
-	add_child(vr_3d_pen)
-	
-	var spawn_pos = xr_player.origin.global_transform.origin + Vector3(0.5, 1.2, -0.5)
-	vr_3d_pen.global_position = spawn_pos
-	
-	_setup_color_palette()
-	_setup_eraser()
-
-func _setup_color_palette():
-	if not palette_scene:
-		logger.warn("Palette scene not configured")
-		return
-	
-	if color_palette:
-		color_palette.queue_free()
-	
-	color_palette = palette_scene.instantiate()
-	add_child(color_palette)
-	
-	var pal_pos = xr_player.origin.global_transform.origin + Vector3(-0.3, 1.0, -0.5)
-	color_palette.global_position = pal_pos
-	color_palette.pen = vr_3d_pen
-
-	var clear_swatch := color_palette.find_child("ClearSwatch", true, false) as DrawingClearSwatch
-	if clear_swatch:
-		clear_swatch.cleared.connect(_clear_all_strokes)
-
-func _setup_eraser():
-	if not eraser_scene:
-		logger.warn("Eraser scene not configured")
-		return
-	
-	if eraser_tool:
-		eraser_tool.queue_free()
-	
-	eraser_tool = eraser_scene.instantiate()
-	add_child(eraser_tool)
-	
-	var spawn_pos = xr_player.origin.global_transform.origin + Vector3(0.8, 1.2, -0.5)
-	eraser_tool.global_position = spawn_pos
-
-func _clear_all_strokes():
-	var root = get_tree().root
-	for child in root.get_children():
-		if child.name == "StrokesContainer":
-			for stroke in child.get_children():
-				stroke.queue_free()
-			return
 
 func _start_next_round() -> void:
 	if word_pool.is_empty():
@@ -330,28 +268,12 @@ func _reveal_word() -> void:
 		reveal_label.text = "The word was: %s" % current_word
 		reveal_label.show()
 	
-	if vr_3d_pen:
-		vr_3d_pen.set_drawing_enabled(false)
-	
 	reveal_timer.start(REVEAL_DURATION)
 
 func _on_reveal_timer_expired() -> void:
 	is_revealing = false
-	if vr_3d_pen:
-		vr_3d_pen.set_drawing_enabled(true)
-	
 	_start_next_round()
 
 func _end_game() -> void:
 	logger.info("Game ended - all words used")
 	game_ended.emit()
-
-func _update_timer_label(time_left: float) -> void:
-	if timer_label:
-		var minutes = int(time_left) / 60
-		var seconds = int(time_left) % 60
-		timer_label.text = "%d:%02d" % [minutes, seconds]
-
-func _process(_delta: float) -> void:
-	if round_timer and not round_timer.is_stopped():
-		_update_timer_label(round_timer.time_left)

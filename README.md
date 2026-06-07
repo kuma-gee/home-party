@@ -25,6 +25,8 @@
 ### BGM
 
 - [Home World](https://dova-s.jp/bgm/detail/4041)
+- [Castle Defense](https://dova-s.jp/bgm/detail/22829)
+- [Drawing](https://dova-s.jp/bgm/detail/23412)
 
 ### SFX
 
