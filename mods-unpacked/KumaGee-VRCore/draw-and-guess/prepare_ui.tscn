@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cwunyyy4bgppe" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/prepare_ui_vr.gd" id="1_1fw84"]
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="1_cclwa"]
 
-[node name="PrepareUI" type="Control" unique_id=1689120374 node_paths=PackedStringArray("ready_button", "count_label")]
+[node name="PrepareUI" type="Control" unique_id=1689120374 node_paths=PackedStringArray("in_game", "round_label", "time_label", "word_label", "skip_button", "ready_button", "count_label", "prepare")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,10 +11,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_1fw84")
-ready_button = NodePath("Panel/MarginContainer/VBox/ReadyButton")
-count_label = NodePath("Panel/MarginContainer/VBox/WordCount")
+in_game = NodePath("Panel/MarginContainer/InGame")
+round_label = NodePath("Panel/MarginContainer/InGame/Round")
+time_label = NodePath("Panel/MarginContainer/InGame/Time")
+word_label = NodePath("Panel/MarginContainer/InGame/Word")
+skip_button = NodePath("Panel/MarginContainer/InGame/SkipButton")
+ready_button = NodePath("Panel/MarginContainer/Prepare/ReadyButton")
+count_label = NodePath("Panel/MarginContainer/Prepare/WordCount")
+prepare = NodePath("Panel/MarginContainer/Prepare")
 
 [node name="Panel" type="PanelContainer" parent="." unique_id=1364751457]
+custom_minimum_size = Vector2(800, 400)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -32,41 +39,54 @@ theme = ExtResource("1_cclwa")
 [node name="MarginContainer" type="MarginContainer" parent="Panel" unique_id=301361301]
 layout_mode = 2
 
-[node name="VBox" type="VBoxContainer" parent="Panel/MarginContainer" unique_id=2124314594]
+[node name="Prepare" type="VBoxContainer" parent="Panel/MarginContainer" unique_id=2124314594]
+visible = false
 layout_mode = 2
+theme_override_constants/separation = 32
 
-[node name="Title" type="Label" parent="Panel/MarginContainer/VBox" unique_id=1939476564]
+[node name="Title" type="Label" parent="Panel/MarginContainer/Prepare" unique_id=1939476564]
 layout_mode = 2
 theme = ExtResource("1_cclwa")
 text = "Draw & Guess"
 horizontal_alignment = 1
 
-[node name="Spacer1" type="Control" parent="Panel/MarginContainer/VBox" unique_id=1293989126]
-custom_minimum_size = Vector2(0, 20)
-layout_mode = 2
-
-[node name="Instructions" type="Label" parent="Panel/MarginContainer/VBox" unique_id=990282044]
+[node name="Instructions" type="Label" parent="Panel/MarginContainer/Prepare" unique_id=990282044]
 layout_mode = 2
 theme = ExtResource("1_cclwa")
 text = "Waiting for players to submit words...
 Click Ready when all words are in!"
 horizontal_alignment = 1
 
-[node name="Spacer2" type="Control" parent="Panel/MarginContainer/VBox" unique_id=287495529]
-custom_minimum_size = Vector2(0, 20)
-layout_mode = 2
-
-[node name="WordCount" type="Label" parent="Panel/MarginContainer/VBox" unique_id=1982206726]
+[node name="WordCount" type="Label" parent="Panel/MarginContainer/Prepare" unique_id=1982206726]
 layout_mode = 2
 theme = ExtResource("1_cclwa")
 text = "Words submitted: 0"
 horizontal_alignment = 1
 
-[node name="Spacer3" type="Control" parent="Panel/MarginContainer/VBox" unique_id=1406006990]
-custom_minimum_size = Vector2(0, 20)
-layout_mode = 2
-
-[node name="ReadyButton" type="Button" parent="Panel/MarginContainer/VBox" unique_id=1896170644]
+[node name="ReadyButton" type="Button" parent="Panel/MarginContainer/Prepare" unique_id=1896170644]
 layout_mode = 2
 theme = ExtResource("1_cclwa")
 text = "Ready"
+
+[node name="InGame" type="VBoxContainer" parent="Panel/MarginContainer" unique_id=686132541]
+layout_mode = 2
+
+[node name="Round" type="Label" parent="Panel/MarginContainer/InGame" unique_id=1736349627]
+layout_mode = 2
+text = "Word 1 of 5"
+horizontal_alignment = 1
+
+[node name="Time" type="Label" parent="Panel/MarginContainer/InGame" unique_id=868022128]
+layout_mode = 2
+text = "00:00"
+horizontal_alignment = 1
+
+[node name="Word" type="Label" parent="Panel/MarginContainer/InGame" unique_id=652281359]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Test"
+horizontal_alignment = 1
+
+[node name="SkipButton" type="Button" parent="Panel/MarginContainer/InGame" unique_id=1501239932]
+layout_mode = 2
+text = "Skip Word"

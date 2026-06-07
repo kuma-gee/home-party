@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://22pwe35c6mum" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/color_palette.gd" id="2_script"]
 [ext_resource type="PackedScene" uid="uid://cgw8ob24pdjiy" path="res://assets/drawing/palette.glb" id="3_palette"]
 [ext_resource type="PackedScene" uid="uid://bf5yr6l8pygaw" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/color_swatch.tscn" id="4_swatch"]
+[ext_resource type="PackedScene" uid="uid://bxjhcmtfg8l6n" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/drawing_clear_swatch.tscn" id="4_swatch_clear"]
 [ext_resource type="Script" uid="uid://cdl5kcr2wvnav" path="res://addons/godot-xr-tools/objects/highlight/highlight_material.gd" id="5_ycwal"]
 [ext_resource type="Material" uid="uid://dyuaw57o8y3i" path="res://addons/godot-xr-tools/materials/highlight.tres" id="6_gr7lv"]
 
@@ -45,7 +46,10 @@ swatch_color = Color(1, 1, 0, 1)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.30647188, 0.05, -0.025037207)
 swatch_color = Color(1, 1, 1, 1)
 
-[node name="XRToolsHighlightMaterial" type="Node" parent="." index="8" unique_id=377057699]
+[node name="ClearSwatch" parent="." index="8" unique_id=2019214899 instance=ExtResource("4_swatch_clear")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.24, 0.05, 0.0)
+
+[node name="XRToolsHighlightMaterial" type="Node" parent="." index="9" unique_id=377057699]
 script = ExtResource("5_ycwal")
 highlight_mesh_instance = NodePath("../PaletteMesh/Palette")
 highlight_material = ExtResource("6_gr7lv")

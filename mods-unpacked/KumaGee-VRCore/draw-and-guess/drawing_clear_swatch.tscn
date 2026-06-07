@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://bxjhcmtfg8l6n"]
+
+[ext_resource type="Script" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/drawing_clear_swatch.gd" id="1"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5dpfe"]
+size = Vector3(0.08, 0.04, 0.08)
+
+[sub_resource type="QuadMesh" id="QuadMesh_progress"]
+size = Vector2(0.08, 0.08)
+
+[node name="ClearSwatch" type="Area3D" unique_id=1492562334 node_paths=PackedStringArray("progress_mesh", "progress_viewport", "progress_ring")]
+collision_layer = 512
+script = ExtResource("1")
+progress_mesh = NodePath("ProgressMesh")
+progress_viewport = NodePath("ProgressViewport")
+progress_ring = NodePath("ProgressViewport/ProgressRing")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2182823777]
+shape = SubResource("BoxShape3D_5dpfe")
+
+[node name="ProgressMesh" type="MeshInstance3D" parent="." unique_id=382910473]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0.02, 0)
+mesh = SubResource("QuadMesh_progress")
+layers = 0
+
+[node name="ProgressViewport" type="SubViewport" parent="." unique_id=392817365]
+transparent_bg = true
+size = Vector2(128, 128)
+handle_input_locally = false
+render_target_update_mode = 4
+
+[node name="ProgressRing" type="ColorRect" parent="ProgressViewport" unique_id=401928374]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.2, 0.8, 0.2, 1)

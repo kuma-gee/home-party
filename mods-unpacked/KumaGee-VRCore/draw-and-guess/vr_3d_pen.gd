@@ -2,7 +2,7 @@
 class_name VR3DPen
 extends XRToolsPickable
 
-signal stroke_created(stroke: Node3D)
+signal stroke_created(stroke: DrawingStroke)
 signal color_changed(color: Color)
 
 @export var line_thickness := 0.03
@@ -14,7 +14,7 @@ signal color_changed(color: Color)
 const CIRCLE_SEGMENTS := 8
 
 var is_drawing := false
-var current_stroke: Node3D = null
+var current_stroke: DrawingStroke = null
 var current_mesh: ImmediateMesh = null
 var current_material: StandardMaterial3D = null
 var last_point: Vector3 = Vector3.ZERO
@@ -57,6 +57,10 @@ func _on_pen_tip_area_entered(area: Area3D):
 	var swatch := area as DrawingColorSwatch
 	if swatch:
 		change_color(swatch.swatch_color)
+		return
+	var _clear_btn := area as DrawingClearSwatch
+	if _clear_btn:
+		return
 
 func _physics_process(_delta):
 	if Engine.is_editor_hint():
@@ -100,8 +104,9 @@ func _start_stroke():
 	
 	is_drawing = true
 	stroke_points = []
-	current_stroke = Node3D.new()
+	current_stroke = DrawingStroke.new()
 	current_stroke.name = "Stroke"
+	current_stroke.line_thickness = line_thickness
 	
 	var mesh_instance = MeshInstance3D.new()
 	current_mesh = ImmediateMesh.new()
@@ -113,6 +118,7 @@ func _start_stroke():
 	mesh_instance.mesh = current_mesh
 	mesh_instance.material_override = current_material
 	current_stroke.add_child(mesh_instance)
+	current_stroke.mesh_instance = mesh_instance
 	
 	strokes_container.add_child(current_stroke)
 	
@@ -251,6 +257,9 @@ func _end_stroke():
 		return
 	
 	_rebuild_mesh()
+	
+	if current_stroke:
+		current_stroke.stroke_points = stroke_points.duplicate()
 	
 	is_drawing = false
 	current_stroke = null

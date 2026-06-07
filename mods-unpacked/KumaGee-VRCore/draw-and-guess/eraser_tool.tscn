@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://cg6f7blh0arpy"]
+
+[ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_pickable"]
+[ext_resource type="Script" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/eraser_tool.gd" id="2_script"]
+[ext_resource type="Script" uid="uid://cdl5kcr2wvnav" path="res://addons/godot-xr-tools/objects/highlight/highlight_material.gd" id="3_ycwal"]
+[ext_resource type="Material" uid="uid://dyuaw57o8y3i" path="res://addons/godot-xr-tools/materials/highlight.tres" id="4_high"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_eraser"]
+size = Vector3(0.04, 0.15, 0.04)
+
+[sub_resource type="BoxMesh" id="BoxMesh_eraser"]
+
+[node name="EraserTool" unique_id=1045651359 node_paths=PackedStringArray("eraser_tip", "eraser_mesh") instance=ExtResource("1_pickable")]
+freeze = true
+script = ExtResource("2_script")
+eraser_tip = NodePath("EraserTip")
+eraser_mesh = NodePath("EraserMesh")
+release_mode = 1
+
+[node name="CollisionShape3D" parent="." index="0" unique_id=1198871218]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+shape = SubResource("BoxShape3D_eraser")
+
+[node name="EraserMesh" type="MeshInstance3D" parent="." index="1" unique_id=1694524629]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("BoxMesh_eraser")
+
+[node name="EraserTip" type="Node3D" parent="." index="2" unique_id=1982946824]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.03, 0)
+
+[node name="XRToolsHighlightMaterial" type="Node" parent="." index="3" unique_id=2060584167]
+script = ExtResource("3_ycwal")
+highlight_mesh_instance = NodePath("../EraserMesh")
+highlight_material = ExtResource("4_high")
+metadata/_custom_type_script = "uid://cdl5kcr2wvnav"

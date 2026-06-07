@@ -16,24 +16,28 @@ const MOBILE_SCORE_TABLE: Array[int] = [5, 4, 3, 2, 1]
 
 @export var prepare_ui: Control
 @export var game_ui: Control
-@export var vr_prepare_scene: PackedScene
+
+@export var vr_scene: XRToolsViewport2DIn3D
 @export var pen_scene: PackedScene
 @export var palette_scene: PackedScene
+@export var eraser_scene: PackedScene
+
 @export var word_label: Label
 @export var timer_label: Label
 @export var progress_label: Label
 @export var reveal_label: Label
 @export var round_timer: Timer
 @export var reveal_timer: Timer
+
 @export var player_list: PlayerList
 
 var logger := KumaLog.new("DrawAndGuess")
 var word_pool: Array[String] = []
 var submitted_players: Dictionary = {}
-var prepare_scene: DrawPrepareScene
 var is_drawing_phase := false
 var vr_3d_pen: VR3DPen = null
 var color_palette = null
+var eraser_tool: EraserTool = null
 
 var current_word: String = ""
 var current_round: int = 0
@@ -44,6 +48,7 @@ var first_guess_elapsed: float = -1.0
 
 # Per-player scoring: uuid -> {total_points: int, rounds_guessed_correctly: int}
 var player_scores: Dictionary = {}
+var prepare_scene: DrawPrepareScene
 
 func _ready() -> void:
 	prepare_ui.show()
@@ -59,8 +64,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			_on_vr_ready_pressed()
 
 func _on_game_start():
-	prepare_scene = xr_player.show_screen(vr_prepare_scene) as DrawPrepareScene
-	prepare_scene.ready_button.pressed.connect(_on_vr_ready_pressed)
+	prepare_scene = vr_scene.get_scene_instance()
+	prepare_scene.ready_clicked.connect(_on_vr_ready_pressed)
+	prepare_scene.round_timer = round_timer
 	_update_ui()
 	_on_clients_changed()
 	
@@ -195,19 +201,7 @@ func get_player_scores() -> Dictionary:
 	return player_scores.duplicate()
 
 func _update_ui() -> void:
-	if not is_drawing_phase:
-		var active_client_count = 0
-		for child in player_list.get_children():
-			if child is DrawPlayerUI and child.has_submitted_word:
-				active_client_count += 1
-		
-		var total_players = player_list.get_player_count()
-		var text = "Players connected: %d\nWords submitted: %d / %d" % [
-			total_players,
-			active_client_count,
-			total_players
-		]
-		prepare_scene.count_label.text = text
+	prepare_scene.update(player_list.get_children())
 
 func _check_all_submitted(vr_ready = false) -> void:
 	var all_submitted = true
@@ -255,6 +249,7 @@ func _setup_drawing_pen():
 	vr_3d_pen.global_position = spawn_pos
 	
 	_setup_color_palette()
+	_setup_eraser()
 
 func _setup_color_palette():
 	if not palette_scene:
@@ -270,6 +265,32 @@ func _setup_color_palette():
 	var pal_pos = xr_player.origin.global_transform.origin + Vector3(-0.3, 1.0, -0.5)
 	color_palette.global_position = pal_pos
 	color_palette.pen = vr_3d_pen
+
+	var clear_swatch := color_palette.find_child("ClearSwatch", true, false) as DrawingClearSwatch
+	if clear_swatch:
+		clear_swatch.cleared.connect(_clear_all_strokes)
+
+func _setup_eraser():
+	if not eraser_scene:
+		logger.warn("Eraser scene not configured")
+		return
+	
+	if eraser_tool:
+		eraser_tool.queue_free()
+	
+	eraser_tool = eraser_scene.instantiate()
+	add_child(eraser_tool)
+	
+	var spawn_pos = xr_player.origin.global_transform.origin + Vector3(0.8, 1.2, -0.5)
+	eraser_tool.global_position = spawn_pos
+
+func _clear_all_strokes():
+	var root = get_tree().root
+	for child in root.get_children():
+		if child.name == "StrokesContainer":
+			for stroke in child.get_children():
+				stroke.queue_free()
+			return
 
 func _start_next_round() -> void:
 	if word_pool.is_empty():
