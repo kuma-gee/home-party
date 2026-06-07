@@ -28,7 +28,7 @@ func _ready():
 func _update_palette_materials():
 	if not palette_mesh or not palette_mesh.mesh:
 		return
-	var surface_count = palette_mesh.mesh.get_surface_count()
+	var surface_count = palette_mesh.get_surface_override_material_count()
 	for i in min(swatches.size(), surface_count):
 		var mat = StandardMaterial3D.new()
 		mat.albedo_color = swatches[i].swatch_color

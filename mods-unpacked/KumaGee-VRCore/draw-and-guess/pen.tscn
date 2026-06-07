@@ -15,13 +15,14 @@ height = 0.43936524
 [sub_resource type="SphereShape3D" id="SphereShape3D_pen_tip"]
 radius = 0.02
 
-[node name="Pen" unique_id=1045651359 node_paths=PackedStringArray("pen_tip", "pen_tip_area") instance=ExtResource("1_pickable")]
+[node name="Pen" unique_id=1045651359 node_paths=PackedStringArray("pen_tip", "pen_tip_area", "mesh") instance=ExtResource("1_pickable")]
 freeze = true
 script = ExtResource("2_script")
 line_thickness = 0.03
 line_color = Color(0, 0, 0, 1)
 pen_tip = NodePath("PenTip")
 pen_tip_area = NodePath("PenTip/PenTipArea")
+mesh = NodePath("brush/Brush")
 release_mode = 1
 
 [node name="CollisionShape3D" parent="." index="0" unique_id=1198871219]

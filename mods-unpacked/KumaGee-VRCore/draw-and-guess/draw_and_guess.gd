@@ -22,7 +22,6 @@ const MOBILE_SCORE_TABLE: Array[int] = [5, 4, 3, 2, 1]
 @export var palette_scene: PackedScene
 @export var eraser_scene: PackedScene
 
-@export var word_label: Label
 @export var timer_label: Label
 @export var progress_label: Label
 @export var reveal_label: Label
@@ -303,9 +302,7 @@ func _start_next_round() -> void:
 	word_pool.remove_at(word_index)
 	
 	logger.info("Round %d/%d: Word assigned" % [current_round, total_rounds])
-	
-	if word_label:
-		word_label.text = current_word
+	prepare_scene.start_new_game(current_word, current_round, total_rounds)
 	if progress_label:
 		progress_label.text = "Word %d of %d" % [current_round, total_rounds]
 	

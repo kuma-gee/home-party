@@ -17,6 +17,7 @@ func _ready():
 	super._ready()
 	if Engine.is_editor_hint():
 		return
+	
 	action_pressed.connect(_on_action_pressed)
 	action_released.connect(_on_action_released)
 	_build_materials()
