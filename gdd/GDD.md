@@ -8,6 +8,7 @@ through a simple local website.
 
 - [Castle Defense](./CASTLE_DEFENSE.md)
 - [Draw & Guess](./DRAW_AND_Guess.md)
+- [Ghost Hunter](./GHOST_HUNTER.md)
 
 ## Home World
 
@@ -43,3 +44,11 @@ make a sound and some visual cue for some basic interactions.
 - CONNECTED: player is connected and can join the games. The default state.
 - UNPLAYABLE: for phone-only games, if a player is connected via controller. Show an icon on top of the plushie that they cannot join this specific game.
 - DISCONNECTED: plushies become gray and the player number tag becomes a disconnected icon. Physics still all work. Player can reconnect to restore the state
+
+## Mobile Players
+
+Players can join the game via the phone browser which will give them a gamepad replacement in most cases. But
+in some cases where gamepads aren't useable (like Draw & Guess) will have a unique layout input for that.
+
+It generally functions as a gamepad controller and thus shouldn't display data or anything else on it. All the
+data and information will be visible in the shared desktop screen.

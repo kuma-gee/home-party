@@ -156,7 +156,7 @@ The leaderboard is shown on the shared desktop screen and in VR space.
 ## Edge Cases
 
 - **VR player disconnects**: Game ends immediately, current scores are finalized, leaderboard is shown
-- **Mobile player disconnects**: Their submitted word remains in the pool; they cannot rejoin
+- **Mobile player disconnects**: Their submitted word remains in the pool; they can rejoin at any time during pre-game or mid-game. On rejoin, their submitted word state is restored (pre-game) or they are placed into guess mode with their current round progression intact (mid-game)
 - **Word pool exhausted**: If all words have been used, the fallback dictionary activates for remaining rounds
 - **Nobody guesses a word**: VR player gets 0 points for that round, word is revealed, game moves on
 - **Only 2 players**: VR draws, 1 mobile guesses — functional but less competitive; recommend 3+
