@@ -70,6 +70,16 @@ func _on_game_start():
 	
 func _on_clients_changed() -> void:
 	LobbyServer.send_layout("guess" if is_drawing_phase else "word_submit")
+
+	for child in player_list.get_children():
+		if child is DrawPlayerUI:
+			if is_drawing_phase:
+				child.set_phase("guess")
+				if child.uuid in guessed_players:
+					child.mark_guessed_correctly()
+			elif submitted_players.has(child.uuid) and not child.has_submitted_word:
+				child.mark_word_submitted()
+
 	_update_ui()
 	
 func _on_player_created(uuid: String) -> void:

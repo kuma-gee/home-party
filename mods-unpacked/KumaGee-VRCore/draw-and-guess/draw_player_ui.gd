@@ -13,7 +13,7 @@ var current_phase := "word_submit"
 
 func update_data(data: Dictionary):
 	super(data)
-	if game_client is GameClient:
+	if game_client is GameClient and not game_client.input_received.is_connected(_on_input_received):
 		game_client.input_received.connect(_on_input_received)
 
 func _on_input_received(input: String, value) -> void:
