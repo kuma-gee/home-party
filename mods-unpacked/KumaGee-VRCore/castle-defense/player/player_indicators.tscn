@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b1kuauaptofbq"]
 
-[ext_resource type="Script" uid="uid://cqjo3qi2e7y5f" path="res://mods-unpacked/KumaGee-VRCore/player/player_indicators.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://cqjo3qi2e7y5f" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/player/player_indicators.gd" id="1_script"]
 [ext_resource type="FontFile" uid="uid://bpop13tvx7mcs" path="res://theme/NotoColorEmoji-Regular.ttf" id="2_font"]
 
 [node name="PlayerIndicators" type="Node3D" unique_id=2049430183]

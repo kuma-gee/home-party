@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c8e4jfkpl4tn0"]
 
 [ext_resource type="Shader" uid="uid://cdfjqx6ei5653" path="res://shader/circle_inner.gdshader" id="1_77mw3"]
-[ext_resource type="Script" uid="uid://hen2ixl6yn2s" path="res://mods-unpacked/KumaGee-VRCore/player/color_ring.gd" id="1_bwmu2"]
+[ext_resource type="Script" uid="uid://hen2ixl6yn2s" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/player/color_ring.gd" id="1_bwmu2"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_we0o2"]
 viewport_path = NodePath("ColorRing/SubViewport")
