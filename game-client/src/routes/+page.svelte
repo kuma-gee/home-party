@@ -130,7 +130,7 @@
 				{/if}
 			</div>
 
-			{#if $inputLayout == 'word_submit' || $inputLayout == 'guess'}
+			{#if $inputLayout == 'guess'}
 				<WordInputLayout />
 			{:else}
 				<JoystickLayout inputLayout={$inputLayout} />

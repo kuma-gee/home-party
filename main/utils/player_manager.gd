@@ -66,6 +66,13 @@ func start_game():
 func get_players() -> Array[ClientController]:
 	return playing_clients
 
+func get_active_players() -> Array[ClientController]:
+	var active_players: Array[ClientController] = []
+	for player in get_children():
+		if player is ClientController and player.active:
+			active_players.append(player)
+	return active_players
+
 func create_peer(data: Dictionary):
 	var peer_id = int(data.get("peer_id", -1))
 	if peer_id < 0:

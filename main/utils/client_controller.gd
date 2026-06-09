@@ -16,7 +16,7 @@ func get_move() -> Vector2:
 	return Vector2.ZERO
 
 func get_display_data() -> Dictionary:
-	return {}
+	return {"client_id": uuid}
 
 func reset():
 	active = false

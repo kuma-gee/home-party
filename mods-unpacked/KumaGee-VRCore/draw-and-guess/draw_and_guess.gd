@@ -14,8 +14,8 @@ const VR_PLAYER_ID := "vr_player"
 # Scoring tables
 const MOBILE_SCORE_TABLE: Array[int] = [5, 4, 3, 2, 1]
 
-@export var prepare_ui: Control
-@export var game_ui: Control
+@export var prepare_ui_desktop: Control
+@export var game_ui_desktop: Control
 
 @export var vr_scene: XRToolsViewport2DIn3D
 
@@ -31,11 +31,15 @@ const MOBILE_SCORE_TABLE: Array[int] = [5, 4, 3, 2, 1]
 var logger := KumaLog.new("DrawAndGuess")
 var word_pool: Array[String] = []
 var submitted_players: Dictionary = {}
-var is_drawing_phase := false
 var vr_3d_pen: VR3DPen = null
 var color_palette = null
 var eraser_tool: EraserTool = null
-
+var is_drawing_phase := false:
+	set(v):
+		is_drawing_phase = v
+		prepare_ui_desktop.visible = not v
+		game_ui_desktop.visible = v
+		
 var current_word: String = ""
 var current_round: int = 0
 var total_rounds: int = 0
@@ -48,8 +52,7 @@ var player_scores: Dictionary = {}
 var prepare_scene: DrawPrepareScene
 
 func _ready() -> void:
-	prepare_ui.show()
-	game_ui.hide()
+	is_drawing_phase = false
 	PlayerManager.clients_changed.connect(_on_clients_changed)
 	round_timer.timeout.connect(_on_round_timer_expired)
 	reveal_timer.timeout.connect(_on_reveal_timer_expired)
@@ -57,7 +60,7 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey:
-		if event.shift_pressed and event.keycode == KEY_1:
+		if event.is_pressed() and event.shift_pressed and event.keycode == KEY_1:
 			_on_vr_ready_pressed()
 
 func _on_game_start():
@@ -69,15 +72,14 @@ func _on_game_start():
 	_on_clients_changed()
 	
 func _on_clients_changed() -> void:
-	LobbyServer.send_layout("guess" if is_drawing_phase else "word_submit")
+	LobbyServer.send_layout("guess")
 
 	for child in player_list.get_children():
 		if child is DrawPlayerUI:
 			if is_drawing_phase:
-				child.set_phase("guess")
 				if child.uuid in guessed_players:
 					child.mark_guessed_correctly()
-			elif submitted_players.has(child.uuid) and not child.has_submitted_word:
+			elif submitted_players.has(child.uuid):
 				child.mark_word_submitted()
 
 	_update_ui()
@@ -85,7 +87,6 @@ func _on_clients_changed() -> void:
 func _on_player_created(uuid: String) -> void:
 	var player_ui = player_list.find_existing_node(uuid) as DrawPlayerUI
 	if player_ui:
-		player_ui.word_submitted.connect(_on_player_word_submitted.bind(player_ui))
 		player_ui.guessed.connect(_on_player_guessed.bind(player_ui))
 		player_ui.reset_for_round()
 		_init_player_score(uuid)
@@ -117,15 +118,16 @@ func _on_player_word_submitted(word: String, player_ui: DrawPlayerUI) -> void:
 	
 	word_pool.append(trimmed_word)
 	submitted_players[player_ui.uuid] = true
-	player_ui.game_client.send_text("word_ack;ok")
 	player_ui.mark_word_submitted()
 	logger.info("Word accepted from %s: %s" % [player_ui.uuid, trimmed_word])
-	
 	_update_ui()
-	_check_all_submitted()
 
 func _on_player_guessed(guess: String, player_ui: DrawPlayerUI) -> void:
-	if not is_drawing_phase or is_revealing:
+	if not is_drawing_phase :
+		_on_player_word_submitted(guess, player_ui)
+		return
+
+	if is_revealing:
 		return
 	
 	if player_ui.uuid in guessed_players:
@@ -209,21 +211,16 @@ func get_player_scores() -> Dictionary:
 	return player_scores.duplicate()
 
 func _update_ui() -> void:
-	prepare_scene.update(player_list.get_children())
-
-func _check_all_submitted(vr_ready = false) -> void:
-	var all_submitted = true
-	for child in player_list.get_children():
-		if child is DrawPlayerUI and not child.has_submitted_word:
-			all_submitted = false
-			break
-	
-	if all_submitted and vr_ready and PlayerManager.playing_clients.size() > 0:
-		_start_game()
+	var active_players = PlayerManager.get_active_players().map(func(x): return player_list.find_existing_node(x.uuid))
+	prepare_scene.update(active_players)
 
 func _on_vr_ready_pressed() -> void:
 	logger.info("VR player ready")
 	_check_all_submitted(true)
+
+func _check_all_submitted(vr_ready = false) -> void:
+	if player_list.is_all_ready() and vr_ready:
+		_start_game()
 
 func _on_vr_skipped() -> void:
 	if not is_drawing_phase or is_revealing:
@@ -238,14 +235,9 @@ func _on_vr_skipped() -> void:
 func _start_game() -> void:
 	logger.info("Starting game with %d words in pool" % word_pool.size())
 	is_drawing_phase = true
-	prepare_ui.hide()
-	game_ui.show()
 	_on_clients_changed()
 	_init_player_score(VR_PLAYER_ID)
-	
-	for child in player_list.get_children():
-		if child is DrawPlayerUI:
-			child.set_phase("guess")
+	PlayerManager.start_game()
 	
 	total_rounds = word_pool.size()
 	current_round = 0
@@ -309,6 +301,9 @@ func _end_game() -> void:
 			rounds_guessed_correctly = score.rounds_guessed_correctly
 		})
 
-	prepare_ui.show_leaderboard("Game Over!", entries)
+	prepare_scene.show_leaderboard("Game Over!", entries)
 	if desktop_gameover:
 		desktop_gameover.show_leaderboard("Game Over!", entries)
+	
+	prepare_ui_desktop.hide()
+	game_ui_desktop.hide()

@@ -2,6 +2,8 @@
 
 The current state of the game is documents in the `docs/GDD.md`.
 Whenever there is a change, it should be updated there **always**.
+It only contains the high-level design parts of the game, never code
+or too technical stuff.
 
 All tasks are documents in `docs/tasks/` as markdown files with
 acceptance criterias. If all AC are checked, that tasks is already
@@ -30,10 +32,11 @@ mark the AC as finished when you are done.
 
 **Registration:** A mini-game is a `.tres` file of class `GameResource` (`main/game_resource.gd`):
 
-`GameLoader.list_games()` (`main/utils/game_loader.gd`) recursively scans every enabled mod's folder in `mods-unpacked/` for any `.tres` that loads as `GameResource`. No explicit registration needed — just drop a `.tres` file anywhere inside a mod folder.
+`GameLoader.list_games()` (`main/utils/game_loader.gd`) recursively scans every enabled mod's folder in `mods-unpacked/` for any `.tres` that loads as `GameResource`.
+No explicit registration needed — just drop a `.tres` file anywhere inside a mod folder.
 
 **Game lifecycle:** The game scene root must extend `XRToolsSceneBase` (from godot-xr-tools), which provides:
-- `xr_player` — the VR player node, exposes `gameover(message)` to show results
+- `xr_player` — the VR player node
 - `load_scene(path)` — scene transition to next game or menu
 - Standard prepare → start → gameover flow
 
@@ -57,5 +60,5 @@ mark the AC as finished when you are done.
 - Don't add comments unless it's really not clear why it's been done that way
 - Prefer creating nodes in the scenes directly if it's not dynamic
 - Create nodes in the scenes and not via code
-- Use `@export` for nodes deeper than one levele inside the tree
+- Always prefer unique names for nodes and reference in scripts
 - Use the `theme.css` resource for all root control nodes

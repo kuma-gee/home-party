@@ -39,7 +39,7 @@ func show_leaderboard(title, entries):
 func update(list: Array):
 	var active_client_count = 0
 	for child in list:
-		if child is DrawPlayerUI and child.has_submitted_word:
+		if child is DrawPlayerUI and child.is_ready:
 			active_client_count += 1
 	
 	var total_players = list.size()

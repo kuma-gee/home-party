@@ -1,12 +1,9 @@
 class_name DrawPlayerUI
 extends JoinedPlayer
 
-signal word_submitted(word: String)
 signal guessed(word: String)
 
-var has_submitted_word := false
 var has_guessed_correctly := false
-var current_phase := "word_submit"
 
 @export var checkmark: Label
 @export var errormark: Label
@@ -18,20 +15,12 @@ func update_data(data: Dictionary):
 
 func _on_input_received(input: String, value) -> void:
 	if input == "word":
-		if current_phase == "word_submit":
-			_handle_word_submission(str(value))
-		elif current_phase == "guess":
-			_handle_guess(str(value))
-
-func _handle_word_submission(word: String) -> void:
-	word_submitted.emit(word)
-
-func _handle_guess(guess: String) -> void:
-	guessed.emit(guess)
+		guessed.emit(str(value))
 
 func mark_word_submitted() -> void:
-	has_submitted_word = true
+	game_client.send_text("word_ack;ok")
 	checkmark.show()
+	set_ready()
 
 func mark_guessed_correctly() -> void:
 	has_guessed_correctly = true
@@ -40,11 +29,6 @@ func mark_guessed_correctly() -> void:
 func mark_guessed_incorrectly() -> void:
 	errormark.show()
 	await get_tree().create_timer(0.5).timeout
-	errormark.hide()
-
-func set_phase(phase: String) -> void:
-	current_phase = phase
-	checkmark.hide()
 	errormark.hide()
 
 func reset_for_round() -> void:

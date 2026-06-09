@@ -21,6 +21,7 @@ static func get_color(idx: int) -> Color:
 @export var player_scene: PackedScene
 @export var initial_delay := 1.0
 @export var create_delay := 0.1
+@export var allow_empty := true
 
 func _ready() -> void:
 	PlayerManager.clients_changed.connect(_refresh_list)
@@ -61,10 +62,12 @@ func find_existing_node(uuid: String):
 	return null
 
 func is_all_ready():
+	if not allow_empty and get_player_count() == 0:
+		return false
 	return get_ready_count() == get_player_count()
 
 func get_player_count():
-	return PlayerManager.playing_clients.size()
+	return PlayerManager.get_active_players().size()
 
 func get_ready_count():
 	var count = 0

@@ -1,6 +1,7 @@
 # Ghost Hunter
 
-There is no hard cap in the player count, it's playable with at least 2 players. The game scales based on the player count
+There is no hard cap in the player count, it's playable with at least 2 players. The game scales based on the player count.
+Everyone is playing together in the same room.
 
 ## Design Pillars
 1. **Cat-and-mouse tension** — Both sides are blind to each other by default. Every reveal is earned, every escape is clever.
@@ -11,10 +12,9 @@ There is no hard cap in the player count, it's playable with at least 2 players.
 
 ### For the VR Player (Ghost Hunter)
 - First-person view inside a handcrafted haunted house (2–3 layout variants, selected randomly each round).
-- **Flash Device** – Emits a bright pulse that briefly reveals nearby ghosts (recharge time of 4s). Also purges haunted objects, forcing possessing ghosts out.
-- **Ecto-Vacuum** – Capture tool. Sucks in a fully visible ghost over ~3 seconds. While actively sucking, the Hunter moves slowly. After successful capture the vacuum has a small cooldown of 3s
+- **Flash Device** – Emits a bright pulse that briefly reveals ghosts (recharge time of 3s). Targets the area in front in a cone shape and revealing the players location. Also purges haunted objects, forcing possessing ghosts out.
+- **Ecto-Vacuum** – Capture tool. Sucks in a fully visible ghost over ~3 seconds. While actively sucking, the Hunter moves slowly.
 - **Wrist Tablet** – Shows house map with last known ghost interaction pings, task locations (ghost objectives are visible to Hunter as map markers — the Hunter knows what they're trying to do), and charge count for Flash Device.
-- **Proximity Audio** – Hears ghost whispers and footstep-like sounds when a ghost is near. Pitch and volume indicate distance and activity.
 
 **Visibility Rule:** Hunter cannot see ghosts unless revealed by the Flash Device. Ghosts that are phasing, haunting objects, or moving normally are completely invisible to the naked eye. The Flash reveal lasts ~4 seconds.
 
@@ -44,19 +44,18 @@ There is no hard cap in the player count, it's playable with at least 2 players.
 
 ### 2. Hunt Phase (5 minutes)
 - **Ghosts** move around the house, complete Mischief Tasks, and avoid the Hunter.
-- **VR player** navigates rooms, listens for audio cues, uses Flash to reveal ghosts, and captures them with the Ecto-Vacuum.
+- **VR player** navigates rooms, uses Flash to reveal ghosts, and captures them with the Ecto-Vacuum.
 - **Capture sequence:**
   1. Hunter uses Flash → ghost becomes visible for ~4 seconds (if in range and line-of-sight).
   2. Hunter aims Ecto-Vacuum at the revealed ghost and holds the trigger. After ~3 seconds of continuous suction, the ghost is captured.
-  3. While the Hunter is sucking, they move at reduced speed. If they break line-of-sight or the ghost moves behind cover, capture progress resets.
+  3. While the Hunter is sucking, they move at reduced speed.
   4. Any other ghost can **Haunt the vacuum** (must be near it) → trigger effect to release captured ghost.
-   5. The Hunter can **Flash a haunted vacuum** to purge the haunting ghost, forcing them out and resetting the rescue attempt.
+  5. The Hunter can **Flash a haunted vacuum** to purge the haunting ghost, forcing them out and resetting the rescue attempt.
 
-### 3. Haunt Surge (triggers at 4:30 if any ghost remains uncaptured)
+### 3. Haunt Surge (triggers when all tasks have been completed)
 - All remaining ghosts become fully visible (no Flash needed) and slowed by 30%.
 - Hunter must survive 30 seconds without being touched by a ghost.
-- If a ghost touches the Hunter → Ghosts win instantly. If the Hunter survives → draw (no one scores).
-- During Surge, the Hunter recovers 1 Flash charge (if any were used).
+- If a ghost touches the Hunter → Ghosts win instantly. If the Hunter gets to the exit → draw (no one scores).
 
 ### 4. Win Conditions
 - **Ghosts win** – Complete all Mischief Tasks (scaled to ghost count) before all ghosts are captured.

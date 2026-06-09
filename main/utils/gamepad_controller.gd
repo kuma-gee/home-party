@@ -35,6 +35,3 @@ func get_move() -> Vector2:
 	if vec.length() < 0.15:
 		return Vector2.ZERO
 	return vec
-
-func get_display_data() -> Dictionary:
-	return { "client_id": uuid, "name": player_name, "icon": "🎮" }
