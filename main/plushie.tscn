@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://c704wg02ob4o7"]
+
+[ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_parnt"]
+[ext_resource type="Script" uid="uid://d0r7a1w1yh58m" path="res://main/plushie.gd" id="2_scrpt"]
+[ext_resource type="PackedScene" uid="uid://crsiqt2ics235" path="res://assets/characters/cube-pets/Models/GLB format/animal-cat.glb" id="3_mm15h"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_m6y9k"]
+friction = 0.6
+bounce = 0.1
+absorbent = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5bvpt"]
+size = Vector3(0.35, 0.35, 0.35)
+
+[node name="Plushie" unique_id=1355412252 instance=ExtResource("1_parnt")]
+physics_material_override = SubResource("PhysicsMaterial_m6y9k")
+script = ExtResource("2_scrpt")
+
+[node name="Root" type="Node3D" parent="." index="0" unique_id=1964994452]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, -0.22219814, 0)
+
+[node name="animal-cat2" parent="Root" index="0" unique_id=1314052389 instance=ExtResource("3_mm15h")]
+transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0)
+
+[node name="PlayerTag" type="Label3D" parent="." index="1" unique_id=262635929]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45115137, 0)
+billboard = 1
+text = "P1"
+
+[node name="CollisionShape3D" parent="." index="2" unique_id=1198871219]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.023816153, 0)
+shape = SubResource("BoxShape3D_5bvpt")

@@ -2,6 +2,7 @@ class_name PlayerList
 extends VBoxContainer
 
 signal player_created(uuid)
+signal player_removed(uuid)
 signal ready_changed()
 
 const COLORS = [
@@ -54,6 +55,7 @@ func _refresh_list() -> void:
 	for child in get_children():
 		if child is JoinedPlayer and child.uuid not in current_uuids:
 			child.move_out()
+			player_removed.emit(child.uuid)
 
 func find_existing_node(uuid: String):
 	for child in get_children():
