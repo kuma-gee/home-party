@@ -182,5 +182,8 @@ export const reconnectAttempts = derived(
 
 export const serverMessage = derived(
 	connectionStore,
-	$connectionStore => $connectionStore.serverMessage
+	$connectionStore => {
+		const msg = $connectionStore.serverMessage;
+		return msg === null ? null : { text: msg };
+	}
 );

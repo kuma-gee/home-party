@@ -10,25 +10,25 @@
 
 	onMount(() => {
 		const unsubscribe = serverMessage.subscribe((msg) => {
-			if (!msg) return;
+			if (!msg || !msg.text) return;
 
-			if (msg === 'word_ack;ok') {
+			if (msg.text === 'word_ack;ok') {
 				submitted = true;
 				message = '';
 				inputText = '';
-			} else if (msg === 'word_ack;duplicate') {
+			} else if (msg.text === 'word_ack;duplicate') {
 				message = 'There is already a similar word. Try another.';
 				inputText = '';
-			} else if (msg === 'word_ack;invalid') {
+			} else if (msg.text === 'word_ack;invalid') {
 				message = 'Invalid word! Use 3-20 alphanumeric characters.';
 				inputText = '';
-			} else if (msg === 'word_ack;correct') {
+			} else if (msg.text === 'word_ack;correct') {
 				showFeedback('correct');
 				inputText = '';
-			} else if (msg === 'word_ack;incorrect') {
+			} else if (msg.text === 'word_ack;incorrect') {
 				showFeedback('incorrect');
 				inputText = '';
-			} else if (msg === 'word_ack;reset') {
+			} else if (msg.text === 'word_ack;reset') {
 				console.log('Resetting word input state');
 				submitted = false;
 				feedback = null;

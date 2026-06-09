@@ -147,6 +147,18 @@ func _on_player_guessed(guess: String, player_ui: DrawPlayerUI) -> void:
 		# Track first guess elapsed time for VR speed bonus
 		if first_guess_elapsed < 0.0:
 			first_guess_elapsed = round_timer.wait_time - round_timer.time_left
+		
+		# End round early if all mobile players have guessed correctly
+		var total_mobile := 0
+		for child in player_list.get_children():
+			if child is DrawPlayerUI:
+				total_mobile += 1
+		
+		if total_mobile > 0 and guessed_players.size() >= total_mobile:
+			logger.info("All %d players guessed correctly, ending round early" % total_mobile)
+			round_timer.stop()
+			_on_round_timer_expired()
+			return
 	else:
 		logger.debug("Incorrect guess from %s: %s" % [player_ui.uuid, guess])
 		player_ui.game_client.send_text("word_ack;incorrect")
