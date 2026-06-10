@@ -1,6 +1,6 @@
 # One vs All
 
-Asymmetric VR local party game that contains various mini games
+Asymmetric VR local party game that contains various mini games.
 
 ## Rules
 
@@ -10,6 +10,7 @@ Asymmetric VR local party game that contains various mini games
 
 - `docs/` - contains all the documentation about this game
 - `docs/tasks/` - contains all the open and finished tasks for this game
+- `docs/adr/` - Architecture Decision Records
 - `main/` - Core VR game
 - `game-client/` - SvelteKit smartphone controller app (see game-client/AGENTS.md)
 - `mods-unpacked/KumaGee-VRCore/` - Mini-games
