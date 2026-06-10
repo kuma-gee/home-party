@@ -1,9 +1,7 @@
 ---
 name: to-issues
-description: Break a game design document (GDD) into independently-grabbable implementation issues using tracer-bullet vertical slices. Use when user wants to convert a tasks or changes into tickets, create implementation tasks, or break down game mechanics into work.
+description: Create independently-grabbable implementation issues using tracer-bullet vertical slices. Use when user wants to create tasks or break down game mechanics into work.
 ---
-
-# To Issues (GDD → Tickets)
 
 ## Process
 
