@@ -1,11 +1,5 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "default_agent": "crush",
-  "agent": {
-    "build": {
-      "disable": true
-    }
-  },
   "mcp": {
     "godot": {
       "type": "local",

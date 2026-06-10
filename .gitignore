@@ -9,3 +9,5 @@ assets/**/*.*
 !/assets/*.zip
 mods-unpacked/**/assets/*
 .secret
+
+/docs/tasks/
