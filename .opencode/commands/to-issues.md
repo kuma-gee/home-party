@@ -53,9 +53,9 @@ before "Implement skeletons reacting to arrows", number the former `001-arrow-sh
 and the latter `002-skeleton-reactions.md`.
 
 <issue-template>
-## Source GDD
-
 Reference the GDD document and section(s) this slice implements (e.g., `docs/CASTLE_DEFENSE.md#catapults`).
+
+- [ ] Approved by user
 
 ## What to build
 

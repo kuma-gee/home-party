@@ -246,5 +246,30 @@ def list_nodes_by_type(type_name: str) -> dict:
     return _godot_request("list_nodes_by_type", {"type": type_name})
 
 
+@mcp.tool()
+def take_snapshot() -> dict:
+    """Capture the current scene tree as a snapshot for later diffing.
+
+    Stores the snapshot server-side. Use ``get_diff()`` to compare
+    the current tree against this snapshot.
+    """
+    return _godot_request("take_snapshot")
+
+
+@mcp.tool()
+def get_diff() -> dict:
+    """Compare the current scene tree against the last snapshot.
+
+    Returns a dict with three lists:
+
+    - ``added``   – node paths that exist now but didn't in the snapshot
+    - ``removed`` – node paths that existed in the snapshot but are gone now
+    - ``changed`` – node paths whose type changed
+
+    Returns an error if no snapshot has been taken yet.
+    """
+    return _godot_request("get_diff")
+
+
 if __name__ == "__main__":
     mcp.run()

@@ -4,6 +4,7 @@ const PORT := 6008
 
 var tcp := TCPServer.new()
 var peers: Array[StreamPeerTCP] = []
+var last_snapshot: Dictionary = {}
 
 func _ready():
 	var args = OS.get_cmdline_args()
@@ -76,6 +77,12 @@ func handle_request(data: Dictionary):
 			return { "results": find_nodes_by_type(get_tree().root, payload.get("type", ""))}
 		"ping":
 			return {"ok": true}
+
+		"take_snapshot":
+			return take_snapshot()
+
+		"get_diff":
+			return get_diff()
 
 	return {
 		"error": "unknown command"
@@ -162,3 +169,41 @@ func find_nodes_by_type(node: Node, type_name: String, results := []):
 		)
 
 	return results
+
+
+func collect_all_paths(node: Node, paths := {}) -> Dictionary:
+	paths[str(node.get_path())] = node.get_class()
+	for child in node.get_children():
+		collect_all_paths(child, paths)
+	return paths
+
+
+func take_snapshot():
+	last_snapshot = collect_all_paths(get_tree().root)
+	return {"status": "ok", "node_count": last_snapshot.size()}
+
+
+func get_diff():
+	if last_snapshot.is_empty():
+		return {"error": "no snapshot taken yet"}
+
+	var current := collect_all_paths(get_tree().root)
+	var added := []
+	var removed := []
+	var changed := []
+
+	for path in current:
+		if path not in last_snapshot:
+			added.append(path)
+		elif current[path] != last_snapshot[path]:
+			changed.append(path)
+
+	for path in last_snapshot:
+		if path not in current:
+			removed.append(path)
+
+	return {
+		"added": added,
+		"removed": removed,
+		"changed": changed
+	}
