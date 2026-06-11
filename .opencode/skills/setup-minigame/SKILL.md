@@ -1,8 +1,6 @@
 ---
 name: setup-minigame
-description: >-
-  Scaffold the base files for a new mini-game. Use when the user says "set up <Game Name>" or
-  "scaffold the base for <Game Name>".
+description: Scaffold the base files for a new mini-game.
 ---
 
 # Setup Mini-Game

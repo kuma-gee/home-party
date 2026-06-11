@@ -34,6 +34,7 @@ AudioManager="*uid://ewg3o036k8yw"
 BGMManager="*res://main/utils/bgm_manager.gd"
 Staging="*uid://bnqnnnet4dw12"
 GameSettings="*res://main/utils/game_settings.gd"
+GodotMcpBridge="*uid://ww7lcv2jh241"
 
 [display]
 
@@ -136,5 +137,6 @@ environment/defaults/default_clear_color=Color(0.12955844, 0.12955847, 0.1295584
 [xr]
 
 openxr/enabled=true
+openxr/startup_alert=false
 openxr/extensions/hand_tracking=true
 shaders/enabled=true

@@ -1,10 +1,6 @@
-# One vs All
+# Project
 
-Asymmetric VR local party game that contains various mini games.
-
-## Rules
-
-- Run validation before completion.
+Asymmetric VR local party game that contains various mini games using Godot 4
 
 ## Project Structure
 

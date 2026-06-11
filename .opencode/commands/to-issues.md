@@ -1,6 +1,6 @@
 ---
 name: to-issues
-description: Create independently-grabbable implementation issues using tracer-bullet vertical slices. Use when user wants to create tasks or break down game mechanics into work.
+description: Create independently-grabbable implementation issues using tracer-bullet vertical slices.
 ---
 
 ## Process

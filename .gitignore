@@ -10,4 +10,4 @@ assets/**/*.*
 mods-unpacked/**/assets/*
 .secret
 
-/docs/tasks/
+.playwright-cli
