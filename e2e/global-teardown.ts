@@ -34,5 +34,19 @@ export default async function globalTeardown(): Promise<void> {
     }
   }
 
+  // Clean up Xvfb if we started one
+  const xvfbPid = process.env.XVFB_PID;
+  if (xvfbPid) {
+    const xvfbNum = parseInt(xvfbPid, 10);
+    if (!isNaN(xvfbNum)) {
+      try {
+        process.kill(xvfbNum, 'SIGTERM');
+        console.log(`  Terminated Xvfb (PID: ${xvfbNum})`);
+      } catch {
+        // already gone
+      }
+    }
+  }
+
   console.log('--- Teardown complete ---\n');
 }

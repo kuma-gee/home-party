@@ -149,4 +149,13 @@ export class MCPBridge {
   async getNodeDiff(path: string): Promise<any> {
     return this.request('get_node_diff', { path });
   }
+
+  /**
+   * Capture the Godot viewport as a PNG screenshot saved to disk.
+   * @param savePath Absolute path where the PNG should be written.
+   * @returns { status, path, size }
+   */
+  async takeScreenshot(savePath: string): Promise<{ status: string; path: string; size?: number[] }> {
+    return this.request('take_screenshot', { path: savePath });
+  }
 }

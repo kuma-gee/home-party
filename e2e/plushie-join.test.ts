@@ -1,5 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { MCPBridge } from './helpers/mcp-bridge';
+import { connectPlayer, waitForMenuWorld } from './helpers/player';
+import { godotScreenshot } from './helpers/screenshot';
 
 const MCP = new MCPBridge(6008, '127.0.0.1');
 const PLAYER_UUID = 'e2e-test-plushie-0000-0000-000000000001';
@@ -10,27 +12,10 @@ const PLAYER_LIST_PATH =
 
 test.beforeAll(async () => {
   await MCP.waitForReady(35_000);
+  await waitForMenuWorld(MCP, 15_000);
 });
 
-/**
- * Helper: connect a mobile player via the game-client UI.
- * Sets localStorage with the given UUID, fills in the IP, clicks Connect,
- * and waits for the WebRTC data channel to open.
- */
-async function connectPlayer(page: any, uuid: string) {
-  await page.goto('/');
-  await page.evaluate(([u]: [string]) => localStorage.setItem('clientId', u), [uuid]);
-  await expect(page.locator('h2')).toHaveText('Connect to Game Server');
-  await page.fill('#server-ip', 'localhost');
-  await expect(page.locator('#server-ip')).toHaveValue('localhost');
-  await page.locator('button', { hasText: 'Connect' }).click();
-  await expect(page.locator('.spinner')).toBeVisible({ timeout: 10_000 });
-  await expect(page.locator('.disconnect-icon')).toBeVisible({ timeout: 25_000 });
-  // Give Godot time to process the connection and spawn the plushie
-  await page.waitForTimeout(2000);
-}
-
-test('mobile player connects → plushie appears with correct identity', async ({ page }) => {
+test('mobile player connects → plushie appears with correct identity', async ({ page }, testInfo) => {
   // Navigate so the MenuWorld has fully loaded, THEN take the snapshot.
   // This way the diff only captures nodes added by the connection, not
   // the entire scene setup.
@@ -69,6 +54,7 @@ test('mobile player connects → plushie appears with correct identity', async (
       p.startsWith('/root/Staging/Scene/') &&
       (p.endsWith('/Plushie') || p.includes('/Plushie@'))
   );
+  await godotScreenshot(MCP, testInfo, 'plushie-test');
   expect(plushiePaths.length).toBeGreaterThanOrEqual(1);
   const plushiePath = plushiePaths[0];
   console.log(`Plushie node path: ${plushiePath}`);
@@ -100,9 +86,9 @@ test('mobile player connects → plushie appears with correct identity', async (
   expect(playerCount.result).toBe(1);
 
   // -----------------------------------------------------------------------
-  // Screenshot for visual reference
+  // Godot game screenshot attached to the Playwright HTML report
   // -----------------------------------------------------------------------
-  await page.screenshot({ path: 'test-results/screenshots/plushie-joined.png' });
+  await godotScreenshot(MCP, testInfo, 'plushie-joined');
 });
 
 test('disconnecting deactivates the player in Godot', async ({ page }) => {

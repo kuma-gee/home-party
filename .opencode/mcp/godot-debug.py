@@ -271,5 +271,14 @@ def get_node_diff(path: str) -> dict:
     return _godot_request("get_node_diff", {"path": path})
 
 
+@mcp.tool()
+def take_screenshot(save_path: str = "") -> dict:
+    """Capture the current Godot viewport as a PNG screenshot.
+    Pass a save_path (absolute path) or leave empty for default location.
+    Returns the path and dimensions of the saved image.
+    """
+    return _godot_request("take_screenshot", {"path": save_path})
+
+
 if __name__ == "__main__":
     mcp.run()

@@ -1,4 +1,5 @@
 import { spawn, type ChildProcess } from 'node:child_process';
+import * as fs from 'node:fs';
 import * as net from 'node:net';
 import * as path from 'node:path';
 
@@ -91,9 +92,52 @@ export default async function globalSetup(): Promise<void> {
     return;
   }
 
-  // Launch Godot
+  // Launch Godot (without --headless if we have a display or Xvfb,
+  // so we can capture screenshots via the MCP bridge)
   const projectRoot = path.resolve(__dirname, '..');
-  const args = ['--path', projectRoot, '--mcp-bridge', '--headless'];
+  const args = ['--path', projectRoot, '--mcp-bridge'];
+
+  const isHeadless = !process.env.DISPLAY || process.env.DISPLAY.trim() === '';
+
+  if (isHeadless) {
+    // No display available — try Xvfb for offscreen rendering
+    try {
+      require('child_process').execSync('which Xvfb', { encoding: 'utf-8', timeout: 3000 });
+      const xvfbDisplay = ':99';
+      console.log(`  No display found — starting Xvfb on ${xvfbDisplay}...`);
+      const xvfb = spawn('Xvfb', [xvfbDisplay, '-screen', '0', '1920x1080x24'], {
+        stdio: ['ignore', 'pipe', 'pipe'],
+      });
+
+      // Wait for the X11 socket to appear
+      await new Promise<void>((resolve, reject) => {
+        const timeout = setTimeout(
+          () => reject(new Error('Xvfb did not create socket within 5s')),
+          5000,
+        );
+        const poll = () => {
+          try {
+            if (fs.existsSync(`/tmp/.X11-unix/X${xvfbDisplay.slice(1)}`)) {
+              clearTimeout(timeout);
+              resolve();
+            } else {
+              setTimeout(poll, 200);
+            }
+          } catch {
+            setTimeout(poll, 200);
+          }
+        };
+        poll();
+      });
+
+      process.env.XVFB_PID = xvfb.pid?.toString() ?? '';
+      process.env.DISPLAY = xvfbDisplay;
+      console.log(`  Xvfb ready on ${xvfbDisplay}`);
+    } catch {
+      console.log('  Xvfb not available — falling back to --headless (no screenshots)');
+      args.push('--headless');
+    }
+  }
 
   console.log(`  Launching: ${GODOT_BINARY} ${args.join(' ')}`);
 

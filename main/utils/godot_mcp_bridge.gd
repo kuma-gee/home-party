@@ -91,8 +91,43 @@ func handle_request(data: Dictionary):
 		"get_node_diff":
 			return get_node_diff(payload.get("path", ""))
 
+		"take_screenshot":
+			return take_screenshot(payload.get("path", ""))
+
 	return {
 		"error": "unknown command"
+	}
+
+
+func take_screenshot(save_path: String) -> Dictionary:
+	if save_path.is_empty():
+		save_path = "user://screenshots/godot_capture.png"
+
+	var dir := DirAccess.open("user://")
+	if dir:
+		dir.make_dir_recursive("screenshots")
+
+	var viewport = get_viewport()
+	if viewport == null:
+		return {"error": "no viewport available"}
+
+	var texture = viewport.get_texture()
+	if texture == null:
+		return {"error": "no texture available"}
+
+	var image = texture.get_image()
+	if image == null:
+		return {"error": "failed to capture image from viewport"}
+
+	var err = image.save_png(save_path)
+	if err != OK:
+		return {"error": "failed to save PNG: " + error_string(err)}
+
+	var abs_path = ProjectSettings.globalize_path(save_path)
+	return {
+		"status": "ok",
+		"path": abs_path,
+		"size": [image.get_width(), image.get_height()]
 	}
 
 
