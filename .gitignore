@@ -11,3 +11,7 @@ mods-unpacked/**/assets/*
 .secret
 
 .playwright-cli
+
+# E2E test output
+test-results/
+node_modules/
