@@ -88,18 +88,14 @@ def _godot_request(command: str, payload: dict | None = None) -> dict:
 
 @mcp.tool()
 def ping() -> dict:
-    """Check whether the Godot MCP bridge is alive and responding.
-
-    Returns ``{"ok": true}`` if the bridge is reachable.
+    """Check whether the Godot MCP bridge is reachable.`.
     """
     return _godot_request("ping")
 
 
 @mcp.tool()
 def launch_game(headless: bool = False) -> dict:
-    """Start the Godot game with the MCP bridge enabled.
-
-    If the bridge is already reachable the call is a no-op.
+    """Start the game with the MCP enabled.
     """
     global game_process
 
@@ -163,9 +159,6 @@ def launch_game(headless: bool = False) -> dict:
 @mcp.tool()
 def wait_for_godot(timeout: int = 15) -> dict:
     """Wait until the Godot MCP bridge is reachable on port 6008.
-
-    Polls the TCP port every 500 ms.  Returns ``connected`` once the
-    bridge is reachable, or ``timeout`` if it never appeared.
     """
     start = time.time()
     while time.time() - start < timeout:
@@ -180,7 +173,7 @@ def wait_for_godot(timeout: int = 15) -> dict:
 
 @mcp.tool()
 def stop_game() -> dict:
-    """Kill the running Godot process and clean up any orphaned instances."""
+    """Kill the running Godot process"""
     global game_process
     pid = None
 
@@ -249,9 +242,7 @@ def list_nodes_by_type(type_name: str) -> dict:
 @mcp.tool()
 def take_snapshot() -> dict:
     """Capture the current scene tree as a snapshot for later diffing.
-
-    Stores the snapshot server-side. Use ``get_diff()`` to compare
-    the current tree against this snapshot.
+    Use ``get_diff()`` to compare the current tree against this snapshot.
     """
     return _godot_request("take_snapshot")
 
@@ -259,24 +250,15 @@ def take_snapshot() -> dict:
 @mcp.tool()
 def get_diff() -> dict:
     """Compare the current scene tree against the last snapshot.
-
-    Returns a dict with three lists:
-
-    - ``added``   – node paths that exist now but didn't in the snapshot
-    - ``removed`` – node paths that existed in the snapshot but are gone now
-    - ``changed`` – node paths whose type changed
-
-    Returns an error if no snapshot has been taken yet.
+    Returns a dict with three lists: added, removed, changed
     """
     return _godot_request("get_diff")
 
 
 @mcp.tool()
 def get_node_snapshot(path: str) -> dict:
-    """Capture a detailed snapshot of a single node including position, rotation, scale, and all properties.
-
-    Stores the snapshot server-side for later diffing. Use ``get_node_diff()``
-    to compare the current state against this snapshot.
+    """Capture a detailed snapshot of a single node
+    Use ``get_node_diff()`` to compare the current state against this snapshot.
     """
     return _godot_request("get_node_snapshot", {"path": path})
 
@@ -284,14 +266,7 @@ def get_node_snapshot(path: str) -> dict:
 @mcp.tool()
 def get_node_diff(path: str) -> dict:
     """Compare a node's current state against its last snapshot.
-
-    Returns a dict with three lists:
-
-    - ``added``   – keys that exist now but didn't in the snapshot
-    - ``removed`` – keys that existed in the snapshot but are gone now
-    - ``changed`` – keys whose value changed
-
-    Returns an error if no snapshot has been taken for this path yet.
+    Returns a dict with three lists: added, removed, changed
     """
     return _godot_request("get_node_diff", {"path": path})
 
