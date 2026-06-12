@@ -5,6 +5,7 @@ permission:
   godot*: deny
   edit:
     "*": deny
+    "docs/*.md": allow
     "docs/**/*.md": allow
     ".opencode/**": allow
 ---

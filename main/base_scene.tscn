@@ -1,0 +1,76 @@
+[gd_scene format=3 uid="uid://bisl1jfnf3opn"]
+
+[ext_resource type="Script" uid="uid://7uvlifhybgoy" path="res://main/base_game.gd" id="1_jyceu"]
+[ext_resource type="PackedScene" uid="uid://btlljhtniv3dr" path="res://main/vr/vr_space.tscn" id="2_vr"]
+[ext_resource type="Script" uid="uid://dgfn4nv7yxows" path="res://main/ui/player_list.gd" id="3_player_list"]
+[ext_resource type="PackedScene" uid="uid://f8e1u58jvfd1" path="res://main/ui/joined_player.tscn" id="4_joined_player"]
+[ext_resource type="PackedScene" uid="uid://tbx170onwvxm" path="res://main/ui/desktop_gameover.tscn" id="5_dkgov"]
+
+[node name="BaseScene" type="Node3D" unique_id=10015973 node_paths=PackedStringArray("xr_player")]
+script = ExtResource("1_jyceu")
+xr_player = NodePath("XRPlayer")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=10000001]
+
+[node name="MainLight" type="DirectionalLight3D" parent="." unique_id=10000002]
+shadow_enabled = true
+
+[node name="SecondaryLight" type="DirectionalLight3D" parent="." unique_id=1307450421]
+transform = Transform3D(0.86602545, -0.433013, 0.24999957, -0.43301266, -0.39951962, 0.8080124, -0.25000018, -0.8080123, -0.53349423, 0, 5, 0)
+light_color = Color(0.8, 0.86, 1, 1)
+light_energy = 0.25
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=10000003]
+cull_mask = 786431
+
+[node name="XRPlayer" parent="." unique_id=10000004 instance=ExtResource("2_vr")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=10000005]
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=871214352]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PrepareUI" type="Control" parent="CanvasLayer/Control" unique_id=10000006]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GameUI" type="Control" parent="CanvasLayer/Control" unique_id=10000007]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control" unique_id=10000008]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
+
+[node name="PlayerList" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer" unique_id=10000009]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("3_player_list")
+player_scene = ExtResource("4_joined_player")
+allow_empty = false
+
+[node name="DesktopGameover" parent="CanvasLayer/Control" unique_id=10000010 instance=ExtResource("5_dkgov")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+
+[node name="BaseSceneContent" type="Node3D" parent="." unique_id=10000012]

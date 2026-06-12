@@ -13,11 +13,14 @@ signal request_load_scene(p_scene_path, user_data)
 signal request_reset_scene(user_data)
 signal request_quit
 
+signal scene_loaded_finish
+
 
 @export var xr_player: VRSpace
 @export var bgm_audio: AudioStream
 
 var spawn_transform: Transform3D
+
 
 func reset_player_space(offset: Vector3 = Vector3.ZERO):
 	var origin = spawn_transform
@@ -57,11 +60,7 @@ func scene_loaded(user_data = null):
 	spawn_transform = xr_player.origin.global_transform
 	xr_player.center_player.connect(reset_player_space)
 	center_player_on(spawn_transform)
-	_on_game_start()
-
-
-func _on_game_start():
-	pass
+	scene_loaded_finish.emit()
 
 
 func scene_visible(user_data = null):

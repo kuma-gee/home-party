@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="GameResource" format=3 uid="uid://dagresource"]
 
-[ext_resource type="PackedScene" uid="uid://dag0001" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_and_guess.tscn" id="1_dag"]
-[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_and_guess_icon.tscn" id="2_icon"]
+[ext_resource type="PackedScene" uid="uid://skbli684jgeh" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_and_guess.tscn" id="1_dag"]
+[ext_resource type="PackedScene" uid="uid://n76m1u1p32fd" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_and_guess_icon.tscn" id="2_icon"]
 [ext_resource type="Script" uid="uid://bwykg0o4vosvn" path="res://main/game_resource.gd" id="3_res"]
 
 [resource]

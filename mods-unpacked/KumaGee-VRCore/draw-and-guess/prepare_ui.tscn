@@ -12,90 +12,96 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_cclwa")
 script = ExtResource("1_1fw84")
 
-[node name="Panel" type="PanelContainer" parent="." unique_id=1364751457]
-custom_minimum_size = Vector2(800, 400)
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=301361301]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -150.0
-offset_right = 200.0
-offset_bottom = 150.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_cclwa")
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
-[node name="MarginContainer" type="MarginContainer" parent="Panel" unique_id=301361301]
-layout_mode = 2
-
-[node name="Leaderboard" parent="Panel/MarginContainer" unique_id=1000000001 instance=ExtResource("4_1113u")]
+[node name="Leaderboard" parent="MarginContainer" unique_id=1000000001 instance=ExtResource("4_1113u")]
 unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(1000, 700)
 layout_mode = 2
 
-[node name="Prepare" type="VBoxContainer" parent="Panel/MarginContainer" unique_id=2124314594]
+[node name="Prepare" type="VBoxContainer" parent="MarginContainer" unique_id=2124314594]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 theme_override_constants/separation = 32
 
-[node name="Title" type="Label" parent="Panel/MarginContainer/Prepare" unique_id=1939476564]
+[node name="Title" type="Label" parent="MarginContainer/Prepare" unique_id=1939476564]
+visible = false
 layout_mode = 2
 theme = ExtResource("1_cclwa")
 text = "Draw & Guess"
 horizontal_alignment = 1
 
-[node name="Instructions" type="Label" parent="Panel/MarginContainer/Prepare" unique_id=990282044]
+[node name="Instructions" type="Label" parent="MarginContainer/Prepare" unique_id=990282044]
 layout_mode = 2
 theme = ExtResource("1_cclwa")
-text = "Waiting for players to submit words...
-Click Ready when all words are in!"
+text = "Wait for
+Words"
 horizontal_alignment = 1
 
-[node name="WordCount" type="Label" parent="Panel/MarginContainer/Prepare" unique_id=1982206726]
+[node name="WordCount" type="Label" parent="MarginContainer/Prepare" unique_id=1342442734]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 3
 theme = ExtResource("1_cclwa")
-text = "Words submitted: 0"
+text = "10/10"
 horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="ReadyButton" type="Button" parent="Panel/MarginContainer/Prepare" unique_id=1896170644]
+[node name="ReadyButton" type="Button" parent="MarginContainer/Prepare" unique_id=1896170644]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("1_cclwa")
-text = "Ready"
+text = "Start"
 
-[node name="InGame" type="VBoxContainer" parent="Panel/MarginContainer" unique_id=686132541]
+[node name="InGame" type="VBoxContainer" parent="MarginContainer" unique_id=686132541]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
-[node name="Round" type="Label" parent="Panel/MarginContainer/InGame" unique_id=1736349627]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/InGame" unique_id=1239421029]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Round" type="Label" parent="MarginContainer/InGame/VBoxContainer" unique_id=1736349627]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"LabelSmall"
 text = "Word 1 of 5"
 horizontal_alignment = 1
 
-[node name="Time" type="Label" parent="Panel/MarginContainer/InGame" unique_id=868022128]
+[node name="Time" type="Label" parent="MarginContainer/InGame/VBoxContainer" unique_id=868022128]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"LabelSmall"
 text = "00:00"
 horizontal_alignment = 1
 script = ExtResource("3_myubm")
 
-[node name="Word" type="Label" parent="Panel/MarginContainer/InGame" unique_id=652281359]
+[node name="Word" type="Label" parent="MarginContainer/InGame" unique_id=652281359]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 6
-theme_type_variation = &"LabelLarge"
-text = "Test"
+size_flags_vertical = 3
+theme_type_variation = &"LabelSmall"
+text = "12345678901234567890"
 horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 1
 
-[node name="SkipButton" type="Button" parent="Panel/MarginContainer/InGame" unique_id=1501239932]
+[node name="SkipButton" type="Button" parent="MarginContainer/InGame" unique_id=1501239932]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Skip Word"

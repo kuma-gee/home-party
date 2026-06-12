@@ -15,10 +15,12 @@
 [ext_resource type="PackedScene" uid="uid://bqm8xr5n3yvwh" path="res://addons/godot-xr-tools/functions/function_menu.tscn" id="10_c1qvc"]
 [ext_resource type="PackedScene" uid="uid://c4xvn8qp2ywmh" path="res://main/vr/vr_menu_panel.tscn" id="11_h8p7v"]
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="13_h8p7v"]
+[ext_resource type="PackedScene" uid="uid://b4ysuy43poobf" path="res://addons/godot-xr-tools/functions/function_pickup.tscn" id="15_eoj1g"]
 [ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="15_f1ooe"]
 [ext_resource type="Script" uid="uid://cjk3gsrbfomdh" path="res://main/utils/camera_follow_3d.gd" id="16_ajmcf"]
 [ext_resource type="PackedScene" uid="uid://dtik0q104occg" path="res://main/ui/gameover_screen.tscn" id="18_icwxr"]
 [ext_resource type="PackedScene" uid="uid://0bcv0v5ytadj" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/ui/element_select.tscn" id="18_lisjs"]
+[ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="20_tic4c"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_0yltu"]
 custom_aabb = AABB(-5000, -5000, -5000, 10000, 10000, 10000)
@@ -36,21 +38,21 @@ size = Vector3(50, 0.5, 50)
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.26216218, 0.006849289), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 3
 
-[sub_resource type="QuadMesh" id="QuadMesh_icwxr"]
+[sub_resource type="QuadMesh" id="QuadMesh_0wydl"]
 resource_local_to_scene = true
 size = Vector2(4, 3)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_lisjs"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_yufjw"]
 viewport_path = NodePath("SubViewport/CameraFollow3D/Viewport2Din3D2/Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eoj1g"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_07sco"]
 transparency = 1
 cull_mode = 2
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_lisjs")
+albedo_texture = SubResource("ViewportTexture_yufjw")
 texture_filter = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_tic4c"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_5ic2p"]
 resource_local_to_scene = true
 size = Vector3(4, 3, 0.02)
 
@@ -59,65 +61,65 @@ size = Vector3(4, 3, 0.02)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_01vt5"]
 albedo_texture = ExtResource("6_h8p7v")
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0wydl"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_44s1c"]
 animation = &"Grip"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_yufjw"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_3703v"]
 animation = &"Grip"
 
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_07sco"]
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_g8oow"]
 filter_enabled = true
 filters = ["Armature/Skeleton3D:Little_Distal_L", "Armature/Skeleton3D:Little_Intermediate_L", "Armature/Skeleton3D:Little_Metacarpal_L", "Armature/Skeleton3D:Little_Proximal_L", "Armature/Skeleton3D:Middle_Distal_L", "Armature/Skeleton3D:Middle_Intermediate_L", "Armature/Skeleton3D:Middle_Metacarpal_L", "Armature/Skeleton3D:Middle_Proximal_L", "Armature/Skeleton3D:Ring_Distal_L", "Armature/Skeleton3D:Ring_Intermediate_L", "Armature/Skeleton3D:Ring_Metacarpal_L", "Armature/Skeleton3D:Ring_Proximal_L", "Armature/Skeleton3D:Thumb_Distal_L", "Armature/Skeleton3D:Thumb_Metacarpal_L", "Armature/Skeleton3D:Thumb_Proximal_L", "Armature/Skeleton:Little_Distal_L", "Armature/Skeleton:Little_Intermediate_L", "Armature/Skeleton:Little_Proximal_L", "Armature/Skeleton:Middle_Distal_L", "Armature/Skeleton:Middle_Intermediate_L", "Armature/Skeleton:Middle_Proximal_L", "Armature/Skeleton:Ring_Distal_L", "Armature/Skeleton:Ring_Intermediate_L", "Armature/Skeleton:Ring_Proximal_L", "Armature/Skeleton:Thumb_Distal_L", "Armature/Skeleton:Thumb_Proximal_L"]
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_5ic2p"]
-animation = &"Grip 5"
-
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_44s1c"]
-filter_enabled = true
-filters = ["Armature/Skeleton3D:Index_Distal_L", "Armature/Skeleton3D:Index_Intermediate_L", "Armature/Skeleton3D:Index_Metacarpal_L", "Armature/Skeleton3D:Index_Proximal_L", "Armature/Skeleton:Index_Distal_L", "Armature/Skeleton:Index_Intermediate_L", "Armature/Skeleton:Index_Proximal_L"]
-
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_3703v"]
-graph_offset = Vector2(-536, 11)
-nodes/ClosedHand1/node = SubResource("AnimationNodeAnimation_0wydl")
-nodes/ClosedHand1/position = Vector2(-600, 300)
-nodes/ClosedHand2/node = SubResource("AnimationNodeAnimation_yufjw")
-nodes/ClosedHand2/position = Vector2(-360, 300)
-nodes/Grip/node = SubResource("AnimationNodeBlend2_07sco")
-nodes/Grip/position = Vector2(0, 20)
-nodes/OpenHand/node = SubResource("AnimationNodeAnimation_5ic2p")
-nodes/OpenHand/position = Vector2(-600, 100)
-nodes/Trigger/node = SubResource("AnimationNodeBlend2_44s1c")
-nodes/Trigger/position = Vector2(-360, 20)
-node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1"]
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_g8oow"]
-animation = &"Grip"
-
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ojtvx"]
-animation = &"Grip"
+animation = &"Grip 5"
 
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_vufdb"]
 filter_enabled = true
+filters = ["Armature/Skeleton3D:Index_Distal_L", "Armature/Skeleton3D:Index_Intermediate_L", "Armature/Skeleton3D:Index_Metacarpal_L", "Armature/Skeleton3D:Index_Proximal_L", "Armature/Skeleton:Index_Distal_L", "Armature/Skeleton:Index_Intermediate_L", "Armature/Skeleton:Index_Proximal_L"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_83ac8"]
+graph_offset = Vector2(-536, 11)
+nodes/ClosedHand1/node = SubResource("AnimationNodeAnimation_44s1c")
+nodes/ClosedHand1/position = Vector2(-600, 300)
+nodes/ClosedHand2/node = SubResource("AnimationNodeAnimation_3703v")
+nodes/ClosedHand2/position = Vector2(-360, 300)
+nodes/Grip/node = SubResource("AnimationNodeBlend2_g8oow")
+nodes/Grip/position = Vector2(0, 20)
+nodes/OpenHand/node = SubResource("AnimationNodeAnimation_ojtvx")
+nodes/OpenHand/position = Vector2(-600, 100)
+nodes/Trigger/node = SubResource("AnimationNodeBlend2_vufdb")
+nodes/Trigger/position = Vector2(-360, 20)
+node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ussne"]
+animation = &"Grip"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_onlwi"]
+animation = &"Grip"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_l0jb4"]
+filter_enabled = true
 filters = ["Armature/Skeleton3D:Little_Distal_R", "Armature/Skeleton3D:Little_Intermediate_R", "Armature/Skeleton3D:Little_Metacarpal_R", "Armature/Skeleton3D:Little_Proximal_R", "Armature/Skeleton3D:Middle_Distal_R", "Armature/Skeleton3D:Middle_Intermediate_R", "Armature/Skeleton3D:Middle_Metacarpal_R", "Armature/Skeleton3D:Middle_Proximal_R", "Armature/Skeleton3D:Ring_Distal_R", "Armature/Skeleton3D:Ring_Intermediate_R", "Armature/Skeleton3D:Ring_Metacarpal_R", "Armature/Skeleton3D:Ring_Proximal_R", "Armature/Skeleton3D:Thumb_Distal_R", "Armature/Skeleton3D:Thumb_Metacarpal_R", "Armature/Skeleton3D:Thumb_Proximal_R", "Armature/Skeleton:Little_Distal_R", "Armature/Skeleton:Little_Intermediate_R", "Armature/Skeleton:Little_Proximal_R", "Armature/Skeleton:Middle_Distal_R", "Armature/Skeleton:Middle_Intermediate_R", "Armature/Skeleton:Middle_Proximal_R", "Armature/Skeleton:Ring_Distal_R", "Armature/Skeleton:Ring_Intermediate_R", "Armature/Skeleton:Ring_Proximal_R", "Armature/Skeleton:Thumb_Distal_R", "Armature/Skeleton:Thumb_Proximal_R"]
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_83ac8"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ekcai"]
 animation = &"Grip 5"
 
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_ussne"]
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_r545g"]
 filter_enabled = true
 filters = ["Armature/Skeleton3D:Index_Distal_R", "Armature/Skeleton3D:Index_Intermediate_R", "Armature/Skeleton3D:Index_Metacarpal_R", "Armature/Skeleton3D:Index_Proximal_R", "Armature/Skeleton:Index_Distal_R", "Armature/Skeleton:Index_Intermediate_R", "Armature/Skeleton:Index_Proximal_R"]
 
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_onlwi"]
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_l7sso"]
 graph_offset = Vector2(-552.664, 107.301)
-nodes/ClosedHand1/node = SubResource("AnimationNodeAnimation_g8oow")
+nodes/ClosedHand1/node = SubResource("AnimationNodeAnimation_ussne")
 nodes/ClosedHand1/position = Vector2(-600, 300)
-nodes/ClosedHand2/node = SubResource("AnimationNodeAnimation_ojtvx")
+nodes/ClosedHand2/node = SubResource("AnimationNodeAnimation_onlwi")
 nodes/ClosedHand2/position = Vector2(-360, 300)
-nodes/Grip/node = SubResource("AnimationNodeBlend2_vufdb")
+nodes/Grip/node = SubResource("AnimationNodeBlend2_l0jb4")
 nodes/Grip/position = Vector2(0, 40)
-nodes/OpenHand/node = SubResource("AnimationNodeAnimation_83ac8")
+nodes/OpenHand/node = SubResource("AnimationNodeAnimation_ekcai")
 nodes/OpenHand/position = Vector2(-600, 100)
-nodes/Trigger/node = SubResource("AnimationNodeBlend2_ussne")
+nodes/Trigger/node = SubResource("AnimationNodeBlend2_r545g")
 nodes/Trigger/position = Vector2(-360, 40)
 node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1"]
 
@@ -181,15 +183,15 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Screen" parent="SubViewport/CameraFollow3D/Viewport2Din3D2" index="1" unique_id=1761931612]
-mesh = SubResource("QuadMesh_icwxr")
-surface_material_override/0 = SubResource("StandardMaterial3D_eoj1g")
+mesh = SubResource("QuadMesh_0wydl")
+surface_material_override/0 = SubResource("StandardMaterial3D_07sco")
 
 [node name="StaticBody3D" parent="SubViewport/CameraFollow3D/Viewport2Din3D2" index="2" unique_id=1882660186]
 screen_size = Vector2(4, 3)
 viewport_size = Vector2(720, 560)
 
 [node name="CollisionShape3D" parent="SubViewport/CameraFollow3D/Viewport2Din3D2/StaticBody3D" index="0" unique_id=507281989]
-shape = SubResource("BoxShape3D_tic4c")
+shape = SubResource("BoxShape3D_5ic2p")
 
 [node name="XRPlayer" type="XROrigin3D" parent="SubViewport" unique_id=1404813673]
 
@@ -351,7 +353,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.01, 0, 0.05)
 surface_material_override/0 = ExtResource("8_ajv2u")
 
 [node name="AnimationTree" parent="SubViewport/XRPlayer/LeftHand/LeftHand" index="1" unique_id=1971929839]
-tree_root = SubResource("AnimationNodeBlendTree_3703v")
+tree_root = SubResource("AnimationNodeBlendTree_83ac8")
+
+[node name="FunctionPickup" parent="SubViewport/XRPlayer/LeftHand" unique_id=1917759440 instance=ExtResource("15_eoj1g")]
 
 [node name="FunctionPointer" parent="SubViewport/XRPlayer/LeftHand" unique_id=65982049 instance=ExtResource("9_wg2ng")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.02, 0.05, -0.1)
@@ -389,13 +393,18 @@ bones/22/rotation = Quaternion(0.058578644, -0.021648303, 0.26990518, 0.9608596)
 bones/23/rotation = Quaternion(0.0068717655, 0.0035727452, 0.21195254, 0.97724926)
 
 [node name="AnimationTree" parent="SubViewport/XRPlayer/RightHand/RightHand" index="1"]
-tree_root = SubResource("AnimationNodeBlendTree_onlwi")
+tree_root = SubResource("AnimationNodeBlendTree_l7sso")
 
 [node name="FunctionPointer2" parent="SubViewport/XRPlayer/RightHand" unique_id=1655803083 instance=ExtResource("9_wg2ng")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.02, 0.05, -0.1)
 show_laser = 2
 
+[node name="FunctionPickup" parent="SubViewport/XRPlayer/RightHand" unique_id=1142172700 instance=ExtResource("15_eoj1g")]
+
+[node name="MovementTurn" parent="SubViewport/XRPlayer/RightHand" unique_id=2129223258 instance=ExtResource("20_tic4c")]
+
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2119231864]
+layer = 100
 
 [node name="PauseMenu" type="ColorRect" parent="CanvasLayer" unique_id=856227726]
 visible = false

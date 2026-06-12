@@ -43,14 +43,17 @@ func update(list: Array):
 			active_client_count += 1
 	
 	var total_players = list.size()
-	var text = "Players connected: %d\nWords submitted: %d / %d" % [
-		total_players,
-		active_client_count,
-		total_players
-	]
-	word_count.text = text
+	word_count.text = "%d / %d" % [active_client_count, total_players]
+	ready_button.disabled = active_client_count < total_players
 
 func start_new_game(word: String, r: int, total_round: int):
 	_show_container(in_game)
 	round_label.text = "Word %d of %d" % [r, total_round]
 	word_label.text = word
+	var len = word.length()
+	if len < 8:
+		word_label.theme_type_variation = "LabelLarge"
+	elif len < 11:
+		word_label.theme_type_variation = ""
+	else:
+		word_label.theme_type_variation = "LabelSmall"
