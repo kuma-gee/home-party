@@ -271,5 +271,30 @@ def get_diff() -> dict:
     return _godot_request("get_diff")
 
 
+@mcp.tool()
+def get_node_snapshot(path: str) -> dict:
+    """Capture a detailed snapshot of a single node including position, rotation, scale, and all properties.
+
+    Stores the snapshot server-side for later diffing. Use ``get_node_diff()``
+    to compare the current state against this snapshot.
+    """
+    return _godot_request("get_node_snapshot", {"path": path})
+
+
+@mcp.tool()
+def get_node_diff(path: str) -> dict:
+    """Compare a node's current state against its last snapshot.
+
+    Returns a dict with three lists:
+
+    - ``added``   – keys that exist now but didn't in the snapshot
+    - ``removed`` – keys that existed in the snapshot but are gone now
+    - ``changed`` – keys whose value changed
+
+    Returns an error if no snapshot has been taken for this path yet.
+    """
+    return _godot_request("get_node_diff", {"path": path})
+
+
 if __name__ == "__main__":
     mcp.run()

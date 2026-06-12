@@ -5,6 +5,7 @@ const PORT := 6008
 var tcp := TCPServer.new()
 var peers: Array[StreamPeerTCP] = []
 var last_snapshot: Dictionary = {}
+var last_node_snapshots: Dictionary = {}
 
 func _ready():
 	var args = OS.get_cmdline_args()
@@ -84,6 +85,12 @@ func handle_request(data: Dictionary):
 		"get_diff":
 			return get_diff()
 
+		"get_node_snapshot":
+			return get_node_snapshot(payload.get("path", ""))
+
+		"get_node_diff":
+			return get_node_diff(payload.get("path", ""))
+
 	return {
 		"error": "unknown command"
 	}
@@ -103,6 +110,65 @@ func serialize_node(node: Node) -> Dictionary:
 		"type": node.get_class(),
 		"children": children
 	}
+
+
+func serialize_node_detailed(node: Node) -> Dictionary:
+	var children := []
+
+	for child in node.get_children():
+		children.append({
+			"name": child.name,
+			"path": str(child.get_path()),
+			"type": child.get_class()
+		})
+
+	var result := {
+		"name": node.name,
+		"path": str(node.get_path()),
+		"type": node.get_class(),
+		"children": children
+	}
+
+	if node is Node3D:
+		result["position"] = [node.position.x, node.position.y, node.position.z]
+		result["rotation"] = [node.rotation.x, node.rotation.y, node.rotation.z]
+		result["scale"] = [node.scale.x, node.scale.y, node.scale.z]
+		result["global_position"] = [node.global_position.x, node.global_position.y, node.global_position.z]
+		result["global_rotation"] = [node.global_rotation.x, node.global_rotation.y, node.global_rotation.z]
+		result["global_scale"] = [node.global_scale.x, node.global_scale.y, node.global_scale.z]
+		result["transform"] = {
+			"origin": [node.transform.origin.x, node.transform.origin.y, node.transform.origin.z],
+			"basis": {
+				"x": [node.transform.basis.x.x, node.transform.basis.x.y, node.transform.basis.x.z],
+				"y": [node.transform.basis.y.x, node.transform.basis.y.y, node.transform.basis.y.z],
+				"z": [node.transform.basis.z.x, node.transform.basis.z.y, node.transform.basis.z.z]
+			}
+		}
+	elif node is Node2D:
+		result["position"] = [node.position.x, node.position.y]
+		result["rotation"] = node.rotation
+		result["scale"] = [node.scale.x, node.scale.y]
+		result["global_position"] = [node.global_position.x, node.global_position.y]
+		result["global_rotation"] = node.global_rotation
+		result["global_scale"] = [node.global_scale.x, node.global_scale.y]
+		result["transform"] = {
+			"origin": [node.transform.origin.x, node.transform.origin.y],
+			"rotation": node.transform.get_rotation(),
+			"scale": [node.transform.get_scale().x, node.transform.get_scale().y]
+		}
+
+	var props := {}
+	for prop in node.get_property_list():
+		var name := prop.name as String
+		if name in ["position", "rotation", "scale", "global_position", "global_rotation", "global_scale", "transform"]:
+			continue
+		var value = node.get(name)
+		if value is Object:
+			continue
+		props[name] = value
+
+	result["properties"] = props
+	return result
 
 
 func get_scene_tree_data():
@@ -201,6 +267,62 @@ func get_diff():
 	for path in last_snapshot:
 		if path not in current:
 			removed.append(path)
+
+	return {
+		"added": added,
+		"removed": removed,
+		"changed": changed
+	}
+
+
+func get_node_snapshot(path: String) -> Dictionary:
+	var node = get_node_or_null(path)
+	if node == null:
+		return {"error": "node not found"}
+
+	var snapshot = serialize_node_detailed(node)
+	last_node_snapshots[path] = snapshot
+	return snapshot
+
+
+func get_node_diff(path: String) -> Dictionary:
+	if path not in last_node_snapshots:
+		return {"error": "no snapshot taken for this node"}
+
+	var node = get_node_or_null(path)
+	if node == null:
+		return {"error": "node not found"}
+
+	var current = serialize_node_detailed(node)
+	var previous = last_node_snapshots[path]
+
+	var added := []
+	var removed := []
+	var changed := []
+
+	for key in current:
+		if key == "children":
+			continue
+		if key == "properties":
+			var prev_props: Dictionary = previous.get("properties", {})
+			var curr_props: Dictionary = current.get("properties", {})
+			for prop in curr_props:
+				if prop not in prev_props:
+					added.append("properties." + prop)
+				elif curr_props[prop] != prev_props[prop]:
+					changed.append("properties." + prop)
+			for prop in prev_props:
+				if prop not in curr_props:
+					removed.append("properties." + prop)
+			continue
+		if key not in previous:
+			added.append(key)
+		elif current[key] != previous[key]:
+			changed.append(key)
+
+	for key in previous:
+		if key not in current and key != "properties":
+			removed.append(key)
 
 	return {
 		"added": added,
