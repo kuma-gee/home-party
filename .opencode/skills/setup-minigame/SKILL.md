@@ -1,14 +1,13 @@
 ---
 name: setup-minigame
-description: Scaffold the base files for a new mini-game following the standard defined in docs/BASE_SCENE.md.
+description: Scaffold the base files for a new mini-game that inherits from the shared main/base_scene.tscn.
 ---
 
 # Setup Mini-Game
 
 Scaffold the full base file structure for a new mini-game inside
-`mods-unpacked/KumaGee-VRCore/`. All files follow the standard defined in
-[`docs/BASE_SCENE.md`](../../docs/BASE_SCENE.md). Read that document first if
-you haven't already.
+`mods-unpacked/KumaGee-VRCore/`. The game scene inherits from the shared
+[`main/base_scene.tscn`](../../main/base_scene.tscn).
 
 ## Process
 
@@ -87,62 +86,22 @@ Create `mods-unpacked/KumaGee-VRCore/<game-name>/<game_name>.gd` with this
 content (fill in `<...>` placeholders):
 
 ```gdscript
-extends XRToolsSceneBase
-
-signal game_started
-
-@export var player_list: PlayerList
-@export var prepare_ui: Control
-@export var game_ui: Control
-@export var desktop_gameover: DesktopGameover
-@export var game_timer: Timer
-
-# Add game-specific @export vars here, e.g.:
-# @export var my_tool: MyTool
+class_name <GameName>
+extends BaseGame
 
 var logger := KumaLog.new("<GAME_NAME>")
 
-
 func _ready() -> void:
-	# Connect signals that don't depend on game state here
+	super()
+	prepare_phase.connect(_on_prepare_phase)
+	game_phase.connect(_on_game_phase)
+
+func _on_prepare_phase() -> void:
 	pass
 
-func _on_game_start() -> void:
-	# --- Prepare phase ---
-	BGMManager.set_volume_db(-40.0, true)
-	prepare_ui.show()
-	game_ui.hide()
-	game_timer.stop()
+func _on_game_phase() -> void:
+	pass
 
-	# TODO: Show prepare screen in VR (if needed):
-	# xr_player.show_screen(prepare_scene)
-
-	# Listen for ready state changes
-	player_list.ready_changed.connect(_check_all_ready)
-
-func _check_all_ready(start := false) -> void:
-	# TODO: Add game-specific ready conditions here
-	# (word submitted, loadout confirmed, etc.)
-	if start and player_list.is_all_ready():
-		_start_game()
-
-func _start_game() -> void:
-	# --- Transition to gameplay ---
-	BGMManager.set_volume_db(-25.0, false)
-	PlayerManager.start_game()
-	prepare_ui.hide()
-	game_ui.show()
-	xr_player.hide_screen()
-	game_timer.start()
-	game_started.emit()
-	logger.info("Game started")
-
-func _finish_game(message: String) -> void:
-	logger.info("Game over: %s" % message)
-	xr_player.gameover(message)
-	if desktop_gameover:
-		desktop_gameover.show_gameover(message, [])
-	game_timer.stop()
 ```
 
 ### 6. Create the main game scene
@@ -153,72 +112,13 @@ content (fill in `<...>` placeholders):
 ```
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://mods-unpacked/KumaGee-VRCore/<game-name>/<game_name>.gd" id="1_game"]
-[ext_resource type="PackedScene" path="res://main/vr/vr_space.tscn" id="2_vrspace"]
-[ext_resource type="Script" path="res://main/ui/player_list.gd" id="3_plist"]
-[ext_resource type="PackedScene" path="res://main/ui/desktop_gameover.tscn" id="4_dkgov"]
-[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/<game-name>/<game_name>_player_ui.tscn" id="5_plui"]
+[ext_resource type="PackedScene" path="res://main/base_scene.tscn" id="1_base"]
+[ext_resource type="Script" path="res://mods-unpacked/KumaGee-VRCore/<game-name>/<game_name>.gd" id="2_game"]
+[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/<game-name>/<game_name>_player_ui.tscn" id="3_plui"]
 
-[node name="<GameName>" type="Node3D" node_paths=PackedStringArray("player_list", "prepare_ui", "game_ui", "desktop_gameover", "game_timer", "xr_player")]
-script = ExtResource("1_game")
-player_list = NodePath("CanvasLayer/MarginContainer/PlayerList")
-prepare_ui = NodePath("CanvasLayer/PrepareUI")
-game_ui = NodePath("CanvasLayer/GameUI")
-desktop_gameover = NodePath("CanvasLayer/DesktopGameover")
-game_timer = NodePath("GameTimer")
-xr_player = NodePath("XRPlayer")
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-
-[node name="Camera3D" type="Camera3D" parent="."]
-cull_mask = 786431
-current = true
-
-[node name="XRPlayer" parent="." instance=ExtResource("2_vrspace")]
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="PrepareUI" type="Control" parent="CanvasLayer"]
-visible = false
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="GameUI" type="Control" parent="CanvasLayer"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-grow_horizontal = 0
-
-[node name="PlayerList" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
-layout_mode = 2
-script = ExtResource("3_plist")
-player_scene = ExtResource("5_plui")
-
-[node name="DesktopGameover" parent="CanvasLayer" instance=ExtResource("4_dkgov")]
-
-[node name="GameTimer" type="Timer" parent="."]
-wait_time = 180.0
-one_shot = true
-
-[node name="<GameName>Content" type="Node3D" parent="."]
+[node name="<GameName>" instance=ExtResource("1_base")]
+script = ExtResource("2_game")
 ```
-
-Set `wait_time` on `GameTimer` to the game's actual duration (in seconds) if
-known from the GDD. The default is 180 (3 minutes).
 
 ### 7. Create a placeholder 3D icon scene
 
