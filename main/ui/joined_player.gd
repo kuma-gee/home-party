@@ -46,4 +46,4 @@ func move_out():
 		tw.stop()
 	tw = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	tw.tween_property(container, "position:x", container.custom_minimum_size.x, 1.0)
-	#tw.finished.connect(func(): queue_free())
+	tw.finished.connect(func(): queue_free())
