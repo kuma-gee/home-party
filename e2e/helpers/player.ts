@@ -23,19 +23,30 @@ export async function waitForMenuWorld(
 }
 
 /**
- * Connect a mobile player via the game-client UI.
- * Sets localStorage with the given UUID, fills in the IP, clicks Connect,
- * and waits for the WebRTC data channel to open.
+ * Navigate to the game page and set the player UUID in localStorage.
  */
-export async function connectPlayer(page: Page, uuid: string): Promise<void> {
+export async function navigateToGame(page: Page, uuid: string): Promise<void> {
   await page.goto('/');
   await page.evaluate(([u]: [string]) => localStorage.setItem('clientId', u), [uuid]);
+}
+
+/**
+ * Fill in the server IP, click Connect, and wait for the WebRTC data channel to open.
+ */
+export async function connectMobilePlayer(page: Page): Promise<void> {
   await expect(page.locator('h2')).toHaveText('Connect to Game Server');
   await page.fill('#server-ip', 'localhost');
   await expect(page.locator('#server-ip')).toHaveValue('localhost');
   await page.locator('button', { hasText: 'Connect' }).click();
   await expect(page.locator('.spinner')).toBeVisible({ timeout: 10_000 });
   await expect(page.locator('.disconnect-icon')).toBeVisible({ timeout: 25_000 });
-  // Give Godot time to process the connection and spawn the plushie
   await page.waitForTimeout(2000);
+}
+
+/**
+ * Convenience wrapper: navigate, set UUID, then connect.
+ */
+export async function connectPlayer(page: Page, uuid: string): Promise<void> {
+  await navigateToGame(page, uuid);
+  await connectMobilePlayer(page);
 }
