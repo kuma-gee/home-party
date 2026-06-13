@@ -146,6 +146,19 @@ func register_gamepad(device_id: int) -> void:
 		logger.info("Creating gamepad controller: %s" % controller.get_display_data())
 	clients_changed.emit()
 
+func register_fake_gamepad(uuid: String, player_idx: int = -1) -> void:
+	var controller := GamepadController.new()
+	controller.device_id = -1
+	controller.uuid = uuid
+	controller.player_name = "Tester"
+	add_child(controller)
+	if player_idx >= 0:
+		_assigned_indices[uuid] = player_idx
+	else:
+		_assign_index(uuid)
+	clients_changed.emit()
+
+
 func remove_all_players() -> void:
 	for child in get_children():
 		if child is ClientController and child.active:

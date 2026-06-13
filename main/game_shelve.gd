@@ -80,3 +80,10 @@ func _on_game_selected(game: GameResource) -> void:
 	game_details_desktop.update_details(game)
 	game_details_vr.update_details(game)
 	game_details_desktop_root.visible = game != null
+
+
+func select_game_with_path(resource_path: String) -> void:
+	var game: GameResource
+	if not resource_path.is_empty():
+		game = load(resource_path) as GameResource
+	game_select_zone.selected_game.emit(game)
