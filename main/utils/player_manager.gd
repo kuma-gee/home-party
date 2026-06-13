@@ -4,6 +4,8 @@ signal clients_changed()
 
 var logger := KumaLog.new("PlayerManager")
 var playing_clients: Array[ClientController] = []
+var _assigned_indices := {}       # uuid -> int
+var _freed_indices: Array[int] = []
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -38,11 +40,7 @@ func _on_received_session(client_id: String, type: String, sdp: String):
 		logger.warn("Failed to find player with id %s to set session" % client_id)
 
 func get_player_idx(uuid: String) -> int:
-	for i in get_child_count():
-		var child = get_child(i)
-		if child is ClientController and (child as ClientController).uuid == uuid:
-			return i
-	return -1
+	return _assigned_indices.get(uuid, -1)
 
 func find_player_by_uuid(uuid: String) -> ClientController:
 	for child in get_children():
@@ -73,6 +71,24 @@ func get_active_players() -> Array[ClientController]:
 			active_players.append(player)
 	return active_players
 
+func _assign_index(uuid: String) -> int:
+	if _assigned_indices.has(uuid):
+		return _assigned_indices[uuid]
+	if _freed_indices.size() > 0:
+		_freed_indices.sort()
+		var idx = _freed_indices.pop_front()
+		_assigned_indices[uuid] = idx
+		return idx
+	var idx = _assigned_indices.size()
+	_assigned_indices[uuid] = idx
+	return idx
+
+func _free_index(uuid: String):
+	var idx = _assigned_indices.get(uuid, -1)
+	if idx >= 0:
+		_freed_indices.append(idx)
+		_assigned_indices.erase(uuid)
+
 func create_peer(data: Dictionary):
 	var peer_id = int(data.get("peer_id", -1))
 	if peer_id < 0:
@@ -93,13 +109,15 @@ func create_peer(data: Dictionary):
 		player.send_session.connect(func(type: String, sdp: String): LobbyServer.send_session(uuid, type, sdp))
 		add_child(player)
 		logger.info("Creating game client: %s" % player.get_display_data())
-		
+
+	_assign_index(uuid)
 	clients_changed.emit()
 
 func remove_peer(client_id: String):
 	var player = find_player_by_uuid(client_id)
 	if player is GameClient:
 		player.reset()
+		_free_index(client_id)
 	else:
 		logger.warn("Failed to remove player with id %s" % client_id)
 	clients_changed.emit()
@@ -115,6 +133,7 @@ func register_gamepad(device_id: int) -> void:
 	var existing = find_player_by_device_id(device_id)
 	if existing:
 		existing.initialize()
+		_assign_index(existing.uuid)
 		logger.info("Initializing existing gamepad controller: %s" % existing.get_display_data())
 	else:
 		var uuid := GamepadController.get_uuid_for_device(device_id)
@@ -123,6 +142,7 @@ func register_gamepad(device_id: int) -> void:
 		controller.uuid = uuid
 		controller.player_name = "%s" % Input.get_joy_name(device_id)
 		add_child(controller)
+		_assign_index(uuid)
 		logger.info("Creating gamepad controller: %s" % controller.get_display_data())
 	clients_changed.emit()
 
@@ -134,5 +154,6 @@ func remove_all_players() -> void:
 func unregister_gamepad(device_id: int) -> void:
 	var player = find_player_by_device_id(device_id)
 	if player:
+		_free_index(player.uuid)
 		player.reset()
 		clients_changed.emit()

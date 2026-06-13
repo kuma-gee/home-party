@@ -77,7 +77,6 @@ test('two connected players get different animal models', async ({ page, mcp }) 
     expect(plushiePaths).toHaveLength(2);
 
     const props0 = await mcp.getProperties(plushiePaths[0]);
-    const props1 = await mcp.getProperties(plushiePaths[1]);
     const p1Path = props0.player_uuid === uuid1 ? plushiePaths[0] : plushiePaths[1];
     const p2Path = props0.player_uuid === uuid2 ? plushiePaths[0] : plushiePaths[1];
 
