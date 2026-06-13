@@ -43,7 +43,7 @@ make a sound and some visual cue for some basic interactions.
 
 - CONNECTED: player is connected and can join the games. The default state.
 - UNPLAYABLE: for phone-only games, if a player is connected via controller. Show an icon on top of the plushie that they cannot join this specific game.
-- DISCONNECTED: plushies become gray and the player number tag becomes a disconnected icon. Physics still all work. Player can reconnect to restore the state
+- DISCONNECTED: plushies gets removed from the game.
 
 ## Mobile Players
 

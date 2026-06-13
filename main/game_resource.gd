@@ -10,3 +10,5 @@ extends Resource
 
 @export var vr_preview: Texture2D
 @export var desktop_preview: Texture2D
+
+@export var phone_only := false

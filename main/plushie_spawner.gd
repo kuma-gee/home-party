@@ -3,13 +3,17 @@ extends Node
 @export var plushie_scene: PackedScene
 @export var spawn_point_group: Node3D
 @export var player_list: PlayerList
+@export var game_select_zone: GameSelectZone
 
 var _plushies := {}  # uuid -> plushie node
 var _spawn_index := 0
+var _selected_game: GameResource
 
 func _ready() -> void:
 	player_list.player_created.connect(_on_player_created)
 	player_list.player_removed.connect(_on_player_removed)
+	if game_select_zone:
+		game_select_zone.selected_game.connect(_on_game_selected)
 
 func _get_spawn_points() -> Array[Marker3D]:
 	var points: Array[Marker3D] = []
@@ -38,7 +42,16 @@ func _on_player_created(uuid: String) -> void:
 
 	_plushies[uuid] = plushie
 
+	if _selected_game:
+		plushie.evaluate_unplayable(_selected_game)
+
 func _on_player_removed(uuid: String) -> void:
 	if _plushies.has(uuid):
 		_plushies[uuid].queue_free()
 		_plushies.erase(uuid)
+
+
+func _on_game_selected(game: GameResource) -> void:
+	_selected_game = game
+	for plushie in _plushies.values():
+		plushie.evaluate_unplayable(game)

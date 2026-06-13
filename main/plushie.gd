@@ -1,6 +1,8 @@
 @tool
 extends XRToolsPickable
 
+enum State { CONNECTED, UNPLAYABLE }
+
 const PLACEHOLDER_SQUEAK := preload("res://assets/sound/sfx/pickup.mp3")
 
 static var _model_offset := -1
@@ -8,6 +10,7 @@ static var _model_offset := -1
 @onready var models: Node3D = $Models
 @onready var player_tag: Label3D = $PlayerTag
 @onready var squeak_player: AudioStreamPlayer3D = $SqueakPlayer
+@onready var unplayable_icon: Node3D = $UnplayableIcon
 
 var player_uuid: String
 var player_index: int
@@ -15,6 +18,7 @@ var _visible_animal: Node3D
 var _glow_materials: Array[StandardMaterial3D] = []
 var _player_color: Color
 var _client_controller: ClientController
+var _state := State.CONNECTED
 
 
 func setup(idx: int, uuid: String, color: Color, controller: ClientController) -> void:
@@ -102,6 +106,26 @@ func _squeak_and_glow(pitch_scale := 1.0) -> void:
 func _set_glow_intensity(value: float) -> void:
 	for mat in _glow_materials:
 		mat.emission_energy_multiplier = value
+
+
+func set_state(new_state: State) -> void:
+	if _state == new_state:
+		return
+	_state = new_state
+	match _state:
+		State.UNPLAYABLE:
+			unplayable_icon.visible = true
+		State.CONNECTED:
+			unplayable_icon.visible = false
+
+
+func evaluate_unplayable(game: GameResource) -> void:
+	if not _client_controller or _client_controller.active == false:
+		return
+	if game and game.phone_only and _client_controller is GamepadController:
+		set_state(State.UNPLAYABLE)
+	else:
+		set_state(State.CONNECTED)
 
 
 func get_visible_model() -> String:

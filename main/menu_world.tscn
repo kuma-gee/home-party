@@ -300,11 +300,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1.6482217, -0.5)
 [node name="PlushieSpawn_CouchR" type="Marker3D" parent="PlushieSpawnPoints" unique_id=1837691558]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1.648, -1)
 
-[node name="PlushieSpawner" type="Node" parent="." unique_id=2072471528 node_paths=PackedStringArray("spawn_point_group", "player_list")]
+[node name="PlushieSpawner" type="Node" parent="." unique_id=2072471528 node_paths=PackedStringArray("spawn_point_group", "player_list", "game_select_zone")]
 script = ExtResource("19_spawn")
 plushie_scene = ExtResource("18_spawn")
 spawn_point_group = NodePath("../PlushieSpawnPoints")
 player_list = NodePath("../CanvasLayer/Control/MarginContainer/PlayerList")
+game_select_zone = NodePath("../GameShelve/GameSelectZone")
 
 [node name="DebugVRView" type="Camera3D" parent="." unique_id=598998519]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.58897305, 1.8310995, -0.55186784)
