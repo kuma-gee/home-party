@@ -23,7 +23,8 @@ static func get_color(idx: int) -> Color:
 @export var initial_delay := 1.0
 @export var create_delay := 0.1
 @export var allow_empty := true
-@export var game_select_zone: GameSelectZone
+
+var current_game: GameResource
 
 func _ready() -> void:
 	PlayerManager.clients_changed.connect(_refresh_list)
@@ -46,9 +47,9 @@ func _refresh_list() -> void:
 		else:
 			var new_node = player_scene.instantiate() as JoinedPlayer
 			new_node.ready_updated.connect(func(): ready_changed.emit())
-			new_node.game_select_zone = game_select_zone
 			new_node.update_data(player_data)
 			add_child(new_node)
+			new_node.update_game_selection(current_game)
 			new_node.move_in()
 			player_created.emit(player_data.client_id)
 
@@ -58,6 +59,12 @@ func _refresh_list() -> void:
 		if child is JoinedPlayer and child.uuid not in current_uuids:
 			child.move_out()
 			player_removed.emit(child.uuid)
+
+func update_selection(game: GameResource) -> void:
+	current_game = game
+	for child in get_children():
+		if child is JoinedPlayer:
+			child.update_game_selection(game)
 
 func find_existing_node(uuid: String):
 	for child in get_children():

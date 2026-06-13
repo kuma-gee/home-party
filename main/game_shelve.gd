@@ -9,6 +9,7 @@ signal started_game(game: GameResource)
 @export var scene: PackedScene
 @export var axis := Vector3.RIGHT
 @export var item_spacing := 0.5
+@export var player_list: PlayerList
 
 @onready var game_loader: GameLoader = $GameLoader
 @onready var game_select_zone: GameSelectZone = $GameSelectZone
@@ -80,6 +81,8 @@ func _on_game_selected(game: GameResource) -> void:
 	game_details_desktop.update_details(game)
 	game_details_vr.update_details(game)
 	game_details_desktop_root.visible = game != null
+	if player_list:
+		player_list.update_selection(game)
 
 
 func select_game_with_path(resource_path: String) -> void:

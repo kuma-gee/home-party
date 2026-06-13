@@ -13,11 +13,10 @@ var is_ready := false:
 		ready_updated.emit()
 	
 var uuid: String
-var game_select_zone: GameSelectZone
 
 @onready var out_pos := -container.custom_minimum_size.x
 @onready var in_pos := 0
-@onready var unplayable_label: Label = $HBoxContainer/UnplayableLabel
+@onready var unplayable_label: Label = %UnplayableLabel
 
 var tw: Tween
 var game_client: ClientController
@@ -26,11 +25,6 @@ var game_client: ClientController
 func _ready() -> void:
 	container.position.x = -container.custom_minimum_size.x
 	size.x = 0
-	if game_select_zone:
-		game_select_zone.selected_game.connect(_on_game_selected)
-		var shelve = game_select_zone.get_parent() as GameShelve
-		if shelve:
-			_on_game_selected(shelve.selected_game)
 
 
 func set_ready():
@@ -58,7 +52,7 @@ func move_out():
 	tw.finished.connect(func(): queue_free())
 
 
-func _on_game_selected(game: GameResource) -> void:
+func update_game_selection(game: GameResource) -> void:
 	if not game_client or not game_client.active:
 		unplayable_label.visible = false
 		return

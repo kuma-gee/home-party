@@ -156,12 +156,11 @@ offset_left = -32.0
 offset_bottom = 32.0
 grow_horizontal = 0
 
-[node name="PlayerList" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer" unique_id=1419819672 node_paths=PackedStringArray("game_select_zone")]
+[node name="PlayerList" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer" unique_id=1419819672]
 layout_mode = 2
 theme_override_constants/separation = 0
 script = ExtResource("4_4lkid")
 player_scene = ExtResource("5_5dw5n")
-game_select_zone = NodePath("../../../../GameShelve/GameSelectZone")
 
 [node name="JoinCode" type="PanelContainer" parent="CanvasLayer/Control" unique_id=1744107384]
 layout_mode = 1
@@ -257,7 +256,7 @@ vertical_alignment = 1
 [node name="GameDetailsVR" parent="GameDetails/SubViewport/GameDetailsContainer" unique_id=1206509251 instance=ExtResource("8_67j6m")]
 layout_mode = 1
 
-[node name="GameShelve" type="Node3D" parent="." unique_id=668835829 node_paths=PackedStringArray("game_details_desktop_root", "game_details_desktop", "game_details_vr")]
+[node name="GameShelve" type="Node3D" parent="." unique_id=668835829 node_paths=PackedStringArray("game_details_desktop_root", "game_details_desktop", "game_details_vr", "player_list")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.26225632, 0.67323536, -0.5303985)
 script = ExtResource("10_sxu1o")
 game_details_desktop_root = NodePath("../CanvasLayer/Control/GameDetailsRoot")
@@ -266,6 +265,7 @@ game_details_vr = NodePath("../GameDetails/SubViewport/GameDetailsContainer/Game
 scene = ExtResource("11_4lkid")
 axis = Vector3(0, 0, -1)
 item_spacing = 0.1
+player_list = NodePath("../CanvasLayer/Control/MarginContainer/PlayerList")
 
 [node name="GameLoader" type="Node" parent="GameShelve" unique_id=649126648]
 script = ExtResource("10_hi2v3")
