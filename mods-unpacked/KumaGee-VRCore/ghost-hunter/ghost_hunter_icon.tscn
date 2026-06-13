@@ -1,0 +1,9 @@
+[gd_scene format=3]
+
+[sub_resource type="BoxMesh" id="BoxMesh_icon"]
+size = Vector3(0.5, 0.5, 0.2)
+
+[node name="GhostHunterIcon" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_icon")
