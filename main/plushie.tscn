@@ -71,3 +71,6 @@ text = "P1"
 [node name="CollisionShape3D" parent="." index="2" unique_id=1198871219]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.023816153, 0)
 shape = SubResource("BoxShape3D_5bvpt")
+
+[node name="SqueakPlayer" type="AudioStreamPlayer3D" parent="." index="3" unique_id=375952682]
+max_distance = 10.0

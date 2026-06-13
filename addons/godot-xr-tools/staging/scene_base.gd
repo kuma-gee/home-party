@@ -21,6 +21,9 @@ signal scene_loaded_finish
 
 var spawn_transform: Transform3D
 
+func _ready() -> void:
+	if xr_player == null:
+		xr_player = get_node("VRSpace")
 
 func reset_player_space(offset: Vector3 = Vector3.ZERO):
 	var origin = spawn_transform

@@ -33,7 +33,8 @@ func _on_player_created(uuid: String) -> void:
 
 	var idx = PlayerManager.get_player_idx(uuid)
 	var color = PlayerList.get_color(idx)
-	plushie.setup(idx, uuid, color)
+	var controller = PlayerManager.find_player_by_uuid(uuid)
+	plushie.setup(idx, uuid, color, controller)
 
 	_plushies[uuid] = plushie
 

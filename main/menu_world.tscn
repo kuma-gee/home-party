@@ -8,6 +8,7 @@
 [ext_resource type="Shader" uid="uid://ca6cb6krfshuo" path="res://shader/blur.gdshader" id="7_rtmvl"]
 [ext_resource type="Script" uid="uid://brg6aumaixieg" path="res://main/ui/game_qr.gd" id="7_sxu1o"]
 [ext_resource type="PackedScene" uid="uid://cwl0ekorgrixb" path="res://main/ui/game_panel.tscn" id="8_67j6m"]
+[ext_resource type="PackedScene" uid="uid://btlljhtniv3dr" path="res://main/vr/vr_space.tscn" id="9_rtmvl"]
 [ext_resource type="Script" uid="uid://ddetao6ypdnd4" path="res://main/utils/game_loader.gd" id="10_hi2v3"]
 [ext_resource type="Script" uid="uid://c81kikxi6p2y1" path="res://main/game_shelve.gd" id="10_sxu1o"]
 [ext_resource type="PackedScene" uid="uid://ytw4rjtso8pq" path="res://main/vr/game_object.tscn" id="11_4lkid"]
@@ -101,7 +102,7 @@ alpha_curve = SubResource("CurveTexture_rtmvl")
 
 [node name="MenuWorld" type="Node3D" unique_id=1335721879 node_paths=PackedStringArray("xr_player")]
 script = ExtResource("1_uouel")
-xr_player = NodePath("VRSpace")
+xr_player = NodePath("XRPlayer")
 bgm_audio = ExtResource("2_rtmvl")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2043989948]
@@ -207,7 +208,7 @@ text = "127.0.0.1"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="VRSpace" parent="." unique_id=841158329 instance_placeholder="res://main/vr/vr_space.tscn"]
+[node name="XRPlayer" parent="." unique_id=841158329 instance=ExtResource("9_rtmvl")]
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1355722313]
 transform = Transform3D(0.7071068, -0.50000006, 0.49999994, 4.736145e-09, 0.70710677, 0.7071069, -0.70710677, -0.5000001, 0.5, 1.8876777, 3.4107723, -0.17257977)
