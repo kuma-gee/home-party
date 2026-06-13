@@ -38,4 +38,6 @@ func _on_player_created(uuid: String) -> void:
 	_plushies[uuid] = plushie
 
 func _on_player_removed(uuid: String) -> void:
-	pass
+	if _plushies.has(uuid):
+		_plushies[uuid].queue_free()
+		_plushies.erase(uuid)

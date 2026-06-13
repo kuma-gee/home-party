@@ -3,6 +3,20 @@
 [ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_parnt"]
 [ext_resource type="Script" uid="uid://d0r7a1w1yh58m" path="res://main/plushie.gd" id="2_scrpt"]
 [ext_resource type="PackedScene" uid="uid://crsiqt2ics235" path="res://assets/characters/cube-pets/Models/GLB format/animal-cat.glb" id="3_mm15h"]
+[ext_resource type="PackedScene" uid="uid://b0i20einqq8rt" path="res://assets/characters/cube-pets/Models/GLB format/animal-bee.glb" id="4_56ma3"]
+[ext_resource type="PackedScene" uid="uid://bppyc8anuxto2" path="res://assets/characters/cube-pets/Models/GLB format/animal-bunny.glb" id="5_sp5r5"]
+[ext_resource type="PackedScene" uid="uid://tg87tsmylnmo" path="res://assets/characters/cube-pets/Models/GLB format/animal-chick.glb" id="7_3sxqy"]
+[ext_resource type="PackedScene" uid="uid://dtxwevpr07ydh" path="res://assets/characters/cube-pets/Models/GLB format/animal-cow.glb" id="8_b6wxi"]
+[ext_resource type="PackedScene" uid="uid://f7sy6m3cigl" path="res://assets/characters/cube-pets/Models/GLB format/animal-crab.glb" id="9_bym78"]
+[ext_resource type="PackedScene" uid="uid://d1ujmitj8dx5o" path="res://assets/characters/cube-pets/Models/GLB format/animal-dog.glb" id="10_cjft3"]
+[ext_resource type="PackedScene" uid="uid://dvics6tg0uwv4" path="res://assets/characters/cube-pets/Models/GLB format/animal-fox.glb" id="12_tn8ms"]
+[ext_resource type="PackedScene" uid="uid://dm0hkgeii2ge3" path="res://assets/characters/cube-pets/Models/GLB format/animal-lion.glb" id="14_icweg"]
+[ext_resource type="PackedScene" uid="uid://woda05w8csve" path="res://assets/characters/cube-pets/Models/GLB format/animal-monkey.glb" id="15_45o13"]
+[ext_resource type="PackedScene" uid="uid://csgewknpt0pru" path="res://assets/characters/cube-pets/Models/GLB format/animal-panda.glb" id="16_tk0aa"]
+[ext_resource type="PackedScene" uid="uid://fjyjivfson46" path="res://assets/characters/cube-pets/Models/GLB format/animal-parrot.glb" id="17_11cgn"]
+[ext_resource type="PackedScene" uid="uid://cfrf6lfcaqvmo" path="res://assets/characters/cube-pets/Models/GLB format/animal-penguin.glb" id="18_2udhv"]
+[ext_resource type="PackedScene" uid="uid://bkggi8va0xa32" path="res://assets/characters/cube-pets/Models/GLB format/animal-pig.glb" id="19_30w0e"]
+[ext_resource type="PackedScene" uid="uid://2yg7n0ttaa67" path="res://assets/characters/cube-pets/Models/GLB format/animal-tiger.glb" id="20_gpmh4"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_m6y9k"]
 friction = 0.6
@@ -16,11 +30,38 @@ size = Vector3(0.35, 0.35, 0.35)
 physics_material_override = SubResource("PhysicsMaterial_m6y9k")
 script = ExtResource("2_scrpt")
 
-[node name="Root" type="Node3D" parent="." index="0" unique_id=1964994452]
+[node name="Models" type="Node3D" parent="." index="0" unique_id=1964994452]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, -0.22219814, 0)
 
-[node name="animal-cat2" parent="Root" index="0" unique_id=1314052389 instance=ExtResource("3_mm15h")]
-transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0)
+[node name="animal-bee2" parent="Models" index="0" unique_id=438752860 instance=ExtResource("4_56ma3")]
+
+[node name="animal-bunny2" parent="Models" index="1" unique_id=1395350198 instance=ExtResource("5_sp5r5")]
+
+[node name="animal-cat2" parent="Models" index="2" unique_id=1314052389 instance=ExtResource("3_mm15h")]
+
+[node name="animal-chick2" parent="Models" index="3" unique_id=650369689 instance=ExtResource("7_3sxqy")]
+
+[node name="animal-cow2" parent="Models" index="4" unique_id=793433998 instance=ExtResource("8_b6wxi")]
+
+[node name="animal-crab2" parent="Models" index="5" unique_id=483824954 instance=ExtResource("9_bym78")]
+
+[node name="animal-dog2" parent="Models" index="6" unique_id=1760280645 instance=ExtResource("10_cjft3")]
+
+[node name="animal-fox2" parent="Models" index="7" unique_id=1887244958 instance=ExtResource("12_tn8ms")]
+
+[node name="animal-lion2" parent="Models" index="8" unique_id=810416409 instance=ExtResource("14_icweg")]
+
+[node name="animal-monkey2" parent="Models" index="9" unique_id=1493639678 instance=ExtResource("15_45o13")]
+
+[node name="animal-panda2" parent="Models" index="10" unique_id=1644137591 instance=ExtResource("16_tk0aa")]
+
+[node name="animal-parrot2" parent="Models" index="11" unique_id=2145199633 instance=ExtResource("17_11cgn")]
+
+[node name="animal-penguin2" parent="Models" index="12" unique_id=124522873 instance=ExtResource("18_2udhv")]
+
+[node name="animal-pig2" parent="Models" index="13" unique_id=1575977622 instance=ExtResource("19_30w0e")]
+
+[node name="animal-tiger2" parent="Models" index="14" unique_id=1091529030 instance=ExtResource("20_gpmh4")]
 
 [node name="PlayerTag" type="Label3D" parent="." index="1" unique_id=262635929]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45115137, 0)

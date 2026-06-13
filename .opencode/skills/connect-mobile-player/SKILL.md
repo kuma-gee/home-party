@@ -40,3 +40,32 @@ The phone retries up to 5 times with linear backoff (1s, 2s, …, 5s). The store
 ## On the Godot side
 
 `PlayerManager` listens to `LobbyServer` signals (`player_connected`, `player_disconnected`, etc.) and creates/reuses `GameClient` nodes (extends `ClientController`). Each `GameClient._process()` polls the data channel, parses semicolon-delimited strings, and emits `input_received` and `moved` signals that mini-game logic connects to.
+
+## Testing multiple players with Playwright
+
+When connecting multiple players via Playwright, **always use separate browser sessions** (`-s` flag). Tabs in the same session share WebRTC/WebSocket state and get stuck on "Connecting...".
+
+```bash
+# Player 1 — default session
+playwright-cli open --browser=firefox http://localhost:8484/
+playwright-cli click e9
+
+# Players 2, 3, … — separate named sessions
+playwright-cli -s=player2 open --browser=firefox http://localhost:8484/
+playwright-cli -s=player2 click e9
+
+playwright-cli -s=player3 open --browser=firefox http://localhost:8484/
+playwright-cli -s=player3 click e9
+```
+
+After each connects, verify they appear under `/root/PlayerManager`:
+
+```bash
+godot-debug_get_node_snapshot /root/PlayerManager
+```
+
+Clean up at the end:
+
+```bash
+playwright-cli close && playwright-cli -s=player2 close
+```

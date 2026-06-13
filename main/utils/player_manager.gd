@@ -126,6 +126,11 @@ func register_gamepad(device_id: int) -> void:
 		logger.info("Creating gamepad controller: %s" % controller.get_display_data())
 	clients_changed.emit()
 
+func remove_all_players() -> void:
+	for child in get_children():
+		if child is ClientController and child.active:
+			remove_peer(child.uuid)
+
 func unregister_gamepad(device_id: int) -> void:
 	var player = find_player_by_device_id(device_id)
 	if player:
