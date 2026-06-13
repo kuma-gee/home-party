@@ -10,7 +10,8 @@ import * as net from 'node:net';
  * The MCP bridge understands these commands:
  *   ping(), get_scene_tree(), get_node(path), get_properties(path),
  *   call_method(path, method, args), list_nodes_by_type(type),
- *   take_snapshot(), get_diff(), get_node_snapshot(path), get_node_diff(path)
+ *   find_node(name, contains?), take_snapshot(), get_diff(),
+ *   get_node_snapshot(path), get_node_diff(path)
  */
 export class MCPBridge {
   private host: string;
@@ -125,6 +126,19 @@ export class MCPBridge {
   async listNodesByType(typeName: string): Promise<string[]> {
     const result = await this.request('list_nodes_by_type', { type: typeName });
     return result?.results ?? [];
+  }
+
+  /**
+   * Find a node by name in the scene tree.
+   * Searches recursively and returns the path of the first match.
+   * Set contains=true to search for partial name matches.
+   * Pass nodeType (e.g. "Node3D") to filter by Godot class.
+   */
+  async findNode(name: string, contains = false, nodeType?: string): Promise<string | null> {
+    const payload: Record<string, unknown> = { name, contains };
+    if (nodeType) payload.type = nodeType;
+    const result = await this.request('find_node', payload);
+    return result?.path ?? null;
   }
 
   /** Capture a snapshot of all current node paths for later diffing. */

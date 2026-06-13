@@ -240,9 +240,17 @@ def list_nodes_by_type(type_name: str) -> dict:
 
 
 @mcp.tool()
+def find_node(name: str, contains: bool = False, node_type: str = "") -> dict:
+    """Find a node by name in the scene tree. Set contains=True for partial name matches.
+    Pass a node_type (e.g. "Node3D") to filter by Godot class.
+    """
+    return _godot_request("find_node", {"name": name, "contains": contains, "type": node_type})
+
+
+@mcp.tool()
 def take_snapshot() -> dict:
-    """Capture the current scene tree as a snapshot for later diffing.
-    Use ``get_diff()`` to compare the current tree against this snapshot.
+    """Capture the current scene tree as a snapshot
+    Use ``get_diff()`` to compare against this snapshot.
     """
     return _godot_request("take_snapshot")
 
@@ -258,7 +266,7 @@ def get_diff() -> dict:
 @mcp.tool()
 def get_node_snapshot(path: str) -> dict:
     """Capture a detailed snapshot of a single node
-    Use ``get_node_diff()`` to compare the current state against this snapshot.
+    Use ``get_node_diff()`` to compare current state against this snapshot.
     """
     return _godot_request("get_node_snapshot", {"path": path})
 
@@ -273,9 +281,9 @@ def get_node_diff(path: str) -> dict:
 
 @mcp.tool()
 def take_screenshot(save_path: str = "") -> dict:
-    """Capture the current Godot viewport as a PNG screenshot.
+    """Capture the current viewport as a PNG.
     Pass a save_path (absolute path) or leave empty for default location.
-    Returns the path and dimensions of the saved image.
+    Returns the path and dimensions of the image.
     """
     return _godot_request("take_screenshot", {"path": save_path})
 

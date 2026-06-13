@@ -117,6 +117,7 @@ func _start_next_round() -> void:
 	
 	var word = word_manager.pick_random_word()
 	round_manager.start_round(word)
+	find_child()
 	
 	logger.info("Round %d/%d: Word assigned" % [round_manager.current_round, round_manager.total_rounds])
 	prepare_scene.start_new_game(round_manager.current_word, round_manager.current_round, round_manager.total_rounds)

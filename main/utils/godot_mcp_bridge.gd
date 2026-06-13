@@ -76,6 +76,15 @@ func handle_request(data: Dictionary):
 
 		"list_nodes_by_type":
 			return { "results": find_nodes_by_type(get_tree().root, payload.get("type", ""))}
+
+		"find_node":
+			return find_node_by_name(
+				payload.get("name", ""),
+				payload.get("contains", false),
+				null,
+				payload.get("type", "")
+			)
+
 		"ping":
 			return {"ok": true}
 
@@ -254,6 +263,24 @@ func call_node_method(path: String, method: String, args: Array):
 
 	var result = node.callv(method, args)
 	return { "result": result }
+
+
+func find_node_by_name(name: String, contains: bool = false, from: Node = null, type: String = "") -> Dictionary:
+	var tree_data = get_scene_tree_data()
+	return _find_in_json(tree_data, name, contains, type)
+
+
+func _find_in_json(data: Dictionary, name: String, contains: bool, type: String) -> Dictionary:
+	var type_match = type.is_empty() or data.get("type", "") == type
+	if type_match and ((not contains and data.get("name", "") == name) or (contains and name in data.get("name", ""))):
+		return {"path": data.get("path", "")}
+
+	for child in data.get("children", []):
+		var result = _find_in_json(child, name, contains, type)
+		if result.has("path"):
+			return result
+
+	return {"error": "node not found"}
 
 
 func find_nodes_by_type(node: Node, type_name: String, results := []):

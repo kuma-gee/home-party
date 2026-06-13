@@ -19,7 +19,7 @@ export async function godotScreenshot(
   name: string,
 ): Promise<{ status: string; path: string; size?: number[] }> {
   // Resolved from e2e/helpers/ → e2e/test-results/screenshots/
-  const outDir = path.resolve(__dirname, '..', 'test-results', 'screenshots');
+  const outDir = path.resolve(__dirname, '../..', 'test-results', 'screenshots');
   fs.mkdirSync(outDir, { recursive: true });
 
   const filePath = path.join(outDir, `godot-${name}.png`);

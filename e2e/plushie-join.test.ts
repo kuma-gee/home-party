@@ -6,16 +6,6 @@ const PLAYER_UUID = 'e2e-test-plushie-0000-0000-000000000001';
 const PLAYER_LIST_PATH =
   '/root/Staging/Scene/MenuWorld/CanvasLayer/Control/MarginContainer/PlayerList';
 
-function findPlushiePath(diff: { added: string[] }): string {
-  const paths = diff.added.filter(
-    (p) =>
-      p.startsWith('/root/Staging/Scene/') &&
-      (p.endsWith('/Plushie') || p.includes('/Plushie@')),
-  );
-  expect(paths.length).toBeGreaterThanOrEqual(1);
-  return paths[0];
-}
-
 async function verifyPlushieIdentity(
   mcp: MCPBridge,
   plushiePath: string,
@@ -34,19 +24,15 @@ async function verifyPlushieIdentity(
 test('mobile player connects → plushie appears with correct identity', async ({ page, mcp }) => {
   await navigateToGame(page, PLAYER_UUID);
   await page.waitForTimeout(2000);
-  await mcp.takeSnapshot();
 
   await connectMobilePlayer(page);
 
-  const diff = await mcp.getDiff();
-  expect(diff.added).toBeDefined();
-  expect(diff.added.length).toBeGreaterThanOrEqual(1);
-
-  const plushiePath = findPlushiePath(diff);
-  const plushieInfo = await mcp.getNode(plushiePath);
+  const plushiePath = await mcp.findNode('Plushie', true, 'RigidBody3D');
+  expect(plushiePath).toBeTruthy();
+  const plushieInfo = await mcp.getNode(plushiePath!);
   expect(plushieInfo.type).toBe('RigidBody3D');
 
-  await verifyPlushieIdentity(mcp, plushiePath, PLAYER_UUID, 0, 'P1');
+  await verifyPlushieIdentity(mcp, plushiePath!, PLAYER_UUID, 0, 'P1');
 
   const playerCount = await mcp.callMethod(PLAYER_LIST_PATH, 'get_player_count', []);
   expect(playerCount.result).toBe(1);

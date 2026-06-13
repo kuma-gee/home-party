@@ -42,6 +42,12 @@ export const test = base.extend<TestFixtures, WorkerFixtures>({
         } catch (e) {
           console.warn('Failed to take Godot screenshot on failure:', e);
         }
+        try {
+          const tree = await workerMCP.getSceneTree();
+          console.log('Scene tree on failure:', JSON.stringify(tree, null, 2));
+        } catch (e) {
+          console.warn('Failed to get scene tree on failure:', e);
+        }
       }
     }
   },
