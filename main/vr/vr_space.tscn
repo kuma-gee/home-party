@@ -140,7 +140,6 @@ process_mode = 3
 viewport = NodePath("../SubViewport")
 
 [node name="SubViewport" type="SubViewport" parent="." unique_id=1709074553]
-use_xr = true
 size = Vector2i(0, 0)
 render_target_update_mode = 4
 

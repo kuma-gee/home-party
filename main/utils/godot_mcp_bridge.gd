@@ -283,9 +283,10 @@ func _find_in_json(data: Dictionary, name: String, contains: bool, type: String)
 	return {"error": "node not found"}
 
 
-func find_nodes_by_type(node: Node, type_name: String, results := []):
-	if node.is_class(type_name):
-		results.append(
+func find_nodes_by_type(node: Node, type_name: String, results = null) -> Array:
+	var r = results if results != null else []
+	if (node.get_script() and node.get_script().get_global_name() == type_name) or node.is_class(type_name):
+		r.append(
 			str(node.get_path())
 		)
 
@@ -293,8 +294,9 @@ func find_nodes_by_type(node: Node, type_name: String, results := []):
 		find_nodes_by_type(
 			child,
 			type_name,
-			results
+			r
 		)
+	return r
 
 	return results
 

@@ -3,6 +3,12 @@ import { MCPBridge } from './mcp-bridge';
 import { godotScreenshot } from './screenshot';
 import { waitForMenuWorld } from './player';
 
+function fmtSceneTree(node: any, indent = ''): string {
+  const line = `${indent}${node.path}  [${node.type}]`;
+  if (!node.children?.length) return line;
+  return line + '\n' + node.children.map((c: any) => fmtSceneTree(c, indent + '  ')).join('\n');
+}
+
 type WorkerFixtures = {
   /** Worker-scoped MCP bridge — connects once per worker before any tests run. */
   workerMCP: MCPBridge;
@@ -44,7 +50,7 @@ export const test = base.extend<TestFixtures, WorkerFixtures>({
         }
         try {
           const tree = await workerMCP.getSceneTree();
-          console.log('Scene tree on failure:', JSON.stringify(tree, null, 2));
+          console.log('Scene tree on failure:\n' + fmtSceneTree(tree));
         } catch (e) {
           console.warn('Failed to get scene tree on failure:', e);
         }

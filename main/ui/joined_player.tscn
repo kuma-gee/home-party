@@ -32,6 +32,13 @@ grow_horizontal = 0
 grow_vertical = 2
 alignment = 2
 
+[node name="UnplayableLabel" type="Label" parent="HBoxContainer" unique_id=1331900332]
+visible = false
+layout_mode = 2
+text = "🚫"
+tooltip_text = "Cannot join this game"
+vertical_alignment = 1
+
 [node name="Name" type="Label" parent="HBoxContainer" unique_id=1331900333]
 visible = false
 layout_mode = 2

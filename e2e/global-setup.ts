@@ -95,7 +95,7 @@ export default async function globalSetup(): Promise<void> {
   // Launch Godot (without --headless if we have a display or Xvfb,
   // so we can capture screenshots via the MCP bridge)
   const projectRoot = path.resolve(__dirname, '..');
-  const args = ['--path', projectRoot, '--mcp-bridge'];
+  const args = ['--path', projectRoot, '--mcp-bridge', '--xr-mode', 'off'];
 
   const isHeadless = !process.env.DISPLAY || process.env.DISPLAY.trim() === '';
 

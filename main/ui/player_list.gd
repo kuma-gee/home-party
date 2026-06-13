@@ -23,6 +23,7 @@ static func get_color(idx: int) -> Color:
 @export var initial_delay := 1.0
 @export var create_delay := 0.1
 @export var allow_empty := true
+@export var game_select_zone: GameSelectZone
 
 func _ready() -> void:
 	PlayerManager.clients_changed.connect(_refresh_list)
@@ -45,6 +46,7 @@ func _refresh_list() -> void:
 		else:
 			var new_node = player_scene.instantiate() as JoinedPlayer
 			new_node.ready_updated.connect(func(): ready_changed.emit())
+			new_node.game_select_zone = game_select_zone
 			new_node.update_data(player_data)
 			add_child(new_node)
 			new_node.move_in()
