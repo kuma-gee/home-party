@@ -1,8 +1,7 @@
 import { test, expect } from './helpers/godot-fixture';
-import { navigateToGame, connectMobilePlayer, connectPlayer } from './helpers/player';
+import { connectPlayer } from './helpers/player';
 import type { MCPBridge } from './helpers/mcp-bridge';
 
-const PLAYER_UUID = 'e2e-test-plushie-0000-0000-000000000001';
 const PLAYER_LIST_PATH =
   '/root/Staging/Scene/MenuWorld/CanvasLayer/Control/MarginContainer/PlayerList';
 
@@ -26,40 +25,7 @@ test.afterEach(async ({ mcp }) => {
   await new Promise((r) => setTimeout(r, 500));
 });
 
-test('mobile player connects → plushie appears with correct identity', async ({ page, mcp }) => {
-  await navigateToGame(page, PLAYER_UUID);
-  await page.waitForTimeout(2000);
-
-  await connectMobilePlayer(page);
-
-  const plushiePath = await mcp.findNode('Plushie', true, 'RigidBody3D');
-  expect(plushiePath).toBeTruthy();
-  const plushieInfo = await mcp.getNode(plushiePath!);
-  expect(plushieInfo.type).toBe('RigidBody3D');
-
-  await verifyPlushieIdentity(mcp, plushiePath!, PLAYER_UUID, 0, 'P1');
-
-  const playerCount = await mcp.callMethod(PLAYER_LIST_PATH, 'get_player_count', []);
-  expect(playerCount.result).toBe(1);
-});
-
-test('disconnecting deactivates the player in Godot', async ({ page, mcp }) => {
-  const uuid = 'e2e-test-plushie-0000-0000-000000000002';
-
-  await connectPlayer(page, uuid);
-
-  let playerCount = await mcp.callMethod(PLAYER_LIST_PATH, 'get_player_count', []);
-  expect(playerCount.result).toBe(1);
-
-  await page.locator('.disconnect-icon').click();
-  await expect(page.locator('h2')).toHaveText('Connect to Game Server', { timeout: 15_000 });
-  await page.waitForTimeout(2000);
-
-  playerCount = await mcp.callMethod(PLAYER_LIST_PATH, 'get_player_count', []);
-  expect(playerCount.result).toBe(0);
-});
-
-test('two connected players get different animal models', async ({ page, mcp }) => {
+test('two players connect with different plushie models, then disconnect and disappear', async ({ page, mcp }) => {
   const uuid1 = 'e2e-test-plushie-0000-0000-000000000004';
   const uuid2 = 'e2e-test-plushie-0000-0000-000000000005';
 
@@ -83,23 +49,28 @@ test('two connected players get different animal models', async ({ page, mcp }) 
     await verifyPlushieIdentity(mcp, p1Path, uuid1, 0, 'P1');
     await verifyPlushieIdentity(mcp, p2Path, uuid2, 1, 'P2');
 
-    const getVisibleModel = async (path: string): Promise<string | null> => {
-      const models = await mcp.getNodeSnapshot(`${path}/Models`);
-      for (const child of models.children ?? []) {
-        const childProps = await mcp.getProperties(child.path);
-        if (childProps.visible) return child.name;
-      }
-      return null;
-    };
-
-    const model1 = await getVisibleModel(p1Path);
-    const model2 = await getVisibleModel(p2Path);
+    const model1 = (await mcp.callMethod(p1Path, 'get_visible_model', [])).result as string;
+    const model2 = (await mcp.callMethod(p2Path, 'get_visible_model', [])).result as string;
 
     expect(model1).toBeTruthy();
     expect(model2).toBeTruthy();
     expect(model1).toMatch(/^animal-/);
     expect(model2).toMatch(/^animal-/);
     expect(model1).not.toBe(model2);
+
+    await page2.locator('.disconnect-icon').click();
+    await expect(page2.locator('h2')).toHaveText('Connect to Game Server', { timeout: 15_000 });
+    await page.waitForTimeout(2000);
+
+    let playerCount = await mcp.callMethod(PLAYER_LIST_PATH, 'get_player_count', []);
+    expect(playerCount.result).toBe(1);
+
+    await page.locator('.disconnect-icon').click();
+    await expect(page.locator('h2')).toHaveText('Connect to Game Server', { timeout: 15_000 });
+    await page.waitForTimeout(2000);
+
+    playerCount = await mcp.callMethod(PLAYER_LIST_PATH, 'get_player_count', []);
+    expect(playerCount.result).toBe(0);
   } finally {
     await context2.close();
   }

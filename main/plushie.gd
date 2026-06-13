@@ -26,8 +26,8 @@ func setup(idx: int, uuid: String, color: Color) -> void:
 	var count = models.get_child_count()
 	models.get_child((idx + _model_offset) % count).visible = true
 
-func get_visible_model():
+func get_visible_model() -> String:
 	for child in models.get_children():
 		if child.visible:
-			return child
-	return null
+			return child.name
+	return ""
