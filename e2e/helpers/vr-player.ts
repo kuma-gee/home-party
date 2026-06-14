@@ -104,21 +104,22 @@ export async function waitForNodeType(
 }
 
 /**
- * Wait until at least one JoinedPlayer appears under the given scene path.
+ * Wait until at least `count` JoinedPlayers appear under the given scene path.
  */
 export async function waitForJoinedPlayers(
   mcp: MCPBridge,
   scenePath: string,
   timeoutMs = 10_000,
+  count = 1,
 ): Promise<void> {
   const deadline = Date.now() + timeoutMs;
   while (Date.now() < deadline) {
     const players = (await mcp.listNodesByType('JoinedPlayer')) as string[];
     const inScene = players.filter((p) => p.startsWith(scenePath));
-    if (inScene.length > 0) return;
+    if (inScene.length >= count) return;
     await new Promise((r) => setTimeout(r, 500));
   }
-  throw new Error(`No JoinedPlayer appeared under ${scenePath} within ${timeoutMs}ms`);
+  throw new Error(`Expected ${count} JoinedPlayers under ${scenePath} but got fewer within ${timeoutMs}ms`);
 }
 
 /**

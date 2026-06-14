@@ -14,8 +14,11 @@ var logger := KumaLog.new("DrawAndGuess")
 		
 var prepare_scene: DrawPrepareScene
 
+const DRAW_PLAYER_UI_SCENE := preload("res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_player_ui.tscn")
+
 func _ready() -> void:
 	super()
+	player_list.player_scene = DRAW_PLAYER_UI_SCENE
 	PlayerManager.clients_changed.connect(_on_clients_changed)
 	player_list.player_created.connect(_on_player_created)
 	round_manager.timed_out.connect(_on_round_timed_out)
