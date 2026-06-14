@@ -1,5 +1,6 @@
 import { test, expect } from './helpers/godot-fixture';
 import { connectPlayer } from './helpers/player';
+import { cleanupPlayers } from './helpers/cleanup';
 import type { MCPBridge } from './helpers/mcp-bridge';
 
 const PLAYER_LIST_PATH =
@@ -21,8 +22,7 @@ async function verifyPlushieIdentity(
 }
 
 test.afterEach(async ({ mcp }) => {
-  await mcp.callMethod('/root/PlayerManager', 'remove_all_players', []);
-  await new Promise((r) => setTimeout(r, 500));
+  await cleanupPlayers(mcp);
 });
 
 test('two players connect with different plushie models, then disconnect and disappear', async ({ page, mcp }) => {

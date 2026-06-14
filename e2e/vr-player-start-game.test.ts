@@ -7,55 +7,15 @@ import {
   registerGamepadPlayer,
   waitForNodeType,
   waitForJoinedPlayers,
-  restorePromptForContinue,
 } from './helpers/vr-player';
-
-const PLAYER_MANAGER_PATH = '/root/PlayerManager';
-const STAGING_PATH = '/root/Staging';
-const MENU_WORLD_PATH = '/root/Staging/Scene/MenuWorld';
+import { cleanupAfterGameScene } from './helpers/cleanup';
+import { DRAW_AND_GUESS_PATH, CASTLE_DEFENSE_PATH } from './helpers/constants';
 
 const PHONE_UUID = 'e2e-test-vr-phone-0000-0000-000000000030';
 const GAMEPAD_UUID = 'e2e-test-vr-gamepad-0000-0000-000000000032';
 
-const CASTLE_DEFENSE_PATH =
-  'res://mods-unpacked/KumaGee-VRCore/castle-defense/castle_defense.tres';
-const DRAW_AND_GUESS_PATH =
-  'res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_and_guess.tres';
-
-/**
- * Navigate back to the MenuWorld after a game scene test.
- */
-async function returnToMenuWorld(mcp: import('./helpers/mcp-bridge').MCPBridge): Promise<void> {
-  const scenes = await mcp.listNodesByType('XRToolsSceneBase') as string[];
-  const gameScene = scenes.find(p => p.startsWith('/root/Staging/Scene/') && !p.includes('MenuWorld'));
-  if (!gameScene) return;
-
-  // Disable prompt_for_continue so loading screen doesn't block
-  await mcp.callMethod(STAGING_PATH, 'set', ['prompt_for_continue', false]);
-
-  // Request return to main menu via the game scene's signal
-  await mcp.callMethod(gameScene, 'emit_signal', ['request_exit_to_main_menu']);
-
-  // Wait for MenuWorld to reappear
-  const deadline = Date.now() + 15_000;
-  while (Date.now() < deadline) {
-    const node = await mcp.getNode(MENU_WORLD_PATH);
-    if (node?.type) break;
-    await new Promise((r) => setTimeout(r, 500));
-  }
-}
-
 test.afterEach(async ({ mcp }) => {
-  // Return to MenuWorld first (frees resources of the loaded game scene)
-  await returnToMenuWorld(mcp);
-  await new Promise((r) => setTimeout(r, 500));
-
-  // Restore prompt_for_continue to default
-  await restorePromptForContinue(mcp);
-
-  // Remove all players
-  await mcp.callMethod(PLAYER_MANAGER_PATH, 'remove_all_players', []);
-  await new Promise((r) => setTimeout(r, 500));
+  await cleanupAfterGameScene(mcp);
 });
 
 test.describe('VR player game lifecycle', () => {

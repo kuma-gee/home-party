@@ -5,16 +5,10 @@ import {
   vrPlayerReady,
   waitForNodeType,
   waitForJoinedPlayers,
-  restorePromptForContinue,
 } from './helpers/vr-player';
+import { cleanupAfterGameScene } from './helpers/cleanup';
+import { DRAW_AND_GUESS_PATH } from './helpers/constants';
 import type { MCPBridge } from './helpers/mcp-bridge';
-
-const PLAYER_MANAGER_PATH = '/root/PlayerManager';
-const STAGING_PATH = '/root/Staging';
-const MENU_WORLD_PATH = '/root/Staging/Scene/MenuWorld';
-
-const DRAW_AND_GUESS_PATH =
-  'res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_and_guess.tres';
 
 const PLAYER_UUIDS = [
   'e2e-draw-player-0001-0000-000000000001',
@@ -48,47 +42,13 @@ async function waitForRoundPhase(
   );
 }
 
-/**
- * Navigate back to the MenuWorld after a game scene test.
- */
-async function returnToMenuWorld(mcp: MCPBridge): Promise<void> {
-  const scenes = (await mcp.listNodesByType('XRToolsSceneBase')) as string[];
-  const gameScene = scenes.find(
-    (p) => p.startsWith('/root/Staging/Scene/') && !p.includes('MenuWorld'),
-  );
-  if (!gameScene) return;
-
-  // Disable prompt_for_continue so loading screen doesn't block
-  await mcp.callMethod(STAGING_PATH, 'set', ['prompt_for_continue', false]);
-
-  // Request return to main menu via the game scene's signal
-  await mcp.callMethod(gameScene, 'emit_signal', ['request_exit_to_main_menu']);
-
-  // Wait for MenuWorld to reappear
-  const deadline = Date.now() + 15_000;
-  while (Date.now() < deadline) {
-    const node = await mcp.getNode(MENU_WORLD_PATH);
-    if (node?.type) break;
-    await new Promise((r) => setTimeout(r, 500));
-  }
-}
-
 test.describe('Draw & Guess', () => {
   let gamePath: string;
   let roundMgrPath: string;
   let wordMgrPath: string;
 
   test.afterEach(async ({ mcp }) => {
-    // Return to MenuWorld first (frees resources of the loaded game scene)
-    await returnToMenuWorld(mcp);
-    await new Promise((r) => setTimeout(r, 500));
-
-    // Restore prompt_for_continue to default
-    await restorePromptForContinue(mcp);
-
-    // Remove all players
-    await mcp.callMethod(PLAYER_MANAGER_PATH, 'remove_all_players', []);
-    await new Promise((r) => setTimeout(r, 500));
+    await cleanupAfterGameScene(mcp);
   });
 
   test('complete game flow with 3 mobile players', async ({ page, mcp }) => {
@@ -200,8 +160,6 @@ test.describe('Draw & Guess', () => {
         }
 
         // ---- Assertion 7: round transitions (all 3 guessed correctly) ----
-        // After all 3 guess correctly, the round ends early → reveal timer (5s)
-        // Wait for the next round's DRAWING phase or game end
         if (round < 3) {
           // Phase goes: DRAWING(1) → REVEALING(2) → DRAWING(1) for next round
           await waitForRoundPhase(mcp, roundMgrPath, 1 /* DRAWING */, 15_000);
@@ -217,8 +175,6 @@ test.describe('Draw & Guess', () => {
       // ============================================================
 
       // ---- Assertion 8: round_manager.phase == 3 (FINISHED) ----
-      // After the last round's reveal timer expires and word pool is empty,
-      // _end_game() sets phase to FINISHED
       await waitForRoundPhase(mcp, roundMgrPath, 3 /* FINISHED */, 15_000);
 
       const finalProps = await mcp.getProperties(roundMgrPath);

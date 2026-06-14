@@ -1,14 +1,14 @@
 import { test, expect } from './helpers/godot-fixture';
 import { connectPlayer } from './helpers/player';
+import {
+  PLAYER_MANAGER_PATH,
+  GAME_SHELVE_PATH,
+  DRAW_AND_GUESS_PATH,
+  CASTLE_DEFENSE_PATH,
+  STATE_CONNECTED,
+  STATE_UNPLAYABLE,
+} from './helpers/constants';
 
-const PLAYER_MANAGER_PATH = '/root/PlayerManager';
-const GAME_SHELVE_PATH = '/root/Staging/Scene/MenuWorld/GameShelve';
-
-const DRAW_AND_GUESS_PATH = 'res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_and_guess.tres';
-const CASTLE_DEFENSE_PATH = 'res://mods-unpacked/KumaGee-VRCore/castle-defense/castle_defense.tres';
-
-const STATE_CONNECTED = 0;
-const STATE_UNPLAYABLE = 1;
 const UNPLAYABLE_LABEL_SUFFIX = '/HBoxContainer/UnplayableLabel';
 
 const GAMEPAD_UUID = 'e2e-test-gamepad-0000-0000-000000000010';
