@@ -8,6 +8,7 @@ import {
 } from './helpers/vr-player';
 import { cleanupAfterGameScene } from './helpers/cleanup';
 import { DRAW_AND_GUESS_PATH } from './helpers/constants';
+import { randomDelay } from './helpers/delay';
 import type { MCPBridge } from './helpers/mcp-bridge';
 
 const PLAYER_UUIDS = [
@@ -66,11 +67,15 @@ test.describe('Draw & Guess', () => {
       // Phase 1: Connection & Word Submission (Prepare Phase)
       // ============================================================
 
-      // Connect all 3 mobile players
-      await connectPlayer(page, PLAYER_UUIDS[0]);
-      await connectPlayer(page2, PLAYER_UUIDS[1]);
-      await connectPlayer(page3, PLAYER_UUIDS[2]);
-      await page.waitForTimeout(1500);
+      // Connect all 3 mobile players in parallel with a random stagger
+      const pages = [page, page2, page3];
+      await Promise.all(
+        pages.map(async (pw, i) => {
+          await randomDelay(200, 1000); // stagger each player's connection
+          await connectPlayer(pw, PLAYER_UUIDS[i]);
+        }),
+      );
+      await page.waitForTimeout(1000);
 
       // VR player selects and starts Draw & Guess
       await selectAndStartGame(mcp, DRAW_AND_GUESS_PATH);
@@ -88,22 +93,29 @@ test.describe('Draw & Guess', () => {
 
       const allPages = [page, page2, page3];
 
-      // Each mobile player submits a word via the phone UI
-      for (let i = 0; i < 3; i++) {
-        const pw = allPages[i];
-        const word = SUBMITTED_WORDS[i];
+      // All players submit their words in parallel with randomised timing
+      await Promise.all(
+        allPages.map(async (pw, i) => {
+          const word = SUBMITTED_WORDS[i];
 
-        // Wait for WordInputLayout to appear (prepare phase)
-        await pw.waitForSelector('.word-input-container', { timeout: 15_000 });
-        await pw.waitForTimeout(500);
+          await randomDelay(300, 1200); // stagger start and initial thinking
 
-        // Fill the word and submit
-        await pw.fill('input[type="text"]', word);
-        await pw.click('button:has-text("Submit")');
+          // Wait for WordInputLayout to appear (prepare phase)
+          await pw.waitForSelector('.word-input-container', { timeout: 15_000 });
 
-        // Wait for submitted confirmation (submitted-state)
-        await pw.waitForSelector('.submitted-state', { timeout: 10_000 });
-      }
+          // Player thinks about what word to submit
+          await randomDelay(500, 2000);
+
+          // Fill the word and submit
+          await randomDelay(200, 800); // typing hesitation
+          await pw.fill('input[type="text"]', word);
+          await randomDelay(100, 500); // brief pause before clicking submit
+          await pw.click('button:has-text("Submit")');
+
+          // Wait for submitted confirmation (submitted-state)
+          await pw.waitForSelector('.submitted-state', { timeout: 10_000 });
+        }),
+      );
       await page.waitForTimeout(500);
 
       // ---- Assertion 2: word_manager.size() == 3 ----
@@ -134,30 +146,55 @@ test.describe('Draw & Guess', () => {
         const currentWord = roundProps.current_word as string;
         expect(currentWord).toBeTruthy();
 
-        // Each player guesses: first an incorrect word, then the correct word
-        for (let i = 0; i < 3; i++) {
-          const pw = allPages[i];
+        // ---- Assertion 4b: Round timer is visible on desktop during drawing phase ----
+        const timerLabelPath = `${gamePath}/CanvasLayer/Control/GameUI/TimerLabel`;
+        const timerProps = await mcp.getProperties(timerLabelPath);
+        expect(timerProps.visible).toBe(true);
+        expect(parseInt(timerProps.text, 10)).toBeGreaterThanOrEqual(0);
 
-          // Wait for the input form to be visible (after reset)
-          await pw.waitForSelector('.word-input-container', { timeout: 10_000 });
-          await pw.waitForTimeout(300);
 
-          // --- Incorrect guess ---
-          await pw.fill('input[type="text"]', INCORRECT_GUESS);
-          await pw.click('button:has-text("Submit")');
+        // All players guess in parallel with randomised timing to simulate real gameplay
+        await Promise.all(
+          allPages.map(async (pw) => {
+            // Stagger each player's start so they don't all act at the exact same moment
+            await randomDelay(100, 600);
 
-          // ---- Assertion 5: feedback-overlay.incorrect appears ----
-          await pw.waitForSelector('.feedback-overlay.incorrect', { timeout: 5_000 });
-          await pw.waitForTimeout(1200); // Wait for feedback to dismiss (800ms + buffer)
+            // Wait for the input form to be visible (after reset)
+            await pw.waitForSelector('.word-input-container', { timeout: 10_000 });
 
-          // --- Correct guess ---
-          await pw.fill('input[type="text"]', currentWord);
-          await pw.click('button:has-text("Submit")');
+            // Player reads the drawing and thinks about their guess
+            await randomDelay(800, 2500);
 
-          // ---- Assertion 6: feedback-overlay.correct appears ----
-          await pw.waitForSelector('.feedback-overlay.correct', { timeout: 5_000 });
-          await pw.waitForTimeout(1200); // Wait for feedback to dismiss (800ms + buffer)
-        }
+            // --- Incorrect guess (player types a wrong answer first) ---
+            await randomDelay(200, 800); // typing hesitation
+            await pw.fill('input[type="text"]', INCORRECT_GUESS);
+            await randomDelay(100, 400); // brief pause before clicking submit
+            await pw.click('button:has-text("Submit")');
+
+            // ---- Assertion 5: feedback-overlay.incorrect appears ----
+            await pw.waitForSelector('.feedback-overlay.incorrect', { timeout: 5_000 });
+            // Player reads the "wrong" feedback and thinks before trying again
+            await randomDelay(1500, 3500);
+
+            // --- Correct guess ---
+            await randomDelay(200, 800); // typing hesitation
+            await pw.fill('input[type="text"]', currentWord);
+            await randomDelay(100, 400); // brief pause before clicking submit
+            await pw.click('button:has-text("Submit")');
+
+            // ---- Assertion 6: feedback-overlay.correct appears ----
+            await pw.waitForSelector('.feedback-overlay.correct', { timeout: 5_000 });
+            // Player basks in the satisfaction of getting it right
+            await randomDelay(800, 2000);
+          }),
+        );
+
+        // ---- Assertion 6b: REVEALING phase shows the word on desktop ----
+        await waitForRoundPhase(mcp, roundMgrPath, 2 /* REVEALING */, 5_000);
+        const revealLabelPath = `${gamePath}/CanvasLayer/Control/GameUI/RevealLabel`;
+        const revealProps = await mcp.getProperties(revealLabelPath);
+        expect(revealProps.visible).toBe(true);
+        expect(revealProps.text).toContain(currentWord);
 
         // ---- Assertion 7: round transitions (all 3 guessed correctly) ----
         if (round < 3) {

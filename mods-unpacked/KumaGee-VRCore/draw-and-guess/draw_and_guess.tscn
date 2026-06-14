@@ -132,7 +132,7 @@ text = "Submit your words!"
 [node name="GameUI" parent="CanvasLayer/Control" index="1" unique_id=10000007]
 visible = true
 
-[node name="TimerLabel" type="Label" parent="CanvasLayer/Control/GameUI" index="0" unique_id=141086734]
+[node name="TimerLabel" type="Label" parent="CanvasLayer/Control/GameUI" index="0" unique_id=141086734 node_paths=PackedStringArray("timer")]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -150,6 +150,7 @@ text = "1:00"
 horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("5_w6s61")
+timer = NodePath("../../../../RoundManager/RoundTimer")
 
 [node name="ProgressLabel" type="Label" parent="CanvasLayer/Control/GameUI" index="1" unique_id=1544877901]
 layout_mode = 1
