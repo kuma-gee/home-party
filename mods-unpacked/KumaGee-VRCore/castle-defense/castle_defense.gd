@@ -1,3 +1,4 @@
+class_name CastleDefense
 extends XRToolsSceneBase
 
 signal game_started
@@ -43,6 +44,18 @@ func _ready() -> void:
 	game_ui.hide()
 	health_sprite.hide()
 	prepare_ui.show()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		if event.is_pressed() and event.shift_pressed and event.keycode == KEY_1:
+			_on_vr_ready([Arrow.Element.FIRE])
+
+## VR player signals ready with default elements.
+## Used by E2E tests to simulate VR player readiness without needing
+## to pass typed arrays through the MCP bridge.
+func vr_player_ready() -> void:
+	_vr_elements = [Arrow.Element.FIRE]
+	_check_all_ready(true)
 
 func _set_bow_active(active: bool) -> void:
 	bow.visible = active

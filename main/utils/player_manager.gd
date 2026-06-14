@@ -162,7 +162,10 @@ func register_fake_gamepad(uuid: String, player_idx: int = -1) -> void:
 func remove_all_players() -> void:
 	for child in get_children():
 		if child is ClientController and child.active:
-			remove_peer(child.uuid)
+			if child is GamepadController:
+				unregister_gamepad(child.device_id)
+			else:
+				remove_peer(child.uuid)
 
 func unregister_gamepad(device_id: int) -> void:
 	var player = find_player_by_device_id(device_id)

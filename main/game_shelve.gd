@@ -90,3 +90,8 @@ func select_game_with_path(resource_path: String) -> void:
 	if not resource_path.is_empty():
 		game = load(resource_path) as GameResource
 	game_select_zone.selected_game.emit(game)
+
+
+func start_selected_game() -> void:
+	if selected_game:
+		started_game.emit(selected_game)

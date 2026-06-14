@@ -172,4 +172,24 @@ export class MCPBridge {
   async takeScreenshot(savePath: string): Promise<{ status: string; path: string; size?: number[] }> {
     return this.request('take_screenshot', { path: savePath });
   }
+
+  /**
+   * Simulate a keyboard input event in Godot.
+   * Uses the MCP bridge's send_input command to dispatch an InputEventKey.
+   *
+   * @param keycode Godot Key enum value (e.g. KEY_1 = 49, KEY_F1 = 4194321)
+   * @param opts Optional modifiers and press state
+   */
+  async sendInput(
+    keycode: number,
+    opts: { shift?: boolean; ctrl?: boolean; alt?: boolean; pressed?: boolean } = {},
+  ): Promise<any> {
+    return this.request('send_input', {
+      keycode,
+      shift: opts.shift ?? false,
+      ctrl: opts.ctrl ?? false,
+      alt: opts.alt ?? false,
+      pressed: opts.pressed ?? true,
+    });
+  }
 }

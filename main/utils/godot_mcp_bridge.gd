@@ -103,6 +103,9 @@ func handle_request(data: Dictionary):
 		"take_screenshot":
 			return take_screenshot(payload.get("path", ""))
 
+		"send_input":
+			return send_input_event(payload)
+
 	return {
 		"error": "unknown command"
 	}
@@ -138,6 +141,17 @@ func take_screenshot(save_path: String) -> Dictionary:
 		"path": abs_path,
 		"size": [image.get_width(), image.get_height()]
 	}
+
+
+func send_input_event(payload: Dictionary) -> Dictionary:
+	var event := InputEventKey.new()
+	event.keycode = payload.get("keycode", 0) as int
+	event.shift_pressed = payload.get("shift", false) as bool
+	event.ctrl_pressed = payload.get("ctrl", false) as bool
+	event.alt_pressed = payload.get("alt", false) as bool
+	event.pressed = payload.get("pressed", true) as bool
+	Input.parse_input_event(event)
+	return {"ok": true}
 
 
 func serialize_node(node: Node) -> Dictionary:
@@ -285,7 +299,7 @@ func _find_in_json(data: Dictionary, name: String, contains: bool, type: String)
 
 func find_nodes_by_type(node: Node, type_name: String, results = null) -> Array:
 	var r = results if results != null else []
-	if (node.get_script() and node.get_script().get_global_name() == type_name) or node.is_class(type_name):
+	if (node.get_script() and _script_is_or_inherits(node.get_script(), type_name)) or node.is_class(type_name):
 		r.append(
 			str(node.get_path())
 		)
@@ -298,7 +312,15 @@ func find_nodes_by_type(node: Node, type_name: String, results = null) -> Array:
 		)
 	return r
 
-	return results
+
+# Check if a script is or inherits from a type with the given class_name
+func _script_is_or_inherits(script: Script, type_name: String) -> bool:
+	var s = script
+	while s:
+		if s.get_global_name() == type_name:
+			return true
+		s = s.get_base_script()
+	return false
 
 
 func collect_all_paths(node: Node, paths := {}) -> Dictionary:
