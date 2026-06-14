@@ -41,32 +41,26 @@ projected live on the shared desktop screen for everyone to see.
 
 | Tool     | Input                          | Behavior |
 |----------|--------------------------------|----------|
-| Pen      | Grip + trigger hold            | Draws a continuous 3D line while trigger is held |
-| Color    | Dip pen tip into color swatch  | Selects a new color from the palette floating beside the player |
-| Eraser   | Flip controller upside-down    | Erases the last stroke on release |
-| Clear    | Two-hand grab + pull apart     | Clears all drawn strokes (confirmation gesture) |
+| Brush    | Grip + trigger hold            | Draws a continuous 3D line while trigger is held |
+| Color    | Dip brush tip into color swatch| Selects a new color from the palette |
+| Eraser   | Touch lines with eraser        | Erases the line |
+| Clear    | Hold brush in eraser for 3s    | Clears all drawn strokes |
 
 ### Color Palette
 
 **6 colors** available on a grabbable floating palette beside the player:
-- Black (default), Red, Blue, Green, Yellow, White
+- Black, Red, Blue, Green, Yellow, White (default)
 - The palette can be grabbed and repositioned freely
-- Current color is shown by a glowing ring around the selected swatch
+- Current color is shown at the tip of the brush
 
 ### Word Display
 
-The current word is displayed on a **private floating panel** visible only to the VR player.
+The current word is displayed on a **private panel** visible only to the VR player.
 The panel shows:
 - The word to draw (large text)
 - Round timer countdown (prominent)
-- Current score of all players (small, bottom corner)
 - Word progress indicator (e.g., "Word 3 of 7")
-
-### Skip
-
-The VR player can press Skip to discard the current word and draw a new one
-from the pool. The skipped round ends immediately with no points awarded.
-If skip is used on the last remaining word, the game ends.
+- Skip button, to skip the current word
 
 ### VR Scoring
 
@@ -100,7 +94,6 @@ to submit 1 word. The UI shows:
 - Maximum 20 characters
 - Alphanumeric only (no special characters)
 - Duplicates: if a word already exists in the pool, the player sees an error message and must submit a different word
-- If the pool has fewer than 5 words after all submissions, a fallback dictionary fills the gap
 
 ### Guessing Interface
 
@@ -113,13 +106,11 @@ to submit 1 word. The UI shows:
 - **Live drawing**: 2D projection of the VR player's 3D drawing, updating in real-time
 - **Scoreboard**: Current scores of all players
 - **Round timer**: Prominent countdown display
-- **Guess progress**: Shows how many players have guessed correctly (e.g., "3/6 guessed")
 - **Word progress**: Current word number (e.g., "Word 3 of 7")
-- **Winner alerts**: When someone guesses correctly, their name and guess rank pop up
 
 **Guess Submission**:
 - Player types their guess on the phone and hits "Submit"
-- Correct guess: phone flashes green; name and rank appear on the shared screen ("Alice — 1st!")
+- Correct guess: phone flashes green
 - Incorrect guess: phone flashes red briefly, input clears for retry
 - No limit on number of guesses — spam away
 
@@ -135,9 +126,6 @@ Points are awarded based on **guess order** — the faster you guess, the more y
 | 4th         | 2      |
 | 5th+        | 1      |
 
-Only the first correct guess from each player counts — you can't farm points by
-guessing the same word repeatedly.
-
 **Design Intent**: Creates a scramble where everyone has incentive to guess fast,
 but late guessers still get something. The flat 1 point for 5th+ means there's
 always a reason to keep trying even if you're behind.
@@ -152,15 +140,6 @@ After all words are drawn, a final leaderboard is displayed:
 - **Highlight** the winner with a celebration animation
 
 The leaderboard is shown on the shared desktop screen and in VR space.
-
-## Edge Cases
-
-- **VR player disconnects**: Game ends immediately, current scores are finalized, leaderboard is shown
-- **Mobile player disconnects**: Their submitted word remains in the pool; they can rejoin at any time during pre-game or mid-game. On rejoin, their submitted word state is restored (pre-game) or they are placed into guess mode with their current round progression intact (mid-game)
-- **Word pool exhausted**: If all words have been used, the fallback dictionary activates for remaining rounds
-- **Nobody guesses a word**: VR player gets 0 points for that round, word is revealed, game moves on
-- **Only 2 players**: VR draws, 1 mobile guesses — functional but less competitive; recommend 3+
-- **VR player draws something unrecognizable**: That's the fun — no penalty, just a harder round
 
 ## Design Pillars
 

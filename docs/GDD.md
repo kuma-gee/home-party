@@ -23,9 +23,7 @@ The VR player can:
 - **Pick up any game box** to inspect what's inside — its name, description,
   and player count show up on a screen
 - **Slot a game into the designated play zone** to lock in their choice
-- **Press the big "Start" button** or use the TV remote to kick things off
-- **Take a break** — the pause menu lets them recenter their view, adjust
-  settings, or head back to the hub
+- **Press the big red button** on the TV remote to kick things off
 
 Players on their phones (spectators) see the same game details mirrored on a
 desktop screen, so everyone's on the same page before the game starts.
