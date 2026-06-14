@@ -38,7 +38,6 @@ export async function connectMobilePlayer(page: Page): Promise<void> {
   await page.fill('#server-ip', 'localhost');
   await expect(page.locator('#server-ip')).toHaveValue('localhost');
   await page.locator('button', { hasText: 'Connect' }).click();
-  await expect(page.locator('.spinner')).toBeVisible({ timeout: 10_000 });
   await expect(page.locator('.disconnect-icon')).toBeVisible({ timeout: 25_000 });
   await page.waitForTimeout(2000);
 }

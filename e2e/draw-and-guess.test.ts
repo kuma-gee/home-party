@@ -241,6 +241,29 @@ test.describe('Draw & Guess', () => {
         expect(playerScore!.total_points).toBeGreaterThan(0);
         expect(playerScore!.rounds_guessed_correctly).toBe(3);
       }
+
+      // ---- Assertion 10: Leaderboard is shown on desktop after game ends ----
+      await page.waitForTimeout(500);
+
+      // DesktopGameover (the full-screen end-game overlay) should be visible
+      const desktopGameoverPath = `${gamePath}/CanvasLayer/Control/DesktopGameover`;
+      const dgProps = await mcp.getProperties(desktopGameoverPath);
+      expect(dgProps.visible).toBe(true);
+
+      // Its embedded Leaderboard node should be visible
+      const leaderboardPath = `${desktopGameoverPath}/CenterContainer/Leaderboard`;
+      const lbProps = await mcp.getProperties(leaderboardPath);
+      expect(lbProps.visible).toBe(true);
+
+      // The leaderboard title should be "Game Over!"
+      const titleLabelPath = `${leaderboardPath}/TitleLabel`;
+      const titleProps = await mcp.getProperties(titleLabelPath);
+      expect(titleProps.text).toBe('Game Over!');
+
+      // RankingsGrid should contain 20 cells (1 header row + 4 entry rows × 4 columns)
+      const gridPath = `${leaderboardPath}/ScrollContainer/RankingsGrid`;
+      const gridCount = await mcp.callMethod(gridPath, 'get_child_count', []);
+      expect(gridCount.result).toBe(20);
     } finally {
       // Close the extra browser contexts (not the main page's context)
       await context3.close();
