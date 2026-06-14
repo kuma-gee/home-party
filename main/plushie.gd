@@ -19,6 +19,7 @@ var _glow_materials: Array[StandardMaterial3D] = []
 var _player_color: Color
 var _client_controller: ClientController
 var _state := State.CONNECTED
+var _spawn_position: Vector3
 
 
 func setup(idx: int, uuid: String, color: Color, controller: ClientController) -> void:
@@ -45,6 +46,8 @@ func setup(idx: int, uuid: String, color: Color, controller: ClientController) -
 	_setup_glow_materials(animal, color)
 
 	squeak_player.stream = PLACEHOLDER_SQUEAK
+
+	_spawn_position = global_position
 
 	if _client_controller:
 		_client_controller.primary_action_pressed.connect(_on_primary_action)
@@ -141,3 +144,12 @@ func _exit_tree() -> void:
 			_client_controller.primary_action_pressed.disconnect(_on_primary_action)
 		if _client_controller.secondary_action_pressed.is_connected(_on_secondary_action):
 			_client_controller.secondary_action_pressed.disconnect(_on_secondary_action)
+
+
+func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
+	if state.transform.origin.y < -10.0:
+		var t = state.transform
+		t.origin = _spawn_position
+		state.transform = t
+		state.linear_velocity = Vector3.ZERO
+		state.angular_velocity = Vector3.ZERO
