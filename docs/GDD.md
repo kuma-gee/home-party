@@ -8,7 +8,7 @@ through a simple local website.
 
 - [Castle Defense](./CASTLE_DEFENSE.md)
 - [Draw & Guess](./DRAW_AND_Guess.md)
-- [Ghost Hunter](./GHOST_HUNTER.md)
+- [Hide & Seek](./HIDE_AND_SEEK.md)
 
 ## Home World
 

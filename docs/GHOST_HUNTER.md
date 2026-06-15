@@ -1,3 +1,12 @@
+# Ghost Hunter — REPLACED
+
+> **This game has been replaced by [Hide & Seek](./HIDE_AND_SEEK.md).**
+>
+> Ghost Hunter was planned but never implemented beyond early prototyping.
+> It occupied the same "VR seeks, mobiles hide" design space as Hide & Seek,
+> which was chosen for its lower complexity, faster rounds, and stronger
+> VR physics interaction. This document is kept for reference only.
+
 # Ghost Hunter
 
 There is no hard cap in the player count, it's playable with at least 2 players. The game scales based on the player count.
