@@ -3,6 +3,7 @@
 	import { connectionStore, isConnected, inputLayout, webrtcDataChannelOpen, reconnecting, reconnectAttempts } from '../lib/store';
 	import JoystickLayout from '../lib/layouts/JoystickLayout.svelte';
 	import WordInputLayout from '../lib/layouts/WordInputLayout.svelte';
+	import HideAndSeekLayout from '../lib/layouts/HideAndSeekLayout.svelte';
 
 	let serverIp = $state('');
 	let connecting = $state(false);
@@ -132,6 +133,8 @@
 
 			{#if $inputLayout == 'guess'}
 				<WordInputLayout />
+			{:else if $inputLayout == 'hide_and_seek'}
+				<HideAndSeekLayout />
 			{:else}
 				<JoystickLayout inputLayout={$inputLayout} />
 			{/if}

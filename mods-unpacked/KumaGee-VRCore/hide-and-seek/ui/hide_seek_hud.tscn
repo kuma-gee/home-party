@@ -1,0 +1,80 @@
+[gd_scene format=3]
+
+[ext_resource type="Theme" path="res://theme/theme.css" id="1_theme"]
+[ext_resource type="Script" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/ui/hide_seek_hud.gd" id="2_script"]
+
+[node name="HideSeekHUD" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_theme")
+script = ExtResource("2_script")
+
+[node name="TopBar" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 80.0
+grow_horizontal = 2
+alignment = 1
+theme_override_constants/separation = 40
+
+[node name="HiderCountBadge" type="PanelContainer" parent="TopBar"]
+layout_mode = 2
+custom_minimum_size = Vector2(200, 60)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TopBar/HiderCountBadge"]
+layout_mode = 2
+alignment = 1
+
+[node name="HiderCountIcon" type="Label" parent="TopBar/HiderCountBadge/HBoxContainer"]
+layout_mode = 2
+text = "👤"
+horizontal_alignment = 1
+
+[node name="HiderCountLabel" type="Label" parent="TopBar/HiderCountBadge/HBoxContainer"]
+layout_mode = 2
+text = "0 hiding"
+theme_type_variation = "LabelLarge"
+horizontal_alignment = 1
+
+[node name="TimerBadge" type="PanelContainer" parent="TopBar"]
+layout_mode = 2
+custom_minimum_size = Vector2(160, 60)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TopBar/TimerBadge"]
+layout_mode = 2
+alignment = 1
+
+[node name="TimerIcon" type="Label" parent="TopBar/TimerBadge/HBoxContainer"]
+layout_mode = 2
+text = "⏱"
+horizontal_alignment = 1
+
+[node name="TimerLabel" type="Label" parent="TopBar/TimerBadge/HBoxContainer"]
+layout_mode = 2
+text = "2:00"
+theme_type_variation = "LabelLarge"
+horizontal_alignment = 1
+
+[node name="FoundFeed" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -200.0
+offset_right = 200.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="FoundFeedContainer" type="VBoxContainer" parent="FoundFeed"]
+layout_mode = 2
+alignment = 2
+theme_override_constants/separation = 4

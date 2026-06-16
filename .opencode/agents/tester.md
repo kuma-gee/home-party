@@ -1,5 +1,5 @@
 ---
-description: Quality assurance tester for testing game features
+description: QA tester for game features. Use this when you want to test and verify features or fixes in this game
 mode: subagent
 model: opencode-go/deepseek-v4-flash
 hidden: true

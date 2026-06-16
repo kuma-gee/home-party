@@ -1,0 +1,44 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_pickable"]
+
+[sub_resource type="CylinderMesh" id="CylMesh_pot"]
+top_radius = 0.2
+bottom_radius = 0.15
+height = 0.35
+radial_segments = 10
+
+[sub_resource type="SphereMesh" id="SphereMesh_plant"]
+radius = 0.3
+height = 0.5
+radial_segments = 10
+rings = 6
+
+[sub_resource type="CylinderShape3D" id="CylShape_pot"]
+height = 0.35
+radius = 0.2
+
+[sub_resource type="StandardMaterial3D" id="Mat_pot"]
+albedo_color = Color(0.6, 0.35, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_plant"]
+albedo_color = Color(0.2, 0.55, 0.15, 1)
+
+[node name="PottedPlant" instance=ExtResource("1_pickable")]
+mass = 6.0
+freeze = true
+collision_layer = 5
+
+[node name="Pot" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.175, 0)
+mesh = SubResource("CylMesh_pot")
+material_override = SubResource("Mat_pot")
+
+[node name="Plant" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+mesh = SubResource("SphereMesh_plant")
+material_override = SubResource("Mat_plant")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
+shape = SubResource("CylShape_pot")

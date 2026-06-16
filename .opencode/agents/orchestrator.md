@@ -18,10 +18,10 @@ Only continue to the build phase after user approval of the plan in step 1. **Ne
 
 ## Workflow
 
-For every request, follow this 3-phase loop:
+For every request, follow this 3-phase loop. **Always use subagents** where appropriate
 
 ### 1. Plan
-- Explore the codebase to understand what exists.
+- Explore the codebase to understand what exists using the `explore` subagent.
 - Identify every file that needs to change and why.
 - Create a TODO list with ordered items.
 - For large or unfamiliar codebases, delegate to the `planner` subagent.

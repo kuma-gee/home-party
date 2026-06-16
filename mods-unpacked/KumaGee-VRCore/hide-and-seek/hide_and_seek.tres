@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="GameResource" format=3]
+
+[ext_resource type="Script" path="res://main/game_resource.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/hide_and_seek.tscn" id="2_scene"]
+[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/hide_and_seek_icon.tscn" id="3_icon"]
+
+[resource]
+script = ExtResource("1_script")
+name = "Hide and Seek"
+description = "A prop hunt game where the VR player is 'It' (the seeker) and mobile players hide as objects in a themed room. The VR player physically rummages through the space — grabbing, shaking, and inspecting props to find the hiders."
+scene = ExtResource("2_scene")
+icon = ExtResource("3_icon")
+min_recommended_players = 3
+max_recommended_players = 8
