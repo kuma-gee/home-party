@@ -1,6 +1,7 @@
 ---
 description: Quality assurance tester for testing game features
 mode: subagent
+model: opencode-go/deepseek-v4-flash
 hidden: true
 permission:
   "*": deny

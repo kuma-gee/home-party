@@ -55,8 +55,6 @@ and the latter `002-skeleton-reactions.md`.
 <issue-template>
 Reference the GDD document and section(s) this slice implements (e.g., `docs/CASTLE_DEFENSE.md#catapults`).
 
-- [ ] Approved by user
-
 ## What to build
 
 A concise description of this vertical slice. Describe the end-to-end mechanic, not

@@ -1,6 +1,7 @@
 ---
 description: Implements planned changes file by file.
 mode: subagent
+model: opencode-go/deepseek-v4-flash
 hidden: true
 permission:
     godot*: deny

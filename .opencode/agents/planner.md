@@ -1,6 +1,7 @@
 ---
 description: Researches codebases and creates structured implementation plans.
 mode: subagent
+model: opencode-go/deepseek-v4-flash
 hidden: true
 permission:
     godot*: deny
