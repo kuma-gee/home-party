@@ -69,17 +69,16 @@ to the left hand, **pauses the game**, and closes when pressed again.
 
 ### Full Settings Panel
 
-Opened from the Quick Settings menu. A modal panel for detailed adjustments.
+Opened from the Quick Settings menu. Replaces the Quick Settings panel while
+open. A modal panel for detailed adjustments that closes with a **Back** button
+and unpauses the game.
 
 | Section | Options |
 |---------|---------|
-| **Audio** | Master volume, SFX volume, Music volume, Voice volume sliders |
-| **Graphics** | Quality preset slider (Low / Medium / High / Ultra), Render scale, Anti‑aliasing toggle, Foveated rendering toggle |
-| **Controls** | Controller diagram showing all button mappings for the current context (hub or active mini‑game) |
-| **Language** | Language selection dropdown (en, ja, zh, etc.) |
+| **Audio** | Master volume, SFX volume, Music volume sliders |
+| **Graphics** | Render scale slider, Anti‑aliasing toggle |
 
-The panel closes with a **Back** button that returns to the Quick Settings
-Menu.
+Settings are persisted to `user://settings.cfg` and auto-save on every change.
 
 ## Mobile Players
 

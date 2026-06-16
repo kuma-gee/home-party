@@ -21,21 +21,21 @@ loadout decision based on expected mobile strategy.
 ### Arrows
 
 All arrows deal **1 damage** — every skeleton dies in one hit. Elements are purely
-about reach, area, and cooldown tradeoffs. Normal arrows are always available as
-a no-cooldown fallback while elemental orbs recharge.
+about reach, area, and cooldown tradeoffs. Arrows with no element (None) are always
+available as a no-cooldown fallback while elemental orbs recharge.
 
 | Element   | Cooldown | Effect |
 |-----------|----------|--------|
-| Normal    | None     | Single target |
-| Fire      | 1s       | Explosion on hit — kills all skeletons in a small radius (~2m) |
-| Ice       | 3s       | Kills hit target; freezes all skeletons in a medium radius (~4m) for 3s; lingering slow for 6s after |
-| Wind      | 2s       | Doesn't kill — create a moving tornado that pulls all skeletons within the area (~6m) ; bomb carriers keep their fuse ticking |
-| Lightning | 4s       | Kills hit target; chains to up to 3 nearby skeletons within ~5m |
+| None      | None     | Single target |
+| Fire      | 1.5s     | Explosion on hit — kills all skeletons in a small radius (~2m) |
+| Ice       | 4s       | Kills hit target; freezes all skeletons in a medium radius (~4m) for 3s; lingering slow for 6s after |
+| Wind      | 3.5s     | Doesn't kill — create a moving tornado that pulls all skeletons within the area (~6m); bomb carriers keep their fuse ticking |
+| Lightning | 4.5s     | Kills hit target; chains to up to 3 nearby skeletons within ~5m |
 | Poison    | 2.5s     | Kills hit target; corpse emits a cloud for 4s — skeletons entering the cloud (~4m) die after 4s unless they leave |
 
 **Design Intent**
 
-- **Normal** — reliable fallback, no cooldown, single target
+- **None** — reliable fallback, no cooldown, single target
 - **Fire** — runner-killer; fast cooldown, small AoE punishes tight groups
 - **Ice** — catapult suppressor; freeze locks crews mid-charge, lingering slow denies repositioning
 - **Wind** — denial tool; resets runner and catapult progress without killing; especially punishing against bomb carriers whose fuse keeps ticking during knockback
@@ -44,14 +44,17 @@ a no-cooldown fallback while elemental orbs recharge.
 
 ## Mobile Players
 
-Mobile players spawn as skeletons and choose between two strategies each
-life: charging a catapult shot or running a bomb to the gate.
+Mobile players spawn as skeletons and can move freely around the map.
+Their main offensive options are crewing a catapult or running a bomb to the gate,
+but they can also dodge arrows, pick up stray bombs, and use active skills (dash,
+shield) unlocked at the start of each life.
 
 ### Respawn
 
-Respawn time scales with player count, spawning at a fixed point away from the gate.
-- min 2 Players - 2s
-- max 6 Players - 6s
+Respawn time scales linearly with the number of active players, spawning at a fixed point away from the gate.
+- 2 players: 2s
+- 6+ players: 6s
+- Values in between are interpolated (e.g., 4 players ≈ 4s)
 
 ### Firepower
 

@@ -1,7 +1,7 @@
 # Draw & Guess
 
 Mobile players all submit words into a shared pool. The VR player draws each
-word in freeform 3D space while the drawing visible live on a shared desktop
+word in freeform 3D space while the 3D view is visible live on a shared desktop
 screen (TV/monitor) for everyone to see. Mobile players race to type the correct
 guess on their phones — the phone is purely a text input device.
 Rounds end on a timer — the faster you guess, the more points you earn.
@@ -22,7 +22,7 @@ The game starts when all players have submitted their word and the VR player con
 
 ### Round Flow
 1. **Word Draw**: A random word is pulled from the pool and shown only to the VR player
-2. **Drawing Phase (60s)**: VR player draws the word in freeform 3D space; the drawing is projected live on the shared desktop screen
+2. **Drawing Phase (60s)**: VR player draws the word in freeform 3D space; the 3D view is visible live on the shared desktop screen
 3. **Guessing Phase (concurrent)**: Mobile players type guesses on their phones while watching the shared screen
 4. **Scoring**: When the timer expires, points are distributed based on guess order
 5. **Repeat**: Next word is drawn — continues until all words are used
@@ -35,7 +35,7 @@ displayed showing all players ranked by total score.
 
 The VR player draws **freely in 3D space** — no canvas, no boundaries. Lines and
 shapes appear wherever they move the pen, creating a floating 3D sculpture that is
-projected live on the shared desktop screen for everyone to see.
+visible live on the shared desktop screen for everyone to see.
 
 ### Drawing Tools
 
@@ -103,7 +103,7 @@ to submit 1 word. The UI shows:
 - That's it — no drawing view, no scoreboard, no timer on the phone
 
 **Shared desktop screen** shows everything else:
-- **Live drawing**: 2D projection of the VR player's 3D drawing, updating in real-time
+- **Live 3D view**: Real-time camera view of the VR player's drawing space from a fixed angle
 - **Scoreboard**: Current scores of all players
 - **Round timer**: Prominent countdown display
 - **Word progress**: Current word number (e.g., "Word 3 of 7")
@@ -139,7 +139,7 @@ After all words are drawn, a final leaderboard is displayed:
 - **Breakdown** shows each player's total points and how many rounds they guessed correctly
 - **Highlight** the winner with a celebration animation
 
-The leaderboard is shown on the shared desktop screen and in VR space.
+The leaderboard is shown on the shared desktop screen and in VR space. It is not displayed on phones — the phone remains a text input device only.
 
 ## Design Pillars
 
