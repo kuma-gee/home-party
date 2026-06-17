@@ -114,6 +114,22 @@ to submit 1 word. The UI shows:
 - Incorrect guess: phone flashes red briefly, input clears for retry
 - No limit on number of guesses — spam away
 
+### Player Pets (3D Representation)
+
+Each mobile player is represented inside the 3D drawing room as a **cube-pet plushie** (reusing the existing animal models from the lobby). Pets sit on the floor in front of the drawing area and serve as a visual indicator of player status.
+
+**Placement:** Pets spawn in a row on the floor in front of the viewport/desktop area, spaced evenly so all are visible in the shared desktop view.
+
+**Behavior during rounds:**
+- **Idle:** Pets sit still, facing the drawing area as if watching
+- **Correct guess:** Pet does a visual celebration — model squishes, glows with the player's color, and a green checkmark icon appears above its head, then fades
+- **Incorrect guess:** A red X icon briefly appears above the pet's head, then fades
+- **All guessed:** Once all players have guessed correctly, remaining pets skip the celebration (round advances)
+
+**VR interaction:** Pets are grabbable (`XRToolsPickable`) — the VR player can pick them up, move them around, and trigger a squeak sound by pressing the action button (same as lobby plushies).
+
+**Desktop visibility:** Pets are visible on the shared desktop TV screen so mobile players can see their own (and others') pet reactions.
+
 ### Scoring
 
 Points are awarded based on **guess order** — the faster you guess, the more you earn:
