@@ -1,4 +1,5 @@
 @tool
+class_name Plushie
 extends XRToolsPickable
 
 enum State { CONNECTED, UNPLAYABLE }

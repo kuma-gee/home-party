@@ -9,6 +9,7 @@ extends BaseGame
 @onready var scoring: DrawGuessScoring = %Scoring
 @onready var word_manager: DrawGuessWordManager = %WordManager
 @onready var round_manager: DrawGuessRoundManager = %RoundManager
+@onready var pet_spawner: DrawGuessPetSpawner = %PetSpawner
 
 var logger := KumaLog.new("DrawAndGuess")
 		
@@ -89,10 +90,16 @@ func _on_player_guessed(guess: String, player_ui: DrawPlayerUI) -> void:
 		logger.info("Correct guess from %s: %s" % [player_ui.uuid, guess])
 		player_ui.game_client.send_text("word_ack;correct")
 		player_ui.mark_guessed_correctly()
+		var pet := pet_spawner.get_pet(player_ui.uuid)
+		if pet:
+			pet.on_correct_guess()
 	else:
 		logger.debug("Incorrect guess from %s: %s" % [player_ui.uuid, guess])
 		player_ui.game_client.send_text("word_ack;incorrect")
 		player_ui.mark_guessed_incorrectly()
+		var pet := pet_spawner.get_pet(player_ui.uuid)
+		if pet:
+			pet.on_incorrect_guess()
 
 func _update_ui() -> void:
 	var active_players = PlayerManager.get_active_players().map(func(x): return player_list.find_existing_node(x.uuid))
@@ -131,6 +138,10 @@ func _start_next_round() -> void:
 	for child in player_list.get_children():
 		if child is DrawPlayerUI:
 			child.reset_for_round()
+	
+	for pet in pet_spawner.get_children():
+		if pet is DrawGuessPet:
+			pet.reset_for_round()
 	
 	round_manager.start_round_timer()
 
