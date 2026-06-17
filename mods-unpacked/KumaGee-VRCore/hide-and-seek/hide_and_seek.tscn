@@ -14,12 +14,15 @@
 [ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/props/stool.tscn" id="12_stool"]
 [ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/props/trash_can.tscn" id="13_trash"]
 [ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/ui/hide_seek_scoreboard.tscn" id="14_score"]
+[ext_resource type="Script" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/hide_and_seek_props.gd" id="15_props"]
 
-[node name="HideAndSeek" instance=ExtResource("1_base")]
+[node name="HideAndSeek" node_paths=PackedStringArray("props_manager", "vr_screen", "camera_follow") instance=ExtResource("1_base")]
 script = ExtResource("2_game")
 hud_scene = ExtResource("5_hud")
 scoreboard_scene = ExtResource("14_score")
 props_manager = NodePath("Props")
+vr_screen = NodePath("XRPlayer/SubViewport/CameraFollow3D/Viewport2Din3D2")
+camera_follow = NodePath("XRPlayer/SubViewport/CameraFollow3D")
 
 [node name="Room" parent="." unique_id=10000020 instance=ExtResource("4_room")]
 
@@ -32,8 +35,10 @@ fov = 35.0
 [node name="PlayerBody" parent="XRPlayer/SubViewport/XRPlayer" unique_id=1745649098]
 collision_mask = 3
 
-[node name="Props" type="Node3D" parent="."]
-xr_player = NodePath("../XRPlayer")
+[node name="Props" type="Node3D" parent="." node_paths=PackedStringArray("left_pickup", "right_pickup")]
+script = ExtResource("15_props")
+left_pickup = NodePath("../XRPlayer/SubViewport/XRPlayer/LeftHand/FunctionPickup")
+right_pickup = NodePath("../XRPlayer/SubViewport/XRPlayer/RightHand/FunctionPickup")
 
 [node name="Chair1" parent="Props" unique_id=10000030 instance=ExtResource("6_chair")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.45, -1.0)

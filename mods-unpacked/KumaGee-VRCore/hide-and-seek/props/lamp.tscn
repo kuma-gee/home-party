@@ -14,7 +14,8 @@ bottom_radius = 0.03
 height = 0.8
 radial_segments = 8
 
-[sub_resource type="ConeMesh" id="ConeMesh_shade"]
+[sub_resource type="CylinderMesh" id="CylMesh_shade"]
+top_radius = 0.0
 bottom_radius = 0.25
 height = 0.3
 radial_segments = 12
@@ -43,7 +44,7 @@ material_override = SubResource("Mat_lamp")
 
 [node name="Shade" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0)
-mesh = SubResource("ConeMesh_shade")
+mesh = SubResource("CylMesh_shade")
 material_override = SubResource("Mat_lamp")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
