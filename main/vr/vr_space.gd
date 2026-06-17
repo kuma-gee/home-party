@@ -16,7 +16,11 @@ signal back_to_home()
 @export var vr_screen: XRToolsViewport2DIn3D
 @export var gameover_scene: PackedScene
 
+@export_category("Settings")
+@export var settings_panel_scene: PackedScene
+
 var was_paused := false
+var _settings_panel_instance: SettingsPanel = null
 
 func _ready() -> void:
 	menu_function.menu_opened.connect(_connect_menu)
@@ -69,4 +73,24 @@ func activate():
 	camera.current = true
 
 func _on_settings_pressed():
-	pass  # Settings handled via debug keys (Shift++ / Shift+-)
+	menu_function.close_menu()
+
+	if not settings_panel_scene:
+		push_error("VRSpace: settings_panel_scene not assigned")
+		return
+
+	_settings_panel_instance = settings_panel_scene.instantiate() as SettingsPanel
+	menu_function.get_node("MenuAnchor").add_child(_settings_panel_instance)
+	_settings_panel_instance.back_pressed.connect(_on_settings_back_pressed)
+
+	# Keep the game paused and overlay visible while the settings panel is open
+	overlay_mesh.show_overlay()
+	pause_menu.show()
+	get_tree().paused = true
+
+
+func _on_settings_back_pressed():
+	if _settings_panel_instance:
+		_settings_panel_instance.queue_free()
+		_settings_panel_instance = null
+	_on_menu_closed()

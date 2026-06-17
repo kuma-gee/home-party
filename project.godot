@@ -35,6 +35,7 @@ BGMManager="*res://main/utils/bgm_manager.gd"
 Staging="*uid://bnqnnnet4dw12"
 GameSettings="*res://main/utils/game_settings.gd"
 GodotMcpBridge="*uid://ww7lcv2jh241"
+UserSettings="*res://main/utils/user_settings.gd"
 
 [display]
 
@@ -133,6 +134,10 @@ debug_ai_decrease={
 [rendering]
 
 environment/defaults/default_clear_color=Color(0.12955844, 0.12955847, 0.12955844, 1)
+
+[audio]
+
+bus_layout="res://default_bus_layout.tres"
 
 [xr]
 

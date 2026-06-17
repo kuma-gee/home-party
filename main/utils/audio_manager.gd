@@ -9,7 +9,7 @@ var _available_players: Array[AudioStreamPlayer] = []
 func _ready() -> void:
 	for i in MAX_AUDIO_PLAYERS:
 		var player = AudioStreamPlayer.new()
-		player.bus = "Master"
+		player.bus = &"SFX"
 		add_child(player)
 		player.finished.connect(_on_player_finished.bind(player))
 		_audio_players.append(player)
