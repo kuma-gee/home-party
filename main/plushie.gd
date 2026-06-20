@@ -28,6 +28,7 @@ func setup(idx: int, uuid: String, color: Color, controller: ClientController) -
 	player_uuid = uuid
 	_player_color = color
 	_client_controller = controller
+	set_state(Plushie.State.CONNECTED)
 	name = "Plushie%s" % idx
 
 	player_tag.text = "P%d" % (idx + 1)

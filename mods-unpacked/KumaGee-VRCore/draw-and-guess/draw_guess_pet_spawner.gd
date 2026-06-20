@@ -1,3 +1,4 @@
+class_name DrawGuessPetSpawner
 extends Node
 
 @export var pet_scene: PackedScene

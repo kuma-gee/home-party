@@ -44,7 +44,7 @@ func _process(delta: float) -> void:
 	if Input.is_key_pressed(Key.KEY_ESCAPE):
 		escape_timer += delta
 		if escape_timer >= 3.0:
-			_on_exit_to_main_menu()
+			on_exit_to_main_menu()
 	else:
 		escape_timer = 0.0
 
@@ -200,24 +200,24 @@ func set_fade(p_value : float):
 
 
 func _add_signals(p_scene : XRToolsSceneBase):
-	p_scene.connect("request_exit_to_main_menu", _on_exit_to_main_menu)
+	p_scene.connect("request_exit_to_main_menu", on_exit_to_main_menu)
 	p_scene.connect("request_load_scene", _on_load_scene)
 	p_scene.connect("request_reset_scene", _on_reset_scene)
 	p_scene.connect("request_quit", _on_quit)
-	p_scene.xr_player.back_to_home.connect(_on_exit_to_main_menu)
+	p_scene.xr_player.back_to_home.connect(on_exit_to_main_menu)
 	p_scene.xr_player.restart_game.connect(_on_reset_scene)
 
 
 func _remove_signals(p_scene : XRToolsSceneBase):
-	p_scene.disconnect("request_exit_to_main_menu", _on_exit_to_main_menu)
+	p_scene.disconnect("request_exit_to_main_menu", on_exit_to_main_menu)
 	p_scene.disconnect("request_load_scene", _on_load_scene)
 	p_scene.disconnect("request_reset_scene", _on_reset_scene)
 	p_scene.disconnect("request_quit", _on_quit)
-	p_scene.xr_player.back_to_home.disconnect(_on_exit_to_main_menu)
+	p_scene.xr_player.back_to_home.disconnect(on_exit_to_main_menu)
 	p_scene.xr_player.restart_game.disconnect(_on_reset_scene)
 
 
-func _on_exit_to_main_menu():
+func on_exit_to_main_menu():
 	load_scene(main_scene)
 
 

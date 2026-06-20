@@ -315,7 +315,5 @@ one_shot = true
 [node name="PetSpawner" type="Node" parent="." index="9" unique_id=982374660]
 script = ExtResource("18_yk83c")
 pet_scene = ExtResource("19_sq75p")
-spawn_points = NodePath("../BaseSceneContent/PetSpawnPoints")
-player_list = NodePath("%PlayerList")
 
 [editable path="BaseSceneContent/draw_room"]

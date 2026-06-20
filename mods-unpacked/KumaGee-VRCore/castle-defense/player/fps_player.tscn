@@ -36,7 +36,7 @@ colors = PackedColorArray(0, 0, 0, 1, 0, 2, 5, 1)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_4mstr"]
 gradient = SubResource("Gradient_htofj")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_p7qy1"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rileq"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("4_0o2vu")
@@ -100,7 +100,7 @@ scale_max = 0.8
 scale_curve = SubResource("CurveTexture_raamo")
 alpha_curve = SubResource("CurveTexture_0o2vu")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_xdbxo"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_it27o"]
 viewport_path = NodePath("ColorRing/SubViewport")
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_3dsh6"]
@@ -133,7 +133,7 @@ shape = SubResource("CapsuleShape3D_dxdo2")
 
 [node name="ShieldVFX" parent="." unique_id=1287199905 instance=ExtResource("3_151xx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.51957875, 0)
-material_override = SubResource("ShaderMaterial_p7qy1")
+material_override = SubResource("ShaderMaterial_rileq")
 mesh = SubResource("SphereMesh_ovucc")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=992237309]
@@ -231,7 +231,7 @@ script = ExtResource("8_ffq0p")
 
 [node name="ColorRing" parent="." unique_id=1233288472 instance=ExtResource("6_irk2m")]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.057024956, 0)
-texture = SubResource("ViewportTexture_xdbxo")
+texture = SubResource("ViewportTexture_it27o")
 
 [node name="DashSound" type="AudioStreamPlayer" parent="." unique_id=1002373996]
 stream = ExtResource("13_hl7qv")
