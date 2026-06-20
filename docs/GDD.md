@@ -7,7 +7,7 @@ through a simple local website.
 ## Games
 
 - [Castle Defense](./CASTLE_DEFENSE.md)
-- [Draw & Guess](./DRAW_AND_Guess.md)
+- [Draw & Guess](./DRAW_AND_GUESS.md)
 - [Hide & Seek](./HIDE_AND_SEEK.md)
 
 ## Home World
@@ -51,7 +51,8 @@ cue for some basic interactions.
 - CONNECTED: player is connected and can join the games. The default state.
 - UNPLAYABLE: for phone-only games, if a player is connected via controller.
   Show an icon on top of the plushie that they cannot join this specific game.
-- DISCONNECTED: plushies gets removed from the game.
+
+Disconnected players are simply removed from the lobby — their plushie despawns.
 
 ## Settings
 

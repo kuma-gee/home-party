@@ -23,9 +23,8 @@ menu world. Then going over each of the games.
 
 ### 3. Summary Report
 
-After all checks complete, produce a consolidated report on what is missing or is different
-from the documentation.
+After all checks complete, produce a consolidated report that should include
 
-## Reusability
-
-This command can be re-run at any time. Add new checks as new patterns of drift are discovered.
+- Mismatch between implementation and documentation
+- Not implemented features from the documentation
+- **DO NOT** include matching documetation

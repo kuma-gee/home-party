@@ -30,8 +30,8 @@ available as a no-cooldown fallback while elemental orbs recharge.
 | Fire      | 1.5s     | Explosion on hit — kills all skeletons in a small radius (~2m) |
 | Ice       | 4s       | Kills hit target; freezes all skeletons in a medium radius (~4m) for 3s; lingering slow for 6s after |
 | Wind      | 3.5s     | Doesn't kill — create a moving tornado that pulls all skeletons within the area (~6m); bomb carriers keep their fuse ticking |
-| Lightning | 4.5s     | Kills hit target; chains to up to 3 nearby skeletons within ~5m |
-| Poison    | 2.5s     | Kills hit target; corpse emits a cloud for 4s — skeletons entering the cloud (~4m) die after 4s unless they leave |
+| Lightning | 4.5s     | Kills hit target; chains to 2 nearby skeletons within ~5m |
+| Poison    | 2.5s     | Kills hit target; corpse emits a cloud for 5s — skeletons entering the cloud (~4m) die after 5s. The poison persists once applied and cannot be removed by leaving the cloud |
 
 **Design Intent**
 
@@ -40,7 +40,9 @@ available as a no-cooldown fallback while elemental orbs recharge.
 - **Ice** — catapult suppressor; freeze locks crews mid-charge, lingering slow denies repositioning
 - **Wind** — denial tool; resets runner and catapult progress without killing; especially punishing against bomb carriers whose fuse keeps ticking during knockback
 - **Lightning** — crowd clearer; one shot can wipe a full catapult crew, but the long cooldown makes it a commitment
-- **Poison** — punishes clustering; tag one skeleton heading to a catapult and let the cloud do the work; useless against solo runners
+- **Poison** — punishes clustering; tag one skeleton heading to a catapult and let the cloud do the work; the lingering poison means even runners who escape the cloud will die after 5s; useless against solo runners who avoid the cloud entirely
+
+> **Void (disabled):** A sixth element (Void) exists in the codebase with a 5s cooldown, creating a black hole that pulls in and deletes skeletons. It is currently disabled in the element selection UI and not available for players to equip. It may be re-enabled in a future update.
 
 ## Mobile Players
 

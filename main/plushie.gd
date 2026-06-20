@@ -11,7 +11,7 @@ static var _model_offset := -1
 @onready var models: Node3D = $Models
 @onready var player_tag: Label3D = $PlayerTag
 @onready var squeak_player: AudioStreamPlayer3D = $SqueakPlayer
-@onready var unplayable_icon: Node3D = $UnplayableIcon
+@onready var unplayable_icon: Node3D = $PlayerTag/UnplayableIcon
 
 var player_uuid: String
 var player_index: int

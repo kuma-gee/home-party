@@ -20,6 +20,10 @@ config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 addons/icon_finder/preview_size=55
 
+[audio]
+
+bus_layout="res://default_bus_layout.tres"
+
 [autoload]
 
 ModLoaderStore="*res://addons/mod_loader/mod_loader_store.gd"
@@ -134,10 +138,6 @@ debug_ai_decrease={
 [rendering]
 
 environment/defaults/default_clear_color=Color(0.12955844, 0.12955847, 0.12955844, 1)
-
-[audio]
-
-bus_layout="res://default_bus_layout.tres"
 
 [xr]
 

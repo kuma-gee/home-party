@@ -1,25 +1,23 @@
 [gd_scene format=3 uid="uid://bxe1pj68p8mpp"]
 
 [ext_resource type="PackedScene" uid="uid://c704wg02ob4o7" path="res://main/plushie.tscn" id="1_h6ysc"]
-[ext_resource type="Script" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_guess_pet.gd" id="2_gqj60"]
+[ext_resource type="Script" uid="uid://b65gbtfsww8rl" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_guess_pet.gd" id="2_gqj60"]
 
-[node name="DrawGuessPet" instance=ExtResource("1_h6ysc")]
+[node name="DrawGuessPet" unique_id=978755305 instance=ExtResource("1_h6ysc")]
 script = ExtResource("2_gqj60")
 
-[node name="CorrectIcon" type="Label3D" parent="." index="5"]
+[node name="CorrectIcon" type="Label3D" parent="." index="4" unique_id=730701314]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.68765366, 0)
+pixel_size = 0.02
 billboard = 1
-text = "✓"
 modulate = Color(0, 1, 0, 1)
-pixel_size = 0.02
-visible = false
+text = "✓"
 
-[node name="IncorrectIcon" type="Label3D" parent="." index="6"]
+[node name="IncorrectIcon" type="Label3D" parent="." index="5" unique_id=1312086624]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
-billboard = 1
-text = "✗"
-modulate = Color(1, 0, 0, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.68765366, 0)
 pixel_size = 0.02
-visible = false
+billboard = 1
+modulate = Color(1, 0, 0, 1)
+text = "✗"

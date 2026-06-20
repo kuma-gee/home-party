@@ -54,6 +54,8 @@ they want. When time expires, the hunt begins.
 
 ### Controls
 
+Uses the default joystick layout in the game-client
+
 | Action | Input | Cooldown |
 |--------|-------|----------|
 | Move around | Left joystick | None |

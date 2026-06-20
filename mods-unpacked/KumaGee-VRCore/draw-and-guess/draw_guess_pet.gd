@@ -1,3 +1,4 @@
+class_name DrawGuessPet
 extends Plushie
 
 @onready var correct_icon: Label3D = %CorrectIcon
