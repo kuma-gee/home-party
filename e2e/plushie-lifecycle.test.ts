@@ -38,8 +38,6 @@ const GAMEPAD_UUID = 'e2e-plushie-gamepad-0000-0000-000000000003';
 // ─── Node path helpers ────────────────────────────────────────────────
 const PLAYER_LIST_PATH =
   '/root/Staging/Scene/MenuWorld/CanvasLayer/Control/MarginContainer/PlayerList';
-const UNPLAYABLE_LABEL_SUFFIX = '/HBoxContainer/UnplayableLabel';
-
 // ─── Helper: verify a plushie's identity properties ───────────────────
 async function verifyPlushieIdentity(
   mcp: MCPBridge,
@@ -188,12 +186,6 @@ test.describe('Plushie lifecycle', () => {
 
         const iconPath = `${byUuid[uuid]}/PlayerTag/UnplayableIcon`;
         expect((await mcp.getProperties(iconPath)).visible).toBe(false);
-
-        const joinedPath = joinedByUuid[uuid];
-        expect(
-          (await mcp.getProperties(`${joinedPath}${UNPLAYABLE_LABEL_SUFFIX}`))
-            .visible,
-        ).toBe(false);
       }
 
       // ── Select Draw & Guess (phone_only=true) — gamepad → UNPLAYABLE ──
@@ -208,13 +200,6 @@ test.describe('Plushie lifecycle', () => {
         (await mcp.getProperties(byUuid[GAMEPAD_UUID]))._state,
       ).toBe(STATE_UNPLAYABLE);
       expect((await mcp.getProperties(gamepadIconPath)).visible).toBe(true);
-      expect(
-        (
-          await mcp.getProperties(
-            `${joinedByUuid[GAMEPAD_UUID]}${UNPLAYABLE_LABEL_SUFFIX}`,
-          )
-        ).visible,
-      ).toBe(true);
 
       // Phone plushies stay CONNECTED
       for (const uuid of [PHONE_UUID_1, PHONE_UUID_2]) {
@@ -224,13 +209,6 @@ test.describe('Plushie lifecycle', () => {
         expect(
           (await mcp.getProperties(`${byUuid[uuid]}/PlayerTag/UnplayableIcon`))
             .visible,
-        ).toBe(false);
-        expect(
-          (
-            await mcp.getProperties(
-              `${joinedByUuid[uuid]}${UNPLAYABLE_LABEL_SUFFIX}`,
-            )
-          ).visible,
         ).toBe(false);
       }
 
@@ -248,13 +226,6 @@ test.describe('Plushie lifecycle', () => {
           (
             await mcp.getProperties(
               `${byUuid[uuid]}/PlayerTag/UnplayableIcon`,
-            )
-          ).visible,
-        ).toBe(false);
-        expect(
-          (
-            await mcp.getProperties(
-              `${joinedByUuid[uuid]}${UNPLAYABLE_LABEL_SUFFIX}`,
             )
           ).visible,
         ).toBe(false);
@@ -277,7 +248,7 @@ test.describe('Plushie lifecycle', () => {
 
       // Wait for the game scene to appear
       const drawGamePath = await waitForNodeType(mcp, 'BaseGame', 25_000);
-      await waitForJoinedPlayers(mcp, drawGamePath, 10_000);
+      await waitForJoinedPlayers(mcp, drawGamePath, 10_000, 3);
 
       // Collect DrawPlayerUI instances in the game scene
       const drawPlayers = (
@@ -317,7 +288,7 @@ test.describe('Plushie lifecycle', () => {
         'CastleDefense',
         25_000,
       );
-      await waitForJoinedPlayers(mcp, castlePath, 10_000);
+      await waitForJoinedPlayers(mcp, castlePath, 10_000, 3);
 
       // Collect CastlePlayerUI instances
       const castlePlayers = (

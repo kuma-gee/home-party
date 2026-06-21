@@ -38,6 +38,13 @@ export const test = base.extend<TestFixtures, WorkerFixtures>({
   ],
 
   mcp: async ({ workerMCP }, use, testInfo) => {
+    // Mute audio so E2E tests run silently
+    try {
+      await workerMCP.callMethod('/root/UserSettings', 'set_master_volume', [0.0]);
+    } catch (e) {
+      console.warn('Failed to mute audio:', e);
+    }
+
     try {
       await use(workerMCP);
     } finally {

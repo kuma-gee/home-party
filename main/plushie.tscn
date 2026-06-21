@@ -70,6 +70,7 @@ text = "P1"
 
 [node name="UnplayableIcon" type="Label3D" parent="PlayerTag" index="0" unique_id=1900251032]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0040858984, 0)
+visible = false
 billboard = 1
 text = "🚫"
 
