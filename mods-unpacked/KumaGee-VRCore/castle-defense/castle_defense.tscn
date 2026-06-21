@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://cdcastle0001"]
 
+[ext_resource type="PackedScene" uid="uid://bisl1jfnf3opn" path="res://main/base_scene.tscn" id="1_base"]
 [ext_resource type="Script" uid="uid://bo8dkp1wvefbu" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/castle_defense.gd" id="1_cdef"]
 [ext_resource type="AudioStream" uid="uid://c6eyhenn5fbu4" path="res://assets/sound/死神のリスト.mp3" id="2_fkt18"]
 [ext_resource type="PackedScene" uid="uid://cjyy0uwrqgnj5" path="res://assets/castle-defense/castle/ground.glb" id="3_6gm0b"]
@@ -11,7 +12,6 @@
 [ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="6_a14ph"]
 [ext_resource type="PackedScene" uid="uid://bkh78koqbpbod" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/bow.tscn" id="6_rjw0b"]
 [ext_resource type="Script" uid="uid://crtkl6ldhona6" path="res://main/utils/hurt_box.gd" id="9_hurtbox"]
-[ext_resource type="PackedScene" uid="uid://btlljhtniv3dr" path="res://main/vr/vr_space.tscn" id="10_a14ph"]
 [ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="11_v2din"]
 [ext_resource type="Script" uid="uid://b1f1y52jugtns" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/player/player_spawner.gd" id="14_jv2d0"]
 [ext_resource type="Script" uid="uid://qmupmxnwmrv0" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/attacker/bomb_spawner.gd" id="15_a11e3"]
@@ -38,8 +38,6 @@
 [ext_resource type="PackedScene" uid="uid://da2qgxxwwitl6" path="res://addons/godot-xr-tools/objects/highlight/highlight_ring.tscn" id="37_v1y0d"]
 [ext_resource type="Script" uid="uid://54ff6uyo8677" path="res://main/utils/time_label.gd" id="39_88pht"]
 [ext_resource type="Script" uid="uid://bs1qu2rv1mdyb" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/attacker/ai_spawner.gd" id="39_ofmg5"]
-[ext_resource type="PackedScene" uid="uid://dc0o0lteyonsm" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/castle_player_ui.tscn" id="40_bl5ky"]
-[ext_resource type="Script" uid="uid://dgfn4nv7yxows" path="res://main/ui/player_list.gd" id="40_vf04h"]
 [ext_resource type="Shader" uid="uid://ca6cb6krfshuo" path="res://shader/blur.gdshader" id="43_dwc66"]
 [ext_resource type="PackedScene" uid="uid://yio7fkb0jw5m" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/ui/game_info.tscn" id="44_1yni0"]
 [ext_resource type="Script" uid="uid://ce51a7cbm8u6g" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/ui/skill_select.gd" id="44_sl1b2"]
@@ -48,7 +46,6 @@
 [ext_resource type="PackedScene" uid="uid://c0nvrtutt3ach" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/ui/vr_tutorial.tscn" id="50_vrtut"]
 [ext_resource type="Texture2D" uid="uid://cyua31bv8k2p0" path="res://assets/castle-defense/guide/CastleDefenseGuide_04_catapult.png" id="51_guide4"]
 [ext_resource type="Texture2D" uid="uid://iwh263fsmtta" path="res://assets/castle-defense/guide/CastleDefenseGuide_05_bomb.png" id="52_guide5"]
-[ext_resource type="PackedScene" uid="uid://tbx170onwvxm" path="res://main/ui/desktop_gameover.tscn" id="53_dkgov"]
 [ext_resource type="AudioStream" uid="uid://dlltwfjjn4ffv" path="res://assets/sound/sfx/お寺の鐘.mp3" id="53_dwc66"]
 [ext_resource type="PackedScene" uid="uid://ddfqcmo13o1he" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/vfx/gate_destruction_vfx.tscn" id="54_gatevfx"]
 [ext_resource type="Script" uid="uid://nxdpp3mdtdtw" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/arrow_spawner.gd" id="54_l2qex"]
@@ -72,6 +69,91 @@ volumetric_fog_density = 0.02
 volumetric_fog_albedo = Color(0.8509804, 0.9843137, 1, 1)
 adjustment_contrast = 1.1
 adjustment_saturation = 0.9
+
+[sub_resource type="QuadMesh" id="QuadMesh_enrkc"]
+resource_local_to_scene = true
+size = Vector2(4, 3)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_kufnw"]
+viewport_path = NodePath("XRPlayer/SubViewport/CameraFollow3D/Viewport2Din3D2/Viewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v1y0d"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_kufnw")
+texture_filter = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_db7bw"]
+resource_local_to_scene = true
+size = Vector3(4, 3, 0.02)
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dwc66"]
+animation = &"Grip"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_l2qex"]
+animation = &"Grip"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_o3j7d"]
+filter_enabled = true
+filters = ["Armature/Skeleton3D:Little_Distal_L", "Armature/Skeleton3D:Little_Intermediate_L", "Armature/Skeleton3D:Little_Metacarpal_L", "Armature/Skeleton3D:Little_Proximal_L", "Armature/Skeleton3D:Middle_Distal_L", "Armature/Skeleton3D:Middle_Intermediate_L", "Armature/Skeleton3D:Middle_Metacarpal_L", "Armature/Skeleton3D:Middle_Proximal_L", "Armature/Skeleton3D:Ring_Distal_L", "Armature/Skeleton3D:Ring_Intermediate_L", "Armature/Skeleton3D:Ring_Metacarpal_L", "Armature/Skeleton3D:Ring_Proximal_L", "Armature/Skeleton3D:Thumb_Distal_L", "Armature/Skeleton3D:Thumb_Metacarpal_L", "Armature/Skeleton3D:Thumb_Proximal_L", "Armature/Skeleton:Little_Distal_L", "Armature/Skeleton:Little_Intermediate_L", "Armature/Skeleton:Little_Proximal_L", "Armature/Skeleton:Middle_Distal_L", "Armature/Skeleton:Middle_Intermediate_L", "Armature/Skeleton:Middle_Proximal_L", "Armature/Skeleton:Ring_Distal_L", "Armature/Skeleton:Ring_Intermediate_L", "Armature/Skeleton:Ring_Proximal_L", "Armature/Skeleton:Thumb_Distal_L", "Armature/Skeleton:Thumb_Proximal_L"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1yni0"]
+animation = &"Grip 5"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_4ilkm"]
+filter_enabled = true
+filters = ["Armature/Skeleton3D:Index_Distal_L", "Armature/Skeleton3D:Index_Intermediate_L", "Armature/Skeleton3D:Index_Metacarpal_L", "Armature/Skeleton3D:Index_Proximal_L", "Armature/Skeleton:Index_Distal_L", "Armature/Skeleton:Index_Intermediate_L", "Armature/Skeleton:Index_Proximal_L"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_dpx8h"]
+graph_offset = Vector2(-536, 11)
+nodes/ClosedHand1/node = SubResource("AnimationNodeAnimation_dwc66")
+nodes/ClosedHand1/position = Vector2(-600, 300)
+nodes/ClosedHand2/node = SubResource("AnimationNodeAnimation_l2qex")
+nodes/ClosedHand2/position = Vector2(-360, 300)
+nodes/Grip/node = SubResource("AnimationNodeBlend2_o3j7d")
+nodes/Grip/position = Vector2(0, 20)
+nodes/OpenHand/node = SubResource("AnimationNodeAnimation_1yni0")
+nodes/OpenHand/position = Vector2(-600, 100)
+nodes/Trigger/node = SubResource("AnimationNodeBlend2_4ilkm")
+nodes/Trigger/position = Vector2(-360, 20)
+node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_l5702"]
+animation = &"Grip"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1ilsd"]
+animation = &"Grip"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_v278o"]
+filter_enabled = true
+filters = ["Armature/Skeleton3D:Little_Distal_R", "Armature/Skeleton3D:Little_Intermediate_R", "Armature/Skeleton3D:Little_Metacarpal_R", "Armature/Skeleton3D:Little_Proximal_R", "Armature/Skeleton3D:Middle_Distal_R", "Armature/Skeleton3D:Middle_Intermediate_R", "Armature/Skeleton3D:Middle_Metacarpal_R", "Armature/Skeleton3D:Middle_Proximal_R", "Armature/Skeleton3D:Ring_Distal_R", "Armature/Skeleton3D:Ring_Intermediate_R", "Armature/Skeleton3D:Ring_Metacarpal_R", "Armature/Skeleton3D:Ring_Proximal_R", "Armature/Skeleton3D:Thumb_Distal_R", "Armature/Skeleton3D:Thumb_Metacarpal_R", "Armature/Skeleton3D:Thumb_Proximal_R", "Armature/Skeleton:Little_Distal_R", "Armature/Skeleton:Little_Intermediate_R", "Armature/Skeleton:Little_Proximal_R", "Armature/Skeleton:Middle_Distal_R", "Armature/Skeleton:Middle_Intermediate_R", "Armature/Skeleton:Middle_Proximal_R", "Armature/Skeleton:Ring_Distal_R", "Armature/Skeleton:Ring_Intermediate_R", "Armature/Skeleton:Ring_Proximal_R", "Armature/Skeleton:Thumb_Distal_R", "Armature/Skeleton:Thumb_Proximal_R"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ij2kk"]
+animation = &"Grip 5"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_f8wa5"]
+filter_enabled = true
+filters = ["Armature/Skeleton3D:Index_Distal_R", "Armature/Skeleton3D:Index_Intermediate_R", "Armature/Skeleton3D:Index_Metacarpal_R", "Armature/Skeleton3D:Index_Proximal_R", "Armature/Skeleton:Index_Distal_R", "Armature/Skeleton:Index_Intermediate_R", "Armature/Skeleton:Index_Proximal_R"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_d36p2"]
+graph_offset = Vector2(-552.664, 107.301)
+nodes/ClosedHand1/node = SubResource("AnimationNodeAnimation_l5702")
+nodes/ClosedHand1/position = Vector2(-600, 300)
+nodes/ClosedHand2/node = SubResource("AnimationNodeAnimation_1ilsd")
+nodes/ClosedHand2/position = Vector2(-360, 300)
+nodes/Grip/node = SubResource("AnimationNodeBlend2_v278o")
+nodes/Grip/position = Vector2(0, 40)
+nodes/OpenHand/node = SubResource("AnimationNodeAnimation_ij2kk")
+nodes/OpenHand/position = Vector2(-600, 100)
+nodes/Trigger/node = SubResource("AnimationNodeBlend2_f8wa5")
+nodes/Trigger/position = Vector2(-360, 40)
+node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_l2qex"]
+shader = ExtResource("43_dwc66")
+shader_parameter/lod = 1.0000000475
+shader_parameter/mix_percentage = 0.30000001425
 
 [sub_resource type="Resource" id="Resource_db7bw"]
 script = ExtResource("27_fkt18")
@@ -131,7 +213,7 @@ uv1_triplanar = true
 albedo_color = Color(0.35, 0.52, 0.28, 1)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_ofmg5"]
-viewport_path = NodePath("Castle/Gate/HealthSprite/SubViewport")
+viewport_path = NodePath("BaseSceneContent/Castle/Gate/HealthSprite/SubViewport")
 
 [sub_resource type="BoxShape3D" id="Shape_GateHurt"]
 size = Vector3(1.2424316, 1.6876221, 0.6)
@@ -158,474 +240,71 @@ shader_parameter/outline_size = 1.0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bl5ky"]
 albedo_color = Color(0.5686275, 0.3254902, 0.16470589, 1)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_l2qex"]
-shader = ExtResource("43_dwc66")
-shader_parameter/lod = 1.0000000475
-shader_parameter/mix_percentage = 0.30000001425
-
-[node name="CastleDefense" type="Node3D" unique_id=1524346607 node_paths=PackedStringArray("gate_hurtbox", "player_list", "orbs", "arrow_types", "quiver", "bow", "game_ui", "prepare_ui", "desktop_gameover", "spawn_hint", "ai_count_viewport", "sieges", "xr_player")]
+[node name="CastleDefense" unique_id=1524346607 node_paths=PackedStringArray("gate_hurtbox", "player_list", "orbs", "arrow_types", "quiver", "bow", "game_ui", "prepare_ui", "desktop_gameover", "spawn_hint", "ai_count_viewport", "sieges") instance=ExtResource("1_base")]
 script = ExtResource("1_cdef")
-gate_hurtbox = NodePath("Castle/Gate/GateHurtBox")
+gate_hurtbox = NodePath("BaseSceneContent/Castle/Gate/GateHurtBox")
 gate_destruction_vfx = ExtResource("54_gatevfx")
 tutorial_scene = ExtResource("50_vrtut")
-player_list = NodePath("UI/Control/MarginContainer/PlayerList")
-orbs = [NodePath("PlayerStuff/ArrowTypes/FireOrb"), NodePath("PlayerStuff/ArrowTypes/IceOrb"), NodePath("PlayerStuff/ArrowTypes/LightningOrb")]
-arrow_types = NodePath("PlayerStuff/ArrowTypes")
-quiver = NodePath("XRPlayer/Quiver")
-bow = NodePath("PlayerStuff/Bow")
-game_ui = NodePath("UI/Control/GameUI")
-prepare_ui = NodePath("UI/Control/PrepareUI")
-desktop_gameover = NodePath("UI/Control/DesktopGameover")
-spawn_hint = NodePath("UI/Control/SpawnHint")
-ai_count_viewport = NodePath("PlayerStuff/AICountViewport")
-sieges = NodePath("Castle/Sieges")
-xr_player = NodePath("XRPlayer")
+player_list = NodePath("CanvasLayer/Control/MarginContainer/PlayerList")
+orbs = [NodePath("BaseSceneContent/PlayerStuff/ArrowTypes/FireOrb"), NodePath("BaseSceneContent/PlayerStuff/ArrowTypes/IceOrb"), NodePath("BaseSceneContent/PlayerStuff/ArrowTypes/LightningOrb")]
+arrow_types = NodePath("BaseSceneContent/PlayerStuff/ArrowTypes")
+quiver = NodePath("XRPlayer/SubViewport/XRPlayer/XRCamera3D/Quiver")
+bow = NodePath("BaseSceneContent/PlayerStuff/Bow")
+game_ui = NodePath("CanvasLayer/Control/GameUI")
+prepare_ui = NodePath("CanvasLayer/Control/PrepareUI")
+desktop_gameover = NodePath("CanvasLayer/Control/DesktopGameover")
+spawn_hint = NodePath("CanvasLayer/Control/SpawnHint")
+ai_count_viewport = NodePath("BaseSceneContent/PlayerStuff/AICountViewport")
+sieges = NodePath("BaseSceneContent/Castle/Sieges")
+siege_delay_min = 0.5
+siege_delay_max = 1.5
 bgm_audio = ExtResource("2_fkt18")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=62584375]
+[node name="WorldEnvironment" parent="." index="0" unique_id=10000001]
 environment = SubResource("Environment_unmfg")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=676090041]
+[node name="MainLight" parent="." index="1" unique_id=10000002]
 transform = Transform3D(0.97652215, 0.14977108, 0.15483269, -0.21039194, 0.5087568, 0.83480644, 0.046257675, -0.8477825, 0.52832294, 0, 10.113451, 17.43238)
 light_color = Color(0.5019608, 0.76862746, 1, 1)
 light_energy = 0.3
-shadow_enabled = true
 
-[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="." unique_id=2069717839]
+[node name="SecondaryLight" parent="." index="2" unique_id=1307450421]
 transform = Transform3D(-0.44720978, -0.8095444, 0.38031748, -0.21065989, 0.5085779, 0.83484787, -0.86926746, 0.29323456, -0.39797956, 0, 10.113451, 17.43238)
 light_color = Color(0.2784314, 0.65882355, 1, 1)
 light_energy = 0.1
 
-[node name="PlayTime" type="Timer" parent="." unique_id=96472218]
-wait_time = 180.0
-one_shot = true
-
-[node name="ProtonScatter" type="Node3D" parent="." unique_id=1216591199]
-process_mode = 3
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 9.613975)
-script = ExtResource("24_0cjve")
-modifier_stack = SubResource("Resource_1yni0")
-Performance/use_chunks = true
-Performance/chunk_dimensions = Vector3(15, 15, 15)
-metadata/_custom_type_script = "uid://3jl51qajvpsq"
-
-[node name="ScatterItem" type="Node3D" parent="ProtonScatter" unique_id=1906777359]
-script = ExtResource("31_bd7o1")
-path = "uid://cfonwco1l720v"
-
-[node name="ScatterShape" type="Node3D" parent="ProtonScatter" unique_id=853759411]
-transform = Transform3D(1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, 1, 0, 0, -0.76452637)
-script = ExtResource("32_88pht")
-shape = SubResource("Resource_0cjve")
-
-[node name="ProtonScatterShape" type="Node3D" parent="ProtonScatter" unique_id=1495473633]
-transform = Transform3D(0.9999627, 0, -0.008639272, 0, 1, 0, 0.008639272, 0, 0.9999627, 0, 0, 9.053248)
-script = ExtResource("32_88pht")
-negative = true
-shape = SubResource("Resource_88pht")
-metadata/_custom_type_script = "uid://4f6ju7rd45me"
-
-[node name="ProtonScatterShape2" type="Node3D" parent="ProtonScatter" unique_id=645814821]
-transform = Transform3D(0.9999627, 0, -0.008639272, 0, 1, 0, 0.008639272, 0, 0.9999627, 0, 0, -8.720244)
-script = ExtResource("32_88pht")
-negative = true
-shape = SubResource("Resource_vf04h")
-metadata/_custom_type_script = "uid://4f6ju7rd45me"
-
-[node name="ground2" parent="." unique_id=1645877463 instance=ExtResource("3_6gm0b")]
-transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 9.613975)
-
-[node name="ground" parent="ground2" index="0" unique_id=1046452520]
-layers = 512
-surface_material_override/0 = SubResource("StandardMaterial3D_lhggn")
-
-[node name="Ground" type="CSGBox3D" parent="ground2" unique_id=1900245130]
-transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, -0.0025, 0.096192405)
-visible = false
-use_collision = true
-collision_mask = 0
-size = Vector3(60, 0.5, 60)
-material = SubResource("Mat_Ground")
-
-[node name="Camera3D" type="Camera3D" parent="." unique_id=1181458762]
+[node name="Camera3D" parent="." index="3" unique_id=10000003]
 transform = Transform3D(0.0024837295, 0.8817421, -0.4717253, 0.001287785, 0.47172356, 0.8817456, 0.9999961, -0.0027974986, 3.6139496e-05, -16.5, 30.04, 21)
-cull_mask = 786431
 current = true
 fov = 25.0
 
-[node name="AudioListener3D" type="AudioListener3D" parent="Camera3D" unique_id=2120416044]
+[node name="AudioListener3D" type="AudioListener3D" parent="Camera3D" index="0" unique_id=2120416044]
 transform = Transform3D(0.99999654, 0.0012877854, -0.0024837758, -0.0027975384, 0.47172382, -0.88174284, 3.6159796e-05, 0.8817461, 0.47172576, 0.010317594, 3.3206139, -28.429482)
 current = true
 
-[node name="Castle" type="Node3D" parent="." unique_id=775708432]
+[node name="SubViewport" parent="XRPlayer" parent_id_path=PackedInt32Array(10000004) index="1" unique_id=1709074553]
+size = Vector2i(2, 2)
 
-[node name="Sieges" type="Node3D" parent="Castle" unique_id=1340414529]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.1227534)
+[node name="Screen" parent="XRPlayer/SubViewport/CameraFollow3D/Viewport2Din3D2" parent_id_path=PackedInt32Array(10000004, 553147920) index="1" unique_id=1761931612]
+mesh = SubResource("QuadMesh_enrkc")
+surface_material_override/0 = SubResource("StandardMaterial3D_v1y0d")
 
-[node name="Siege" parent="Castle/Sieges" unique_id=1114204689 node_paths=PackedStringArray("target_pos") instance=ExtResource("19_db7bw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.4057434)
-target_pos = NodePath("../../Target")
+[node name="CollisionShape3D" parent="XRPlayer/SubViewport/CameraFollow3D/Viewport2Din3D2/StaticBody3D" parent_id_path=PackedInt32Array(10000004, 553147920, 1882660186) index="0" unique_id=507281989]
+shape = SubResource("BoxShape3D_db7bw")
 
-[node name="Siege2" parent="Castle/Sieges" unique_id=844545751 node_paths=PackedStringArray("target_pos") instance=ExtResource("19_db7bw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -1.4057434)
-target_pos = NodePath("../../Target")
+[node name="Quiver" parent="XRPlayer/SubViewport/XRPlayer/XRCamera3D" parent_id_path=PackedInt32Array(10000004, 227782039) index="0" unique_id=832813409 instance=ExtResource("5_5cd4w")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 1.8913216e-08, 1.7418644, 8.544522)
 
-[node name="Siege3" parent="Castle/Sieges" unique_id=965723452 node_paths=PackedStringArray("target_pos") instance=ExtResource("19_db7bw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -1.4057434)
-target_pos = NodePath("../../Target")
+[node name="AnimationTree" parent="XRPlayer/SubViewport/XRPlayer/LeftHand/LeftHand" parent_id_path=PackedInt32Array(10000004, 801242371) index="1" unique_id=1971929839]
+tree_root = SubResource("AnimationNodeBlendTree_dpx8h")
 
-[node name="Siege4" parent="Castle/Sieges" unique_id=1275891654 node_paths=PackedStringArray("target_pos") instance=ExtResource("19_db7bw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -1.4057434)
-target_pos = NodePath("../../Target")
+[node name="AnimationTree" parent="XRPlayer/SubViewport/XRPlayer/RightHand/RightHand" parent_id_path=PackedInt32Array(10000004, 40282269) index="1"]
+tree_root = SubResource("AnimationNodeBlendTree_d36p2")
 
-[node name="Siege5" parent="Castle/Sieges" unique_id=1461689863 node_paths=PackedStringArray("target_pos") instance=ExtResource("19_db7bw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -1.4057434)
-target_pos = NodePath("../../Target")
-
-[node name="Siege6" parent="Castle/Sieges" unique_id=230589461 node_paths=PackedStringArray("target_pos") instance=ExtResource("19_db7bw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -1.4057434)
-target_pos = NodePath("../../Target")
-
-[node name="Siege7" parent="Castle/Sieges" unique_id=2023353571 node_paths=PackedStringArray("target_pos") instance=ExtResource("19_db7bw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -1.4057434)
-target_pos = NodePath("../../Target")
-
-[node name="Siege8" parent="Castle/Sieges" unique_id=1161892 node_paths=PackedStringArray("target_pos") instance=ExtResource("19_db7bw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -1.4057434)
-target_pos = NodePath("../../Target")
-
-[node name="Siege9" parent="Castle/Sieges" unique_id=1853180231 node_paths=PackedStringArray("target_pos") instance=ExtResource("19_db7bw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -1.4057434)
-target_pos = NodePath("../../Target")
-
-[node name="Meshes" type="Node3D" parent="Castle" unique_id=577322639]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 9)
-
-[node name="wall-corner-half-tower2" parent="Castle/Meshes" unique_id=385722822 instance=ExtResource("18_iwc37")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
-
-[node name="wall-corner-half-tower3" parent="Castle/Meshes" unique_id=29408354 instance=ExtResource("18_iwc37")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -3, 0, 0)
-
-[node name="wall-half2" parent="Castle/Meshes" unique_id=1982137504 instance=ExtResource("24_bm3dj")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 2, 0, 0)
-
-[node name="wall-half5" parent="Castle/Meshes" unique_id=435332828 instance=ExtResource("24_bm3dj")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1, 0, 0)
-
-[node name="wall-half6" parent="Castle/Meshes" unique_id=482370117 instance=ExtResource("24_bm3dj")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
-
-[node name="wall-half7" parent="Castle/Meshes" unique_id=1279651479 instance=ExtResource("24_bm3dj")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -1, 0, 0)
-
-[node name="wall-half9" parent="Castle/Meshes" unique_id=1359731565 instance=ExtResource("24_bm3dj")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2, 0, 0)
-
-[node name="wall-corner-half-tower4" parent="Castle/Meshes" unique_id=1620192409 instance=ExtResource("18_iwc37")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -3, 0, -6.9999995)
-
-[node name="wall-corner-half-tower5" parent="Castle/Meshes" unique_id=1884249022 instance=ExtResource("18_iwc37")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 3, 0, -7.0000005)
-
-[node name="wall-half11" parent="Castle/Meshes" unique_id=1850537139 instance=ExtResource("24_bm3dj")]
-transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, -2, 0, -6.9999995)
-
-[node name="wall-half13" parent="Castle/Meshes" unique_id=311386548 instance=ExtResource("24_bm3dj")]
-transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, -1, 0, -7)
-
-[node name="wall-half14" parent="Castle/Meshes" unique_id=1844397769 instance=ExtResource("24_bm3dj")]
-transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, 0, 0, -7)
-
-[node name="wall-half15" parent="Castle/Meshes" unique_id=1053998227 instance=ExtResource("24_bm3dj")]
-transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, 1, 0, -7)
-
-[node name="wall-half17" parent="Castle/Meshes" unique_id=463529213 instance=ExtResource("24_bm3dj")]
-transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, 2, 0, -7.0000005)
-
-[node name="wall-half3" parent="Castle/Meshes" unique_id=1560986168 instance=ExtResource("24_bm3dj")]
-transform = Transform3D(-1, 0, -2.9802322e-08, 0, 1, 0, 2.9802322e-08, 0, -1, 3, 0, -1)
-
-[node name="wall-half10" parent="Castle/Meshes" unique_id=77569342 instance=ExtResource("24_bm3dj")]
-transform = Transform3D(-1, 0, -2.9802322e-08, 0, 1, 0, 2.9802322e-08, 0, -1, 3, 0, -2)
-
-[node name="wall-half18" parent="Castle/Meshes" unique_id=573220839 instance=ExtResource("24_bm3dj")]
-transform = Transform3D(-1, 0, -2.9802322e-08, 0, 1, 0, 2.9802322e-08, 0, -1, 3, 0, -3)
-
-[node name="wall-half19" parent="Castle/Meshes" unique_id=129238690 instance=ExtResource("24_bm3dj")]
-transform = Transform3D(-1, 0, -2.9802322e-08, 0, 1, 0, 2.9802322e-08, 0, -1, 3, 0, -4)
-
-[node name="wall-half20" parent="Castle/Meshes" unique_id=885895978 instance=ExtResource("24_bm3dj")]
-transform = Transform3D(-1, 0, -2.9802322e-08, 0, 1, 0, 2.9802322e-08, 0, -1, 3, 0, -5)
-
-[node name="wall-half21" parent="Castle/Meshes" unique_id=269128035 instance=ExtResource("24_bm3dj")]
-transform = Transform3D(-1, 0, -2.9802322e-08, 0, 1, 0, 2.9802322e-08, 0, -1, 3, 0, -5)
-
-[node name="wall-half22" parent="Castle/Meshes" unique_id=1445633493 instance=ExtResource("24_bm3dj")]
-transform = Transform3D(-1, 0, -2.9802322e-08, 0, 1, 0, 2.9802322e-08, 0, -1, 3, 0, -6)
-
-[node name="wall-half23" parent="Castle/Meshes" unique_id=604003157 instance=ExtResource("24_bm3dj")]
-transform = Transform3D(1, 0, 1.172251e-07, 0, 1, 0, -1.172251e-07, 0, 1, -3, 0, -6)
-
-[node name="wall-half24" parent="Castle/Meshes" unique_id=83588062 instance=ExtResource("24_bm3dj")]
-transform = Transform3D(1, 0, 1.172251e-07, 0, 1, 0, -1.172251e-07, 0, 1, -3, 0, -5)
-
-[node name="wall-half25" parent="Castle/Meshes" unique_id=2109413933 instance=ExtResource("24_bm3dj")]
-transform = Transform3D(1, 0, 1.172251e-07, 0, 1, 0, -1.172251e-07, 0, 1, -3, 0, -4)
-
-[node name="wall-half26" parent="Castle/Meshes" unique_id=829264892 instance=ExtResource("24_bm3dj")]
-transform = Transform3D(1, 0, 1.172251e-07, 0, 1, 0, -1.172251e-07, 0, 1, -3, 0, -3)
-
-[node name="wall-half27" parent="Castle/Meshes" unique_id=1764270048 instance=ExtResource("24_bm3dj")]
-transform = Transform3D(1, 0, 1.172251e-07, 0, 1, 0, -1.172251e-07, 0, 1, -3, 0, -2)
-
-[node name="wall-half28" parent="Castle/Meshes" unique_id=773274247 instance=ExtResource("24_bm3dj")]
-transform = Transform3D(1, 0, 1.172251e-07, 0, 1, 0, -1.172251e-07, 0, 1, -3, 0, -1)
-
-[node name="gate2" parent="Castle/Meshes" unique_id=1894293227 instance=ExtResource("15_fh86t")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0.5036373)
-
-[node name="Gate" type="Node3D" parent="Castle" unique_id=15485347]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
-
-[node name="HealthSprite" type="Sprite3D" parent="Castle/Gate" unique_id=1044044621]
-transform = Transform3D(-0.39999965, -0.0005208181, -0.00012668983, -0.00036939012, 0.19934277, 0.3467886, -0.0003883977, 0.34678838, -0.19934309, 0, 2.466334, -0.6953745)
-layers = 262144
-texture = SubResource("ViewportTexture_ofmg5")
-
-[node name="SubViewport" type="SubViewport" parent="Castle/Gate/HealthSprite" unique_id=701243658]
-disable_3d = true
-transparent_bg = true
-size = Vector2i(320, 200)
-
-[node name="MarginContainer" type="MarginContainer" parent="Castle/Gate/HealthSprite/SubViewport" unique_id=1897607104]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("18_3sspo")
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 4
-theme_override_constants/margin_bottom = 4
-
-[node name="GameInfo" parent="Castle/Gate/HealthSprite/SubViewport/MarginContainer" unique_id=107870123 instance=ExtResource("44_1yni0")]
-layout_mode = 2
-
-[node name="ProgressBar" parent="Castle/Gate/HealthSprite/SubViewport/MarginContainer/GameInfo" index="0" unique_id=863764442 node_paths=PackedStringArray("hurtbox")]
-hurtbox = NodePath("../../../../../GateHurtBox")
-
-[node name="PlayTime" parent="Castle/Gate/HealthSprite/SubViewport/MarginContainer/GameInfo" index="1" unique_id=1401510058 node_paths=PackedStringArray("timer")]
-timer = NodePath("../../../../../../../PlayTime")
-
-[node name="GateHurtBox" type="Area3D" parent="Castle/Gate" unique_id=1814912010]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1601243, 0)
-collision_layer = 64
-collision_mask = 0
-script = ExtResource("9_hurtbox")
-
-[node name="GateHitShape" type="CollisionShape3D" parent="Castle/Gate/GateHurtBox" unique_id=105378868]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7044847, 0)
-shape = SubResource("Shape_GateHurt")
-
-[node name="VRPlatform" type="StaticBody3D" parent="Castle" unique_id=1078185124]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.875063, 7.955576)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Castle/VRPlatform" unique_id=679345197]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.2202148, -0.47700882)
-shape = SubResource("BoxShape3D_a14ph")
-debug_color = Color(0.9933772, 0, 0.24780053, 1)
-
-[node name="DesktopWalls" type="StaticBody3D" parent="Castle" unique_id=314901466]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20.20641)
-collision_layer = 8
-collision_mask = 0
-
-[node name="CollisionShape3D5" type="CollisionShape3D" parent="Castle/DesktopWalls" unique_id=1259550256]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.9889607, 1.3662665, -10.199821)
-shape = SubResource("CylinderShape3D_sl1b2")
-
-[node name="CollisionShape3D6" type="CollisionShape3D" parent="Castle/DesktopWalls" unique_id=1672965183]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.0202622, 1.3662665, -10.199821)
-shape = SubResource("CylinderShape3D_sl1b2")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Castle/DesktopWalls" unique_id=573861309]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.85961, 0, 0)
-shape = SubResource("BoxShape3D_sl1b2")
-
-[node name="CollisionShape3D3" type="CollisionShape3D" parent="Castle/DesktopWalls" unique_id=1039609530]
-transform = Transform3D(0, 0, 1.0000001, 0, 1, 0, -1.0000001, 0, 0, -0.18380165, -0.018556595, -10.653589)
-shape = SubResource("BoxShape3D_sl1b2")
-
-[node name="CollisionShape3D4" type="CollisionShape3D" parent="Castle/DesktopWalls" unique_id=1533091175]
-transform = Transform3D(0, 0, 1.0000001, 0, 1, 0, -1.0000001, 0, 0, -0.18380165, 0, 10.414789)
-shape = SubResource("BoxShape3D_sl1b2")
-
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="Castle/DesktopWalls" unique_id=62748941]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.541611, 0, 0)
-shape = SubResource("BoxShape3D_sl1b2")
-
-[node name="Target" type="Marker3D" parent="Castle" unique_id=1411823520]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.912239, 18.120232)
-
-[node name="PlayerStuff" type="Node3D" parent="." unique_id=980876473]
-
-[node name="ArrowTypes" type="Node3D" parent="PlayerStuff" unique_id=900118082]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8906732, 9.864026)
-
-[node name="FireOrb" parent="PlayerStuff/ArrowTypes" unique_id=107013500 instance=ExtResource("5_a14ph")]
-
-[node name="IceOrb" parent="PlayerStuff/ArrowTypes" unique_id=1158891516 instance=ExtResource("5_a14ph")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.0003528595, 0)
-element = 2
-
-[node name="LightningOrb" parent="PlayerStuff/ArrowTypes" unique_id=759223450 instance=ExtResource("5_a14ph")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, -0.0003528595, 0)
-element = 3
-
-[node name="BowGrip" parent="PlayerStuff" unique_id=777328390 instance=ExtResource("6_a14ph")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 3.308353, 8.449216)
-visible = false
-enabled = false
-
-[node name="CollisionShape3D" parent="PlayerStuff/BowGrip" index="0" unique_id=1198871219]
-shape = SubResource("SphereShape3D_g2kc1")
-
-[node name="CSGSphere3D" type="CSGSphere3D" parent="PlayerStuff/BowGrip" unique_id=1601548907]
-visible = false
-material_overlay = SubResource("ShaderMaterial_313of")
-radius = 0.03
-radial_segments = 8
-rings = 8
-material = SubResource("StandardMaterial3D_bl5ky")
-
-[node name="HighlightRing" parent="PlayerStuff/BowGrip" unique_id=1673895402 instance=ExtResource("37_v1y0d")]
-
-[node name="Bow" parent="PlayerStuff" unique_id=2060416009 node_paths=PackedStringArray("bow_grip") instance=ExtResource("6_rjw0b")]
-process_mode = 1
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 3.5917706, 9.482362)
-freeze = true
-bow_grip = NodePath("../BowGrip")
-
-[node name="AICountViewport" type="Node3D" parent="PlayerStuff" unique_id=1649809600]
-transform = Transform3D(-0.7071067, 0, 0.7071068, 0, 1, 0, -0.7071068, 0, -0.7071067, -2.3541932, 3.697219, 10.430218)
-
-[node name="Viewport2Din3D" parent="PlayerStuff/AICountViewport" unique_id=1649809601 instance=ExtResource("11_v2din")]
-screen_size = Vector2(1.2, 1)
-scene = ExtResource("37_db7bw")
-unshaded = true
-scene_properties_keys = PackedStringArray("ai_count_control.gd")
-
-[node name="XRPlayer" parent="." unique_id=841158329 instance=ExtResource("10_a14ph")]
-
-[node name="Quiver" parent="XRPlayer" unique_id=832813409 instance=ExtResource("5_5cd4w")]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 1.8913216e-08, 3.4418645, 8.544522)
-
-[node name="AttackerArea" type="Node3D" parent="." unique_id=992782613]
-process_mode = 1
-
-[node name="Catapult" parent="AttackerArea" unique_id=188247881 node_paths=PackedStringArray("gate_target") instance=ExtResource("15_ka738")]
-transform = Transform3D(0.8660254, 0, -0.5, 0, 1, 0, 0.5, 0, 0.8660254, -5.096862, 0, 19.91023)
-gate_target = NodePath("../../Castle/Gate")
-
-[node name="Catapult2" parent="AttackerArea" unique_id=1689200855 node_paths=PackedStringArray("gate_target") instance=ExtResource("15_ka738")]
-transform = Transform3D(0.8660254, 0, 0.5, 0, 1, 0, -0.5, 0, 0.8660254, 4.903138, 0, 19.91023)
-gate_target = NodePath("../../Castle/Gate")
-
-[node name="BombSpawner" type="Node3D" parent="AttackerArea" unique_id=1326014235]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.21217847, 21.976915)
-script = ExtResource("15_a11e3")
-bomb_scene = ExtResource("16_a11e3")
-
-[node name="OmniLight3D" type="OmniLight3D" parent="AttackerArea" unique_id=834231079]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.146478, 0.43510354, 20.759546)
-visible = false
-light_color = Color(1, 0.8392157, 0.7607843, 1)
-light_energy = 0.5
-omni_range = 8.0
-omni_attenuation = 0.3
-
-[node name="OmniLight3D2" type="OmniLight3D" parent="AttackerArea" unique_id=625417941]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.3139596, 0.43510354, 20.759546)
-visible = false
-light_color = Color(1, 0.8392157, 0.7607843, 1)
-light_energy = 0.5
-omni_range = 8.0
-omni_attenuation = 0.3
-
-[node name="DebugCam" type="Camera3D" parent="." unique_id=16717419]
-transform = Transform3D(-2.3962064e-08, 0.7071068, -0.7071067, 3.996154e-08, 0.70710677, 0.7071068, 1, -1.1313338e-08, -4.5200814e-08, -13.407134, 14.789278, 9.832031)
-
-[node name="PlayerSpawner" type="Node3D" parent="." unique_id=290112290 groups=["player_spawner"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 27)
-script = ExtResource("14_jv2d0")
-player_scene = ExtResource("5_fps")
-metadata/_custom_type_script = "uid://b1f1y52jugtns"
-
-[node name="UI" type="CanvasLayer" parent="." unique_id=1505173331]
-process_mode = 3
-layer = 10
-
-[node name="Control" type="Control" parent="UI" unique_id=201754404]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
+[node name="Control" parent="CanvasLayer" parent_id_path=PackedInt32Array(10000005) index="0" unique_id=871214352]
 theme = ExtResource("18_3sspo")
 
-[node name="GameUI" type="Control" parent="UI/Control" unique_id=2013505135]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-grow_horizontal = 2
-
-[node name="MarginContainer2" type="MarginContainer" parent="UI/Control/GameUI" unique_id=1482534056]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -266.0
-offset_right = 266.0
-offset_bottom = 73.0
-grow_horizontal = 2
-
-[node name="GameInfo" parent="UI/Control/GameUI/MarginContainer2" unique_id=888080614 instance=ExtResource("44_1yni0")]
-layout_mode = 2
-
-[node name="ProgressBar" parent="UI/Control/GameUI/MarginContainer2/GameInfo" index="0" unique_id=863764442 node_paths=PackedStringArray("hurtbox")]
-hurtbox = NodePath("../../../../../../Castle/Gate/GateHurtBox")
-
-[node name="PlayTime" parent="UI/Control/GameUI/MarginContainer2/GameInfo" index="1" unique_id=1401510058 node_paths=PackedStringArray("timer")]
-timer = NodePath("../../../../../../PlayTime")
-
-[node name="MarginContainer" type="MarginContainer" parent="UI/Control/GameUI" unique_id=415818585]
-layout_mode = 0
-offset_right = 132.0
-offset_bottom = 75.0
-
-[node name="Label" type="Label" parent="UI/Control/GameUI/MarginContainer" unique_id=395233643 node_paths=PackedStringArray("timer")]
-visible = false
-layout_mode = 2
-text = "00:00"
-script = ExtResource("39_88pht")
-timer = NodePath("../../../../../PlayTime")
-
-[node name="PrepareUI" type="Control" parent="UI/Control" unique_id=165486963]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="ColorRect2" type="ColorRect" parent="UI/Control/PrepareUI" unique_id=1601733365]
+[node name="ColorRect2" type="ColorRect" parent="CanvasLayer/Control/PrepareUI" parent_id_path=PackedInt32Array(10000006) index="0" unique_id=1601733365]
 material = SubResource("ShaderMaterial_l2qex")
 layout_mode = 1
 anchors_preset = 15
@@ -634,7 +313,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="CenterContainer" type="MarginContainer" parent="UI/Control/PrepareUI" unique_id=861934814]
+[node name="CenterContainer" type="MarginContainer" parent="CanvasLayer/Control/PrepareUI" parent_id_path=PackedInt32Array(10000006) index="1" unique_id=861934814]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -645,16 +324,16 @@ offset_bottom = 239.0
 grow_horizontal = 2
 theme_override_constants/margin_top = 90
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/Control/PrepareUI/CenterContainer" unique_id=318622999]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/PrepareUI/CenterContainer" index="0" unique_id=318622999]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UI/Control/PrepareUI/CenterContainer/VBoxContainer" unique_id=1817654707]
+[node name="Label" type="Label" parent="CanvasLayer/Control/PrepareUI/CenterContainer/VBoxContainer" index="0" unique_id=1817654707]
 layout_mode = 2
 theme_type_variation = &"LabelLarge"
 text = "Destroy the gate within the time limit"
 horizontal_alignment = 1
 
-[node name="TutorialGuide" type="MarginContainer" parent="UI/Control/PrepareUI" unique_id=1509656955]
+[node name="TutorialGuide" type="MarginContainer" parent="CanvasLayer/Control/PrepareUI" parent_id_path=PackedInt32Array(10000006) index="2" unique_id=1509656955]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -666,47 +345,47 @@ offset_bottom = 389.0
 grow_horizontal = 2
 mouse_filter = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/Control/PrepareUI/TutorialGuide" unique_id=1559270343]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/PrepareUI/TutorialGuide" index="0" unique_id=1559270343]
 layout_mode = 2
 theme_override_constants/separation = 64
 alignment = 1
 
-[node name="CatapultGuide" type="VBoxContainer" parent="UI/Control/PrepareUI/TutorialGuide/HBoxContainer" unique_id=1661185424]
+[node name="CatapultGuide" type="VBoxContainer" parent="CanvasLayer/Control/PrepareUI/TutorialGuide/HBoxContainer" index="0" unique_id=1661185424]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="UI/Control/PrepareUI/TutorialGuide/HBoxContainer/CatapultGuide" unique_id=520131309]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control/PrepareUI/TutorialGuide/HBoxContainer/CatapultGuide" index="0" unique_id=520131309]
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
 texture = ExtResource("51_guide4")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="UI/Control/PrepareUI/TutorialGuide/HBoxContainer/CatapultGuide" unique_id=660733254]
+[node name="Label" type="Label" parent="CanvasLayer/Control/PrepareUI/TutorialGuide/HBoxContainer/CatapultGuide" index="1" unique_id=660733254]
 layout_mode = 2
 text = "Stand near catapult"
 horizontal_alignment = 1
 
-[node name="Label" type="Label" parent="UI/Control/PrepareUI/TutorialGuide/HBoxContainer" unique_id=356068233]
+[node name="Label" type="Label" parent="CanvasLayer/Control/PrepareUI/TutorialGuide/HBoxContainer" index="1" unique_id=356068233]
 layout_mode = 2
 text = "OR"
 
-[node name="BombGuide" type="VBoxContainer" parent="UI/Control/PrepareUI/TutorialGuide/HBoxContainer" unique_id=1048067668]
+[node name="BombGuide" type="VBoxContainer" parent="CanvasLayer/Control/PrepareUI/TutorialGuide/HBoxContainer" index="2" unique_id=1048067668]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="UI/Control/PrepareUI/TutorialGuide/HBoxContainer/BombGuide" unique_id=1084988677]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control/PrepareUI/TutorialGuide/HBoxContainer/BombGuide" index="0" unique_id=1084988677]
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
 texture = ExtResource("52_guide5")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="UI/Control/PrepareUI/TutorialGuide/HBoxContainer/BombGuide" unique_id=980615262]
+[node name="Label" type="Label" parent="CanvasLayer/Control/PrepareUI/TutorialGuide/HBoxContainer/BombGuide" index="1" unique_id=980615262]
 layout_mode = 2
 text = "Take bomb to the gate
 (increases firepower 🔥)"
 horizontal_alignment = 1
 
-[node name="SkillSelect" type="CenterContainer" parent="UI/Control/PrepareUI" unique_id=289904384 node_paths=PackedStringArray("player_list", "skill_select_text", "player_container")]
+[node name="SkillSelect" type="CenterContainer" parent="CanvasLayer/Control/PrepareUI" parent_id_path=PackedInt32Array(10000006) index="3" unique_id=289904384 node_paths=PackedStringArray("player_list", "skill_select_text", "player_container")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -720,55 +399,435 @@ skill_select_text = NodePath("VBoxContainer/Label")
 player_select = ExtResource("44_ynw0o")
 player_container = NodePath("VBoxContainer/PlayerContainer")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/Control/PrepareUI/SkillSelect" unique_id=1927240254]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/PrepareUI/SkillSelect" index="0" unique_id=1927240254]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UI/Control/PrepareUI/SkillSelect/VBoxContainer" unique_id=124138132]
+[node name="Label" type="Label" parent="CanvasLayer/Control/PrepareUI/SkillSelect/VBoxContainer" index="0" unique_id=124138132]
 layout_mode = 2
 text = "Ready (0/10)"
 horizontal_alignment = 1
 
-[node name="PlayerContainer" type="HFlowContainer" parent="UI/Control/PrepareUI/SkillSelect/VBoxContainer" unique_id=1548005917]
+[node name="PlayerContainer" type="HFlowContainer" parent="CanvasLayer/Control/PrepareUI/SkillSelect/VBoxContainer" index="1" unique_id=1548005917]
 layout_mode = 2
 size_flags_vertical = 8
 alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/Control" unique_id=1711662503]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -32.0
-offset_bottom = 32.0
-grow_horizontal = 0
+[node name="GameUI" parent="CanvasLayer/Control" index="1" unique_id=10000007]
+visible = true
+anchors_preset = 10
+anchor_bottom = 0.0
+grow_vertical = 1
 
-[node name="PlayerList" type="VBoxContainer" parent="UI/Control/MarginContainer" unique_id=370788784]
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/GameUI" index="0" unique_id=1482534056]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -266.0
+offset_right = 266.0
+offset_bottom = 73.0
+grow_horizontal = 2
+
+[node name="GameInfo" parent="CanvasLayer/Control/GameUI/MarginContainer2" index="0" unique_id=888080614 instance=ExtResource("44_1yni0")]
 layout_mode = 2
-mouse_filter = 0
-script = ExtResource("40_vf04h")
-player_scene = ExtResource("40_bl5ky")
 
-[node name="SpawnHint" parent="UI/Control" unique_id=293092644 instance=ExtResource("46_spwnh")]
-layout_mode = 1
+[node name="ProgressBar" parent="CanvasLayer/Control/GameUI/MarginContainer2/GameInfo" index="0" unique_id=863764442 node_paths=PackedStringArray("hurtbox")]
+hurtbox = NodePath("../../../../../../BaseSceneContent/Castle/Gate/GateHurtBox")
 
-[node name="DesktopGameover" parent="UI/Control" unique_id=1515103639 instance=ExtResource("53_dkgov")]
+[node name="PlayTime" parent="CanvasLayer/Control/GameUI/MarginContainer2/GameInfo" index="1" unique_id=1401510058 node_paths=PackedStringArray("timer")]
+timer = NodePath("../../../../../../PlayTime")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/GameUI" index="1" unique_id=415818585]
+layout_mode = 0
+offset_right = 132.0
+offset_bottom = 75.0
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/GameUI/MarginContainer" index="0" unique_id=395233643 node_paths=PackedStringArray("timer")]
 visible = false
+layout_mode = 2
+text = "00:00"
+script = ExtResource("39_88pht")
+timer = NodePath("../../../../../PlayTime")
+
+[node name="SpawnHint" parent="CanvasLayer/Control" index="4" unique_id=293092644 instance=ExtResource("46_spwnh")]
 layout_mode = 1
 
-[node name="AISpawner" type="Node" parent="." unique_id=1649809598 node_paths=PackedStringArray("player_spawner")]
-script = ExtResource("39_ofmg5")
-player_spawner = NodePath("../PlayerSpawner")
+[node name="ProtonScatter" type="Node3D" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="0" unique_id=1216591199]
+process_mode = 3
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 9.613975)
+script = ExtResource("24_0cjve")
+modifier_stack = SubResource("Resource_1yni0")
+Performance/use_chunks = true
+Performance/chunk_dimensions = Vector3(15, 15, 15)
+metadata/_custom_type_script = "uid://3jl51qajvpsq"
 
-[node name="ArrowSpawner" type="Node" parent="." unique_id=2125171714]
+[node name="ScatterItem" type="Node3D" parent="BaseSceneContent/ProtonScatter" index="0" unique_id=1906777359]
+script = ExtResource("31_bd7o1")
+path = "uid://cfonwco1l720v"
+
+[node name="ScatterShape" type="Node3D" parent="BaseSceneContent/ProtonScatter" index="1" unique_id=853759411]
+transform = Transform3D(1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, 1, 0, 0, -0.76452637)
+script = ExtResource("32_88pht")
+shape = SubResource("Resource_0cjve")
+
+[node name="ProtonScatterShape" type="Node3D" parent="BaseSceneContent/ProtonScatter" index="2" unique_id=1495473633]
+transform = Transform3D(0.9999627, 0, -0.008639272, 0, 1, 0, 0.008639272, 0, 0.9999627, 0, 0, 9.053248)
+script = ExtResource("32_88pht")
+negative = true
+shape = SubResource("Resource_88pht")
+metadata/_custom_type_script = "uid://4f6ju7rd45me"
+
+[node name="ProtonScatterShape2" type="Node3D" parent="BaseSceneContent/ProtonScatter" index="3" unique_id=645814821]
+transform = Transform3D(0.9999627, 0, -0.008639272, 0, 1, 0, 0.008639272, 0, 0.9999627, 0, 0, -8.720244)
+script = ExtResource("32_88pht")
+negative = true
+shape = SubResource("Resource_vf04h")
+metadata/_custom_type_script = "uid://4f6ju7rd45me"
+
+[node name="ground2" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="1" unique_id=1645877463 instance=ExtResource("3_6gm0b")]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 9.613975)
+
+[node name="ground" parent="BaseSceneContent/ground2" index="0" unique_id=1046452520]
+layers = 512
+surface_material_override/0 = SubResource("StandardMaterial3D_lhggn")
+
+[node name="Ground" type="CSGBox3D" parent="BaseSceneContent/ground2" index="1" unique_id=1900245130]
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, -0.0025, 0.096192405)
+visible = false
+use_collision = true
+collision_mask = 0
+size = Vector3(60, 0.5, 60)
+material = SubResource("Mat_Ground")
+
+[node name="Castle" type="Node3D" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="2" unique_id=775708432]
+
+[node name="Sieges" type="Node3D" parent="BaseSceneContent/Castle" index="0" unique_id=1340414529]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.1227534)
+
+[node name="Siege" parent="BaseSceneContent/Castle/Sieges" index="0" unique_id=1114204689 node_paths=PackedStringArray("target_pos") instance=ExtResource("19_db7bw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.4057434)
+target_pos = NodePath("../../Target")
+
+[node name="Siege2" parent="BaseSceneContent/Castle/Sieges" index="1" unique_id=844545751 node_paths=PackedStringArray("target_pos") instance=ExtResource("19_db7bw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -1.4057434)
+target_pos = NodePath("../../Target")
+
+[node name="Siege3" parent="BaseSceneContent/Castle/Sieges" index="2" unique_id=965723452 node_paths=PackedStringArray("target_pos") instance=ExtResource("19_db7bw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -1.4057434)
+target_pos = NodePath("../../Target")
+
+[node name="Siege4" parent="BaseSceneContent/Castle/Sieges" index="3" unique_id=1275891654 node_paths=PackedStringArray("target_pos") instance=ExtResource("19_db7bw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -1.4057434)
+target_pos = NodePath("../../Target")
+
+[node name="Siege5" parent="BaseSceneContent/Castle/Sieges" index="4" unique_id=1461689863 node_paths=PackedStringArray("target_pos") instance=ExtResource("19_db7bw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -1.4057434)
+target_pos = NodePath("../../Target")
+
+[node name="Siege6" parent="BaseSceneContent/Castle/Sieges" index="5" unique_id=230589461 node_paths=PackedStringArray("target_pos") instance=ExtResource("19_db7bw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -1.4057434)
+target_pos = NodePath("../../Target")
+
+[node name="Siege7" parent="BaseSceneContent/Castle/Sieges" index="6" unique_id=2023353571 node_paths=PackedStringArray("target_pos") instance=ExtResource("19_db7bw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -1.4057434)
+target_pos = NodePath("../../Target")
+
+[node name="Siege8" parent="BaseSceneContent/Castle/Sieges" index="7" unique_id=1161892 node_paths=PackedStringArray("target_pos") instance=ExtResource("19_db7bw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -1.4057434)
+target_pos = NodePath("../../Target")
+
+[node name="Siege9" parent="BaseSceneContent/Castle/Sieges" index="8" unique_id=1853180231 node_paths=PackedStringArray("target_pos") instance=ExtResource("19_db7bw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -1.4057434)
+target_pos = NodePath("../../Target")
+
+[node name="Meshes" type="Node3D" parent="BaseSceneContent/Castle" index="1" unique_id=577322639]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 9)
+
+[node name="wall-corner-half-tower2" parent="BaseSceneContent/Castle/Meshes" index="0" unique_id=385722822 instance=ExtResource("18_iwc37")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
+
+[node name="wall-corner-half-tower3" parent="BaseSceneContent/Castle/Meshes" index="1" unique_id=29408354 instance=ExtResource("18_iwc37")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -3, 0, 0)
+
+[node name="wall-half2" parent="BaseSceneContent/Castle/Meshes" index="2" unique_id=1982137504 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 2, 0, 0)
+
+[node name="wall-half5" parent="BaseSceneContent/Castle/Meshes" index="3" unique_id=435332828 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1, 0, 0)
+
+[node name="wall-half6" parent="BaseSceneContent/Castle/Meshes" index="4" unique_id=482370117 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
+
+[node name="wall-half7" parent="BaseSceneContent/Castle/Meshes" index="5" unique_id=1279651479 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -1, 0, 0)
+
+[node name="wall-half9" parent="BaseSceneContent/Castle/Meshes" index="6" unique_id=1359731565 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2, 0, 0)
+
+[node name="wall-corner-half-tower4" parent="BaseSceneContent/Castle/Meshes" index="7" unique_id=1620192409 instance=ExtResource("18_iwc37")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -3, 0, -6.9999995)
+
+[node name="wall-corner-half-tower5" parent="BaseSceneContent/Castle/Meshes" index="8" unique_id=1884249022 instance=ExtResource("18_iwc37")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 3, 0, -7.0000005)
+
+[node name="wall-half11" parent="BaseSceneContent/Castle/Meshes" index="9" unique_id=1850537139 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, -2, 0, -6.9999995)
+
+[node name="wall-half13" parent="BaseSceneContent/Castle/Meshes" index="10" unique_id=311386548 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, -1, 0, -7)
+
+[node name="wall-half14" parent="BaseSceneContent/Castle/Meshes" index="11" unique_id=1844397769 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, 0, 0, -7)
+
+[node name="wall-half15" parent="BaseSceneContent/Castle/Meshes" index="12" unique_id=1053998227 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, 1, 0, -7)
+
+[node name="wall-half17" parent="BaseSceneContent/Castle/Meshes" index="13" unique_id=463529213 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, 2, 0, -7.0000005)
+
+[node name="wall-half3" parent="BaseSceneContent/Castle/Meshes" index="14" unique_id=1560986168 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(-1, 0, -2.9802322e-08, 0, 1, 0, 2.9802322e-08, 0, -1, 3, 0, -1)
+
+[node name="wall-half10" parent="BaseSceneContent/Castle/Meshes" index="15" unique_id=77569342 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(-1, 0, -2.9802322e-08, 0, 1, 0, 2.9802322e-08, 0, -1, 3, 0, -2)
+
+[node name="wall-half18" parent="BaseSceneContent/Castle/Meshes" index="16" unique_id=573220839 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(-1, 0, -2.9802322e-08, 0, 1, 0, 2.9802322e-08, 0, -1, 3, 0, -3)
+
+[node name="wall-half19" parent="BaseSceneContent/Castle/Meshes" index="17" unique_id=129238690 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(-1, 0, -2.9802322e-08, 0, 1, 0, 2.9802322e-08, 0, -1, 3, 0, -4)
+
+[node name="wall-half20" parent="BaseSceneContent/Castle/Meshes" index="18" unique_id=885895978 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(-1, 0, -2.9802322e-08, 0, 1, 0, 2.9802322e-08, 0, -1, 3, 0, -5)
+
+[node name="wall-half21" parent="BaseSceneContent/Castle/Meshes" index="19" unique_id=269128035 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(-1, 0, -2.9802322e-08, 0, 1, 0, 2.9802322e-08, 0, -1, 3, 0, -5)
+
+[node name="wall-half22" parent="BaseSceneContent/Castle/Meshes" index="20" unique_id=1445633493 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(-1, 0, -2.9802322e-08, 0, 1, 0, 2.9802322e-08, 0, -1, 3, 0, -6)
+
+[node name="wall-half23" parent="BaseSceneContent/Castle/Meshes" index="21" unique_id=604003157 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(1, 0, 1.172251e-07, 0, 1, 0, -1.172251e-07, 0, 1, -3, 0, -6)
+
+[node name="wall-half24" parent="BaseSceneContent/Castle/Meshes" index="22" unique_id=83588062 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(1, 0, 1.172251e-07, 0, 1, 0, -1.172251e-07, 0, 1, -3, 0, -5)
+
+[node name="wall-half25" parent="BaseSceneContent/Castle/Meshes" index="23" unique_id=2109413933 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(1, 0, 1.172251e-07, 0, 1, 0, -1.172251e-07, 0, 1, -3, 0, -4)
+
+[node name="wall-half26" parent="BaseSceneContent/Castle/Meshes" index="24" unique_id=829264892 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(1, 0, 1.172251e-07, 0, 1, 0, -1.172251e-07, 0, 1, -3, 0, -3)
+
+[node name="wall-half27" parent="BaseSceneContent/Castle/Meshes" index="25" unique_id=1764270048 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(1, 0, 1.172251e-07, 0, 1, 0, -1.172251e-07, 0, 1, -3, 0, -2)
+
+[node name="wall-half28" parent="BaseSceneContent/Castle/Meshes" index="26" unique_id=773274247 instance=ExtResource("24_bm3dj")]
+transform = Transform3D(1, 0, 1.172251e-07, 0, 1, 0, -1.172251e-07, 0, 1, -3, 0, -1)
+
+[node name="gate2" parent="BaseSceneContent/Castle/Meshes" index="27" unique_id=1894293227 instance=ExtResource("15_fh86t")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0.5036373)
+
+[node name="Gate" type="Node3D" parent="BaseSceneContent/Castle" index="2" unique_id=15485347]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+
+[node name="HealthSprite" type="Sprite3D" parent="BaseSceneContent/Castle/Gate" index="0" unique_id=1044044621]
+transform = Transform3D(-0.39999965, -0.0005208181, -0.00012668983, -0.00036939012, 0.19934277, 0.3467886, -0.0003883977, 0.34678838, -0.19934309, 0, 2.466334, -0.6953745)
+layers = 262144
+texture = SubResource("ViewportTexture_ofmg5")
+
+[node name="SubViewport" type="SubViewport" parent="BaseSceneContent/Castle/Gate/HealthSprite" index="0" unique_id=701243658]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(320, 200)
+
+[node name="MarginContainer" type="MarginContainer" parent="BaseSceneContent/Castle/Gate/HealthSprite/SubViewport" index="0" unique_id=1897607104]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("18_3sspo")
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="GameInfo" parent="BaseSceneContent/Castle/Gate/HealthSprite/SubViewport/MarginContainer" index="0" unique_id=107870123 instance=ExtResource("44_1yni0")]
+layout_mode = 2
+
+[node name="ProgressBar" parent="BaseSceneContent/Castle/Gate/HealthSprite/SubViewport/MarginContainer/GameInfo" index="0" unique_id=863764442 node_paths=PackedStringArray("hurtbox")]
+hurtbox = NodePath("../../../../../GateHurtBox")
+
+[node name="PlayTime" parent="BaseSceneContent/Castle/Gate/HealthSprite/SubViewport/MarginContainer/GameInfo" index="1" unique_id=1401510058 node_paths=PackedStringArray("timer")]
+timer = NodePath("../../../../../../../../PlayTime")
+
+[node name="GateHurtBox" type="Area3D" parent="BaseSceneContent/Castle/Gate" index="1" unique_id=1814912010]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1601243, 0)
+collision_layer = 64
+collision_mask = 0
+script = ExtResource("9_hurtbox")
+
+[node name="GateHitShape" type="CollisionShape3D" parent="BaseSceneContent/Castle/Gate/GateHurtBox" index="0" unique_id=105378868]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7044847, 0)
+shape = SubResource("Shape_GateHurt")
+
+[node name="VRPlatform" type="StaticBody3D" parent="BaseSceneContent/Castle" index="3" unique_id=1078185124]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.875063, 7.955576)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BaseSceneContent/Castle/VRPlatform" index="0" unique_id=679345197]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.2202148, -0.47700882)
+shape = SubResource("BoxShape3D_a14ph")
+debug_color = Color(0.9933772, 0, 0.24780053, 1)
+
+[node name="DesktopWalls" type="StaticBody3D" parent="BaseSceneContent/Castle" index="4" unique_id=314901466]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20.20641)
+collision_layer = 8
+collision_mask = 0
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="BaseSceneContent/Castle/DesktopWalls" index="0" unique_id=1259550256]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.9889607, 1.3662665, -10.199821)
+shape = SubResource("CylinderShape3D_sl1b2")
+
+[node name="CollisionShape3D6" type="CollisionShape3D" parent="BaseSceneContent/Castle/DesktopWalls" index="1" unique_id=1672965183]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.0202622, 1.3662665, -10.199821)
+shape = SubResource("CylinderShape3D_sl1b2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BaseSceneContent/Castle/DesktopWalls" index="2" unique_id=573861309]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.85961, 0, 0)
+shape = SubResource("BoxShape3D_sl1b2")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="BaseSceneContent/Castle/DesktopWalls" index="3" unique_id=1039609530]
+transform = Transform3D(0, 0, 1.0000001, 0, 1, 0, -1.0000001, 0, 0, -0.18380165, -0.018556595, -10.653589)
+shape = SubResource("BoxShape3D_sl1b2")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="BaseSceneContent/Castle/DesktopWalls" index="4" unique_id=1533091175]
+transform = Transform3D(0, 0, 1.0000001, 0, 1, 0, -1.0000001, 0, 0, -0.18380165, 0, 10.414789)
+shape = SubResource("BoxShape3D_sl1b2")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="BaseSceneContent/Castle/DesktopWalls" index="5" unique_id=62748941]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.541611, 0, 0)
+shape = SubResource("BoxShape3D_sl1b2")
+
+[node name="Target" type="Marker3D" parent="BaseSceneContent/Castle" index="5" unique_id=1411823520]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.912239, 18.120232)
+
+[node name="PlayerStuff" type="Node3D" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="3" unique_id=980876473]
+
+[node name="ArrowTypes" type="Node3D" parent="BaseSceneContent/PlayerStuff" index="0" unique_id=900118082]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8906732, 9.864026)
+
+[node name="FireOrb" parent="BaseSceneContent/PlayerStuff/ArrowTypes" index="0" unique_id=107013500 instance=ExtResource("5_a14ph")]
+
+[node name="IceOrb" parent="BaseSceneContent/PlayerStuff/ArrowTypes" index="1" unique_id=1158891516 instance=ExtResource("5_a14ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.0003528595, 0)
+element = 2
+
+[node name="LightningOrb" parent="BaseSceneContent/PlayerStuff/ArrowTypes" index="2" unique_id=759223450 instance=ExtResource("5_a14ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, -0.0003528595, 0)
+element = 3
+
+[node name="BowGrip" parent="BaseSceneContent/PlayerStuff" index="1" unique_id=777328390 instance=ExtResource("6_a14ph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 3.308353, 8.449216)
+visible = false
+enabled = false
+
+[node name="CollisionShape3D" parent="BaseSceneContent/PlayerStuff/BowGrip" index="0" unique_id=1198871219]
+shape = SubResource("SphereShape3D_g2kc1")
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="BaseSceneContent/PlayerStuff/BowGrip" index="1" unique_id=1601548907]
+visible = false
+material_overlay = SubResource("ShaderMaterial_313of")
+radius = 0.03
+radial_segments = 8
+rings = 8
+material = SubResource("StandardMaterial3D_bl5ky")
+
+[node name="HighlightRing" parent="BaseSceneContent/PlayerStuff/BowGrip" index="2" unique_id=1673895402 instance=ExtResource("37_v1y0d")]
+
+[node name="Bow" parent="BaseSceneContent/PlayerStuff" index="2" unique_id=2060416009 node_paths=PackedStringArray("bow_grip") instance=ExtResource("6_rjw0b")]
+process_mode = 1
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 3.5917706, 9.482362)
+freeze = true
+bow_grip = NodePath("../BowGrip")
+
+[node name="AICountViewport" type="Node3D" parent="BaseSceneContent/PlayerStuff" index="3" unique_id=1649809600]
+transform = Transform3D(-0.7071067, 0, 0.7071068, 0, 1, 0, -0.7071068, 0, -0.7071067, -2.3541932, 3.697219, 10.430218)
+
+[node name="Viewport2Din3D" parent="BaseSceneContent/PlayerStuff/AICountViewport" index="0" unique_id=1649809601 instance=ExtResource("11_v2din")]
+screen_size = Vector2(1.2, 1)
+scene = ExtResource("37_db7bw")
+unshaded = true
+scene_properties_keys = PackedStringArray("ai_count_control.gd")
+
+[node name="AttackerArea" type="Node3D" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="4" unique_id=992782613]
+process_mode = 1
+
+[node name="Catapult" parent="BaseSceneContent/AttackerArea" index="0" unique_id=188247881 node_paths=PackedStringArray("gate_target") instance=ExtResource("15_ka738")]
+transform = Transform3D(0.8660254, 0, -0.5, 0, 1, 0, 0.5, 0, 0.8660254, -5.096862, 0, 19.91023)
+gate_target = NodePath("../../Castle/Gate")
+
+[node name="Catapult2" parent="BaseSceneContent/AttackerArea" index="1" unique_id=1689200855 node_paths=PackedStringArray("gate_target") instance=ExtResource("15_ka738")]
+transform = Transform3D(0.8660254, 0, 0.5, 0, 1, 0, -0.5, 0, 0.8660254, 4.903138, 0, 19.91023)
+gate_target = NodePath("../../Castle/Gate")
+
+[node name="BombSpawner" type="Node3D" parent="BaseSceneContent/AttackerArea" index="2" unique_id=1326014235]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.21217847, 21.976915)
+script = ExtResource("15_a11e3")
+bomb_scene = ExtResource("16_a11e3")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="BaseSceneContent/AttackerArea" index="3" unique_id=834231079]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.146478, 0.43510354, 20.759546)
+visible = false
+light_color = Color(1, 0.8392157, 0.7607843, 1)
+light_energy = 0.5
+omni_range = 8.0
+omni_attenuation = 0.3
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="BaseSceneContent/AttackerArea" index="4" unique_id=625417941]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.3139596, 0.43510354, 20.759546)
+visible = false
+light_color = Color(1, 0.8392157, 0.7607843, 1)
+light_energy = 0.5
+omni_range = 8.0
+omni_attenuation = 0.3
+
+[node name="PlayerSpawner" type="Node3D" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="5" unique_id=290112290 groups=["player_spawner"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 27)
+script = ExtResource("14_jv2d0")
+player_scene = ExtResource("5_fps")
+metadata/_custom_type_script = "uid://b1f1y52jugtns"
+
+[node name="DebugCam" type="Camera3D" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="6" unique_id=16717419]
+transform = Transform3D(-2.3962064e-08, 0.7071068, -0.7071067, 3.996154e-08, 0.70710677, 0.7071068, 1, -1.1313338e-08, -4.5200814e-08, -13.407134, 14.789278, 9.832031)
+
+[node name="PlayTime" type="Timer" parent="." index="7" unique_id=96472218]
+wait_time = 180.0
+one_shot = true
+
+[node name="AISpawner" type="Node" parent="." index="8" unique_id=1649809598 node_paths=PackedStringArray("player_spawner")]
+script = ExtResource("39_ofmg5")
+player_spawner = NodePath("../BaseSceneContent/PlayerSpawner")
+
+[node name="ArrowSpawner" type="Node" parent="." index="9" unique_id=2125171714]
 script = ExtResource("54_l2qex")
 metadata/_custom_type_script = "uid://nxdpp3mdtdtw"
 
-[node name="WinSound" type="AudioStreamPlayer3D" parent="." unique_id=1769420737]
+[node name="WinSound" type="AudioStreamPlayer3D" parent="." index="10" unique_id=1769420737]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1002827, 0)
 stream = ExtResource("53_dwc66")
 
-[editable path="ground2"]
-[editable path="Castle/Meshes/gate2"]
-[editable path="Castle/Gate/HealthSprite/SubViewport/MarginContainer/GameInfo"]
-[editable path="PlayerStuff/BowGrip"]
-[editable path="UI/Control/GameUI/MarginContainer2/GameInfo"]
+[editable path="XRPlayer"]
+[editable path="XRPlayer/StartXR"]
+[editable path="XRPlayer/SubViewport/CameraFollow3D/Viewport2Din3D2"]
+[editable path="XRPlayer/SubViewport/XRPlayer/PlayerBody/Body/characterMedium"]
+[editable path="XRPlayer/SubViewport/XRPlayer/LeftHand/LeftHand"]
+[editable path="XRPlayer/SubViewport/XRPlayer/LeftHand/LeftHand/Hand_Nails_low_L"]
+[editable path="XRPlayer/SubViewport/XRPlayer/RightHand/RightHand"]
+[editable path="XRPlayer/SubViewport/XRPlayer/RightHand/RightHand/Hand_Nails_low_R"]
+[editable path="CanvasLayer/Control/GameUI/MarginContainer2/GameInfo"]
+[editable path="BaseSceneContent/ground2"]
+[editable path="BaseSceneContent/Castle/Meshes/gate2"]
+[editable path="BaseSceneContent/Castle/Gate/HealthSprite/SubViewport/MarginContainer/GameInfo"]
+[editable path="BaseSceneContent/PlayerStuff/BowGrip"]

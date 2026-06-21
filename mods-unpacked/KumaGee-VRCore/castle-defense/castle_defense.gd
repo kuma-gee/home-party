@@ -20,9 +20,9 @@ signal game_started
 
 @onready var play_time: Timer = $PlayTime
 @onready var ai_spawner: AISpawner = $AISpawner
-@onready var bomb_spawner: BombSpawner = $AttackerArea/BombSpawner
+@onready var bomb_spawner: BombSpawner = $BaseSceneContent/AttackerArea/BombSpawner
 @onready var win_sound: AudioStreamPlayer3D = $WinSound
-@onready var health_sprite: Sprite3D = $Castle/Gate/HealthSprite
+@onready var health_sprite: Sprite3D = $BaseSceneContent/Castle/Gate/HealthSprite
 
 var logger := KumaLog.new("CastleDefense")
 var gate_destroyed := false
