@@ -41,7 +41,7 @@ visible live on the shared desktop screen for everyone to see.
 
 | Tool     | Input                          | Behavior |
 |----------|--------------------------------|----------|
-| Brush    | Grip + trigger hold            | Draws a continuous 3D line while trigger is held |
+| Brush    | Grip + trigger hold            | Draws a continuous 3D line while trigger is held. **3 brush sizes** available — Small (0.01), Medium (0.03), Large (0.06) — grab the desired brush from the back of the color palette |
 | Color    | Dip brush tip into color swatch| Selects a new color from the palette |
 | Eraser   | Touch lines with eraser        | Erases the line |
 | Clear    | Hold brush in eraser for 3s    | Clears all drawn strokes |
@@ -52,6 +52,8 @@ visible live on the shared desktop screen for everyone to see.
 - Black, Red, Blue, Green, Yellow, White (default)
 - The palette can be grabbed and repositioned freely
 - Current color is shown at the tip of the brush
+- **3 brush sizes** (Small, Medium, Large) are stored on the back of the palette — grab a brush to draw and release it near the palette to snap it back
+- Each brush snaps into its own dedicated slot on the palette when released nearby
 
 ### Word Display
 

@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://pen_small"]
+
+[ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_pickable"]
+[ext_resource type="Script" uid="uid://cye53pft22yf1" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/vr_3d_pen.gd" id="2_script"]
+[ext_resource type="PackedScene" uid="uid://cvt15n0mxvrlx" path="res://assets/drawing/brush.glb" id="3_f5w4n"]
+[ext_resource type="Script" uid="uid://cdl5kcr2wvnav" path="res://addons/godot-xr-tools/objects/highlight/highlight_material.gd" id="4_r86rt"]
+[ext_resource type="Material" uid="uid://dyuaw57o8y3i" path="res://addons/godot-xr-tools/materials/highlight.tres" id="5_qy6cu"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pen"]
+radius = 0.015
+height = 0.22
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r86rt"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_pen_tip"]
+radius = 0.01
+
+[node name="PenSmall" unique_id=2000000100 node_paths=PackedStringArray("pen_tip", "pen_tip_area", "mesh") groups=["pen_small"] instance=ExtResource("1_pickable")]
+freeze = true
+script = ExtResource("2_script")
+line_thickness = 0.01
+line_color = Color(0, 0, 0, 1)
+pen_tip = NodePath("PenTip")
+pen_tip_area = NodePath("PenTip/PenTipArea")
+mesh = NodePath("brush/Brush")
+release_mode = 1
+
+[node name="CollisionShape3D" parent="." index="0" unique_id=2000000101]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.11483958, 0)
+shape = SubResource("CapsuleShape3D_pen")
+
+[node name="brush" parent="." index="1" unique_id=2000000102 instance=ExtResource("3_f5w4n")]
+transform = Transform3D(0.3, 0, 0, 0, -0.3, -9.059749e-08, 0, 9.059749e-08, -0.3, 0, 0.11920564, 0)
+
+[node name="Brush" parent="brush" index="0" unique_id=2000000107]
+surface_material_override/2 = SubResource("StandardMaterial3D_r86rt")
+
+[node name="PenTip" type="Node3D" parent="." index="2" unique_id=2000000103]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0.0010055415, 0)
+
+[node name="PenTipArea" type="Area3D" parent="PenTip" index="0" unique_id=2000000104]
+collision_mask = 512
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PenTip/PenTipArea" index="0" unique_id=2000000105]
+shape = SubResource("SphereShape3D_pen_tip")
+
+[node name="XRToolsHighlightMaterial" type="Node" parent="." index="3" unique_id=2000000106]
+script = ExtResource("4_r86rt")
+highlight_mesh_instance = NodePath("../brush/Brush")
+highlight_material = ExtResource("5_qy6cu")
+metadata/_custom_type_script = "uid://cdl5kcr2wvnav"
+
+[editable path="brush"]
