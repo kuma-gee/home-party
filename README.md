@@ -16,6 +16,7 @@
 - [Skeletons](https://kaylousberg.itch.io/kaykit-skeletons)
 - [Living Room](https://goryana.itch.io/2d-and-3d-living-room-game-assets)
 - [Halloween Room](https://goryana.itch.io/2d-and-3d-halloween-game-assets)
+- [Character Animations](https://kaylousberg.itch.io/kaykit-character-animations)
 
 ### UI
 

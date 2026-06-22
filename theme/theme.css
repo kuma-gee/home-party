@@ -3,6 +3,7 @@
     --default-separation: 8;
     --default-border-radius: 16;
     --label-outline: 16;
+    --label-large-outline: 32;
     --background-color: #222831;
     --primary-color: #00ADB5;
     --primary-highlight-color: #55CFD7;
@@ -40,13 +41,13 @@ Button:hover, Button:hover_pressed, Button:focus {
   background: var(--primary-highlight-color);
 }
 
-Label, Label.Large, Label.Small, Label.Smallest {
+Label, Label.Large, Label.Small, Label.Smallest, Label.Largest {
   color: var(--text-color);
   padding: 10 0 0 0;
   --const-outline-size: var(--label-outline);
 }
 
-Label.Large {
+Label.Largest {
   font-size: 48;
 }
 
@@ -56,6 +57,11 @@ Label.Small {
 
 Label.Smallest {
   font-size: 18;
+}
+
+Label.Largest {
+  font-size: 91;
+  --const-outline-size: var(--label-large-outline);
 }
 
 MarginContainer {

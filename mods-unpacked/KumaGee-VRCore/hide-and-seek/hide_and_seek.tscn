@@ -14,13 +14,11 @@
 [ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/ui/hide_seek_scoreboard.tscn" id="14_score"]
 [ext_resource type="Script" uid="uid://dan60ldn7uq0x" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/hide_and_seek_props.gd" id="15_props"]
 
-[node name="HideAndSeek" unique_id=1851728811 node_paths=PackedStringArray("props_manager", "vr_screen", "camera_follow") instance=ExtResource("1_base")]
+[node name="HideAndSeek" unique_id=1851728811 node_paths=PackedStringArray("props_manager") instance=ExtResource("1_base")]
 script = ExtResource("2_game")
 hud_scene = ExtResource("5_hud")
 scoreboard_scene = ExtResource("14_score")
 props_manager = NodePath("Props")
-vr_screen = NodePath("XRPlayer/SubViewport/CameraFollow3D/Viewport2Din3D2")
-camera_follow = NodePath("XRPlayer/SubViewport/CameraFollow3D")
 
 [node name="SharedScreenCamera" type="Camera3D" parent="." index="7" unique_id=1963929439]
 transform = Transform3D(0.7071, 0, -0.7071, 0, 1, 0, 0.7071, 0, 0.7071, 5, 3.5, 2)
