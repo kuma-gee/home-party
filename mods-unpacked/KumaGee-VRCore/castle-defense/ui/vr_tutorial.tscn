@@ -146,12 +146,13 @@ grow_vertical = 2
 
 [node name="MarginContainer2" type="MarginContainer" parent="." unique_id=1879504235]
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 4
 size_flags_vertical = 8
 
 [node name="Navigation" type="HBoxContainer" parent="MarginContainer2" unique_id=863350316]
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_constants/separation = 16
 alignment = 1
 
 [node name="BackButton" type="Button" parent="MarginContainer2/Navigation" unique_id=2112315533]

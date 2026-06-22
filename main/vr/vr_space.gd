@@ -11,13 +11,7 @@ signal back_to_home()
 @export var overlay_mesh: OverlayMesh
 @export var menu_function: XRToolsFunctionMenu
 @export var reset_area: Area3D
-
-@export_category("Gameover")
-@export var vr_screen: XRToolsViewport2DIn3D
-@export var gameover_scene: PackedScene
-
-@export_category("Settings")
-@export var settings_panel_scene: PackedScene
+@export var settings_viewport: XRToolsViewport2DIn3D
 
 var was_paused := false
 var _settings_panel_instance: SettingsPanel = null
@@ -26,13 +20,21 @@ func _ready() -> void:
 	menu_function.menu_opened.connect(_connect_menu)
 	menu_function.menu_closed.connect(_on_menu_closed)
 	reset_area.body_entered.connect(func(_b): reset_space())
-	vr_screen.hide()
 	pause_menu.hide()
+	
+	settings_viewport.hide()
+	_settings_panel_instance = settings_viewport.get_scene_instance()
+	_settings_panel_instance.back_pressed.connect(_on_settings_back_pressed)
 
 func _connect_menu(menu: VRMenuPanel):
 	menu.quit_pressed.connect(func(): back_to_home.emit())
 	menu.reset_space_pressed.connect(func(): reset_space())
 	menu.settings_pressed.connect(_on_settings_pressed)
+	
+	if settings_viewport.visible:
+		settings_viewport.hide()
+		return
+	
 	overlay_mesh.show_overlay()
 	pause_menu.show()
 	was_paused = get_tree().paused
@@ -42,55 +44,23 @@ func reset_space(offset: Vector3 = Vector3.ZERO):
 	offset.y = 0
 	center_player.emit(offset)
 
-func _on_menu_closed():
+func _on_menu_closed(from_settings := false):
+	if settings_viewport.visible and not from_settings:
+		return
+	
 	pause_menu.hide()
 	get_tree().paused = was_paused
 	if not get_tree().paused:
 		overlay_mesh.hide_overlay()
-
-# deprecated
-func gameover(msg: String):
-	var screen = show_screen(gameover_scene) as GameoverPanel
-	screen.back_to_menu.connect(func(): back_to_home.emit())
-	screen.restart_game.connect(func(): restart_game.emit())
-	screen.set_title(msg)
-
-	var rankings = StatsManager.get_rankings()
-	screen.set_rankings(rankings)
-
-func show_screen(screen: PackedScene):
-	#overlay_mesh.show_overlay()
-	vr_screen.set_scene(screen)
-	vr_screen.show()
-	return vr_screen.get_scene_instance()
-
-func hide_screen():
-	#overlay_mesh.hide_overlay()
-	vr_screen.hide()
+	settings_viewport.hide()
 
 func activate():
 	origin.current = true
 	camera.current = true
 
 func _on_settings_pressed():
+	settings_viewport.show()
 	menu_function.close_menu()
 
-	if not settings_panel_scene:
-		push_error("VRSpace: settings_panel_scene not assigned")
-		return
-
-	_settings_panel_instance = settings_panel_scene.instantiate() as SettingsPanel
-	menu_function.get_node("MenuAnchor").add_child(_settings_panel_instance)
-	_settings_panel_instance.back_pressed.connect(_on_settings_back_pressed)
-
-	# Keep the game paused and overlay visible while the settings panel is open
-	overlay_mesh.show_overlay()
-	pause_menu.show()
-	get_tree().paused = true
-
-
 func _on_settings_back_pressed():
-	if _settings_panel_instance:
-		_settings_panel_instance.queue_free()
-		_settings_panel_instance = null
-	_on_menu_closed()
+	_on_menu_closed(true)

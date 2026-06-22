@@ -1,165 +1,166 @@
-[gd_scene format=3 uid="uid://settings_panel_ui"]
+[gd_scene format=3 uid="uid://bdjf6cp27pwoa"]
 
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="1"]
+[ext_resource type="Script" uid="uid://d3ogxlny0nr0t" path="res://main/vr/settings_panel.gd" id="2"]
 
-[node name="SettingsPanelUI" type="PanelContainer"]
+[node name="SettingsPanelUI" type="PanelContainer" unique_id=1579951085]
+process_mode = 2
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -180.0
-offset_top = -130.0
-offset_right = 180.0
-offset_bottom = 130.0
+offset_left = -400.0
+offset_top = -300.0
+offset_right = 400.0
+offset_bottom = 300.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1")
+script = ExtResource("2")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1306751962]
 layout_mode = 2
+theme_override_constants/margin_top = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=79193691]
 layout_mode = 2
 alignment = 1
 
-[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1380676572]
 layout_mode = 2
 size_flags_horizontal = 3
-horizontal_alignment = 1
 text = "Settings"
+horizontal_alignment = 1
 
-[node name="Separator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="Separator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1564678174]
+visible = false
 layout_mode = 2
 
-[node name="AudioSectionLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="AudioSectionLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=61863835]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"LabelSmall"
 text = "-- Audio --"
 
-[node name="MasterRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="MasterRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=70556105]
 layout_mode = 2
 
-[node name="MasterLabel" type="Label" parent="MarginContainer/VBoxContainer/MasterRow"]
+[node name="MasterLabel" type="Label" parent="MarginContainer/VBoxContainer/MasterRow" unique_id=553984713]
 layout_mode = 2
 size_flags_horizontal = 0
-custom_min_size = Vector2(90, 0)
 text = "Master"
 
-[node name="MasterSlider" type="HSlider" parent="MarginContainer/VBoxContainer/MasterRow"]
+[node name="MasterSlider" type="HSlider" parent="MarginContainer/VBoxContainer/MasterRow" unique_id=2104158850]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-min = 0.0
-max = 1.0
+max_value = 1.0
 step = 0.01
 value = 1.0
 
-[node name="MasterValue" type="Label" parent="MarginContainer/VBoxContainer/MasterRow"]
+[node name="MasterValue" type="Label" parent="MarginContainer/VBoxContainer/MasterRow" unique_id=2039771091]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
-custom_min_size = Vector2(40, 0)
-horizontal_alignment = 2
 text = "100%"
+horizontal_alignment = 2
 
-[node name="SFXRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="SFXRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1891422065]
 layout_mode = 2
 
-[node name="SFXLabel" type="Label" parent="MarginContainer/VBoxContainer/SFXRow"]
+[node name="SFXLabel" type="Label" parent="MarginContainer/VBoxContainer/SFXRow" unique_id=28063631]
 layout_mode = 2
 size_flags_horizontal = 0
-custom_min_size = Vector2(90, 0)
 text = "SFX"
 
-[node name="SFXSlider" type="HSlider" parent="MarginContainer/VBoxContainer/SFXRow"]
+[node name="SFXSlider" type="HSlider" parent="MarginContainer/VBoxContainer/SFXRow" unique_id=610628515]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-min = 0.0
-max = 1.0
+max_value = 1.0
 step = 0.01
 value = 1.0
 
-[node name="SFXValue" type="Label" parent="MarginContainer/VBoxContainer/SFXRow"]
+[node name="SFXValue" type="Label" parent="MarginContainer/VBoxContainer/SFXRow" unique_id=353362270]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
-custom_min_size = Vector2(40, 0)
-horizontal_alignment = 2
 text = "100%"
+horizontal_alignment = 2
 
-[node name="MusicRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="MusicRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=807557624]
 layout_mode = 2
 
-[node name="MusicLabel" type="Label" parent="MarginContainer/VBoxContainer/MusicRow"]
+[node name="MusicLabel" type="Label" parent="MarginContainer/VBoxContainer/MusicRow" unique_id=2101120114]
 layout_mode = 2
 size_flags_horizontal = 0
-custom_min_size = Vector2(90, 0)
 text = "Music"
 
-[node name="MusicSlider" type="HSlider" parent="MarginContainer/VBoxContainer/MusicRow"]
+[node name="MusicSlider" type="HSlider" parent="MarginContainer/VBoxContainer/MusicRow" unique_id=243806721]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-min = 0.0
-max = 1.0
+max_value = 1.0
 step = 0.01
 value = 1.0
 
-[node name="MusicValue" type="Label" parent="MarginContainer/VBoxContainer/MusicRow"]
+[node name="MusicValue" type="Label" parent="MarginContainer/VBoxContainer/MusicRow" unique_id=2140036743]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
-custom_min_size = Vector2(40, 0)
-horizontal_alignment = 2
 text = "100%"
+horizontal_alignment = 2
 
-[node name="GraphicsSectionLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="GraphicsSectionLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1806890050]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"LabelSmall"
 text = "-- Graphics --"
 
-[node name="RenderScaleRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="RenderScaleRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=280175501]
 layout_mode = 2
 
-[node name="RenderScaleLabel" type="Label" parent="MarginContainer/VBoxContainer/RenderScaleRow"]
+[node name="RenderScaleLabel" type="Label" parent="MarginContainer/VBoxContainer/RenderScaleRow" unique_id=1045274020]
 layout_mode = 2
 size_flags_horizontal = 0
-custom_min_size = Vector2(90, 0)
 text = "Render Scale"
 
-[node name="RenderScaleSlider" type="HSlider" parent="MarginContainer/VBoxContainer/RenderScaleRow"]
+[node name="RenderScaleSlider" type="HSlider" parent="MarginContainer/VBoxContainer/RenderScaleRow" unique_id=508014355]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-min = 0.5
-max = 2.0
 step = 0.25
 value = 1.0
 tick_count = 7
 
-[node name="RenderScaleValue" type="Label" parent="MarginContainer/VBoxContainer/RenderScaleRow"]
+[node name="RenderScaleValue" type="Label" parent="MarginContainer/VBoxContainer/RenderScaleRow" unique_id=374637560]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
-custom_min_size = Vector2(40, 0)
-horizontal_alignment = 2
 text = "×1.0"
+horizontal_alignment = 2
 
-[node name="AntiAliasingRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="AntiAliasingRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1433646824]
 layout_mode = 2
 
-[node name="AntiAliasingLabel" type="Label" parent="MarginContainer/VBoxContainer/AntiAliasingRow"]
+[node name="AntiAliasingLabel" type="Label" parent="MarginContainer/VBoxContainer/AntiAliasingRow" unique_id=1309694459]
 layout_mode = 2
 size_flags_horizontal = 0
-custom_min_size = Vector2(90, 0)
 text = "Anti-Aliasing"
 
-[node name="AntiAliasingToggle" type="CheckBox" parent="MarginContainer/VBoxContainer/AntiAliasingRow"]
+[node name="AntiAliasingToggle" type="CheckBox" parent="MarginContainer/VBoxContainer/AntiAliasingRow" unique_id=380647483]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 button_pressed = true
 text = "FXAA"
 
-[node name="Separator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="Separator2" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=486264688]
 layout_mode = 2
 
-[node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1176788838]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Back"

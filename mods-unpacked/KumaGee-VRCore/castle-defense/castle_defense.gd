@@ -17,6 +17,8 @@ signal game_started
 @export var spawn_hint: SpawnHint
 @export var ai_count_viewport: Node3D
 @export var sieges: Node3D
+@export var vr_screen: XRToolsViewport2DIn3D
+@export var gameover_scene: PackedScene
 
 @onready var play_time: Timer = $PlayTime
 @onready var ai_spawner: AISpawner = $AISpawner
@@ -44,6 +46,7 @@ func _ready() -> void:
 	game_ui.hide()
 	health_sprite.hide()
 	prepare_ui.show()
+	vr_screen.hide()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey:
@@ -68,11 +71,28 @@ func _on_element_changed(elem: Arrow.Element) -> void:
 	for orb in orbs:
 		orb.set_selected(orb.element == elem)
 
+func _show_vr_screen(scene: PackedScene) -> Node:
+	vr_screen.set_scene(scene)
+	return vr_screen.get_scene_instance()
+
+func _hide_vr_screen() -> void:
+	vr_screen.hide()
+
+func _show_vr_gameover(message: String) -> void:
+	var screen = _show_vr_screen(gameover_scene) as GameoverPanel
+	if not screen:
+		return
+	screen.back_to_menu.connect(func(): xr_player.back_to_home.emit())
+	screen.restart_game.connect(func(): xr_player.restart_game.emit())
+	screen.set_title(message)
+	var rankings = StatsManager.get_rankings()
+	screen.set_rankings(rankings)
+
 func _on_game_start() -> void:
 	# Lower the BGM during the prepare/tutorial phase
 	BGMManager.set_volume_db(-40.0, true)
 	arrow_types.show()
-	_tutorial = xr_player.show_screen(tutorial_scene) as VRTutorial
+	_tutorial = _show_vr_screen(tutorial_scene) as VRTutorial
 
 	for i in orbs.size():
 		var element := _vr_elements[i] if i < _vr_elements.size() else Arrow.Element.NONE
@@ -152,7 +172,7 @@ func _start_game() -> void:
 	logger.info("Gate HP set to %d for %d agents" % [gate_hurtbox.health, player_count])
 
 	gate_destroyed = false
-	xr_player.hide_screen()
+	_hide_vr_screen()
 	prepare_ui.hide()
 	play_time.start()
 	game_ui.show()
@@ -228,7 +248,7 @@ func _disable_attackers() -> void:
 
 func _finish_game(message: String) -> void:
 	logger.info("Game over: %s" % message)
-	xr_player.gameover(message)
+	_show_vr_gameover(message)
 	if desktop_gameover:
 		desktop_gameover.show_gameover(message, StatsManager.get_rankings())
 	play_time.stop()

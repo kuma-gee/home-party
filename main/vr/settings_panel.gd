@@ -1,47 +1,23 @@
 class_name SettingsPanel
-extends Node3D
+extends PanelContainer
 
 signal back_pressed
 
-@onready var _viewport_2d: XRToolsViewport2DIn3D = $Viewport2Din3D
-
-# UI element references
-var _master_slider: HSlider
-var _master_value_label: Label
-var _sfx_slider: HSlider
-var _sfx_value_label: Label
-var _music_slider: HSlider
-var _music_value_label: Label
-var _render_scale_slider: HSlider
-var _render_scale_value_label: Label
-var _antialiasing_toggle: CheckBox
-var _back_button: Button
+@onready var _master_slider: HSlider = %MasterSlider
+@onready var _master_value_label: Label = %MasterValue
+@onready var _sfx_slider: HSlider = %SFXSlider
+@onready var _sfx_value_label: Label = %SFXValue
+@onready var _music_slider: HSlider = %MusicSlider
+@onready var _music_value_label: Label = %MusicValue
+@onready var _render_scale_slider: HSlider = %RenderScaleSlider
+@onready var _render_scale_value_label: Label = %RenderScaleValue
+@onready var _antialiasing_toggle: CheckBox = %AntiAliasingToggle
+@onready var _back_button: Button = %BackButton
 
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
-
-	var ui: Control = _viewport_2d.get_scene_instance()
-	if ui == null:
-		push_error("SettingsPanel: could not get viewport scene instance")
-		return
-
-	var vbox := ui.get_node("MarginContainer/VBoxContainer") as VBoxContainer
-	if vbox == null:
-		push_error("SettingsPanel: could not find VBoxContainer in UI")
-		return
-
-	_master_slider = vbox.get_node("MasterRow/MasterSlider") as HSlider
-	_master_value_label = vbox.get_node("MasterRow/MasterValue") as Label
-	_sfx_slider = vbox.get_node("SFXRow/SFXSlider") as HSlider
-	_sfx_value_label = vbox.get_node("SFXRow/SFXValue") as Label
-	_music_slider = vbox.get_node("MusicRow/MusicSlider") as HSlider
-	_music_value_label = vbox.get_node("MusicRow/MusicValue") as Label
-	_render_scale_slider = vbox.get_node("RenderScaleRow/RenderScaleSlider") as HSlider
-	_render_scale_value_label = vbox.get_node("RenderScaleRow/RenderScaleValue") as Label
-	_antialiasing_toggle = vbox.get_node("AntiAliasingRow/AntiAliasingToggle") as CheckBox
-	_back_button = vbox.get_node("BackButton") as Button
 
 	# Initialise from current UserSettings
 	_master_slider.value = UserSettings.get_master_volume()

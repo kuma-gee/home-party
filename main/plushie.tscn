@@ -36,32 +36,46 @@ transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, -0.22219814, 0)
 [node name="animal-bee2" parent="Models" index="0" unique_id=438752860 instance=ExtResource("4_56ma3")]
 
 [node name="animal-bunny2" parent="Models" index="1" unique_id=1395350198 instance=ExtResource("5_sp5r5")]
+visible = false
 
 [node name="animal-cat2" parent="Models" index="2" unique_id=1314052389 instance=ExtResource("3_mm15h")]
+visible = false
 
 [node name="animal-chick2" parent="Models" index="3" unique_id=650369689 instance=ExtResource("7_3sxqy")]
+visible = false
 
 [node name="animal-cow2" parent="Models" index="4" unique_id=793433998 instance=ExtResource("8_b6wxi")]
+visible = false
 
 [node name="animal-crab2" parent="Models" index="5" unique_id=483824954 instance=ExtResource("9_bym78")]
+visible = false
 
 [node name="animal-dog2" parent="Models" index="6" unique_id=1760280645 instance=ExtResource("10_cjft3")]
+visible = false
 
 [node name="animal-fox2" parent="Models" index="7" unique_id=1887244958 instance=ExtResource("12_tn8ms")]
+visible = false
 
 [node name="animal-lion2" parent="Models" index="8" unique_id=810416409 instance=ExtResource("14_icweg")]
+visible = false
 
 [node name="animal-monkey2" parent="Models" index="9" unique_id=1493639678 instance=ExtResource("15_45o13")]
+visible = false
 
 [node name="animal-panda2" parent="Models" index="10" unique_id=1644137591 instance=ExtResource("16_tk0aa")]
+visible = false
 
 [node name="animal-parrot2" parent="Models" index="11" unique_id=2145199633 instance=ExtResource("17_11cgn")]
+visible = false
 
 [node name="animal-penguin2" parent="Models" index="12" unique_id=124522873 instance=ExtResource("18_2udhv")]
+visible = false
 
 [node name="animal-pig2" parent="Models" index="13" unique_id=1575977622 instance=ExtResource("19_30w0e")]
+visible = false
 
 [node name="animal-tiger2" parent="Models" index="14" unique_id=1091529030 instance=ExtResource("20_gpmh4")]
+visible = false
 
 [node name="PlayerTag" type="Label3D" parent="." index="1" unique_id=262635929]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45115137, 0)
