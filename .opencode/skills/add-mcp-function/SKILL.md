@@ -1,6 +1,6 @@
 ---
 name: add-mcp-function
-description: Add a new MCP tool/command to the Godot MCP bridge for testing purposes.
+description: Add a new MCP tool/command to the Godot MCP bridge for testing purposes. When functionality is needed for writing tests or directly testing through agents
 ---
 
 # Add MCP Function

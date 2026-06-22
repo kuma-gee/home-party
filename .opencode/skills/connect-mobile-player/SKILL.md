@@ -1,6 +1,6 @@
 ---
 name: connect-mobile-player
-description: How to connect as a mobile player through the game-client phone controller app.
+description: How to connect as a mobile player through the game-client phone controller app. Use when testing the game directly through agents, not when writing tests
 ---
 
 # Connect Mobile Player
