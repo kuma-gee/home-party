@@ -700,11 +700,13 @@ collision_mask = 32768
 shape = SubResource("SphereShape3D_oq1cn")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1889727374]
+bus = &"SFX"
 stream = ExtResource("10_c7yxf")
 volume_db = -10.0
 pitch_scale = 0.5
 
 [node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="." unique_id=118584271]
+bus = &"SFX"
 stream = ExtResource("11_3fw8i")
 volume_db = -10.0
 pitch_scale = 0.5

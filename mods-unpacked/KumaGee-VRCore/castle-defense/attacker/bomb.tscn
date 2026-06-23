@@ -173,6 +173,7 @@ collision_mask = 64
 shape = SubResource("SphereShape3D_4q7qu")
 
 [node name="LightingFuse" type="AudioStreamPlayer" parent="." unique_id=157487948]
+bus = &"SFX"
 stream = ExtResource("4_4q7qu")
 volume_db = -20.0
 

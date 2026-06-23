@@ -288,11 +288,13 @@ wait_time = 3.0
 one_shot = true
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer3D" parent="." unique_id=1336822135]
+bus = &"SFX"
 stream = ExtResource("4_q453o")
 volume_db = -50.0
 script = ExtResource("5_q453o")
 
 [node name="Initial" type="AudioStreamPlayer" parent="." unique_id=1735273554]
+bus = &"SFX"
 stream = ExtResource("5_6w5aw")
 pitch_scale = 0.7
 

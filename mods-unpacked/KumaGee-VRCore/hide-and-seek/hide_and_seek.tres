@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("1_script")
 name = "Hide and Seek"
-description = "Hide in a crowd of identical NPCs while the VR players tries to hunt you down. Blend into the crowd to survive."
+description = "Hide in a crowd of identical NPCs while the VR players tries to hunt you down. Survive by blending in."
 scene = ExtResource("2_scene")
 icon = ExtResource("3_icon")
 min_recommended_players = 2

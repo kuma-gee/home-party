@@ -21,6 +21,7 @@ snap_require = "game_select"
 shape = SubResource("SphereShape3D_qmqi3")
 
 [node name="AudioStreamPlayer3D" parent="SnapZone" index="1" unique_id=2078457543]
+bus = &"SFX"
 stream = ExtResource("3_qmqi3")
 volume_db = -5.0
 

@@ -408,6 +408,7 @@ material_override = SubResource("ShaderMaterial_ua8ms")
 mesh = SubResource("QuadMesh_fihcr")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1080640798]
+bus = &"SFX"
 stream = ExtResource("5_7ic8n")
 volume_db = -5.0
 pitch_scale = 0.8

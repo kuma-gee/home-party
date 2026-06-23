@@ -111,9 +111,11 @@ grab_exclude = "invalid"
 shape = SubResource("SphereShape3D_0gfxr")
 
 [node name="ShotSound" type="AudioStreamPlayer3D" parent="." index="3" unique_id=1544673079]
+bus = &"SFX"
 stream = ExtResource("7_k2jsv")
 
 [node name="PullSound" type="AudioStreamPlayer3D" parent="." index="4" unique_id=1785372075]
+bus = &"SFX"
 stream = ExtResource("8_7iw86")
 
 [node name="TrajectoryMesh" type="MeshInstance3D" parent="." index="5" unique_id=831658236]

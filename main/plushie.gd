@@ -11,7 +11,9 @@ static var _model_offset := -1
 @onready var models: Node3D = $Models
 @onready var player_tag: Label3D = $PlayerTag
 @onready var squeak_player: AudioStreamPlayer3D = $SqueakPlayer
+@onready var join_player: AudioStreamPlayer3D = $JoinPlayer
 @onready var unplayable_icon: Node3D = $PlayerTag/UnplayableIcon
+@onready var leave_sfx: SFXPlayer = $LeaveSFX
 
 var player_uuid: String
 var player_index: int
@@ -22,6 +24,9 @@ var _client_controller: ClientController
 var _state := State.CONNECTED
 var _spawn_position: Vector3
 
+func leave():
+	leave_sfx.play()
+	queue_free()
 
 func setup(idx: int, uuid: String, color: Color, controller: ClientController) -> void:
 	player_index = idx
@@ -48,6 +53,7 @@ func setup(idx: int, uuid: String, color: Color, controller: ClientController) -
 	_setup_glow_materials(animal, color)
 
 	squeak_player.stream = PLACEHOLDER_SQUEAK
+	join_player.play()
 
 	_spawn_position = global_position
 

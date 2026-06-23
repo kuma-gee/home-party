@@ -427,6 +427,7 @@ direction = Vector3(0, 0, 1)
 node = NodePath("..")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer3D" parent="." unique_id=689652539]
+bus = &"SFX"
 stream = ExtResource("9_d7k0l")
 volume_db = -50.0
 pitch_scale = 0.8

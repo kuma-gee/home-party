@@ -15,8 +15,11 @@
 [ext_resource type="PackedScene" uid="uid://csgewknpt0pru" path="res://assets/characters/cube-pets/Models/GLB format/animal-panda.glb" id="16_tk0aa"]
 [ext_resource type="PackedScene" uid="uid://fjyjivfson46" path="res://assets/characters/cube-pets/Models/GLB format/animal-parrot.glb" id="17_11cgn"]
 [ext_resource type="PackedScene" uid="uid://cfrf6lfcaqvmo" path="res://assets/characters/cube-pets/Models/GLB format/animal-penguin.glb" id="18_2udhv"]
+[ext_resource type="AudioStream" uid="uid://cj66vn5rvt578" path="res://assets/sound/sfx/パッ.mp3" id="18_c6mj3"]
 [ext_resource type="PackedScene" uid="uid://bkggi8va0xa32" path="res://assets/characters/cube-pets/Models/GLB format/animal-pig.glb" id="19_30w0e"]
+[ext_resource type="Script" uid="uid://dgs3dj8la0mk0" path="res://main/utils/sfx_player.gd" id="19_c6vbl"]
 [ext_resource type="PackedScene" uid="uid://2yg7n0ttaa67" path="res://assets/characters/cube-pets/Models/GLB format/animal-tiger.glb" id="20_gpmh4"]
+[ext_resource type="AudioStream" uid="uid://vp4d2sb4rjg0" path="res://assets/sound/sfx/パパッ.wav" id="20_mv3nc"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_m6y9k"]
 friction = 0.6
@@ -94,3 +97,15 @@ shape = SubResource("BoxShape3D_5bvpt")
 
 [node name="SqueakPlayer" type="AudioStreamPlayer3D" parent="." index="3" unique_id=375952682]
 max_distance = 10.0
+bus = &"SFX"
+
+[node name="JoinPlayer" type="AudioStreamPlayer3D" parent="." index="4" unique_id=412536789]
+stream = ExtResource("18_c6mj3")
+max_distance = 10.0
+bus = &"SFX"
+
+[node name="LeaveSFX" type="Node" parent="." index="5" unique_id=1116676791]
+script = ExtResource("19_c6vbl")
+audio = ExtResource("20_mv3nc")
+volume = -10.0
+metadata/_custom_type_script = "uid://dgs3dj8la0mk0"

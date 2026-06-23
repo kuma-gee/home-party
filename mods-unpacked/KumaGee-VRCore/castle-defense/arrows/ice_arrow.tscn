@@ -686,10 +686,12 @@ slow_amount = 0.5
 shape = SubResource("SphereShape3D_hq7le")
 
 [node name="FrostSound" type="AudioStreamPlayer3D" parent="." unique_id=84818194]
+bus = &"SFX"
 stream = ExtResource("2_e0gft")
 script = ExtResource("9_j8plv")
 
 [node name="BlizzardSound" type="AudioStreamPlayer3D" parent="." unique_id=46562127]
+bus = &"SFX"
 stream = ExtResource("9_0wuco")
 volume_db = -50.0
 script = ExtResource("9_j8plv")

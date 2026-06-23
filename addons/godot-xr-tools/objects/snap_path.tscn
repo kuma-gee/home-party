@@ -21,6 +21,7 @@ script = ExtResource("1_m211o")
 shape = SubResource("BoxShape3D_pik8g")
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+bus = &"SFX"
 unit_size = 3.0
 max_db = 1.0
 max_distance = 100.0

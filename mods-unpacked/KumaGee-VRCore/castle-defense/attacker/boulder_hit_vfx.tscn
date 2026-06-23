@@ -243,6 +243,7 @@ wait_time = 2.0
 one_shot = true
 
 [node name="ImpactSFX" type="AudioStreamPlayer3D" parent="." unique_id=1106099313]
+bus = &"SFX"
 stream = ExtResource("6_break_sfx")
 volume_db = -5.0
 pitch_scale = 1.2
