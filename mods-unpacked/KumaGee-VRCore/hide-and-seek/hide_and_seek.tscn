@@ -2,82 +2,33 @@
 
 [ext_resource type="PackedScene" uid="uid://bisl1jfnf3opn" path="res://main/base_scene.tscn" id="1_base"]
 [ext_resource type="Script" uid="uid://bt21kjbqibnkh" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/hide_and_seek.gd" id="2_game"]
-[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/ui/hide_seek_hud.tscn" id="5_hud"]
-[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/props/chair.tscn" id="6_chair"]
-[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/props/vase.tscn" id="7_vase"]
-[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/props/pumpkin.tscn" id="8_pumpkin"]
-[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/props/potted_plant.tscn" id="9_plant"]
-[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/props/box.tscn" id="10_box"]
-[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/props/lamp.tscn" id="11_lamp"]
-[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/props/stool.tscn" id="12_stool"]
-[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/props/trash_can.tscn" id="13_trash"]
-[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/ui/hide_seek_scoreboard.tscn" id="14_score"]
-[ext_resource type="Script" uid="uid://dan60ldn7uq0x" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/hide_and_seek_props.gd" id="15_props"]
+[ext_resource type="PackedScene" uid="uid://cjubxgaipy7ii" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/museum_gallery.tscn" id="3_museum"]
+[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/ui/hide_seek_hud.tscn" id="4_hud"]
+[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/ui/hide_seek_scoreboard.tscn" id="5_score"]
+[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/npc.tscn" id="6_npc"]
+[ext_resource type="Script" uid="uid://dgwb5nsi5etv1" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/npc_spawner.gd" id="7_spawner"]
+[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/hider_character.tscn" id="8_hider"]
 
-[node name="HideAndSeek" unique_id=1851728811 node_paths=PackedStringArray("props_manager") instance=ExtResource("1_base")]
+[node name="HideAndSeek" unique_id=1851728811 node_paths=PackedStringArray("vr_screen", "npc_spawner", "museum_gallery") instance=ExtResource("1_base")]
 script = ExtResource("2_game")
-hud_scene = ExtResource("5_hud")
-scoreboard_scene = ExtResource("14_score")
-props_manager = NodePath("Props")
+hud_scene = ExtResource("4_hud")
+scoreboard_scene = ExtResource("5_score")
+vr_screen = NodePath("XRPlayer/Viewport2Din3D")
+npc_spawner = NodePath("BaseSceneContent/NpcSpawner")
+hider_scene = ExtResource("8_hider")
+museum_gallery = NodePath("BaseSceneContent/MuseumGallery")
 
-[node name="SharedScreenCamera" type="Camera3D" parent="." index="7" unique_id=1963929439]
-transform = Transform3D(0.7071, 0, -0.7071, 0, 1, 0, 0.7071, 0, 0.7071, 5, 3.5, 2)
-cull_mask = 786431
-current = true
-fov = 35.0
+[node name="Camera3D" parent="." index="3" unique_id=10000003]
+transform = Transform3D(1, 0, 0, 0, 0.3793593, 0.92524946, 0, -0.92524946, 0.3793593, 0, 41.561806, 16.260757)
+fov = 24.0
 
-[node name="Props" type="Node3D" parent="." index="8" unique_id=969664068 node_paths=PackedStringArray("left_pickup", "right_pickup")]
-script = ExtResource("15_props")
-left_pickup = NodePath("../XRPlayer/SubViewport/XRPlayer/LeftHand/FunctionPickup")
-right_pickup = NodePath("../XRPlayer/SubViewport/XRPlayer/RightHand/FunctionPickup")
+[node name="MuseumGallery" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="0" unique_id=595911671 instance=ExtResource("3_museum")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.004131317, -3.8146973e-06, -0.076247215)
 
-[node name="Chair1" parent="Props" index="0" unique_id=10000030 instance=ExtResource("6_chair")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.45, -1)
-
-[node name="Chair2" parent="Props" index="1" unique_id=10000031 instance=ExtResource("6_chair")]
-transform = Transform3D(0.96592885, 0, 0.25880772, 0, 1, 0, -0.25880772, 0, 0.96592885, 1.5, 0.45, -0.5)
-
-[node name="Vase1" parent="Props" index="2" unique_id=10000032 instance=ExtResource("7_vase")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.25, -2)
-
-[node name="Vase2" parent="Props" index="3" unique_id=10000033 instance=ExtResource("7_vase")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.25, 0.5)
-
-[node name="Pumpkin1" parent="Props" index="4" unique_id=10000034 instance=ExtResource("8_pumpkin")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.175, -1.5)
-
-[node name="Pumpkin2" parent="Props" index="5" unique_id=10000035 instance=ExtResource("8_pumpkin")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0.175, 0.8)
-
-[node name="Pumpkin3" parent="Props" index="6" unique_id=10000036 instance=ExtResource("8_pumpkin")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.175, 0.3)
-
-[node name="PottedPlant1" parent="Props" index="7" unique_id=10000037 instance=ExtResource("9_plant")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0, -1.8)
-
-[node name="PottedPlant2" parent="Props" index="8" unique_id=10000038 instance=ExtResource("9_plant")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 0, -1.5)
-
-[node name="Box1" parent="Props" index="9" unique_id=10000039 instance=ExtResource("10_box")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0.5)
-
-[node name="Box2" parent="Props" index="10" unique_id=10000040 instance=ExtResource("10_box")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0.2, -2)
-
-[node name="Lamp1" parent="Props" index="11" unique_id=10000041 instance=ExtResource("11_lamp")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 0, 0.8)
-
-[node name="Lamp2" parent="Props" index="12" unique_id=10000042 instance=ExtResource("11_lamp")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 0, 0.5)
-
-[node name="Stool1" parent="Props" index="13" unique_id=10000043 instance=ExtResource("12_stool")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0.28, -0.8)
-
-[node name="Stool2" parent="Props" index="14" unique_id=10000044 instance=ExtResource("12_stool")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.28, 0.2)
-
-[node name="TrashCan1" parent="Props" index="15" unique_id=10000045 instance=ExtResource("13_trash")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.275, -0.8)
-
-[node name="TrashCan2" parent="Props" index="16" unique_id=10000046 instance=ExtResource("13_trash")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.275, -0.5)
+[node name="NpcSpawner" type="Node" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="1" unique_id=1165699741 node_paths=PackedStringArray("spawn_points", "route_ab", "route_single_a", "route_single_b")]
+script = ExtResource("7_spawner")
+npc_scene = ExtResource("6_npc")
+spawn_points = NodePath("../MuseumGallery/NpcSpawnPoints")
+route_ab = NodePath("../MuseumGallery/RouteAB")
+route_single_a = NodePath("../MuseumGallery/RouteSingleA")
+route_single_b = NodePath("../MuseumGallery/RouteSingleB")

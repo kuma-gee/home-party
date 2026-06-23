@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("1_script")
 name = "Hide and Seek"
-description = "A prop hunt game where the VR player is 'It' (the seeker) and mobile players hide as objects in a themed room. The VR player physically rummages through the space — grabbing, shaking, and inspecting props to find the hiders."
+description = "A social deduction game where mobile hiders blend into a crowd of identical AI NPCs in a museum gallery. The VR player is the Seeker — observing the crowd and tagging suspicious characters with a taser. Hiders mimic NPC behavior to avoid detection."
 scene = ExtResource("2_scene")
 icon = ExtResource("3_icon")
 min_recommended_players = 3

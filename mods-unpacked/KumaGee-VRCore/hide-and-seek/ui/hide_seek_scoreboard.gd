@@ -2,7 +2,14 @@ class_name HideSeekScoreboard
 extends Control
 
 ## End-of-round scoreboard for Hide & Seek.
-## Shows victory/defeat, scores, and play-again button.
+## Shows victory/defeat, VR score, and per-hider score breakdowns.
+##
+## Scoring table (see docs/HIDE_AND_SEEK.md):
+##   Seeker tags a hider     +2 each
+##   Seeker tags all hiders  +5 bonus
+##   Hider survives          +3
+##   Hider is last survivor  +4 bonus
+##   Seeker wrong-tags NPC   -1
 
 var vr_score: int = 0
 var hider_scores: Array[Dictionary] = []
@@ -49,10 +56,7 @@ func show_result(won: bool, score: int, hiders: Array[Dictionary]) -> void:
 		if hider.get("survived", false):
 			details.append("Survived +3")
 		if hider.get("last_survivor", false):
-			details.append("Last +2")
-		var distracts: int = hider.get("distracts", 0)
-		if distracts > 0:
-			details.append("Distracts +%d" % distracts)
+			details.append("Last +4")
 
 		if not details.is_empty():
 			var detail_label := Label.new()
@@ -63,18 +67,18 @@ func show_result(won: bool, score: int, hiders: Array[Dictionary]) -> void:
 		hider_scores_container.add_child(row)
 
 
-func calculate_vr_score(found_count: int, total_hiders: int) -> int:
-	var score := found_count
+func calculate_vr_score(found_count: int, total_hiders: int, wrong_tags: int = 0) -> int:
+	var score := found_count * 2
 	if found_count == total_hiders and total_hiders > 0:
-		score += 3
+		score += 5
+	score -= wrong_tags
 	return score
 
 
-func calculate_hider_score(survived: bool, last_survivor: bool, distracts: int) -> int:
+func calculate_hider_score(survived: bool, last_survivor: bool) -> int:
 	var score := 0
 	if survived:
 		score += 3
 	if last_survivor:
-		score += 2
-	score += distracts
+		score += 4
 	return score

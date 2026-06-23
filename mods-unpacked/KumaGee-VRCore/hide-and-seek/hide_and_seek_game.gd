@@ -1,13 +1,15 @@
 class_name HideAndSeekGame
 extends Node
 
-## Manages the Hide & Seek game flow: mobile hiders, scoring, and round reset.
+## Manages the social-deduction Hide & Seek round flow: hider sync, phase
+## timers, seeker tag/scan scoring, and round-end scoreboard data.
 
 signal phase_changed(new_phase: Phase)
 signal setup_timer_updated(time: float)
 signal hunt_timer_updated(time: float)
-signal hider_joined(hider: HideAndSeekHider)
-signal hider_left(hider: HideAndSeekHider)
+signal hider_joined(hider: HiderCharacter)
+signal hider_left(hider: HiderCharacter)
+signal hider_found(hider: HiderCharacter)
 signal round_ended(vr_won: bool, vr_score: int, hider_scores: Array[Dictionary])
 
 enum Phase {
@@ -17,8 +19,12 @@ enum Phase {
 	ENDED,
 }
 
-@export var setup_duration: float = 8.0
-@export var hunt_duration: float = 120.0
+@export var setup_duration: float = 10.0
+@export var hunt_duration: float = 90.0
+
+@export var hider_scene: PackedScene
+@export var hider_spawn_area: Node3D
+@export var npc_spawner: NpcSpawner
 
 var phase: Phase = Phase.WAITING:
 	set(v):
@@ -26,13 +32,12 @@ var phase: Phase = Phase.WAITING:
 		phase_changed.emit(v)
 
 var phase_timer: float = 0.0
-var hiders: Array[HideAndSeekHider] = []
-var props_manager: HideAndSeekProps
-var distract_system: DistractSystem
-var available_props: Array[XRToolsPickable] = []
+var hiders: Array[HiderCharacter] = []
+var interactive_locations: Array[InteractiveLocation] = []
 
 var _total_hiders_at_start: int = 0
 var _vr_score: int = 0
+var _hider_spawn_index: int = 0
 
 
 func _ready() -> void:
@@ -41,31 +46,35 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	if phase == Phase.SETUP:
-		phase_timer -= delta
-		setup_timer_updated.emit(maxf(phase_timer, 0.0))
-		if phase_timer <= 0.0:
-			_start_hunt()
-	elif phase == Phase.HUNT:
-		phase_timer -= delta
-		hunt_timer_updated.emit(maxf(phase_timer, 0.0))
-		if phase_timer <= 0.0:
-			end_round(false)
-		_update_hider_movement(delta)
+	match phase:
+		Phase.SETUP:
+			phase_timer -= delta
+			setup_timer_updated.emit(maxf(phase_timer, 0.0))
+			if phase_timer <= 0.0:
+				_start_hunt()
+		Phase.HUNT:
+			phase_timer -= delta
+			hunt_timer_updated.emit(maxf(phase_timer, 0.0))
+			if phase_timer <= 0.0:
+				end_round(false)
 
 
 func end_round(vr_won: bool) -> void:
+	if phase == Phase.ENDED:
+		return
 	phase = Phase.ENDED
 
-	_vr_score = _calculate_vr_score(vr_won)
+	# +5 bonus if the Seeker tagged every hider.
+	if vr_won and _total_hiders_at_start > 0:
+		_vr_score += 5
+
 	var hider_scores := _calculate_hider_scores(vr_won)
 
-	var result_msg := JSON.stringify({
-		"type": "found",
-		"message": "You survived!" if not vr_won else "You've been found!",
+	_send_to_all_mobiles(JSON.stringify({
+		"type": "phase",
+		"phase": "ended",
 		"vr_won": vr_won,
-	})
-	_send_to_all_mobiles(result_msg)
+	}))
 
 	round_ended.emit(vr_won, _vr_score, hider_scores)
 	print("[HideAndSeek] Round ended - VR %s (Score: %d)" % ["won" if vr_won else "lost", _vr_score])
@@ -74,44 +83,46 @@ func end_round(vr_won: bool) -> void:
 func reset_for_new_round() -> void:
 	_cleanup_round()
 	phase = Phase.WAITING
-	_total_hiders_at_start = 0
 	_vr_score = 0
+	_total_hiders_at_start = 0
 
 
 func get_hider_count() -> int:
 	return _get_active_hider_count()
 
 
-func get_found_count() -> int:
-	var count := 0
+func get_hiders() -> Array[HiderCharacter]:
+	return hiders
+
+
+func get_hider_statuses() -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
 	for hider in hiders:
-		if hider.is_found:
-			count += 1
-	return count
+		out.append({
+			"name": hider.player_name,
+			"alive": not hider.is_found,
+		})
+	return out
 
 
-func find_hider_by_prop(prop: XRToolsPickable) -> HideAndSeekHider:
-	for hider in hiders:
-		if hider.current_prop == prop:
-			return hider
-	return null
+func on_hider_tagged(hider: HiderCharacter) -> void:
+	if not is_instance_valid(hider) or hider.is_found:
+		return
+	hider.mark_found()
+	_vr_score += 2
+	hider_found.emit(hider)
+	_send_to_mobile(hider, JSON.stringify({
+		"type": "found",
+		"message": "You've been found!",
+	}))
+	if _get_active_hider_count() == 0:
+		end_round(true)
 
 
-func find_nearest_prop(pos: Vector3, exclude: XRToolsPickable = null) -> XRToolsPickable:
-	var nearest: XRToolsPickable = null
-	var nearest_dist := INF
-
-	for prop in available_props:
-		if prop == exclude:
-			continue
-		if not prop.visible:
-			continue
-		var dist := pos.distance_to(prop.global_position)
-		if dist < nearest_dist:
-			nearest_dist = dist
-			nearest = prop
-
-	return nearest
+func on_wrong_tag(npc: NpcCharacter) -> void:
+	_vr_score -= 1
+	if npc_spawner and is_instance_valid(npc):
+		npc_spawner.scatter(npc.global_position, 8.0, 2.0)
 
 
 func _on_clients_changed() -> void:
@@ -142,38 +153,42 @@ func _sync_hiders() -> void:
 
 
 func _add_hider(controller: ClientController) -> void:
-	var hider := HideAndSeekHider.new()
+	if not hider_scene:
+		push_warning("HideAndSeekGame: no hider_scene set")
+		return
+	var hider := hider_scene.instantiate() as HiderCharacter
+	if not hider:
+		return
+	add_child(hider)
 	hider.controller = controller
 	hider.player_name = controller.uuid
-	hider.props_manager = props_manager
-	hider.distract_system = distract_system
-	add_child(hider)
+	# Hiders are frozen unless the round is already in the HUNT phase (late
+	# joiners can move immediately; setup-time joiners are unfrozen when HUNT
+	# begins via _prepare_hunt).
+	hider.frozen = phase != Phase.HUNT
+	if phase == Phase.SETUP:
+		hider.set_identity_marker_visible(true)
+	hider.global_position = _next_hider_spawn()
+	hider.register_locations(interactive_locations)
 	hiders.append(hider)
 	hider_joined.emit(hider)
 
-	controller.primary_action_pressed.connect(hider._on_action_pressed)
-	controller.secondary_action_pressed.connect(hider._on_secondary_pressed)
 	controller.moved.connect(hider._on_moved)
-
-	hider.cooldowns_updated.connect(_on_hider_cooldowns_updated.bind(hider))
-	hider.distracted.connect(_on_hider_distracted.bind(hider))
+	controller.primary_action_pressed.connect(hider._on_action_pressed)
 
 
-func _on_hider_cooldowns_updated(distract: float, swap: float, swap_blocked: float, hider: HideAndSeekHider) -> void:
-	if hider.controller is GameClient:
-		var gc := hider.controller as GameClient
-		var msg := JSON.stringify({
-			"type": "cooldowns",
-			"distract": distract,
-			"swap": swap,
-			"swap_blocked": swap_blocked,
-		})
-		gc.send_text(msg)
-
-
-func _on_hider_distracted(_hider: HideAndSeekHider) -> void:
-	# Sound is played by the hider's distract method
-	pass
+func _next_hider_spawn() -> Vector3:
+	if hider_spawn_area:
+		var markers: Array[Node] = hider_spawn_area.get_children()
+		var valid_markers: Array[Marker3D] = []
+		for c in markers:
+			if c is Marker3D:
+				valid_markers.append(c as Marker3D)
+		if not valid_markers.is_empty():
+			var pos := valid_markers[_hider_spawn_index % valid_markers.size()].global_position
+			_hider_spawn_index += 1
+			return pos
+	return Vector3.ZERO
 
 
 func _on_phase_changed(new_phase: Phase) -> void:
@@ -188,90 +203,43 @@ func _on_phase_changed(new_phase: Phase) -> void:
 			_cleanup_round()
 
 
-func _prepare_setup() -> void:
-	if props_manager:
-		props_manager.freeze_all()
-		available_props = props_manager.get_props()
+func _start_hunt() -> void:
+	phase = Phase.HUNT
 
+
+func _prepare_setup() -> void:
+	for hider in hiders:
+		hider.frozen = true
+		hider.set_identity_marker_visible(true)
 	_send_to_all_mobiles(JSON.stringify({
 		"type": "phase",
 		"phase": "setup",
 	}))
-	_send_prop_positions_to_mobile()
 
 
 func _prepare_hunt() -> void:
-	_total_hiders_at_start = 0
+	_total_hiders_at_start = hiders.size()
 	for hider in hiders:
-		if hider.current_prop:
-			_total_hiders_at_start += 1
-			if props_manager:
-				props_manager.mark_as_hider(hider.current_prop, hider.player_name)
-
-	if props_manager:
-		props_manager.unfreeze_all()
-
+		hider.frozen = false
+		hider.set_identity_marker_visible(false)
 	_send_to_all_mobiles(JSON.stringify({
 		"type": "phase",
 		"phase": "hunt",
 	}))
 
 
-func _start_hunt() -> void:
-	phase = Phase.HUNT
-
-
 func _cleanup_round() -> void:
-	if props_manager:
-		props_manager.reset_all()
 	for hider in hiders:
-		hider.reset()
-
-
-func _update_hider_movement(delta: float) -> void:
-	for hider in hiders:
-		if hider.current_prop and not hider.is_found and not hider.is_held:
-			hider._move_prop(delta)
-
-
-func _send_prop_positions_to_mobile() -> void:
-	var prop_data := []
-	for prop in available_props:
-		if prop.visible:
-			prop_data.append({
-				"name": prop.name,
-				"x": prop.global_position.x,
-				"z": prop.global_position.z,
-			})
-
-	_send_to_all_mobiles(JSON.stringify({
-		"type": "props",
-		"props": prop_data,
-	}))
-
-
-func _send_to_all_mobiles(msg: String) -> void:
-	for hider in hiders:
-		if hider.controller is GameClient:
-			var gc := hider.controller as GameClient
-			gc.send_text(msg)
-
-
-func _calculate_vr_score(vr_won: bool) -> int:
-	var found_count := _total_hiders_at_start - _get_active_hider_count()
-	var score := found_count
-	if vr_won and _total_hiders_at_start > 0:
-		score += 3
-	return score
+		if is_instance_valid(hider):
+			hider.set_identity_marker_visible(false)
 
 
 func _calculate_hider_scores(vr_won: bool) -> Array[Dictionary]:
 	var scores: Array[Dictionary] = []
-	var active_hiders := _get_active_hiders()
-	var last_survivor: HideAndSeekHider = null
-
-	if active_hiders.size() == 1:
-		last_survivor = active_hiders[0]
+	var active := _get_active_hiders()
+	var last_survivor: HiderCharacter = null
+	if active.size() == 1 and not vr_won:
+		last_survivor = active[0]
 
 	for hider in hiders:
 		var survived := not hider.is_found and not vr_won
@@ -280,31 +248,37 @@ func _calculate_hider_scores(vr_won: bool) -> Array[Dictionary]:
 		if survived:
 			score += 3
 		if is_last:
-			score += 2
-		score += hider.distract_count
-
+			score += 4
 		scores.append({
 			"name": hider.player_name,
 			"score": score,
 			"survived": survived,
 			"last_survivor": is_last,
-			"distracts": hider.distract_count,
 		})
-
 	return scores
 
 
 func _get_active_hider_count() -> int:
 	var count := 0
 	for hider in hiders:
-		if not hider.is_found:
+		if is_instance_valid(hider) and not hider.is_found:
 			count += 1
 	return count
 
 
-func _get_active_hiders() -> Array[HideAndSeekHider]:
-	var result: Array[HideAndSeekHider] = []
+func _get_active_hiders() -> Array[HiderCharacter]:
+	var out: Array[HiderCharacter] = []
 	for hider in hiders:
-		if not hider.is_found:
-			result.append(hider)
-	return result
+		if is_instance_valid(hider) and not hider.is_found:
+			out.append(hider)
+	return out
+
+
+func _send_to_mobile(hider: HiderCharacter, msg: String) -> void:
+	if hider.controller is GameClient:
+		(hider.controller as GameClient).send_text(msg)
+
+
+func _send_to_all_mobiles(msg: String) -> void:
+	for hider in hiders:
+		_send_to_mobile(hider, msg)

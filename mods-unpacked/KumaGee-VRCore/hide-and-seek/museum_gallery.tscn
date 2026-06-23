@@ -1,0 +1,401 @@
+[gd_scene format=3 uid="uid://cjubxgaipy7ii"]
+
+[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/interactive_location.tscn" id="1_loc"]
+
+[sub_resource type="BoxShape3D" id="unit_box"]
+
+[sub_resource type="StandardMaterial3D" id="floor_mat"]
+albedo_color = Color(0.84, 0.84, 0.88, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="unit_box_mesh"]
+
+[sub_resource type="StandardMaterial3D" id="wall_mat"]
+albedo_color = Color(0.95, 0.94, 0.9, 1)
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="painting_mat_a"]
+albedo_color = Color(0.85, 0.2, 0.25, 1)
+roughness = 0.6
+
+[sub_resource type="QuadMesh" id="painting_quad"]
+size = Vector2(1.5, 1)
+
+[sub_resource type="StandardMaterial3D" id="painting_mat_b"]
+albedo_color = Color(0.2, 0.4, 0.85, 1)
+roughness = 0.6
+
+[sub_resource type="StandardMaterial3D" id="painting_mat_c"]
+albedo_color = Color(0.2, 0.7, 0.35, 1)
+roughness = 0.6
+
+[sub_resource type="StandardMaterial3D" id="painting_mat_d"]
+albedo_color = Color(0.95, 0.8, 0.2, 1)
+roughness = 0.6
+
+[sub_resource type="StandardMaterial3D" id="plaque_mat"]
+albedo_color = Color(0.2, 0.2, 0.25, 1)
+roughness = 0.7
+
+[sub_resource type="QuadMesh" id="plaque_quad"]
+size = Vector2(0.6, 0.4)
+
+[node name="MuseumGallery" type="Node3D" unique_id=1281615814]
+
+[node name="Floor" type="StaticBody3D" parent="." unique_id=469382455]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=2057257492]
+transform = Transform3D(26, 0, 0, 0, 0.2, 0, 0, 0, 16, 0, 0, 0)
+shape = SubResource("unit_box")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor" unique_id=690545126]
+transform = Transform3D(26, 0, 0, 0, 0.2, 0, 0, 0, 16, 0, 0, 0)
+material_override = SubResource("floor_mat")
+mesh = SubResource("unit_box_mesh")
+
+[node name="Walls" type="Node3D" parent="." unique_id=1405761086]
+
+[node name="WallNorth" type="StaticBody3D" parent="Walls" unique_id=1128832829]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallNorth" unique_id=1004167881]
+transform = Transform3D(26, 0, 0, 0, 4, 0, 0, 0, 0.2, 0, 0, 0)
+shape = SubResource("unit_box")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Walls/WallNorth" unique_id=1114372659]
+transform = Transform3D(26, 0, 0, 0, 4, 0, 0, 0, 0.2, 0, 0, 0)
+material_override = SubResource("wall_mat")
+mesh = SubResource("unit_box_mesh")
+
+[node name="WallSouth" type="StaticBody3D" parent="Walls" unique_id=728148369]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallSouth" unique_id=1969443757]
+transform = Transform3D(26, 0, 0, 0, 4, 0, 0, 0, 0.2, 0, 0, 0)
+shape = SubResource("unit_box")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Walls/WallSouth" unique_id=467879685]
+transform = Transform3D(26, 0, 0, 0, 4, 0, 0, 0, 0.2, 0, 0, 0)
+material_override = SubResource("wall_mat")
+mesh = SubResource("unit_box_mesh")
+
+[node name="WallWest" type="StaticBody3D" parent="Walls" unique_id=1476338808]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 2, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallWest" unique_id=254296657]
+transform = Transform3D(0.2, 0, 0, 0, 4, 0, 0, 0, 16, 0, 0, 0)
+shape = SubResource("unit_box")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Walls/WallWest" unique_id=1552019984]
+transform = Transform3D(0.2, 0, 0, 0, 4, 0, 0, 0, 16, 0, 0, 0)
+material_override = SubResource("wall_mat")
+mesh = SubResource("unit_box_mesh")
+
+[node name="WallEast" type="StaticBody3D" parent="Walls" unique_id=1406661046]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 2, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallEast" unique_id=1674996228]
+transform = Transform3D(0.2, 0, 0, 0, 4, 0, 0, 0, 16, 0, 0, 0)
+shape = SubResource("unit_box")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Walls/WallEast" unique_id=225128123]
+transform = Transform3D(0.2, 0, 0, 0, 4, 0, 0, 0, 16, 0, 0, 0)
+material_override = SubResource("wall_mat")
+mesh = SubResource("unit_box_mesh")
+
+[node name="WallDividerNorth" type="StaticBody3D" parent="Walls" unique_id=2113370864]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallDividerNorth" unique_id=1941774529]
+transform = Transform3D(0.2, 0, 0, 0, 4, 0, 0, 0, 6, 0, 0, 0)
+shape = SubResource("unit_box")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Walls/WallDividerNorth" unique_id=1024746827]
+transform = Transform3D(0.2, 0, 0, 0, 4, 0, 0, 0, 6, 0, 0, 0)
+material_override = SubResource("wall_mat")
+mesh = SubResource("unit_box_mesh")
+
+[node name="WallDividerSouth" type="StaticBody3D" parent="Walls" unique_id=2018994440]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallDividerSouth" unique_id=355275250]
+transform = Transform3D(0.2, 0, 0, 0, 4, 0, 0, 0, 6, 0, 0, 0)
+shape = SubResource("unit_box")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Walls/WallDividerSouth" unique_id=766577360]
+transform = Transform3D(0.2, 0, 0, 0, 4, 0, 0, 0, 6, 0, 0, 0)
+material_override = SubResource("wall_mat")
+mesh = SubResource("unit_box_mesh")
+
+[node name="Paintings" type="Node3D" parent="." unique_id=1636317373]
+
+[node name="PaintingA_N1" parent="Paintings" unique_id=1421626486 instance=ExtResource("1_loc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1.5, -6.85)
+
+[node name="Visual" type="MeshInstance3D" parent="Paintings/PaintingA_N1" unique_id=1911096555]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+material_override = SubResource("painting_mat_a")
+mesh = SubResource("painting_quad")
+
+[node name="PaintingA_N2" parent="Paintings" unique_id=493986856 instance=ExtResource("1_loc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1.5, -6.85)
+
+[node name="Visual" type="MeshInstance3D" parent="Paintings/PaintingA_N2" unique_id=213932869]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+material_override = SubResource("painting_mat_b")
+mesh = SubResource("painting_quad")
+
+[node name="PaintingA_S1" parent="Paintings" unique_id=818044303 instance=ExtResource("1_loc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1.5, 6.85)
+
+[node name="Visual" type="MeshInstance3D" parent="Paintings/PaintingA_S1" unique_id=1530059145]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 1)
+material_override = SubResource("painting_mat_c")
+mesh = SubResource("painting_quad")
+
+[node name="PaintingA_S2" parent="Paintings" unique_id=1018522440 instance=ExtResource("1_loc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1.5, 6.85)
+
+[node name="Visual" type="MeshInstance3D" parent="Paintings/PaintingA_S2" unique_id=472904868]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 1)
+material_override = SubResource("painting_mat_d")
+mesh = SubResource("painting_quad")
+
+[node name="PaintingB_N1" parent="Paintings" unique_id=1965057817 instance=ExtResource("1_loc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1.5, -6.85)
+
+[node name="Visual" type="MeshInstance3D" parent="Paintings/PaintingB_N1" unique_id=506096834]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+material_override = SubResource("painting_mat_a")
+mesh = SubResource("painting_quad")
+
+[node name="PaintingB_N2" parent="Paintings" unique_id=464702869 instance=ExtResource("1_loc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 1.5, -6.85)
+
+[node name="Visual" type="MeshInstance3D" parent="Paintings/PaintingB_N2" unique_id=1538116728]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+material_override = SubResource("painting_mat_b")
+mesh = SubResource("painting_quad")
+
+[node name="PaintingB_S1" parent="Paintings" unique_id=2106760910 instance=ExtResource("1_loc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1.5, 6.85)
+
+[node name="Visual" type="MeshInstance3D" parent="Paintings/PaintingB_S1" unique_id=840712271]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 1)
+material_override = SubResource("painting_mat_c")
+mesh = SubResource("painting_quad")
+
+[node name="PaintingB_E1" parent="Paintings" unique_id=2071186187 instance=ExtResource("1_loc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.85, 1.5, 0)
+
+[node name="Visual" type="MeshInstance3D" parent="Paintings/PaintingB_E1" unique_id=967800088]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 1, 0, 0)
+material_override = SubResource("painting_mat_d")
+mesh = SubResource("painting_quad")
+
+[node name="Plaques" type="Node3D" parent="." unique_id=1176728934]
+
+[node name="PlaqueA_N" parent="Plaques" unique_id=354827633 instance=ExtResource("1_loc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 1, -6.9)
+action = 1
+duration = 3.0
+
+[node name="Visual" type="MeshInstance3D" parent="Plaques/PlaqueA_N" unique_id=553079389]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+material_override = SubResource("plaque_mat")
+mesh = SubResource("plaque_quad")
+
+[node name="PlaqueA_S" parent="Plaques" unique_id=439497831 instance=ExtResource("1_loc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 1, 6.9)
+action = 1
+duration = 3.0
+
+[node name="Visual" type="MeshInstance3D" parent="Plaques/PlaqueA_S" unique_id=1236515813]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 1)
+material_override = SubResource("plaque_mat")
+mesh = SubResource("plaque_quad")
+
+[node name="PlaqueB_N" parent="Plaques" unique_id=251287921 instance=ExtResource("1_loc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 1, -6.9)
+action = 1
+duration = 3.0
+
+[node name="Visual" type="MeshInstance3D" parent="Plaques/PlaqueB_N" unique_id=1096343500]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+material_override = SubResource("plaque_mat")
+mesh = SubResource("plaque_quad")
+
+[node name="PlaqueB_S" parent="Plaques" unique_id=734244178 instance=ExtResource("1_loc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 1, 6.9)
+action = 1
+duration = 3.0
+
+[node name="Visual" type="MeshInstance3D" parent="Plaques/PlaqueB_S" unique_id=481002699]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 1)
+material_override = SubResource("plaque_mat")
+mesh = SubResource("plaque_quad")
+
+[node name="VrSpawn" type="Marker3D" parent="." unique_id=1249765479]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, 0)
+
+[node name="HiderSpawnArea" type="Node3D" parent="." unique_id=988620018]
+
+[node name="HiderSpawn0" type="Marker3D" parent="HiderSpawnArea" unique_id=577647496]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, -3)
+
+[node name="HiderSpawn1" type="Marker3D" parent="HiderSpawnArea" unique_id=200236641]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 4)
+
+[node name="HiderSpawn2" type="Marker3D" parent="HiderSpawnArea" unique_id=1637193509]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -5)
+
+[node name="HiderSpawn3" type="Marker3D" parent="HiderSpawnArea" unique_id=291532216]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 2)
+
+[node name="HiderSpawn4" type="Marker3D" parent="HiderSpawnArea" unique_id=1838914195]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -3)
+
+[node name="HiderSpawn5" type="Marker3D" parent="HiderSpawnArea" unique_id=1349658479]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 4)
+
+[node name="HiderSpawn6" type="Marker3D" parent="HiderSpawnArea" unique_id=1094814386]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, -5)
+
+[node name="HiderSpawn7" type="Marker3D" parent="HiderSpawnArea" unique_id=1363963969]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 2)
+
+[node name="NpcSpawnPoints" type="Node3D" parent="." unique_id=936055721]
+
+[node name="NpcSpawn0" type="Marker3D" parent="NpcSpawnPoints" unique_id=664712296]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, -6)
+
+[node name="NpcSpawn1" type="Marker3D" parent="NpcSpawnPoints" unique_id=1640283757]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, -6)
+
+[node name="NpcSpawn2" type="Marker3D" parent="NpcSpawnPoints" unique_id=1873348781]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -6)
+
+[node name="NpcSpawn3" type="Marker3D" parent="NpcSpawnPoints" unique_id=770842405]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, -2)
+
+[node name="NpcSpawn4" type="Marker3D" parent="NpcSpawnPoints" unique_id=84755050]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, -2)
+
+[node name="NpcSpawn5" type="Marker3D" parent="NpcSpawnPoints" unique_id=146936468]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -2)
+
+[node name="NpcSpawn6" type="Marker3D" parent="NpcSpawnPoints" unique_id=111301022]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 3)
+
+[node name="NpcSpawn7" type="Marker3D" parent="NpcSpawnPoints" unique_id=1124897867]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 3)
+
+[node name="NpcSpawn8" type="Marker3D" parent="NpcSpawnPoints" unique_id=76480173]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 3)
+
+[node name="NpcSpawn9" type="Marker3D" parent="NpcSpawnPoints" unique_id=1578900172]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 6)
+
+[node name="NpcSpawn10" type="Marker3D" parent="NpcSpawnPoints" unique_id=697986128]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -6)
+
+[node name="NpcSpawn11" type="Marker3D" parent="NpcSpawnPoints" unique_id=823636513]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, -6)
+
+[node name="NpcSpawn12" type="Marker3D" parent="NpcSpawnPoints" unique_id=617203754]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, -6)
+
+[node name="NpcSpawn13" type="Marker3D" parent="NpcSpawnPoints" unique_id=1248426907]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -2)
+
+[node name="NpcSpawn14" type="Marker3D" parent="NpcSpawnPoints" unique_id=1879570117]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, -2)
+
+[node name="NpcSpawn15" type="Marker3D" parent="NpcSpawnPoints" unique_id=88358992]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, -2)
+
+[node name="NpcSpawn16" type="Marker3D" parent="NpcSpawnPoints" unique_id=757904311]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 3)
+
+[node name="NpcSpawn17" type="Marker3D" parent="NpcSpawnPoints" unique_id=1819162670]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 3)
+
+[node name="NpcSpawn18" type="Marker3D" parent="NpcSpawnPoints" unique_id=780100653]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 3)
+
+[node name="NpcSpawn19" type="Marker3D" parent="NpcSpawnPoints" unique_id=897857347]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 6)
+
+[node name="RouteAB" type="Node3D" parent="." unique_id=1315618628]
+
+[node name="WP0" type="Marker3D" parent="RouteAB" unique_id=1492538323]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, -5)
+metadata/pause_duration = 5.0
+
+[node name="WP1" type="Marker3D" parent="RouteAB" unique_id=1260905310]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -5)
+metadata/pause_duration = 5.0
+
+[node name="WP2" type="Marker3D" parent="RouteAB" unique_id=469846069]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+
+[node name="WP3" type="Marker3D" parent="RouteAB" unique_id=1677861726]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -5)
+metadata/pause_duration = 5.0
+
+[node name="WP4" type="Marker3D" parent="RouteAB" unique_id=1510168094]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, -5)
+metadata/pause_duration = 5.0
+
+[node name="WP5" type="Marker3D" parent="RouteAB" unique_id=118397161]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 6)
+metadata/pause_duration = 5.0
+
+[node name="WP6" type="Marker3D" parent="RouteAB" unique_id=2012952596]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 6)
+metadata/pause_duration = 5.0
+
+[node name="WP7" type="Marker3D" parent="RouteAB" unique_id=31687640]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 6)
+metadata/pause_duration = 5.0
+
+[node name="RouteSingleA" type="Node3D" parent="." unique_id=2003499459]
+
+[node name="WP0" type="Marker3D" parent="RouteSingleA" unique_id=2036925047]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -5)
+
+[node name="WP1" type="Marker3D" parent="RouteSingleA" unique_id=773525110]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -5)
+
+[node name="WP2" type="Marker3D" parent="RouteSingleA" unique_id=2143808127]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 0)
+
+[node name="WP3" type="Marker3D" parent="RouteSingleA" unique_id=186115176]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 5)
+
+[node name="WP4" type="Marker3D" parent="RouteSingleA" unique_id=891308261]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, 5)
+
+[node name="WP5" type="Marker3D" parent="RouteSingleA" unique_id=260731493]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, 0)
+
+[node name="RouteSingleB" type="Node3D" parent="." unique_id=269200199]
+
+[node name="WP0" type="Marker3D" parent="RouteSingleB" unique_id=1222523585]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -5)
+
+[node name="WP1" type="Marker3D" parent="RouteSingleB" unique_id=1710256378]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0, -5)
+
+[node name="WP2" type="Marker3D" parent="RouteSingleB" unique_id=936564942]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0, 0)
+
+[node name="WP3" type="Marker3D" parent="RouteSingleB" unique_id=278521841]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0, 5)
+
+[node name="WP4" type="Marker3D" parent="RouteSingleB" unique_id=602481041]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 5)
+
+[node name="WP5" type="Marker3D" parent="RouteSingleB" unique_id=441389858]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)

@@ -3,7 +3,6 @@
 	import { connectionStore, isConnected, inputLayout, webrtcDataChannelOpen, reconnecting, reconnectAttempts } from '../lib/store';
 	import JoystickLayout from '../lib/layouts/JoystickLayout.svelte';
 	import WordInputLayout from '../lib/layouts/WordInputLayout.svelte';
-	import HideAndSeekLayout from '../lib/layouts/HideAndSeekLayout.svelte';
 
 	let serverIp = $state('');
 	let connecting = $state(false);
@@ -131,13 +130,11 @@
 				{/if}
 			</div>
 
-			{#if $inputLayout == 'guess'}
-				<WordInputLayout />
-			{:else if $inputLayout == 'hide_and_seek'}
-				<HideAndSeekLayout />
-			{:else}
-				<JoystickLayout inputLayout={$inputLayout} />
-			{/if}
+		{#if $inputLayout == 'guess'}
+			<WordInputLayout />
+		{:else}
+			<JoystickLayout inputLayout={$inputLayout} />
+		{/if}
 		{:else}
 			<div class="connecting-screen">
 				<div class="connecting-content">
