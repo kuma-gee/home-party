@@ -29,6 +29,7 @@ size = Vector3(0.35, 0.35, 0.35)
 [node name="Plushie" unique_id=1355412252 instance=ExtResource("1_parnt")]
 physics_material_override = SubResource("PhysicsMaterial_m6y9k")
 script = ExtResource("2_scrpt")
+second_hand_grab = 1
 
 [node name="Models" type="Node3D" parent="." index="0" unique_id=1964994452]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, -0.22219814, 0)
@@ -79,7 +80,7 @@ visible = false
 
 [node name="PlayerTag" type="Label3D" parent="." index="1" unique_id=262635929]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45115137, 0)
-billboard = 1
+billboard = 2
 text = "P1"
 
 [node name="UnplayableIcon" type="Label3D" parent="PlayerTag" index="0" unique_id=1900251032]

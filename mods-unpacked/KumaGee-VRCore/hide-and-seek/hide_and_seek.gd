@@ -242,7 +242,7 @@ func _process(_delta: float) -> void:
 
 
 func _update_hud() -> void:
-	var statuses: Array[Dictionary] = game_manager.get_hider_statuses() if game_manager else []
+	var statuses: Array = game_manager.get_hider_statuses() if game_manager else []
 	for hud in [_vr_hud, _desktop_hud]:
 		if not hud:
 			continue

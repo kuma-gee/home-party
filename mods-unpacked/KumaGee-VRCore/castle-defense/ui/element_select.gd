@@ -1,5 +1,5 @@
 class_name ElementSelect
-extends PanelContainer
+extends Control
 
 signal ready_pressed(elements: Array[Arrow.Element])
 signal selection_changed(elements: Array[Arrow.Element])
@@ -47,7 +47,6 @@ static func get_element_icon(element: Arrow.Element) -> String:
 
 const ELEMENT_BUTTON_SCENE := preload("res://mods-unpacked/KumaGee-VRCore/castle-defense/ui/element_button.tscn")
 
-
 func _ready() -> void:
 	for entry in ELEMENT_DATA:
 		var element: Arrow.Element = entry[0]
@@ -73,7 +72,7 @@ func update_ready(ready_count: int, player_count: int) -> void:
 		ready_button.text = "Start game"
 	else:
 		ready_button.text = "mobile ready %s / %s" % [ready_count, player_count]
-	ready_button.disabled = not _mobile_ready or selected_elements.is_empty()
+	ready_button.disabled = not _mobile_ready
 
 func _toggle_element(element: Arrow.Element, btn: ElementButton) -> void:
 	if element in selected_elements:

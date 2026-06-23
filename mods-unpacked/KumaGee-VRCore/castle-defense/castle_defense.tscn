@@ -19,6 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://cvpfijeg6ambj" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/attacker/catapult.tscn" id="15_ka738"]
 [ext_resource type="PackedScene" uid="uid://bltu6pp2q0a8y" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/attacker/bomb.tscn" id="16_a11e3"]
 [ext_resource type="Script" uid="uid://cc66tdjlk8c2n" path="res://addons/proton_scatter/src/shapes/sphere_shape.gd" id="17_se6x7"]
+[ext_resource type="PackedScene" uid="uid://dc0o0lteyonsm" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/castle_player_ui.tscn" id="17_v1y0d"]
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="18_3sspo"]
 [ext_resource type="PackedScene" uid="uid://c0cmbpfpgdlpu" path="res://assets/castle-defense/castle/wall-corner-half-tower.glb" id="18_iwc37"]
 [ext_resource type="PackedScene" uid="uid://b3ifmr1lu6f4" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/siege.tscn" id="19_db7bw"]
@@ -241,24 +242,19 @@ shader_parameter/outline_size = 1.0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bl5ky"]
 albedo_color = Color(0.5686275, 0.3254902, 0.16470589, 1)
 
-[node name="CastleDefense" unique_id=1524346607 node_paths=PackedStringArray("gate_hurtbox", "player_list", "orbs", "arrow_types", "quiver", "bow", "game_ui", "prepare_ui", "desktop_gameover", "spawn_hint", "ai_count_viewport", "sieges", "vr_screen") instance=ExtResource("1_base")]
+[node name="CastleDefense" unique_id=1524346607 node_paths=PackedStringArray("gate_hurtbox", "orbs", "arrow_types", "spawn_hint", "ai_count_viewport", "sieges", "vr_screen", "win_sound") instance=ExtResource("1_base")]
 script = ExtResource("1_cdef")
 gate_hurtbox = NodePath("BaseSceneContent/Castle/Gate/GateHurtBox")
 gate_destruction_vfx = ExtResource("54_gatevfx")
 tutorial_scene = ExtResource("50_vrtut")
-player_list = NodePath("CanvasLayer/Control/MarginContainer/PlayerList")
 orbs = [NodePath("BaseSceneContent/PlayerStuff/ArrowTypes/FireOrb"), NodePath("BaseSceneContent/PlayerStuff/ArrowTypes/IceOrb"), NodePath("BaseSceneContent/PlayerStuff/ArrowTypes/LightningOrb")]
 arrow_types = NodePath("BaseSceneContent/PlayerStuff/ArrowTypes")
-quiver = NodePath("XRPlayer/SubViewport/XRPlayer/XRCamera3D/Quiver")
-bow = NodePath("BaseSceneContent/PlayerStuff/Bow")
-game_ui = NodePath("CanvasLayer/Control/GameUI")
-prepare_ui = NodePath("CanvasLayer/Control/PrepareUI")
-desktop_gameover = NodePath("CanvasLayer/Control/DesktopGameover")
 spawn_hint = NodePath("CanvasLayer/Control/SpawnHint")
 ai_count_viewport = NodePath("BaseSceneContent/PlayerStuff/AICountViewport")
 sieges = NodePath("BaseSceneContent/Castle/Sieges")
 vr_screen = NodePath("BaseSceneContent/Viewport2Din3D2")
 gameover_scene = ExtResource("55_gameover")
+win_sound = NodePath("BaseSceneContent/WinSound")
 siege_delay_min = 0.5
 siege_delay_max = 1.5
 bgm_audio = ExtResource("2_fkt18")
@@ -277,7 +273,7 @@ light_color = Color(0.2784314, 0.65882355, 1, 1)
 light_energy = 0.1
 
 [node name="Camera3D" parent="." index="3" unique_id=10000003]
-transform = Transform3D(-0.002483642, -0.8817421, 0.4717253, 0.0012877849, 0.47172353, 0.88174564, -0.9999961, 0.002797421, -3.609817e-05, 16.30429, 27.725403, -12.079929)
+transform = Transform3D(0.0030791536, 0.88212156, -0.47101185, 0.0016441381, 0.471009, 0.8821269, 0.9999939, -0.0034906128, -2.0721801e-08, -15.214027, 27.725403, 19.313179)
 current = true
 fov = 25.0
 
@@ -285,8 +281,12 @@ fov = 25.0
 transform = Transform3D(0.99999654, 0.0012877854, -0.0024837758, -0.0027975384, 0.47172382, -0.88174284, 3.6159796e-05, 0.8817461, 0.47172576, 0.010317594, 3.3206139, -28.429482)
 current = true
 
+[node name="XRPlayer" parent="XRPlayer/SubViewport" parent_id_path=PackedInt32Array(10000004, 1709074553) index="3" unique_id=1404813673]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -4.7683716e-07, 2.3614852, 8.941462)
+
 [node name="Quiver" parent="XRPlayer/SubViewport/XRPlayer/XRCamera3D" parent_id_path=PackedInt32Array(10000004, 227782039) index="0" unique_id=832813409 instance=ExtResource("5_5cd4w")]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 1.8913216e-08, 1.7418644, 8.544522)
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3592416, 0.33489835)
 
 [node name="AnimationTree" parent="XRPlayer/SubViewport/XRPlayer/LeftHand/LeftHand" parent_id_path=PackedInt32Array(10000004, 801242371) index="1" unique_id=1971929839]
 tree_root = SubResource("AnimationNodeBlendTree_o3j7d")
@@ -294,10 +294,7 @@ tree_root = SubResource("AnimationNodeBlendTree_o3j7d")
 [node name="AnimationTree" parent="XRPlayer/SubViewport/XRPlayer/RightHand/RightHand" parent_id_path=PackedInt32Array(10000004, 40282269) index="1"]
 tree_root = SubResource("AnimationNodeBlendTree_v278o")
 
-[node name="Viewport2Din3D" parent="XRPlayer" parent_id_path=PackedInt32Array(10000004) index="3" unique_id=1418763861]
-scene_properties_keys = PackedStringArray("settings_panel.gd")
-
-[node name="Screen" parent="XRPlayer/Viewport2Din3D" index="1" unique_id=1761931612]
+[node name="Screen" parent="XRPlayer/Viewport2Din3D" parent_id_path=PackedInt32Array(10000004, 1418763861) index="1" unique_id=1761931612]
 mesh = SubResource("QuadMesh_ij2kk")
 surface_material_override/0 = SubResource("StandardMaterial3D_d36p2")
 
@@ -452,6 +449,10 @@ text = "00:00"
 script = ExtResource("39_88pht")
 timer = NodePath("../../../../../PlayTime")
 
+[node name="PlayerList" parent="CanvasLayer/Control/MarginContainer" parent_id_path=PackedInt32Array(10000008) index="0" unique_id=10000009]
+player_scene = ExtResource("17_v1y0d")
+allow_empty = true
+
 [node name="SpawnHint" parent="CanvasLayer/Control" index="4" unique_id=293092644 instance=ExtResource("46_spwnh")]
 layout_mode = 1
 
@@ -467,14 +468,11 @@ player_spawner = NodePath("../BaseSceneContent/PlayerSpawner")
 script = ExtResource("54_l2qex")
 metadata/_custom_type_script = "uid://nxdpp3mdtdtw"
 
-[node name="BaseSceneContent" parent="." index="9" unique_id=10000012]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -0.19571018, -2.314598, 8.920069)
-
-[node name="WinSound" type="AudioStreamPlayer3D" parent="BaseSceneContent" index="0" unique_id=1769420737]
+[node name="WinSound" type="AudioStreamPlayer3D" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="0" unique_id=1769420737]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1002827, 0)
 stream = ExtResource("53_dwc66")
 
-[node name="ProtonScatter" type="Node3D" parent="BaseSceneContent" index="1" unique_id=1216591199]
+[node name="ProtonScatter" type="Node3D" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="1" unique_id=1216591199]
 process_mode = 3
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 9.613975)
 script = ExtResource("24_0cjve")
@@ -506,7 +504,7 @@ negative = true
 shape = SubResource("Resource_vf04h")
 metadata/_custom_type_script = "uid://4f6ju7rd45me"
 
-[node name="ground2" parent="BaseSceneContent" index="2" unique_id=1645877463 instance=ExtResource("3_6gm0b")]
+[node name="ground2" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="2" unique_id=1645877463 instance=ExtResource("3_6gm0b")]
 transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 9.613975)
 
 [node name="ground" parent="BaseSceneContent/ground2" index="0" unique_id=1046452520]
@@ -521,7 +519,7 @@ collision_mask = 0
 size = Vector3(60, 0.5, 60)
 material = SubResource("Mat_Ground")
 
-[node name="Castle" type="Node3D" parent="BaseSceneContent" index="3" unique_id=775708432]
+[node name="Castle" type="Node3D" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="3" unique_id=775708432]
 
 [node name="Sieges" type="Node3D" parent="BaseSceneContent/Castle" index="0" unique_id=1340414529]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.1227534)
@@ -653,6 +651,7 @@ transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
 
 [node name="HealthSprite" type="Sprite3D" parent="BaseSceneContent/Castle/Gate" index="0" unique_id=1044044621]
+unique_name_in_owner = true
 transform = Transform3D(-0.39999965, -0.0005208181, -0.00012668983, -0.00036939012, 0.19934277, 0.3467886, -0.0003883977, 0.34678838, -0.19934309, 0, 2.466334, -0.6953745)
 layers = 262144
 texture = SubResource("ViewportTexture_ofmg5")
@@ -735,7 +734,7 @@ shape = SubResource("BoxShape3D_sl1b2")
 [node name="Target" type="Marker3D" parent="BaseSceneContent/Castle" index="5" unique_id=1411823520]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.912239, 18.120232)
 
-[node name="PlayerStuff" type="Node3D" parent="BaseSceneContent" index="4" unique_id=980876473]
+[node name="PlayerStuff" type="Node3D" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="4" unique_id=980876473]
 
 [node name="ArrowTypes" type="Node3D" parent="BaseSceneContent/PlayerStuff" index="0" unique_id=900118082]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8906732, 9.864026)
@@ -769,6 +768,7 @@ material = SubResource("StandardMaterial3D_bl5ky")
 [node name="HighlightRing" parent="BaseSceneContent/PlayerStuff/BowGrip" index="2" unique_id=1673895402 instance=ExtResource("37_v1y0d")]
 
 [node name="Bow" parent="BaseSceneContent/PlayerStuff" index="2" unique_id=2060416009 node_paths=PackedStringArray("bow_grip") instance=ExtResource("6_rjw0b")]
+unique_name_in_owner = true
 process_mode = 1
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 3.5917706, 9.482362)
 freeze = true
@@ -783,7 +783,7 @@ scene = ExtResource("37_db7bw")
 unshaded = true
 scene_properties_keys = PackedStringArray("ai_count_control.gd")
 
-[node name="AttackerArea" type="Node3D" parent="BaseSceneContent" index="5" unique_id=992782613]
+[node name="AttackerArea" type="Node3D" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="5" unique_id=992782613]
 process_mode = 1
 
 [node name="Catapult" parent="BaseSceneContent/AttackerArea" index="0" unique_id=188247881 node_paths=PackedStringArray("gate_target") instance=ExtResource("15_ka738")]
@@ -795,6 +795,7 @@ transform = Transform3D(0.8660254, 0, 0.5, 0, 1, 0, -0.5, 0, 0.8660254, 4.903138
 gate_target = NodePath("../../Castle/Gate")
 
 [node name="BombSpawner" type="Node3D" parent="BaseSceneContent/AttackerArea" index="2" unique_id=1326014235]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.21217847, 21.976915)
 script = ExtResource("15_a11e3")
 bomb_scene = ExtResource("16_a11e3")
@@ -815,22 +816,25 @@ light_energy = 0.5
 omni_range = 8.0
 omni_attenuation = 0.3
 
-[node name="PlayerSpawner" type="Node3D" parent="BaseSceneContent" index="6" unique_id=290112290 groups=["player_spawner"]]
+[node name="PlayerSpawner" type="Node3D" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="6" unique_id=290112290 groups=["player_spawner"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 27)
 script = ExtResource("14_jv2d0")
 player_scene = ExtResource("5_fps")
 metadata/_custom_type_script = "uid://b1f1y52jugtns"
 
-[node name="DebugCam" type="Camera3D" parent="BaseSceneContent" index="7" unique_id=16717419]
+[node name="DebugCam" type="Camera3D" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="7" unique_id=16717419]
 transform = Transform3D(-2.3962064e-08, 0.7071068, -0.7071067, 3.996154e-08, 0.70710677, 0.7071068, 1, -1.1313338e-08, -4.5200814e-08, -13.407134, 14.789278, 9.832031)
 
-[node name="Viewport2Din3D2" parent="BaseSceneContent" index="8" unique_id=1231438571 instance=ExtResource("11_v2din")]
+[node name="Viewport2Din3D2" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="8" unique_id=1231438571 instance=ExtResource("11_v2din")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 3.880066, 12.246307)
 screen_size = Vector2(4, 3)
 scene = ExtResource("50_vrtut")
 viewport_size = Vector2(720, 560)
 unshaded = true
 scene_properties_keys = PackedStringArray("vr_tutorial.gd")
+
+[node name="VROrigin" type="Marker3D" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="9" unique_id=1311953178]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.536743e-07, 2.4950817, 9.00943)
 
 [editable path="XRPlayer"]
 [editable path="XRPlayer/StartXR"]

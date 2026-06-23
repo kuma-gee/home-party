@@ -99,21 +99,21 @@ nodes/Trigger/node = SubResource("AnimationNodeBlend2_g8oow")
 nodes/Trigger/position = Vector2(-360, 40)
 node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1"]
 
-[sub_resource type="QuadMesh" id="QuadMesh_icwxr"]
+[sub_resource type="QuadMesh" id="QuadMesh_vufdb"]
 resource_local_to_scene = true
 size = Vector2(1.5, 1)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_lisjs"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_83ac8"]
 viewport_path = NodePath("Viewport2Din3D/Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eoj1g"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ussne"]
 transparency = 1
-no_depth_test = true
+cull_mode = 2
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_lisjs")
+albedo_texture = SubResource("ViewportTexture_83ac8")
 texture_filter = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_tic4c"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_onlwi"]
 resource_local_to_scene = true
 size = Vector3(1.5, 1, 0.02)
 
@@ -396,20 +396,21 @@ screen_size = Vector2(1.5, 1)
 scene = ExtResource("4_eoj1g")
 viewport_size = Vector2(900, 600)
 unshaded = true
+scene_properties_keys = PackedStringArray("settings_panel.gd")
 
 [node name="Viewport" parent="Viewport2Din3D" index="0" unique_id=434808864]
 size = Vector2i(900, 600)
 
 [node name="Screen" parent="Viewport2Din3D" index="1" unique_id=1761931612]
-mesh = SubResource("QuadMesh_icwxr")
-surface_material_override/0 = SubResource("StandardMaterial3D_eoj1g")
+mesh = SubResource("QuadMesh_vufdb")
+surface_material_override/0 = SubResource("StandardMaterial3D_ussne")
 
 [node name="StaticBody3D" parent="Viewport2Din3D" index="2" unique_id=1882660186]
 screen_size = Vector2(1.5, 1)
 viewport_size = Vector2(900, 600)
 
 [node name="CollisionShape3D" parent="Viewport2Din3D/StaticBody3D" index="0" unique_id=507281989]
-shape = SubResource("BoxShape3D_tic4c")
+shape = SubResource("BoxShape3D_onlwi")
 
 [editable path="StartXR"]
 [editable path="SubViewport/XRPlayer/PlayerBody/Body/characterMedium"]

@@ -17,11 +17,12 @@ layout_mode = 2
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer" unique_id=1740865298]
 layout_mode = 2
-theme_override_constants/separation = 32
+theme_override_constants/separation = 26
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer2" unique_id=1004068923]
 layout_mode = 2
-theme_override_constants/separation = 32
+size_flags_vertical = 3
+theme_override_constants/separation = 16
 
 [node name="Title" type="Label" parent="MarginContainer/VBoxContainer2/VBoxContainer" unique_id=1399165347]
 unique_name_in_owner = true
@@ -45,7 +46,9 @@ horizontal_alignment = 1
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer2" unique_id=1376648956]
 layout_mode = 2
+size_flags_vertical = 3
 theme_override_constants/separation = 16
+alignment = 2
 
 [node name="ReadyButton" type="Button" parent="MarginContainer/VBoxContainer2/VBoxContainer2" unique_id=201042177]
 layout_mode = 2

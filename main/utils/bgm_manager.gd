@@ -25,6 +25,14 @@ func stop() -> void:
 	_fade_to(fade_out_volume_db)
 	_tween.finished.connect(func(): _player.stop(), CONNECT_ONE_SHOT)
 
+func set_volume_db(volume_db: float, fade: bool = false) -> void:
+	if fade:
+		_fade_to(volume_db)
+	else:
+		if _tween:
+			_tween.kill()
+		_player.volume_db = volume_db
+
 func _fade_to(target_db: float) -> void:
 	if _tween:
 		_tween.kill()

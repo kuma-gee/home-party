@@ -6,6 +6,7 @@ signal restart_game()
 signal back_to_home()
 
 @export var origin: XROrigin3D
+@export var initial_transform: Node3D
 @export var camera: XRCamera3D
 @export var pause_menu: Control
 @export var overlay_mesh: OverlayMesh
@@ -21,6 +22,9 @@ func _ready() -> void:
 	menu_function.menu_closed.connect(_on_menu_closed)
 	reset_area.body_entered.connect(func(_b): reset_space())
 	pause_menu.hide()
+	
+	if initial_transform:
+		origin.transform = initial_transform.transform
 	
 	settings_viewport.hide()
 	_settings_panel_instance = settings_viewport.get_scene_instance()

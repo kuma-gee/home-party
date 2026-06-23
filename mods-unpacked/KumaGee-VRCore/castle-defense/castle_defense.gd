@@ -1,30 +1,26 @@
 class_name CastleDefense
-extends XRToolsSceneBase
+extends BaseGame
 
 signal game_started
 
 @export var gate_hurtbox: HurtBox
 @export var gate_destruction_vfx: PackedScene
 @export var tutorial_scene: PackedScene
-@export var player_list: PlayerList
 @export var orbs: Array[ElementOrb]
 @export var arrow_types: Node3D
-@export var quiver: Quiver
-@export var bow: Bow
-@export var game_ui: Control
-@export var prepare_ui: Control
-@export var desktop_gameover: DesktopGameover
 @export var spawn_hint: SpawnHint
 @export var ai_count_viewport: Node3D
 @export var sieges: Node3D
 @export var vr_screen: XRToolsViewport2DIn3D
 @export var gameover_scene: PackedScene
+@export var win_sound: AudioStreamPlayer3D
 
 @onready var play_time: Timer = $PlayTime
 @onready var ai_spawner: AISpawner = $AISpawner
-@onready var bomb_spawner: BombSpawner = $BaseSceneContent/AttackerArea/BombSpawner
-@onready var win_sound: AudioStreamPlayer3D = $WinSound
-@onready var health_sprite: Sprite3D = $BaseSceneContent/Castle/Gate/HealthSprite
+@onready var health_sprite: Sprite3D = %HealthSprite
+@onready var bomb_spawner: BombSpawner = %BombSpawner
+@onready var quiver: Quiver = %Quiver
+@onready var bow: Bow = %Bow
 
 var logger := KumaLog.new("CastleDefense")
 var gate_destroyed := false
@@ -34,19 +30,20 @@ var _element_select: ElementSelect
 var _vr_elements: Array[Arrow.Element] = [Arrow.Element.FIRE]
 
 func _ready() -> void:
+	super()
 	play_time.timeout.connect(_on_play_time_timeout)
 	gate_hurtbox.died.connect(_on_gate_died)
 	player_list.ready_changed.connect(_check_all_ready)
 	quiver.element_changed.connect(_on_element_changed)
+	
+	game_phase.connect(_on_game_phase)
+	prepare_phase.connect(_on_prepare_phase)
 	PlayerManager.clients_changed.connect(_update_ai_count_visibility)
 	_on_element_changed(Arrow.Element.NONE)
 	_update_ai_count_visibility()
 
 	_set_bow_active(true)
-	game_ui.hide()
 	health_sprite.hide()
-	prepare_ui.show()
-	vr_screen.hide()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey:
@@ -73,6 +70,7 @@ func _on_element_changed(elem: Arrow.Element) -> void:
 
 func _show_vr_screen(scene: PackedScene) -> Node:
 	vr_screen.set_scene(scene)
+	vr_screen.show()
 	return vr_screen.get_scene_instance()
 
 func _hide_vr_screen() -> void:
@@ -88,7 +86,7 @@ func _show_vr_gameover(message: String) -> void:
 	var rankings = StatsManager.get_rankings()
 	screen.set_rankings(rankings)
 
-func _on_game_start() -> void:
+func _on_prepare_phase() -> void:
 	# Lower the BGM during the prepare/tutorial phase
 	BGMManager.set_volume_db(-40.0, true)
 	arrow_types.show()
@@ -104,6 +102,7 @@ func _on_game_start() -> void:
 	_element_select.ready_pressed.connect(_on_vr_ready)
 	_element_select.selection_changed.connect(_on_elements_changed)
 	_check_all_ready()
+	_on_elements_changed(_element_select.selected_elements)
 
 func _on_vr_ready(elements: Array[Arrow.Element]) -> void:
 	_vr_elements = elements
@@ -151,7 +150,7 @@ func _get_gate_hp(player_count: int) -> int:
 	else:
 		return 100
 
-func _start_game() -> void:
+func _on_game_phase() -> void:
 	if not play_time.is_stopped(): return
 	
 	if ai_count_viewport:
