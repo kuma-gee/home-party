@@ -34,6 +34,11 @@ sky_material = SubResource("PanoramaSkyMaterial_c22f1")
 background_mode = 2
 background_color = Color(0.5, 0.7, 1, 1)
 sky = SubResource("Sky_wkbik")
+tonemap_mode = 3
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.02
+volumetric_fog_albedo = Color(0.9980493, 0.79568887, 0.74140096, 1)
+adjustment_enabled = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dkdeu"]
 size = Vector3(10, 0.29755664, 10)
