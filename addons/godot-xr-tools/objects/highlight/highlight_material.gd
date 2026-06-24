@@ -19,8 +19,9 @@ func is_xr_class(xr_name:  String) -> bool:
 
 
 func _ready():
-	_highlight_mesh_instance = get_node(highlight_mesh_instance)
-	save_surface_materials()
+	if highlight_mesh_instance:
+		_highlight_mesh_instance = get_node(highlight_mesh_instance)
+		save_surface_materials()
 
 	get_parent().connect("highlight_updated", _on_highlight_updated)
 

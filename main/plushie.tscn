@@ -20,6 +20,8 @@
 [ext_resource type="Script" uid="uid://dgs3dj8la0mk0" path="res://main/utils/sfx_player.gd" id="19_c6vbl"]
 [ext_resource type="PackedScene" uid="uid://2yg7n0ttaa67" path="res://assets/characters/cube-pets/Models/GLB format/animal-tiger.glb" id="20_gpmh4"]
 [ext_resource type="AudioStream" uid="uid://vp4d2sb4rjg0" path="res://assets/sound/sfx/パパッ.wav" id="20_mv3nc"]
+[ext_resource type="Script" uid="uid://cdl5kcr2wvnav" path="res://addons/godot-xr-tools/objects/highlight/highlight_material.gd" id="21_56ma3"]
+[ext_resource type="Material" uid="uid://dyuaw57o8y3i" path="res://addons/godot-xr-tools/materials/highlight.tres" id="22_sp5r5"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_m6y9k"]
 friction = 0.6
@@ -109,3 +111,8 @@ script = ExtResource("19_c6vbl")
 audio = ExtResource("20_mv3nc")
 volume = -10.0
 metadata/_custom_type_script = "uid://dgs3dj8la0mk0"
+
+[node name="XRToolsHighlightMaterial" type="Node" parent="." index="6" unique_id=873465836]
+script = ExtResource("21_56ma3")
+highlight_material = ExtResource("22_sp5r5")
+metadata/_custom_type_script = "uid://cdl5kcr2wvnav"

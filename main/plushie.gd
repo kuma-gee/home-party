@@ -14,6 +14,7 @@ static var _model_offset := -1
 @onready var join_player: AudioStreamPlayer3D = $JoinPlayer
 @onready var unplayable_icon: Node3D = $PlayerTag/UnplayableIcon
 @onready var leave_sfx: SFXPlayer = $LeaveSFX
+@onready var highlight_mat: XRToolsHighlightMaterial = $XRToolsHighlightMaterial
 
 var player_uuid: String
 var player_index: int
@@ -51,6 +52,14 @@ func setup(idx: int, uuid: String, color: Color, controller: ClientController) -
 	_visible_animal = animal
 
 	_setup_glow_materials(animal, color)
+
+	# Update highlight material to target the visible animal's first MeshInstance3D
+	var meshes := _find_mesh_instances(animal)
+	if meshes.size() > 0:
+		highlight_mat.highlight_mesh_instance = highlight_mat.get_path_to(meshes[0])
+		# Re-initialize the internal reference since _ready() already ran
+		highlight_mat._highlight_mesh_instance = meshes[0]
+		highlight_mat.save_surface_materials()
 
 	squeak_player.stream = PLACEHOLDER_SQUEAK
 	join_player.play()
