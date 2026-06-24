@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://pen_small"]
+[gd_scene format=3 uid="uid://blw5gl50kkr73"]
 
 [ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_pickable"]
 [ext_resource type="Script" uid="uid://cye53pft22yf1" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/vr_3d_pen.gd" id="2_script"]
@@ -25,18 +25,18 @@ pen_tip_area = NodePath("PenTip/PenTipArea")
 mesh = NodePath("brush/Brush")
 release_mode = 1
 
-[node name="CollisionShape3D" parent="." index="0" unique_id=2000000101]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.11483958, 0)
+[node name="CollisionShape3D" parent="." index="0" unique_id=1198871219]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.008078098, 0)
 shape = SubResource("CapsuleShape3D_pen")
 
 [node name="brush" parent="." index="1" unique_id=2000000102 instance=ExtResource("3_f5w4n")]
-transform = Transform3D(0.3, 0, 0, 0, -0.3, -9.059749e-08, 0, 9.059749e-08, -0.3, 0, 0.11920564, 0)
+transform = Transform3D(0.3, 0, 0, 0, -0.3, -9.059749e-08, 0, 9.059749e-08, -0.3, 0, 0.012444153, 0)
 
-[node name="Brush" parent="brush" index="0" unique_id=2000000107]
+[node name="Brush" parent="brush" index="0" unique_id=509146180]
 surface_material_override/2 = SubResource("StandardMaterial3D_r86rt")
 
 [node name="PenTip" type="Node3D" parent="." index="2" unique_id=2000000103]
-transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0.0010055415, 0)
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, -0.10575594, 0)
 
 [node name="PenTipArea" type="Area3D" parent="PenTip" index="0" unique_id=2000000104]
 collision_mask = 512

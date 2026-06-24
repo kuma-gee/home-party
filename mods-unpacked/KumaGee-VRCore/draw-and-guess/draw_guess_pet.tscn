@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://c704wg02ob4o7" path="res://main/plushie.tscn" id="1_h6ysc"]
 [ext_resource type="Script" uid="uid://b65gbtfsww8rl" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_guess_pet.gd" id="2_gqj60"]
+[ext_resource type="FontVariation" uid="uid://cv3schwy7bq8t" path="res://theme/default_font.tres" id="3_40q2y"]
 
 [node name="DrawGuessPet" unique_id=978755305 instance=ExtResource("1_h6ysc")]
 script = ExtResource("2_gqj60")
@@ -9,15 +10,20 @@ script = ExtResource("2_gqj60")
 [node name="CorrectIcon" type="Label3D" parent="." index="4" unique_id=730701314]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.68765366, 0)
+visible = false
 pixel_size = 0.02
 billboard = 1
 modulate = Color(0, 1, 0, 1)
 text = "✓"
+font = ExtResource("3_40q2y")
 
 [node name="IncorrectIcon" type="Label3D" parent="." index="5" unique_id=1312086624]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.68765366, 0)
 pixel_size = 0.02
-billboard = 1
+billboard = 2
+double_sided = false
 modulate = Color(1, 0, 0, 1)
 text = "✗"
+font = ExtResource("3_40q2y")
+font_size = 128

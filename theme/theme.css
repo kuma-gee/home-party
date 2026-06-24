@@ -4,6 +4,7 @@
     --default-border-radius: 16;
     --label-outline: 16;
     --label-large-outline: 32;
+    --slider-height: 16;
     --background-color: #222831;
     --primary-color: #00ADB5;
     --primary-highlight-color: #55CFD7;
@@ -82,6 +83,28 @@ PanelContainer {
 
 PanelContainer.Primary {
   background: var(--primary-color);
+}
+
+HSlider {
+  --icons-grabber: url(res://assets/slider_handle.png);
+  --icons-grabber-highlight: url(res://assets/slider_handle.png);
+  --icons-grabber-disabled: url(res://assets/slider_handle.png);
+}
+
+HSlider:slider {
+  background: var(--secondary-color);
+  border-radius: var(--default-border-radius);
+  padding: var(--slider-height) 0 var(--slider-height) 0;
+}
+
+HSlider:grabber_area, HSlider:grabber_area_highlight {
+  background: var(--primary-color);
+  border-radius: var(--default-border-radius) 0 0 var(--default-border-radius);
+  padding: var(--slider-height) 0 var(--slider-height) 0;
+}
+
+HSlider:grabber_area_highlight {
+  background: var(--primary-highlight-color);
 }
 
 ProgressBar.Health:background {

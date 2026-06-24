@@ -4,7 +4,7 @@ extends XRToolsPickable
 
 signal stroke_erased(stroke: DrawingStroke)
 
-@export var snap_zone: XRToolsSnapZone
+#@export var snap_zone: XRToolsSnapZone
 @export var eraser_mesh: MeshInstance3D
 @export var active_color := Color(1.0, 0.2, 0.2, 1.0)
 @export var normal_color := Color(0.7, 0.7, 0.7, 1.0)
@@ -16,11 +16,11 @@ func _ready():
 	if Engine.is_editor_hint():
 		return
 	
-	dropped.connect(func(_p): snap_zone.pick_up_object(self))
-	snap_zone.has_dropped.connect(func():
-		if not is_picked_up():
-			snap_zone.pick_up_object(self)
-	)
+	#dropped.connect(func(_p): snap_zone.pick_up_object(self))
+	#snap_zone.has_dropped.connect(func():
+		#if not is_picked_up():
+			#snap_zone.pick_up_object(self)
+	#)
 	
 	action_pressed.connect(_on_action_pressed)
 	action_released.connect(_on_action_released)

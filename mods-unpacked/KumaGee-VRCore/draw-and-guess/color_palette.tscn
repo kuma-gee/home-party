@@ -45,6 +45,7 @@ freeze = true
 script = ExtResource("2_script")
 palette_mesh = NodePath("PaletteMesh/Palette")
 release_mode = 1
+priority = 10
 
 [node name="CollisionShape3D" parent="." index="0" unique_id=1198871219]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.099833965, 0, -0.11138766)

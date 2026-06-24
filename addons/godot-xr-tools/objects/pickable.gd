@@ -75,6 +75,11 @@ const DEFAULT_LAYER := 0b0000_0000_0000_0001_0000_0000_0000_0000
 ## Require pick-by to be in the specified group
 @export var picked_by_require : String = ""
 
+## Priority for grab selection. Higher values are preferred over lower values
+## when multiple pickables are within the grab area. Objects with equal
+## priority fall back to distance-based selection.
+@export var priority : int = 0
+
 
 ## If true, the object can be picked up at range
 var can_ranged_grab: bool = true

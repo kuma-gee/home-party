@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://bbgjpxeqensis"]
 
-[ext_resource type="Environment" uid="uid://ju14wpdjpa0x" path="res://default_env.tres" id="1_02r63"]
 [ext_resource type="PackedScene" uid="uid://bwi3s0ixfuvq5" path="res://assets/living_room/room.glb" id="2_02r63"]
 [ext_resource type="Material" uid="uid://bybarphxfi3y8" path="res://assets/living_room/floor_mat.tres" id="2_6tfwr"]
 [ext_resource type="Material" uid="uid://dmr5w04cdkmck" path="res://assets/living_room/room_mat.tres" id="3_6tfwr"]
@@ -66,35 +65,32 @@ light_energy = 0.2
 omni_range = 4.0
 omni_attenuation = 0.6
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1072590852]
-environment = ExtResource("1_02r63")
-
 [node name="room" parent="." unique_id=126659612 instance=ExtResource("2_02r63")]
 
-[node name="sofa" parent="room" index="4" unique_id=1377521405]
+[node name="sofa" parent="room" index="4" unique_id=246467062]
 surface_material_override/0 = ExtResource("3_6tfwr")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="room/Table" parent_id_path=PackedInt32Array(126659612, 1314428012) index="0" unique_id=1220997989]
+[node name="StaticBody3D" type="StaticBody3D" parent="room/Table" parent_id_path=PackedInt32Array(126659612, 370415634) index="0" unique_id=1220997989]
 collision_layer = 2
 collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="room/Table/StaticBody3D" unique_id=153892589]
 shape = SubResource("ConcavePolygonShape3D_8bwq7")
 
-[node name="window" parent="room" index="8" unique_id=1204246043]
+[node name="window" parent="room" index="8" unique_id=1079262834]
 layers = 2
 surface_material_override/1 = SubResource("StandardMaterial3D_pa738")
 
-[node name="Wall_004" parent="room" index="10" unique_id=1978418274]
+[node name="Wall_004" parent="room" index="10" unique_id=1656316949]
 layers = 262144
 
-[node name="Floor" parent="room" index="13" unique_id=1964755244]
+[node name="Floor" parent="room" index="13" unique_id=295233443]
 surface_material_override/1 = ExtResource("2_6tfwr")
 
-[node name="Top" parent="room" index="14" unique_id=1548541148]
+[node name="Top" parent="room" index="14" unique_id=1196460677]
 layers = 262144
 
-[node name="Wall_002" parent="room" index="15" unique_id=440803076]
+[node name="Wall_002" parent="room" index="15" unique_id=182232447]
 layers = 262144
 
 [node name="Furniture" type="StaticBody3D" parent="." unique_id=544776648]

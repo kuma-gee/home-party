@@ -356,12 +356,24 @@ func _update_closest_object() -> void:
 func _get_closest_grab() -> Node3D:
 	var new_closest_obj: Node3D = null
 	var new_closest_distance := MAX_GRAB_DISTANCE2
+	var best_priority := -999999
+
+	# First pass: find the highest priority among valid candidates
 	for o in _object_in_grab_area:
-		# skip objects that can not be picked up
 		if not o.can_pick_up(self):
 			continue
+		var obj_priority: int = o.priority if "priority" in o else 0
+		if obj_priority > best_priority:
+			best_priority = obj_priority
 
-		# Save if this object is closer than the current best
+	# Second pass: among highest-priority candidates, pick the closest
+	for o in _object_in_grab_area:
+		if not o.can_pick_up(self):
+			continue
+		var obj_priority: int = o.priority if "priority" in o else 0
+		if obj_priority < best_priority:
+			continue
+
 		var distance_squared := global_transform.origin.distance_squared_to(
 				o.global_transform.origin)
 		if distance_squared < new_closest_distance:
@@ -376,16 +388,33 @@ func _get_closest_grab() -> Node3D:
 func _get_closest_ranged() -> Node3D:
 	var new_closest_obj: Node3D = null
 	var new_closest_angle_dp := cos(deg_to_rad(ranged_angle))
+	var best_priority := -999999
 	var hand_forwards := -global_transform.basis.z
+	var angle_threshold := cos(deg_to_rad(ranged_angle))
+
+	# First pass: find the highest priority among valid candidates
 	for o in _object_in_ranged_area:
-		# skip objects that can not be picked up
 		if not o.can_pick_up(self):
 			continue
+		var obj_priority: int = o.priority if "priority" in o else 0
+		if obj_priority > best_priority:
+			best_priority = obj_priority
 
-		# Save if this object is closer than the current best
+	# Second pass: among highest-priority candidates, pick best aligned
+	for o in _object_in_ranged_area:
+		if not o.can_pick_up(self):
+			continue
+		var obj_priority: int = o.priority if "priority" in o else 0
+		if obj_priority < best_priority:
+			continue
+
 		var object_direction: Vector3 = o.global_transform.origin - global_transform.origin
 		object_direction = object_direction.normalized()
 		var angle_dp := hand_forwards.dot(object_direction)
+
+		if angle_dp <= angle_threshold:
+			continue
+
 		if angle_dp > new_closest_angle_dp:
 			new_closest_obj = o
 			new_closest_angle_dp = angle_dp

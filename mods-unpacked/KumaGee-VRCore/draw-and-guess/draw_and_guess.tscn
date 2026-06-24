@@ -20,9 +20,9 @@
 [ext_resource type="Script" uid="uid://dtpfedxuvv01r" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_guess_scoring.gd" id="17_17l5l"]
 [ext_resource type="Script" uid="uid://1uy4b8ulko1y" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_guess_pet_spawner.gd" id="18_yk83c"]
 [ext_resource type="PackedScene" uid="uid://bxe1pj68p8mpp" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_guess_pet.tscn" id="19_sq75p"]
-[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/pen_small.tscn" id="20_small"]
-[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/pen_medium.tscn" id="21_medium"]
-[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/pen_large.tscn" id="22_large"]
+[ext_resource type="PackedScene" uid="uid://blw5gl50kkr73" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/pen_small.tscn" id="20_small"]
+[ext_resource type="PackedScene" uid="uid://c4ghwkcnf8f26" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/pen_medium.tscn" id="21_medium"]
+[ext_resource type="PackedScene" uid="uid://kqiq00ql5wo8" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/pen_large.tscn" id="22_large"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_c22f1"]
 panorama = ExtResource("2_bu42w")
@@ -192,10 +192,9 @@ text = "The word was: "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ColorPalette" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="0" unique_id=1048178413 node_paths=PackedStringArray("eraser") instance=ExtResource("3_dkdeu")]
+[node name="ColorPalette" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="0" unique_id=1048178413 instance=ExtResource("3_dkdeu")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.9862094, 0.7498138, 0)
 collision_mask = 196611
-eraser = NodePath("../EraserTool")
 
 [node name="SnapZone" parent="BaseSceneContent/ColorPalette" index="3" unique_id=1883047161 instance=ExtResource("4_tgrmj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09163487, 0.017678618, -0.12072617)
@@ -206,24 +205,23 @@ initial_object = NodePath("../../EraserTool")
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.0052658916, 0)
 
 [node name="SnapZoneSmall" parent="BaseSceneContent/ColorPalette" index="4" unique_id=2000000101 instance=ExtResource("4_tgrmj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.18, 0.018, -0.12)
+transform = Transform3D(0.70313406, -0.7110573, 3.1081296e-08, -1.4428919e-15, -4.371139e-08, -1, 0.7110573, 0.70313406, -3.073497e-08, -0.23584102, -0.026395082, -0.295722)
 snap_require = "pen_small"
 initial_object = NodePath("../../PenSmall")
 
 [node name="SnapZoneMedium" parent="BaseSceneContent/ColorPalette" index="5" unique_id=2000000201 instance=ExtResource("4_tgrmj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.04, 0.018, -0.12)
+transform = Transform3D(0.70313406, -0.7110573, 3.1081296e-08, -1.4428919e-15, -4.371139e-08, -1, 0.7110573, 0.70313406, -3.073497e-08, -0.16593736, -0.026857734, -0.22451705)
 snap_require = "pen_medium"
 initial_object = NodePath("../../PenMedium")
 
 [node name="SnapZoneLarge" parent="BaseSceneContent/ColorPalette" index="6" unique_id=2000000301 instance=ExtResource("4_tgrmj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0.018, -0.12)
+transform = Transform3D(0.70443946, -0.7097325, 0.00669698, 0.00902666, -0.0004761964, -0.9999592, 0.7097066, 0.7044711, 0.0060710628, -0.09521418, -0.040106356, -0.15351063)
 snap_require = "pen_large"
 initial_object = NodePath("../../PenLarge")
 
-[node name="EraserTool" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="1" unique_id=1045651359 node_paths=PackedStringArray("snap_zone") instance=ExtResource("6_k863p")]
+[node name="EraserTool" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="1" unique_id=1045651359 instance=ExtResource("6_k863p")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0760634, 0.7606643, 0.1352395)
 collision_mask = 196611
-snap_zone = NodePath("../ColorPalette/SnapZone")
 
 [node name="PenSmall" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="2" unique_id=2000000102 instance=ExtResource("20_small")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.85, 0.5, -0.15)
@@ -292,28 +290,28 @@ fov = 16.0
 [node name="PetSpawnPoints" type="Marker3D" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="10" unique_id=982374651]
 
 [node name="PetSpawn0" type="Marker3D" parent="BaseSceneContent/PetSpawnPoints" index="0" unique_id=982374652]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0, -1.75)
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 2.8, 0, -1.75)
 
 [node name="PetSpawn1" type="Marker3D" parent="BaseSceneContent/PetSpawnPoints" index="1" unique_id=982374653]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0, -1.25)
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 2.8, 0, -1.25)
 
 [node name="PetSpawn2" type="Marker3D" parent="BaseSceneContent/PetSpawnPoints" index="2" unique_id=982374654]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0, -0.75)
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 2.8, 0, -0.75)
 
 [node name="PetSpawn3" type="Marker3D" parent="BaseSceneContent/PetSpawnPoints" index="3" unique_id=982374655]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0, -0.25)
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 2.8, 0, -0.25)
 
 [node name="PetSpawn4" type="Marker3D" parent="BaseSceneContent/PetSpawnPoints" index="4" unique_id=982374656]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0, 0.25)
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 2.8, 0, 0.25)
 
 [node name="PetSpawn5" type="Marker3D" parent="BaseSceneContent/PetSpawnPoints" index="5" unique_id=982374657]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0, 0.75)
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 2.8, 0, 0.75)
 
 [node name="PetSpawn6" type="Marker3D" parent="BaseSceneContent/PetSpawnPoints" index="6" unique_id=982374658]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0, 1.25)
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 2.8, 0, 1.25)
 
 [node name="PetSpawn7" type="Marker3D" parent="BaseSceneContent/PetSpawnPoints" index="7" unique_id=982374659]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0, 1.75)
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 2.8, 0, 1.75)
 
 [node name="WordManager" type="Node" parent="." index="7" unique_id=1336885816]
 unique_name_in_owner = true

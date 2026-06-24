@@ -45,6 +45,7 @@ text = "-- Audio --"
 
 [node name="MasterRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=70556105]
 layout_mode = 2
+theme_override_constants/separation = 16
 
 [node name="MasterLabel" type="Label" parent="MarginContainer/VBoxContainer/MasterRow" unique_id=553984713]
 layout_mode = 2
@@ -55,9 +56,10 @@ text = "Master"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 1
 max_value = 1.0
 step = 0.01
-value = 1.0
+value = 0.5
 
 [node name="MasterValue" type="Label" parent="MarginContainer/VBoxContainer/MasterRow" unique_id=2039771091]
 unique_name_in_owner = true
@@ -68,6 +70,7 @@ horizontal_alignment = 2
 
 [node name="SFXRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1891422065]
 layout_mode = 2
+theme_override_constants/separation = 16
 
 [node name="SFXLabel" type="Label" parent="MarginContainer/VBoxContainer/SFXRow" unique_id=28063631]
 layout_mode = 2
@@ -78,6 +81,7 @@ text = "SFX"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 1
 max_value = 1.0
 step = 0.01
 value = 1.0
@@ -91,6 +95,7 @@ horizontal_alignment = 2
 
 [node name="MusicRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=807557624]
 layout_mode = 2
+theme_override_constants/separation = 16
 
 [node name="MusicLabel" type="Label" parent="MarginContainer/VBoxContainer/MusicRow" unique_id=2101120114]
 layout_mode = 2
@@ -101,6 +106,7 @@ text = "Music"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 1
 max_value = 1.0
 step = 0.01
 value = 1.0
@@ -120,6 +126,7 @@ text = "-- Graphics --"
 
 [node name="RenderScaleRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=280175501]
 layout_mode = 2
+theme_override_constants/separation = 16
 
 [node name="RenderScaleLabel" type="Label" parent="MarginContainer/VBoxContainer/RenderScaleRow" unique_id=1045274020]
 layout_mode = 2
@@ -130,8 +137,8 @@ text = "Render Scale"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-step = 0.25
-value = 1.0
+size_flags_vertical = 1
+step = 10.0
 tick_count = 7
 
 [node name="RenderScaleValue" type="Label" parent="MarginContainer/VBoxContainer/RenderScaleRow" unique_id=374637560]
@@ -143,6 +150,7 @@ horizontal_alignment = 2
 
 [node name="AntiAliasingRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1433646824]
 layout_mode = 2
+theme_override_constants/separation = 16
 
 [node name="AntiAliasingLabel" type="Label" parent="MarginContainer/VBoxContainer/AntiAliasingRow" unique_id=1309694459]
 layout_mode = 2

@@ -19,6 +19,7 @@
 [ext_resource type="ArrayMesh" uid="uid://bx2iy7qoqh4ve" path="res://assets/castle-defense/castle/slot_highlight.obj" id="17_rtmvl"]
 [ext_resource type="PackedScene" uid="uid://c704wg02ob4o7" path="res://main/plushie.tscn" id="18_spawn"]
 [ext_resource type="Script" uid="uid://jku735vapduj" path="res://main/plushie_spawner.gd" id="19_spawn"]
+[ext_resource type="Environment" uid="uid://ju14wpdjpa0x" path="res://default_env.tres" id="20_vp77d"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3vjtu"]
 shader = ExtResource("7_rtmvl")
@@ -312,3 +313,6 @@ game_select_zone = NodePath("../GameShelve/GameSelectZone")
 
 [node name="DebugVRView" type="Camera3D" parent="." unique_id=598998519]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.11851552, 1.8310995, -0.63572526)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1332463248]
+environment = ExtResource("20_vp77d")
