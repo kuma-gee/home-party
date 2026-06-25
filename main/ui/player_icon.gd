@@ -4,5 +4,8 @@ extends ColorRect
 @export var icon: Label
 
 func update(data: Dictionary):
-	color = PlayerList.get_color(PlayerManager.get_player_idx(data.client_id))
-	icon.text = "P%s" % (PlayerManager.get_player_idx(data.client_id) + 1)
+	var idx = PlayerManager.get_player_idx(data.client_id)
+	if idx < 0:
+		return
+	color = PlayerList.get_color(idx)
+	icon.text = "P%s" % (idx + 1)

@@ -25,6 +25,7 @@ static func get_color(idx: int) -> Color:
 @export var allow_empty := true
 
 var current_game: GameResource
+var _refresh_generation := 0
 
 func _ready() -> void:
 	PlayerManager.clients_changed.connect(_refresh_list)
@@ -32,6 +33,9 @@ func _ready() -> void:
 	_refresh_list()
 
 func _refresh_list() -> void:
+	_refresh_generation += 1
+	var gen := _refresh_generation
+
 	var players_data: Array[Dictionary] = []
 	for child in PlayerManager.get_children():
 		if child is ClientController and child.active:
@@ -39,6 +43,8 @@ func _refresh_list() -> void:
 
 	var current_uuids: Array = []
 	for player_data in players_data:
+		if gen != _refresh_generation:
+			return
 		current_uuids.append(player_data.client_id)
 		var existing = find_existing_node(player_data.client_id)
 		if existing:
@@ -54,6 +60,9 @@ func _refresh_list() -> void:
 			player_created.emit(player_data.client_id)
 
 		await get_tree().create_timer(create_delay).timeout
+
+	if gen != _refresh_generation:
+		return
 
 	for child in get_children():
 		if child is JoinedPlayer and child.uuid not in current_uuids:
