@@ -304,6 +304,36 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1.6482217, -0.5)
 [node name="PlushieSpawn_CouchR" type="Marker3D" parent="PlushieSpawnPoints" unique_id=1837691558]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1.648, -1)
 
+[node name="PlushieSpawn_FloorCenter" type="Marker3D" parent="PlushieSpawnPoints" unique_id=900000001]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+
+[node name="PlushieSpawn_FloorFrontLeft" type="Marker3D" parent="PlushieSpawnPoints" unique_id=900000002]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.05, 1.5)
+
+[node name="PlushieSpawn_FloorFrontRight" type="Marker3D" parent="PlushieSpawnPoints" unique_id=900000003]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.05, 1.5)
+
+[node name="PlushieSpawn_FloorFrontCenter" type="Marker3D" parent="PlushieSpawnPoints" unique_id=900000004]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 2.0)
+
+[node name="PlushieSpawn_FloorBackLeft" type="Marker3D" parent="PlushieSpawnPoints" unique_id=900000005]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0, 0.05, -1.8)
+
+[node name="PlushieSpawn_FloorBackRight" type="Marker3D" parent="PlushieSpawnPoints" unique_id=900000006]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.05, -1.5)
+
+[node name="PlushieSpawn_FloorBackCenter" type="Marker3D" parent="PlushieSpawnPoints" unique_id=900000007]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, -2.0)
+
+[node name="PlushieSpawn_FloorLeftMid" type="Marker3D" parent="PlushieSpawnPoints" unique_id=900000008]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0.05, 1.0)
+
+[node name="PlushieSpawn_FloorRightMid" type="Marker3D" parent="PlushieSpawnPoints" unique_id=900000009]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 0.05, -0.5)
+
+[node name="PlushieSpawn_TVTable" type="Marker3D" parent="PlushieSpawnPoints" unique_id=900000010]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.23, 0.6, -0.52)
+
 [node name="PlushieSpawner" type="Node" parent="." unique_id=2072471528 node_paths=PackedStringArray("spawn_point_group", "player_list", "game_select_zone")]
 script = ExtResource("19_spawn")
 plushie_scene = ExtResource("18_spawn")

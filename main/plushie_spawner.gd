@@ -6,7 +6,6 @@ extends Node
 @export var game_select_zone: GameSelectZone
 
 var _plushies := {}  # uuid -> plushie node
-var _spawn_index := 0
 var _selected_game: GameResource
 
 func _ready() -> void:
@@ -27,8 +26,7 @@ func _on_player_created(uuid: String) -> void:
 	if spawn_points.is_empty():
 		return
 
-	var point = spawn_points[_spawn_index % spawn_points.size()]
-	_spawn_index += 1
+	var point = spawn_points[randi() % spawn_points.size()]
 
 	var plushie = plushie_scene.instantiate()
 	plushie.position = point.global_position
