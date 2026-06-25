@@ -52,8 +52,7 @@ visible live on the shared desktop screen for everyone to see.
 - Black, Red, Blue, Green, Yellow, White (default)
 - The palette can be grabbed and repositioned freely
 - Current color is shown at the tip of the brush
-- **3 brush sizes** (Small, Medium, Large) are stored on the back of the palette — grab a brush to draw and release it near the palette to snap it back
-- Each brush snaps into its own dedicated slot on the palette when released nearby
+- **3 brush sizes** (Small, Medium, Large) are stored on the back of the palette
 
 ### Word Display
 
@@ -118,15 +117,14 @@ to submit 1 word. The UI shows:
 
 ### Player Pets (3D Representation)
 
-Each mobile player is represented inside the 3D drawing room as a **cube-pet plushie** (reusing the existing animal models from the lobby). Pets sit on the floor in front of the drawing area and serve as a visual indicator of player status.
-
-**Placement:** Pets spawn in a row on the floor in front of the viewport/desktop area, spaced evenly so all are visible in the shared desktop view.
+Each mobile player is represented inside the 3D drawing room as a **cube-pet plushie**.
+Pets sit on the floor in front of the drawing area and serve as a visual indicator of player status.
 
 **Behavior during rounds:**
-- **Idle:** Pets sit still, facing the drawing area as if watching
-- **Correct guess:** Pet does a visual celebration — model squishes, glows with the player's color, and a green checkmark icon appears above its head, then fades
-- **Incorrect guess:** A red X icon briefly appears above the pet's head, then fades
-- **All guessed:** Once all players have guessed correctly, remaining pets skip the celebration (round advances)
+- **Idle:** Pets sit still
+- **Correct guess:** model squishes, glows with the green color
+- **Incorrect guess:** model squishes, glows with the red color
+- **All guessed:** Once all players have guessed correctly, round advances
 
 **VR interaction:** Pets are grabbable (`XRToolsPickable`) — the VR player can pick them up, move them around, and trigger a squeak sound by pressing the action button (same as lobby plushies).
 

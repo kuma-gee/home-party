@@ -12,10 +12,10 @@ destroy the gate before the time runs out.
 ## VR Player
 
 The VR player physically grabs arrows from their back, optionally slots them into one
-of three **elemental orbs** placed directly in front of them to change the arrow's
+of the **elemental orbs** placed directly in front of them to change the arrow's
 element, then shoots by grabbing and pulling the bowstring.
 
-The player equips **3 elements** at the start of the match — this is a meaningful
+The player equips up to **3 elements** at the start of the match — this is a meaningful
 loadout decision based on expected mobile strategy.
 
 ### Arrows
@@ -28,10 +28,10 @@ available as a no-cooldown fallback while elemental orbs recharge.
 |-----------|----------|--------|
 | None      | None     | Single target |
 | Fire      | 1.5s     | Explosion on hit — kills all skeletons in a small radius (~2m) |
-| Ice       | 4s       | Kills hit target; freezes all skeletons in a medium radius (~4m) for 3s; lingering slow for 6s after |
+| Ice       | 4s       | freezes all skeletons in a medium radius (~4m) for 3s; lingering slow for 6s after |
 | Wind      | 3.5s     | Doesn't kill — create a moving tornado that pulls all skeletons within the area (~6m); bomb carriers keep their fuse ticking |
-| Lightning | 4.5s     | Kills hit target; chains to 2 nearby skeletons within ~5m |
-| Poison    | 2.5s     | Kills hit target; corpse emits a cloud for 5s — skeletons entering the cloud (~4m) die after 5s. The poison persists once applied and cannot be removed by leaving the cloud |
+| Lightning | 4.5s     | chains to 2 nearby skeletons within ~5m |
+| Poison    | 2.5s     | emits a cloud (~4m) on impact — skeletons inside it die after 5s. Poisoned skeletons can inject others nearby |
 
 **Design Intent**
 
@@ -40,7 +40,7 @@ available as a no-cooldown fallback while elemental orbs recharge.
 - **Ice** — catapult suppressor; freeze locks crews mid-charge, lingering slow denies repositioning
 - **Wind** — denial tool; resets runner and catapult progress without killing; especially punishing against bomb carriers whose fuse keeps ticking during knockback
 - **Lightning** — crowd clearer; one shot can wipe a full catapult crew, but the long cooldown makes it a commitment
-- **Poison** — punishes clustering; tag one skeleton heading to a catapult and let the cloud do the work; the lingering poison means even runners who escape the cloud will die after 5s; useless against solo runners who avoid the cloud entirely
+- **Poison** — punishes clustering; the lingering poison means even runners who escape the cloud will die after 5s; useless against solo runner
 
 > **Void (disabled):** A sixth element (Void) exists in the codebase with a 5s cooldown, creating a black hole that pulls in and deletes skeletons. It is currently disabled in the element selection UI and not available for players to equip. It may be re-enabled in a future update.
 
@@ -48,8 +48,7 @@ available as a no-cooldown fallback while elemental orbs recharge.
 
 Mobile players spawn as skeletons and can move freely around the map.
 Their main offensive options are crewing a catapult or running a bomb to the gate,
-but they can also dodge arrows, pick up stray bombs, and use active skills (dash,
-shield) unlocked at the start of each life.
+but they can also dodge arrows, pick up stray bombs
 
 ### Respawn
 
@@ -79,7 +78,7 @@ Taking the bomb to the gate, damages it and the player can respawn at a faster s
 
 - Picking up a bomb starts an **10s fuse** — it explodes on the carrier if not delivered in time
 - **Successful delivery:** deals `1 × firepower` damage to the gate and grants the carrier **+1 firepower**
-- **Dying mid-run:** bomb explodes at that location — no gate damage, no firepower gain
+- **Dying mid-run:** no gate damage, no firepower gain
 
 ---
 

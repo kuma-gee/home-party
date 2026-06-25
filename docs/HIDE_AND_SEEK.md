@@ -8,7 +8,7 @@ act like AI to avoid detection.
 - **Round Time:** 90 seconds
 - **Seeker wins:** Tag all hiders
 - **Hiders win:** At least one hider remains when time expires
-- **Players:** 3–8
+- **Players:** 2-10
 
 ## Design Pillars
 
@@ -124,8 +124,6 @@ to give both visual variety and tactical depth.
   - **Paintings (4 per gallery):** Stand and look for 5s. NPCs stop at paintings
     along a predefined route. Hiders press **Button A** near a painting to look.
   - **Plaques (2 per gallery):** Read for 3s. Hiders press **Button A** near a plaque.
-  - **Photo spots (1 per gallery):** Trigger a photo-taking animation (4s). NPCs perform
-    this randomly every 15–30s. Hiders press **Button A** to mimic.
 
 ### 2. Office Open-Plan (future content)
 

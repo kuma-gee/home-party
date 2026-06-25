@@ -20,23 +20,19 @@ what each one is about, pick one, and launch it for everyone to play.
 The VR player can:
 
 - **Look around** the space and see all the games laid out in front of them
-- **Pick up any game box** to inspect what's inside — its name, description,
-  and player count show up on a screen
-- **Slot a game into the designated play zone** to lock in their choice
+- **Pick up any game box** to inspect it
+- **Slot a game into the designated play zone** to view the details
 - **Press the big red button** on the TV remote to kick things off
 
 Players on their phones (spectators) see the same game details mirrored on a
 desktop screen, so everyone's on the same page before the game starts.
 
-When a game ends, everyone returns here to pick the next one. The loop is
-simple: arrive, browse, pick, play, repeat.
-
 ### Plushie Players
 
 When mobile players join the lobby, they don't just spectate — they **spawn as
 plushies** scattered around the living room. These are soft, grabable toys that
-the VR player can pick up, squeeze, toss, or stack. Each plushie is a random
-animal. The player numbers is shown as a tag around the animals neck. Mobile
+the VR player can pick up, toss, or stack. Each plushie is a random
+animal. The player numbers is shown as labels above the animal. Mobile
 players can click any button and the plushie will make a sound and some visual
 cue for some basic interactions.
 
@@ -64,7 +60,7 @@ to the left hand, **pauses the game**, and closes when pressed again.
 
 | Option | Action |
 |--------|--------|
-| **Reset Space** | Re‑center VR playspace and reset floor height. Useful when the headset changes hands or drifts during a party. |
+| **Reset Space** | Re‑center VR playspace and reset floor height. |
 | **Settings** | Opens the full Settings panel (see below). |
 | **Return Home** | Exit the current mini‑game and return to the hub living room. |
 
