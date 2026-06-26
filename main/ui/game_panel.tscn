@@ -4,6 +4,8 @@
 [ext_resource type="Script" uid="uid://cp7mmevbe8a8b" path="res://main/ui/game_details_panel.gd" id="2_31x71"]
 [ext_resource type="Texture2D" uid="uid://cgqwlrol4v7xg" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/desktop_preview.png" id="3_pbf3h"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_664q2"]
+
 [node name="PanelContainer" type="PanelContainer" unique_id=357869800 node_paths=PackedStringArray("name_label", "desc_label", "player_label", "bg_image")]
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,15 +13,15 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_664q2")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_664q2")
 script = ExtResource("2_31x71")
 name_label = NodePath("MarginContainer2/MarginContainer/VBoxContainer/Name")
 desc_label = NodePath("MarginContainer2/MarginContainer/VBoxContainer/Desc")
 player_label = NodePath("MarginContainer2/MarginContainer/VBoxContainer/Players")
 bg_image = NodePath("MarginContainer2/TextureRect")
 
-[node name="ColorRect2" type="ColorRect" parent="." unique_id=107742878]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=737270966]
 layout_mode = 2
-color = Color(0.07683582, 0.07683582, 0.07683582, 1)
 
 [node name="MarginContainer2" type="MarginContainer" parent="." unique_id=1094930703]
 layout_mode = 2
@@ -32,11 +34,13 @@ stretch_mode = 6
 
 [node name="ColorRect" type="ColorRect" parent="MarginContainer2" unique_id=1621062180]
 layout_mode = 2
-color = Color(0, 0, 0, 0.47058824)
+color = Color(0.22352941, 0.24313726, 0.27450982, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer2" unique_id=1086336808]
 modulate = Color(1, 1, 1, 0.78431374)
 layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_right = 32
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer2/MarginContainer" unique_id=1081143582]
 layout_mode = 2
@@ -56,5 +60,6 @@ text = "This game is gonna be super amazing and fun to play for everyone!"
 autowrap_mode = 2
 
 [node name="Players" type="Label" parent="MarginContainer2/MarginContainer/VBoxContainer" unique_id=548465603]
+visible = false
 layout_mode = 2
 text = "P: 4+"
