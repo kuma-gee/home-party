@@ -12,10 +12,13 @@ emission_enabled = true
 emission_energy_multiplier = 0.8
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_02r63"]
-size = Vector3(0.45825195, 2.2763672, 0.5951843)
+size = Vector3(0.44213867, 2.484375, 0.5951843)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pa738"]
+size = Vector3(0.954834, 2.118164, 0.3557129)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6tfwr"]
-size = Vector3(0.75946045, 2.0644531, 0.7949219)
+size = Vector3(0.75946045, 2.2697754, 0.7949219)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1suxu"]
 size = Vector3(0.9667969, 1.5407715, 0.19921875)
@@ -23,6 +26,9 @@ size = Vector3(0.9667969, 1.5407715, 0.19921875)
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_58mu4"]
 height = 0.30004883
 radius = 0.24853516
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gu01k"]
+size = Vector3(0.22131348, 0.091033936, 0.26464844)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_58mu4"]
 size = Vector3(5.145508, 0.22875977, 4.7145996)
@@ -98,24 +104,32 @@ collision_layer = 2
 collision_mask = 0
 
 [node name="Sofa" type="CollisionShape3D" parent="Furniture" unique_id=1837354460]
-transform = Transform3D(-8.881784e-16, 0, 1.0000001, 1, -4.371139e-08, 0, 4.371139e-08, 1.0000001, 0, -2.0040748, 0.3964646, -0.50016326)
+transform = Transform3D(-8.881784e-16, 0, 1.0000001, 1, -4.371139e-08, 0, 4.371139e-08, 1.0000001, 0, -2.0040748, 0.38840795, -0.50016326)
 shape = SubResource("BoxShape3D_02r63")
 
+[node name="Sofa2" type="CollisionShape3D" parent="Furniture" unique_id=953314111]
+transform = Transform3D(-8.881784e-16, 0, 1.0000001, 1, -4.371139e-08, 0, 4.371139e-08, 1.0000001, 0, -2.478184, 0.6447556, -0.50016326)
+shape = SubResource("BoxShape3D_pa738")
+
 [node name="TVTable" type="CollisionShape3D" parent="Furniture" unique_id=1944947047]
-transform = Transform3D(-8.881784e-16, 0, 1.0000001, 1, -4.371139e-08, 0, 4.371139e-08, 1.0000001, 0, 1.2358251, 0.54706883, -0.51991874)
+transform = Transform3D(-8.881784e-16, 0, 1.0000001, 1, -4.371139e-08, 0, 4.371139e-08, 1.0000001, 0, 1.2358251, 0.45264244, -0.51991874)
 shape = SubResource("BoxShape3D_6tfwr")
 
 [node name="TV" type="CollisionShape3D" parent="Furniture" unique_id=1957343526]
-transform = Transform3D(-8.881784e-16, 0, 1.0000001, 1, -4.371139e-08, 0, 4.371139e-08, 1.0000001, 0, 1.2358251, 1.7236933, -0.51991874)
+transform = Transform3D(-8.881784e-16, 0, 1.0000001, 1, -4.371139e-08, 0, 4.371139e-08, 1.0000001, 0, 1.2358251, 1.6413733, -0.51991874)
 shape = SubResource("BoxShape3D_1suxu")
 
 [node name="TVPlant" type="CollisionShape3D" parent="Furniture" unique_id=630271429]
-transform = Transform3D(-8.881784e-16, 0, 1.0000001, -8.742278e-08, -1.0000001, 0, 1, -8.7422784e-08, 0, 1.2139013, 0.30878603, -2.171806)
+transform = Transform3D(-8.881784e-16, 0, 1.0000001, -8.742278e-08, -1.0000001, 0, 1, -8.7422784e-08, 0, 1.1833819, 0.24841243, -2.171806)
 shape = SubResource("CylinderShape3D_58mu4")
 
 [node name="SofaPlant" type="CollisionShape3D" parent="Furniture" unique_id=1835086102]
-transform = Transform3D(-8.881784e-16, 0, 1.0000001, -8.742278e-08, -1.0000001, 0, 1, -8.7422784e-08, 0, -2.291789, 0.30878603, -2.171806)
+transform = Transform3D(-8.881784e-16, 0, 1.0000001, -8.742278e-08, -1.0000001, 0, 1, -8.7422784e-08, 0, -2.2271645, 0.24206537, -2.171806)
 shape = SubResource("CylinderShape3D_58mu4")
+
+[node name="GameBox" type="CollisionShape3D" parent="Furniture" unique_id=1936512773]
+transform = Transform3D(0.99999994, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, -0.4861517, 0.5622351, -0.52439916)
+shape = SubResource("BoxShape3D_gu01k")
 
 [node name="Walls" type="StaticBody3D" parent="." unique_id=844598181]
 collision_mask = 0

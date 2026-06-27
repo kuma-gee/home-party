@@ -1,6 +1,7 @@
 extends Node
 
 var fade_out_volume_db := -60.0
+var fade_in_volume_db := -10.0
 var fade_time := 1.0
 
 var _player: AudioStreamPlayer
@@ -17,7 +18,7 @@ func start(stream: AudioStream) -> void:
 	_player.volume_db = fade_out_volume_db
 	_player.stream = stream
 	_player.play()
-	_fade_to(0.0)
+	_fade_to(fade_in_volume_db)
 
 func stop() -> void:
 	if not _player.playing:
