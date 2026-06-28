@@ -27,6 +27,11 @@ static func get_color(idx: int) -> Color:
 var current_game: GameResource
 var _refresh_generation := 0
 
+## UUIDs added here are never evicted by _refresh_list (used for AI players).
+var persistent_uuids: Array[String] = []
+## Extra players not tracked by PlayerManager (e.g. AI). Added to get_player_count().
+var extra_player_count: int = 0
+
 func _ready() -> void:
 	PlayerManager.clients_changed.connect(_refresh_list)
 	await get_tree().create_timer(initial_delay).timeout
@@ -65,7 +70,7 @@ func _refresh_list() -> void:
 		return
 
 	for child in get_children():
-		if child is JoinedPlayer and child.uuid not in current_uuids:
+		if child is JoinedPlayer and child.uuid not in current_uuids and child.uuid not in persistent_uuids:
 			child.move_out()
 			player_removed.emit(child.uuid)
 
@@ -87,7 +92,7 @@ func is_all_ready():
 	return get_ready_count() == get_player_count()
 
 func get_player_count():
-	return PlayerManager.get_active_players().size()
+	return PlayerManager.get_active_players().size() + extra_player_count
 
 func get_ready_count():
 	var count = 0

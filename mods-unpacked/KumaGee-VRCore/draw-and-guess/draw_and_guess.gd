@@ -10,9 +10,9 @@ extends BaseGame
 @onready var word_manager: DrawGuessWordManager = %WordManager
 @onready var round_manager: DrawGuessRoundManager = %RoundManager
 @onready var pet_spawner: DrawGuessPetSpawner = %PetSpawner
+@onready var ai_manager: DrawGuessAIManager = %AIManager
 
 var logger := KumaLog.new("DrawAndGuess")
-		
 var prepare_scene: DrawPrepareScene
 
 const DRAW_PLAYER_UI_SCENE := preload("res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_player_ui.tscn")
@@ -27,17 +27,24 @@ func _ready() -> void:
 	round_manager.round_skipped.connect(_on_round_skipped)
 	game_phase.connect(_on_game_phase)
 	prepare_phase.connect(_on_prepare_phase)
+	ai_manager.ai_guessed.connect(_on_player_guessed)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey:
 		if event.is_pressed() and event.shift_pressed and event.keycode == KEY_1:
 			_on_vr_ready_pressed()
+	if not is_game_phase:
+		if event.is_action_pressed("debug_ai_increase"):
+			ai_manager.increase_ai_count()
+		elif event.is_action_pressed("debug_ai_decrease"):
+			ai_manager.decrease_ai_count()
 
 func _on_prepare_phase():
 	prepare_scene = vr_scene.get_scene_instance()
 	prepare_scene.ready_clicked.connect(_on_vr_ready_pressed)
 	prepare_scene.skipped.connect(func(): round_manager.skip_round())
 	prepare_scene.round_timer = round_manager.round_timer
+	ai_manager.on_prepare_phase_entered()
 	_update_ui()
 	_on_clients_changed()
 	
@@ -65,10 +72,12 @@ func _on_player_word_submitted(word: String, player_ui: DrawPlayerUI) -> void:
 	var result = word_manager.submit_word(word, player_ui.uuid)
 	match result:
 		DrawGuessWordManager.SubmitResult.INVALID:
-			player_ui.game_client.send_text("word_ack;invalid")
+			if player_ui.game_client is GameClient:
+				player_ui.game_client.send_text("word_ack;invalid")
 			logger.debug("Invalid word from %s: %s" % [player_ui.uuid, word.strip_edges()])
 		DrawGuessWordManager.SubmitResult.DUPLICATE:
-			player_ui.game_client.send_text("word_ack;duplicate")
+			if player_ui.game_client is GameClient:
+				player_ui.game_client.send_text("word_ack;duplicate")
 			logger.debug("Duplicate word from %s: %s" % [player_ui.uuid, word.strip_edges()])
 		DrawGuessWordManager.SubmitResult.ACCEPTED:
 			player_ui.mark_word_submitted()
@@ -88,14 +97,16 @@ func _on_player_guessed(guess: String, player_ui: DrawPlayerUI) -> void:
 	
 	if round_manager.player_guessed(player_ui.uuid, guess):
 		logger.info("Correct guess from %s: %s" % [player_ui.uuid, guess])
-		player_ui.game_client.send_text("word_ack;correct")
+		if player_ui.game_client is GameClient:
+			player_ui.game_client.send_text("word_ack;correct")
 		player_ui.mark_guessed_correctly()
 		var pet := pet_spawner.get_pet(player_ui.uuid)
 		if pet:
 			pet.on_correct_guess()
 	else:
 		logger.debug("Incorrect guess from %s: %s" % [player_ui.uuid, guess])
-		player_ui.game_client.send_text("word_ack;incorrect")
+		if player_ui.game_client is GameClient:
+			player_ui.game_client.send_text("word_ack;incorrect")
 		player_ui.mark_guessed_incorrectly()
 		var pet := pet_spawner.get_pet(player_ui.uuid)
 		if pet:
@@ -116,6 +127,7 @@ func _on_game_phase() -> void:
 	logger.info("Starting game with %d words in pool" % word_manager.size())
 	_on_clients_changed()
 	scoring.init_player(DrawGuessScoring.VR_PLAYER_ID)
+	ai_manager.on_game_phase_entered()
 	round_manager.start_game(word_manager.size())
 	_start_next_round()
 
@@ -126,6 +138,7 @@ func _start_next_round() -> void:
 	
 	var word = word_manager.pick_random_word()
 	round_manager.start_round(word)
+	ai_manager.start_game_round(word)
 	
 	logger.info("Round %d/%d: Word assigned" % [round_manager.current_round, round_manager.total_rounds])
 	prepare_scene.start_new_game(round_manager.current_word, round_manager.current_round, round_manager.total_rounds)
@@ -153,6 +166,7 @@ func _on_round_timed_out(word: String) -> void:
 
 func _end_game() -> void:
 	round_manager.finish_game()
+	ai_manager.stop_guessing()
 	logger.info("Game ended - all words used")
 
 	var entries:= scoring.get_scores()

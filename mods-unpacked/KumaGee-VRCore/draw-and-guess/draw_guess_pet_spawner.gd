@@ -51,3 +51,25 @@ func _on_player_removed(uuid: String) -> void:
 
 func get_pet(uuid: String) -> DrawGuessPet:
 	return _pets.get(uuid) as DrawGuessPet
+
+
+## Spawn a pet for an AI player (no ClientController).
+func spawn_for_ai(idx: int, uuid: String, color: Color) -> void:
+	var spawn_points_arr := _get_spawn_points()
+	if spawn_points_arr.is_empty():
+		return
+
+	var point: Marker3D = spawn_points_arr[_spawn_index % spawn_points_arr.size()]
+	_spawn_index += 1
+
+	var pet := pet_scene.instantiate() as DrawGuessPet
+	pet.global_position = point.global_position
+	pet.rotation = Vector3(0, randf_range(0, TAU), 0)
+	add_child(pet)
+	pet.setup(idx, uuid, color, null)
+	_pets[uuid] = pet
+
+
+## Remove a pet by UUID (used when an AI player is destroyed).
+func remove_pet(uuid: String) -> void:
+	_on_player_removed(uuid)

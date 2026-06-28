@@ -32,7 +32,7 @@ func _count_mobile_players() -> int:
 			count += 1
 	return count
 
-func get_elapsed_time():
+func get_elapsed_time() -> float:
 	return round_timer.wait_time - round_timer.time_left
 
 func start_game(word_count: int) -> void:

@@ -25,7 +25,7 @@ var game_client: ClientController
 func _ready() -> void:
 	container.position.x = -container.custom_minimum_size.x
 	size.x = 0
-
+	unplayable_label.hide()
 
 func set_ready():
 	is_ready = true

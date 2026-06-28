@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://b5w72n0f1x3km"]
+
+[ext_resource type="PackedScene" uid="uid://f8e1u58jvfd1" path="res://main/ui/joined_player.tscn" id="1_aipla"]
+[ext_resource type="Script" uid="uid://dhe4mvtwnidia" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_ai_player.gd" id="2_aipla"]
+
+[node name="DrawAIPlayer" unique_id=1251273664 node_paths=PackedStringArray("checkmark", "errormark") instance=ExtResource("1_aipla")]
+script = ExtResource("2_aipla")
+checkmark = NodePath("HBoxContainer/Checkmark")
+errormark = NodePath("HBoxContainer/ErrorMark")
+
+[node name="UnplayableLabel" parent="HBoxContainer" parent_id_path=PackedInt32Array(2030705900) index="0" unique_id=1331900332]
+visible = false
+
+[node name="Checkmark" type="Label" parent="HBoxContainer" parent_id_path=PackedInt32Array(2030705900) index="1" unique_id=1001000011]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+text = "✓"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ErrorMark" type="Label" parent="HBoxContainer" parent_id_path=PackedInt32Array(2030705900) index="2" unique_id=938709261]
+visible = false
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+text = "x"
+horizontal_alignment = 1
+vertical_alignment = 1

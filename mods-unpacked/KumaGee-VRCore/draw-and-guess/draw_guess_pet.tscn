@@ -2,28 +2,45 @@
 
 [ext_resource type="PackedScene" uid="uid://c704wg02ob4o7" path="res://main/plushie.tscn" id="1_h6ysc"]
 [ext_resource type="Script" uid="uid://b65gbtfsww8rl" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_guess_pet.gd" id="2_gqj60"]
-[ext_resource type="FontVariation" uid="uid://cv3schwy7bq8t" path="res://theme/default_font.tres" id="3_40q2y"]
+[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="4_6t06n"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_40q2y"]
+viewport_path = NodePath("Sprite3D/SubViewport")
 
 [node name="DrawGuessPet" unique_id=978755305 instance=ExtResource("1_h6ysc")]
 script = ExtResource("2_gqj60")
 
-[node name="CorrectIcon" type="Label3D" parent="." index="4" unique_id=730701314]
-unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.68765366, 0)
-visible = false
-pixel_size = 0.02
-billboard = 1
-modulate = Color(0, 1, 0, 1)
-text = "✓"
-font = ExtResource("3_40q2y")
-
-[node name="IncorrectIcon" type="Label3D" parent="." index="5" unique_id=1312086624]
-unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.68765366, 0)
-pixel_size = 0.02
+[node name="Sprite3D" type="Sprite3D" parent="." index="7" unique_id=940499816]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.77584463, 0)
 billboard = 2
-double_sided = false
-modulate = Color(1, 0, 0, 1)
-text = "✗"
-font = ExtResource("3_40q2y")
-font_size = 128
+texture = SubResource("ViewportTexture_40q2y")
+
+[node name="SubViewport" type="SubViewport" parent="Sprite3D" index="0" unique_id=317815734]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(256, 256)
+
+[node name="CenterContainer" type="CenterContainer" parent="Sprite3D/SubViewport" index="0" unique_id=912735201]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_6t06n")
+
+[node name="CorrectIcon" type="Label" parent="Sprite3D/SubViewport/CenterContainer" index="0" unique_id=2090105779]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+text = "✓"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="IncorrectIcon" type="Label" parent="Sprite3D/SubViewport/CenterContainer" index="1" unique_id=97971072]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+text = "x"
+horizontal_alignment = 1
+vertical_alignment = 1
