@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://vvdef1a2b3c4d"]
+
+[ext_resource type="Script" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/deflector_player.gd" id="1_script"]
+
+[node name="DeflectorPlayer" type="Node3D"]
+script = ExtResource("1_script")

@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://vvhud1a2b3c4d"]
+
+[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="1_theme"]
+[ext_resource type="Script" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/ui/vortex_hud.gd" id="2_script"]
+
+[node name="VortexHUD" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_theme")
+script = ExtResource("2_script")
+
+[node name="TopBar" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 80.0
+grow_horizontal = 2
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="StateBadge" type="PanelContainer" parent="TopBar"]
+custom_minimum_size = Vector2(220, 60)
+layout_mode = 2
+
+[node name="StateLabel" type="Label" parent="TopBar/StateBadge"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"LabelLarge"
+text = "Waiting..."
+horizontal_alignment = 1
+
+[node name="LivesPanel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -220.0
+offset_top = 90.0
+offset_bottom = 400.0
+grow_horizontal = 0
+
+[node name="LivesContainer" type="VBoxContainer" parent="LivesPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8

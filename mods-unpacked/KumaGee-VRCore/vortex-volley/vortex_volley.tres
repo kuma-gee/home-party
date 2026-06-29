@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="GameResource" format=3 uid="uid://vvtres1a2b3c4"]
+
+[ext_resource type="Script" path="res://main/game_resource.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://vv1a2b3c4d5e6" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_volley.tscn" id="2_scene"]
+
+[resource]
+script = ExtResource("1_script")
+name = "Vortex Volley"
+description = "Mobile players guard the outer ring as deflector paddles while the VR player stands in the center, batting the orb back with their hands. Last deflector alive wins."
+scene = ExtResource("2_scene")
+min_recommended_players = 2
+max_recommended_players = 6
