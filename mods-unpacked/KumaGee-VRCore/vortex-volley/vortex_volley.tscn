@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bisl1jfnf3opn" path="res://main/base_scene.tscn" id="1_base"]
 [ext_resource type="Script" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_volley.gd" id="2_game"]
+[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_volley_player_ui.tscn" id="3_plui"]
 [ext_resource type="PackedScene" uid="uid://vvdef1a2b3c4d" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/deflector_player.tscn" id="3_deflector"]
 [ext_resource type="PackedScene" uid="uid://vvorb1a2b3c4d" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/game_orb.tscn" id="4_orb"]
 [ext_resource type="PackedScene" uid="uid://vvhud1a2b3c4d" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/ui/vortex_hud.tscn" id="5_hud"]
@@ -14,3 +15,6 @@ orb_scene = ExtResource("4_orb")
 [node name="VortexHUD" parent="CanvasLayer/Control/GameUI" parent_id_path=PackedInt32Array(10000007) index="0" instance=ExtResource("5_hud")]
 unique_name_in_owner = true
 layout_mode = 1
+
+[node name="PlayerList" parent="CanvasLayer/Control/MarginContainer" parent_id_path=PackedInt32Array(10000008) index="0" unique_id=10000009]
+player_scene = ExtResource("3_plui")
