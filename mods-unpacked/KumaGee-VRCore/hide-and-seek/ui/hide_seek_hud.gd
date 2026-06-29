@@ -1,9 +1,12 @@
 class_name HideSeekHUD
 extends Control
 
-## Shared-screen HUD for Hide & Seek.
-## Shows hider count, countdown timer, player list (alive/eliminated),
-## found feed, and the Seeker's tag cooldown.
+@onready var hider_count_label: Label = %HiderCountLabel
+@onready var timer_label: Label = %TimerLabel
+@onready var found_feed_container: VBoxContainer = %FoundFeedContainer
+@onready var player_list_container: VBoxContainer = %PlayerListContainer
+@onready var tag_cooldown_label: Label = %TagCooldownLabel
+@onready var prepare_overlay: Control = %PrepareOverlay
 
 var hider_count: int = 0:
 	set(v):
@@ -20,11 +23,6 @@ var found_feed: Array[String] = []:
 		found_feed = v
 		_update_found_feed()
 
-var player_statuses: Array[Dictionary] = []:
-	set(v):
-		player_statuses = v
-		_update_player_list()
-
 var tag_cooldown: float = 0.0:
 	set(v):
 		tag_cooldown = v
@@ -34,13 +32,6 @@ var preparing: bool = false:
 	set(v):
 		preparing = v
 		_update_preparing()
-
-@onready var hider_count_label: Label = %HiderCountLabel
-@onready var timer_label: Label = %TimerLabel
-@onready var found_feed_container: VBoxContainer = %FoundFeedContainer
-@onready var player_list_container: VBoxContainer = %PlayerListContainer
-@onready var tag_cooldown_label: Label = %TagCooldownLabel
-@onready var prepare_overlay: Control = %PrepareOverlay
 
 
 func _ready() -> void:

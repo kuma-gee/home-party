@@ -5,7 +5,6 @@ extends BaseGame
 ## The VR player is the Seeker in a museum gallery full of identical NPC
 ## visitors; mobile players are hiders who blend into the crowd.
 
-@export var hud_scene: PackedScene
 @export var scoreboard_scene: PackedScene
 @export var vr_screen: XRToolsViewport2DIn3D
 @export var npc_spawner: NpcSpawner
@@ -16,29 +15,27 @@ var logger := KumaLog.new("HIDE_AND_SEEK")
 var game_manager: HideAndSeekGame
 var seeker_tag: SeekerTag
 var seeker_scan: SeekerScan
-var _desktop_hud: HideSeekHUD
-var _vr_hud: HideSeekHUD
 var _recentered: bool = false
 
 var hider_count: int = 0:
 	set(v):
 		hider_count = v
-		_update_hud()
+		#_update_hud()
 
 var time_remaining: float = 90.0:
 	set(v):
 		time_remaining = v
-		_update_hud()
+		#_update_hud()
 
 var found_feed: Array[String] = []:
 	set(v):
 		found_feed = v
-		_update_hud()
+		#_update_hud()
 
 var tag_cooldown: float = 0.0:
 	set(v):
 		tag_cooldown = v
-		_update_hud()
+		#_update_hud()
 
 
 func _ready() -> void:
@@ -46,8 +43,6 @@ func _ready() -> void:
 	prepare_phase.connect(_on_prepare_phase)
 	game_phase.connect(_on_game_phase)
 
-	await get_tree().process_frame
-	_setup_shared_screen()
 	_setup_game_manager()
 	_setup_seeker()
 	_recenter_vr_player()
@@ -64,22 +59,6 @@ func start_new_round() -> void:
 		game_manager.reset_for_new_round()
 	is_game_phase = false
 	prepare_phase.emit()
-
-
-func _setup_shared_screen() -> void:
-	# The shared desktop screen is the museum's fixed top-down camera; the HUD
-	# overlays it on desktop and is also piped to the VR virtual screen.
-	if vr_screen and hud_scene:
-		vr_screen.set_scene(hud_scene)
-		vr_screen.show()
-		_vr_hud = vr_screen.get_scene_instance() as HideSeekHUD
-
-	if hud_scene and game_ui:
-		_desktop_hud = hud_scene.instantiate() as HideSeekHUD
-		if _desktop_hud:
-			game_ui.add_child(_desktop_hud)
-
-	_update_hud()
 
 
 func _setup_game_manager() -> void:
@@ -180,10 +159,10 @@ func _on_phase_changed(new_phase: int) -> void:
 	match new_phase:
 		HideAndSeekGame.Phase.SETUP:
 			logger.info("Setup phase started (%.0fs)" % (game_manager.setup_duration if game_manager else 10.0))
-			_set_preparing(true)
+			#_set_preparing(true)
 		HideAndSeekGame.Phase.HUNT:
 			logger.info("Hunt phase started!")
-			_set_preparing(false)
+			#_set_preparing(false)
 		HideAndSeekGame.Phase.ENDED:
 			logger.info("Round ended")
 
@@ -198,7 +177,7 @@ func _on_hunt_timer(time: float) -> void:
 
 func _on_hider_joined(_hider: HiderCharacter) -> void:
 	hider_count = game_manager.get_hider_count() if game_manager else hider_count
-	_update_hud()
+	#_update_hud()
 
 
 func _on_hider_found(hider: HiderCharacter) -> void:
@@ -206,7 +185,7 @@ func _on_hider_found(hider: HiderCharacter) -> void:
 	found_feed.push_front("🎯 %s found!" % hider.player_name)
 	while found_feed.size() > 5:
 		found_feed.remove_at(found_feed.size() - 1)
-	_update_hud()
+	#_update_hud()
 
 
 func _on_round_ended(vr_won: bool, vr_score: int, hider_scores: Array[Dictionary]) -> void:
@@ -228,26 +207,18 @@ func _show_scoreboard(vr_won: bool, vr_score: int, hider_scores: Array[Dictionar
 	if desktop_gameover:
 		desktop_gameover.show_leaderboard("Hide & Seek", entries)
 
-
-func _set_preparing(preparing: bool) -> void:
-	if _vr_hud:
-		_vr_hud.preparing = preparing
-	if _desktop_hud:
-		_desktop_hud.preparing = preparing
-
-
 func _process(_delta: float) -> void:
 	if seeker_tag:
 		tag_cooldown = seeker_tag.cooldown_time
 
 
-func _update_hud() -> void:
-	var statuses: Array = game_manager.get_hider_statuses() if game_manager else []
-	for hud in [_vr_hud, _desktop_hud]:
-		if not hud:
-			continue
-		hud.hider_count = hider_count
-		hud.time_remaining = time_remaining
-		hud.found_feed = found_feed
-		hud.player_statuses = statuses
-		hud.tag_cooldown = tag_cooldown
+#func _update_hud() -> void:
+	#var statuses: Array = game_manager.get_hider_statuses() if game_manager else []
+	#for hud in [_vr_hud, _desktop_hud]:
+		#if not hud:
+			#continue
+		#hud.hider_count = hider_count
+		#hud.time_remaining = time_remaining
+		#hud.found_feed = found_feed
+		#hud.player_statuses = statuses
+		#hud.tag_cooldown = tag_cooldown

@@ -30,11 +30,16 @@ var _mesh_base_scale: Vector3 = Vector3(0.45, 0.45, 0.45)
 @onready var _character_mesh: Node3D = %CharacterMesh
 @onready var _identity_marker: Label3D = %IdentityMarker
 
+@export var animation: AnimationPlayer
 
 func _ready() -> void:
 	_set_identity_marker_visible(false)
 	if _character_mesh:
 		_mesh_base_scale = _character_mesh.scale
+	
+	var idx = PlayerManager.get_player_idx(controller.uuid)
+	_identity_marker.text = "P%d" % idx
+	_identity_marker.modulate = PlayerList.get_color(idx)
 
 
 func reset_for_round(spawn_pos: Vector3) -> void:
@@ -93,6 +98,9 @@ func _physics_process(delta: float) -> void:
 	var target_vel := Vector3(input.x, 0.0, input.y) * speed
 	velocity.x = move_toward(velocity.x, target_vel.x, acceleration * delta)
 	velocity.z = move_toward(velocity.z, target_vel.z, acceleration * delta)
+	
+	var anim = "Walk_B" if velocity.length() > 0.01 else "Idle_A"
+	animation.play(anim)
 
 	var horiz := Vector3(velocity.x, 0.0, velocity.z)
 	if horiz.length() > 0.05:

@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://dtob48md50jdt"]
+
+[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/interactive_location.tscn" id="1_3fsnd"]
+
+[node name="Painting" type="Node3D" unique_id=408998463]
+
+[node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=376720985]
+transform = Transform3D(1, 0, 0, 0, 0.25881904, 0.9659259, 0, -0.9659259, 0.25881904, -0.050304413, 5.051489, 0.43091488)
+spot_range = 6.0
+spot_angle = 25.426517
+
+[node name="PaintingA_N1" parent="." unique_id=106080051 instance=ExtResource("1_3fsnd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7676773, 0)

@@ -1,32 +1,56 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dabrf8f5tyhne"]
 
-[ext_resource type="Script" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/hider_character.gd" id="1_script"]
-[ext_resource type="PackedScene" uid="uid://oabojy0uqucd" path="res://assets/characters/characterMedium.fbx" id="2_char"]
+[ext_resource type="Script" uid="uid://svdt1f7p10am" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/hider_character.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://barufmjcnyugu" path="res://assets/hide_seek/Mannequin Character/characters/Mainnequin_Main.glb" id="2_geh4j"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.3
 height = 1.7
 
-[node name="HiderCharacter" type="CharacterBody3D"]
+[node name="HiderCharacter" type="CharacterBody3D" unique_id=446167976]
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("1_script")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="Mainnequin_Main" parent="." unique_id=1123665185 instance=ExtResource("2_geh4j")]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+
+[node name="Skeleton3D" parent="Mainnequin_Main/Rig_Medium" parent_id_path=PackedInt32Array(1123665185, 777870510) index="0" unique_id=2016587758]
+bones/1/position = Vector3(-4.792147e-22, 0.37942007, 1.7763568e-15)
+bones/1/rotation = Quaternion(-2.3474968e-16, -1.0331727e-07, 5.814742e-23, 1)
+bones/2/position = Vector3(0.17094505, 0.09614502, -0.006545)
+bones/2/rotation = Quaternion(0.9918993, -9.974012e-08, -5.0458673e-09, -0.12702715)
+bones/3/rotation = Quaternion(0.20406093, 7.575539e-08, -1.4235899e-07, 0.9789582)
+bones/4/rotation = Quaternion(-0.65633833, 4.429081e-08, -7.412978e-08, 0.7544668)
+bones/5/rotation = Quaternion(4.2042924e-08, 0.91977805, -0.39243892, 1.7406913e-07)
+bones/6/rotation = Quaternion(-0.043614957, 0.00062360725, 0.014283008, 0.99894613)
+bones/7/rotation = Quaternion(0.021759693, -7.487842e-09, -0.03550102, 0.99913275)
+bones/8/rotation = Quaternion(0.0074873744, 1.0660932e-10, 2.1894573e-11, 0.99997205)
+bones/9/rotation = Quaternion(-0.5291623, -0.027042773, -0.69836223, 0.48119253)
+bones/10/rotation = Quaternion(2.2099451e-07, 5.873592e-09, -0.34516826, 0.9385408)
+bones/12/rotation = Quaternion(-0.3116255, -0.24820495, -0.07937817, 0.913774)
+bones/13/rotation = Quaternion(0.09506648, -0.0848901, -0.70134026, 0.70134014)
+bones/14/rotation = Quaternion(-0.54293025, -0.033955842, 0.6216333, 0.56360084)
+bones/15/rotation = Quaternion(2.7397795e-07, -9.429931e-08, 0.5741528, 0.8187482)
+bones/17/rotation = Quaternion(-0.24858372, 0.26240513, -0.053313907, 0.93086386)
+bones/18/rotation = Quaternion(0.101435274, 0.059989072, 0.7021795, 0.7021796)
+bones/19/position = Vector3(-0.17094505, 0.114189304, 0.006528759)
+bones/19/rotation = Quaternion(0.7915907, 2.9229014e-07, -2.7186456e-08, 0.61105174)
+bones/20/rotation = Quaternion(0.8207266, -4.3960203e-08, 5.7672304e-07, 0.57132125)
+bones/21/rotation = Quaternion(-0.23390843, 7.429014e-08, -3.9550952e-07, 0.9722587)
+bones/22/rotation = Quaternion(5.1347854e-08, 0.9198651, -0.39223507, 1.790131e-07)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1430863358]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
 shape = SubResource("CapsuleShape3D_body")
 
-[node name="CharacterMesh" type="Node3D" parent="."]
-unique_name_in_owner = true
-scale = Vector3(0.45, 0.45, 0.45)
-
-[node name="characterMedium" parent="CharacterMesh" instance=ExtResource("2_char")]
-
-[node name="IdentityMarker" type="Label3D" parent="."]
+[node name="IdentityMarker" type="Label3D" parent="." unique_id=408663030]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
-visible = false
 pixel_size = 0.03
 billboard = 1
 modulate = Color(1, 0.85, 0, 1)
-text = "▼ You"
+text = "P1"
+font_size = 16
+
+[editable path="Mainnequin_Main"]
