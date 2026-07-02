@@ -4,7 +4,6 @@ extends Control
 @onready var hider_count_label: Label = %HiderCountLabel
 @onready var timer_label: Label = %TimerLabel
 @onready var found_feed_container: VBoxContainer = %FoundFeedContainer
-@onready var player_list_container: VBoxContainer = %PlayerListContainer
 @onready var tag_cooldown_label: Label = %TagCooldownLabel
 @onready var prepare_overlay: Control = %PrepareOverlay
 
@@ -38,7 +37,6 @@ func _ready() -> void:
 	_update_hider_count()
 	_update_timer()
 	_update_found_feed()
-	_update_player_list()
 	_update_tag_cooldown()
 	_update_preparing()
 
@@ -66,25 +64,6 @@ func _update_found_feed() -> void:
 		label.text = found_feed[i]
 		label.theme_type_variation = "LabelMedium"
 		found_feed_container.add_child(label)
-
-
-func _update_player_list() -> void:
-	if not player_list_container:
-		return
-	for child in player_list_container.get_children():
-		child.queue_free()
-	for entry in player_statuses:
-		var label := Label.new()
-		var name: String = str(entry.get("name", "Unknown"))
-		var alive: bool = bool(entry.get("alive", false))
-		if alive:
-			label.text = "● %s" % name
-			label.add_theme_color_override("font_color", Color(0.3, 1.0, 0.4))
-		else:
-			label.text = "✗ %s" % name
-			label.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6))
-		label.theme_type_variation = "LabelMedium"
-		player_list_container.add_child(label)
 
 
 func _update_tag_cooldown() -> void:

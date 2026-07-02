@@ -20,28 +20,25 @@ var _recentered: bool = false
 var hider_count: int = 0:
 	set(v):
 		hider_count = v
-		#_update_hud()
 
 var time_remaining: float = 90.0:
 	set(v):
 		time_remaining = v
-		#_update_hud()
 
 var found_feed: Array[String] = []:
 	set(v):
 		found_feed = v
-		#_update_hud()
 
 var tag_cooldown: float = 0.0:
 	set(v):
 		tag_cooldown = v
-		#_update_hud()
 
 
 func _ready() -> void:
 	super()
 	prepare_phase.connect(_on_prepare_phase)
 	game_phase.connect(_on_game_phase)
+	player_list.player_created.connect(_on_player_list_player_created)
 
 	_setup_game_manager()
 	_setup_seeker()
@@ -149,6 +146,7 @@ func _on_prepare_phase() -> void:
 	_recenter_vr_player()
 	if game_manager:
 		game_manager.phase = HideAndSeekGame.Phase.SETUP
+	_update_player_statuses()
 
 
 func _on_game_phase() -> void:
@@ -177,7 +175,7 @@ func _on_hunt_timer(time: float) -> void:
 
 func _on_hider_joined(_hider: HiderCharacter) -> void:
 	hider_count = game_manager.get_hider_count() if game_manager else hider_count
-	#_update_hud()
+	_update_player_statuses()
 
 
 func _on_hider_found(hider: HiderCharacter) -> void:
@@ -185,7 +183,7 @@ func _on_hider_found(hider: HiderCharacter) -> void:
 	found_feed.push_front("🎯 %s found!" % hider.player_name)
 	while found_feed.size() > 5:
 		found_feed.remove_at(found_feed.size() - 1)
-	#_update_hud()
+	_update_player_statuses()
 
 
 func _on_round_ended(vr_won: bool, vr_score: int, hider_scores: Array[Dictionary]) -> void:
@@ -212,13 +210,18 @@ func _process(_delta: float) -> void:
 		tag_cooldown = seeker_tag.cooldown_time
 
 
-#func _update_hud() -> void:
-	#var statuses: Array = game_manager.get_hider_statuses() if game_manager else []
-	#for hud in [_vr_hud, _desktop_hud]:
-		#if not hud:
-			#continue
-		#hud.hider_count = hider_count
-		#hud.time_remaining = time_remaining
-		#hud.found_feed = found_feed
-		#hud.player_statuses = statuses
-		#hud.tag_cooldown = tag_cooldown
+func _on_player_list_player_created(_uuid: String) -> void:
+	_update_player_statuses()
+
+
+func _update_player_statuses() -> void:
+	if not game_manager or not player_list:
+		return
+
+	var player_statuses := {}
+	for entry in game_manager.get_hider_statuses():
+		player_statuses[str(entry.get("name", ""))] = bool(entry.get("alive", false))
+
+	for child in player_list.get_children():
+		if child.has_method("update_hider_status"):
+			child.update_hider_status(bool(player_statuses.get(child.uuid, true)))

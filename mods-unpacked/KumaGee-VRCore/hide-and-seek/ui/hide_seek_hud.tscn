@@ -3,8 +3,7 @@
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="1_theme"]
 [ext_resource type="Script" uid="uid://dmch703ttbqr2" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/ui/hide_seek_hud.gd" id="2_script"]
 
-[node name="HideSeekHUD" type="Control" unique_id=1241130369]
-layout_mode = 3
+[node name="HideSeekHUD" type="PanelContainer" unique_id=330806231]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -13,98 +12,7 @@ grow_vertical = 2
 theme = ExtResource("1_theme")
 script = ExtResource("2_script")
 
-[node name="TopBar" type="HBoxContainer" parent="." unique_id=642576689]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 80.0
-grow_horizontal = 2
-theme_override_constants/separation = 40
-alignment = 1
-
-[node name="HiderCountBadge" type="PanelContainer" parent="TopBar" unique_id=1154935920]
-custom_minimum_size = Vector2(200, 60)
+[node name="Label" type="Label" parent="." unique_id=1846802765]
 layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="TopBar/HiderCountBadge" unique_id=1403663867]
-layout_mode = 2
-alignment = 1
-
-[node name="HiderCountIcon" type="Label" parent="TopBar/HiderCountBadge/HBoxContainer" unique_id=1518708282]
-layout_mode = 2
-text = "👤"
-horizontal_alignment = 1
-
-[node name="HiderCountLabel" type="Label" parent="TopBar/HiderCountBadge/HBoxContainer" unique_id=350530099]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"LabelLarge"
-text = "0 hiding"
-horizontal_alignment = 1
-
-[node name="TimerBadge" type="PanelContainer" parent="TopBar" unique_id=2089170564]
-custom_minimum_size = Vector2(160, 60)
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="TopBar/TimerBadge" unique_id=891440272]
-layout_mode = 2
-alignment = 1
-
-[node name="TimerIcon" type="Label" parent="TopBar/TimerBadge/HBoxContainer" unique_id=9144295]
-layout_mode = 2
-text = "⏱"
-horizontal_alignment = 1
-
-[node name="TimerLabel" type="Label" parent="TopBar/TimerBadge/HBoxContainer" unique_id=840553676]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"LabelLarge"
-text = "1:30"
-horizontal_alignment = 1
-
-[node name="TagCooldownBadge" type="PanelContainer" parent="TopBar" unique_id=1248447653]
-custom_minimum_size = Vector2(160, 60)
-layout_mode = 2
-
-[node name="TagCooldownLabel" type="Label" parent="TopBar/TagCooldownBadge" unique_id=2040527374]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"LabelMedium"
-text = "Tag: ready"
-horizontal_alignment = 1
-
-[node name="PrepareOverlay" type="Control" parent="." unique_id=84870380]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Dim" type="ColorRect" parent="PrepareOverlay" unique_id=1575694560]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.6)
-
-[node name="PrepareLabel" type="Label" parent="PrepareOverlay" unique_id=1848805096]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -40.0
-offset_right = 200.0
-offset_bottom = 40.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_type_variation = &"LabelLarge"
-text = "Prepare..."
-horizontal_alignment = 1
-vertical_alignment = 1
+size_flags_horizontal = 4
+text = "Find the intruders"

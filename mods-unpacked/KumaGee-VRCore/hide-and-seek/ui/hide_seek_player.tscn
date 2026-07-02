@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://clwvb6ruabojf"]
 
 [ext_resource type="PackedScene" uid="uid://f8e1u58jvfd1" path="res://main/ui/joined_player.tscn" id="1_xx17f"]
+[ext_resource type="Script" uid="uid://cx5yeofxu4iha" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/ui/hide_seek_player.gd" id="2_xract"]
 
 [node name="HideSeekPlayer" unique_id=1251273663 instance=ExtResource("1_xx17f")]
+script = ExtResource("2_xract")

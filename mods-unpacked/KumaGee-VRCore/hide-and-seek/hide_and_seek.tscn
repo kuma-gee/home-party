@@ -3,13 +3,13 @@
 [ext_resource type="PackedScene" uid="uid://bisl1jfnf3opn" path="res://main/base_scene.tscn" id="1_base"]
 [ext_resource type="Script" uid="uid://bt21kjbqibnkh" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/hide_and_seek.gd" id="2_game"]
 [ext_resource type="PackedScene" uid="uid://cjubxgaipy7ii" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/museum_gallery.tscn" id="3_museum"]
-[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/ui/hide_seek_hud.tscn" id="4_hud"]
+[ext_resource type="PackedScene" uid="uid://brhlt5hsqr24n" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/ui/hide_seek_hud.tscn" id="4_hud"]
 [ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/ui/hide_seek_scoreboard.tscn" id="5_score"]
 [ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/npc.tscn" id="6_npc"]
+[ext_resource type="PackedScene" uid="uid://clwvb6ruabojf" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/ui/hide_seek_player.tscn" id="6_yrfa8"]
 [ext_resource type="Script" uid="uid://dgwb5nsi5etv1" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/npc_spawner.gd" id="7_spawner"]
 [ext_resource type="PackedScene" uid="uid://dabrf8f5tyhne" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/hider_character.tscn" id="8_hider"]
 [ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="9_kvoks"]
-[ext_resource type="PackedScene" uid="uid://nfb07g0lpf00" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/prepare_ui.tscn" id="10_yrfa8"]
 
 [node name="HideAndSeek" unique_id=1851728811 node_paths=PackedStringArray("vr_screen", "npc_spawner", "museum_gallery") instance=ExtResource("1_base")]
 script = ExtResource("2_game")
@@ -30,8 +30,34 @@ visible = false
 transform = Transform3D(1, 0, 0, 0, 0.3793593, 0.92524946, 0, -0.92524946, 0.3793593, 0, 41.561806, 16.260757)
 fov = 24.0
 
-[node name="HideSeekHUD" parent="CanvasLayer/Control/GameUI" parent_id_path=PackedInt32Array(10000007) index="0" unique_id=898701864 instance=ExtResource("4_hud")]
+[node name="TopBar" type="HBoxContainer" parent="CanvasLayer/Control/GameUI" parent_id_path=PackedInt32Array(10000007) index="0" unique_id=642576689]
 layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 80.0
+grow_horizontal = 2
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/GameUI/TopBar" index="0" unique_id=891440272]
+layout_mode = 2
+alignment = 1
+
+[node name="TimerIcon" type="Label" parent="CanvasLayer/Control/GameUI/TopBar/HBoxContainer" index="0" unique_id=9144295]
+visible = false
+layout_mode = 2
+text = "⏱"
+horizontal_alignment = 1
+
+[node name="TimerLabel" type="Label" parent="CanvasLayer/Control/GameUI/TopBar/HBoxContainer" index="1" unique_id=840553676]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"LabelLarge"
+text = "1:30"
+horizontal_alignment = 1
+
+[node name="PlayerList" parent="CanvasLayer/Control/MarginContainer" parent_id_path=PackedInt32Array(10000008) index="0" unique_id=10000009]
+player_scene = ExtResource("6_yrfa8")
 
 [node name="MuseumGallery" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="0" unique_id=595911671 instance=ExtResource("3_museum")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.004131317, -3.8146973e-06, -0.076247215)
@@ -45,8 +71,9 @@ route_single_a = NodePath("../MuseumGallery/RouteSingleA")
 route_single_b = NodePath("../MuseumGallery/RouteSingleB")
 
 [node name="Viewport2Din3D2" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="2" unique_id=1231438571 instance=ExtResource("9_kvoks")]
-transform = Transform3D(0.8931684, 0.0007542893, -0.0030252635, -0.001083985, 1.3611671, 0.019372955, 0.003035903, -0.012708306, 0.8930781, 0.12534738, 1.4100788, 0.17280507)
-screen_size = Vector2(1, 1.3)
-scene = ExtResource("10_yrfa8")
-viewport_size = Vector2(240, 311)
-scene_properties_keys = PackedStringArray("prepare_ui_vr.gd")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.12534738, 1.4100788, -1.47468)
+screen_size = Vector2(1, 1.5)
+scene = ExtResource("4_hud")
+viewport_size = Vector2(500, 750)
+unshaded = true
+scene_properties_keys = PackedStringArray("hide_seek_hud.gd")
