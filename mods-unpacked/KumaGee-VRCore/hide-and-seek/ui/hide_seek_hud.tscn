@@ -3,7 +3,7 @@
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="1_theme"]
 [ext_resource type="Script" uid="uid://dmch703ttbqr2" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/ui/hide_seek_hud.gd" id="2_script"]
 
-[node name="HideSeekHUD" type="PanelContainer" unique_id=330806231]
+[node name="HideSeekHUD" type="PanelContainer" unique_id=1076365047]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -12,7 +12,88 @@ grow_vertical = 2
 theme = ExtResource("1_theme")
 script = ExtResource("2_script")
 
-[node name="Label" type="Label" parent="." unique_id=1846802765]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=200000001]
 layout_mode = 2
-size_flags_horizontal = 4
-text = "Find the intruders"
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=200000002]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="IntrudersLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=200000003]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"LabelLarge"
+text = "0 intruders remaining"
+horizontal_alignment = 1
+
+[node name="InstructionsRow" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=120988809]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ScanPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/InstructionsRow" unique_id=200000005]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ScanContent" type="VBoxContainer" parent="MarginContainer/VBoxContainer/InstructionsRow/ScanPanel" unique_id=200000006]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="ScanTitle" type="Label" parent="MarginContainer/VBoxContainer/InstructionsRow/ScanPanel/ScanContent" unique_id=200000007]
+layout_mode = 2
+theme_type_variation = &"LabelMedium"
+text = "SCAN"
+horizontal_alignment = 1
+
+[node name="ScanDesc" type="Label" parent="MarginContainer/VBoxContainer/InstructionsRow/ScanPanel/ScanContent" unique_id=200000008]
+layout_mode = 2
+text = "Grip → footprints"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="TagPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/InstructionsRow" unique_id=200000009]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TagContent" type="VBoxContainer" parent="MarginContainer/VBoxContainer/InstructionsRow/TagPanel" unique_id=200000010]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="TagTitle" type="Label" parent="MarginContainer/VBoxContainer/InstructionsRow/TagPanel/TagContent" unique_id=200000011]
+layout_mode = 2
+theme_type_variation = &"LabelMedium"
+text = "TAG"
+horizontal_alignment = 1
+
+[node name="TagDesc" type="Label" parent="MarginContainer/VBoxContainer/InstructionsRow/TagPanel/TagContent" unique_id=200000012]
+layout_mode = 2
+text = "Trigger → taser"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="PlaceholderTexture" type="TextureRect" parent="MarginContainer/VBoxContainer" unique_id=200000013]
+layout_mode = 2
+size_flags_vertical = 3
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ReadySection" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=200000014]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="ReadyCountLabel" type="Label" parent="MarginContainer/VBoxContainer/ReadySection" unique_id=200000015]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "0 / 0 ready"
+horizontal_alignment = 1
+
+[node name="StartButton" type="Button" parent="MarginContainer/VBoxContainer/ReadySection" unique_id=200000016]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "Start Game"

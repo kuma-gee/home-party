@@ -6,6 +6,7 @@ extends BaseGame
 ## visitors; mobile players are hiders who blend into the crowd.
 
 @export var scoreboard_scene: PackedScene
+@export var hud_scene: PackedScene
 @export var vr_screen: XRToolsViewport2DIn3D
 @export var npc_spawner: NpcSpawner
 @export var hider_scene: PackedScene
@@ -39,6 +40,7 @@ func _ready() -> void:
 	prepare_phase.connect(_on_prepare_phase)
 	game_phase.connect(_on_game_phase)
 	player_list.player_created.connect(_on_player_list_player_created)
+	player_list.ready_changed.connect(_on_ready_changed)
 
 	_setup_game_manager()
 	_setup_seeker()
@@ -49,13 +51,6 @@ func _ready() -> void:
 
 	LobbyServer.send_layout("joystick")
 	logger.info("Hide & Seek (social deduction) room initialized")
-
-
-func start_new_round() -> void:
-	if game_manager:
-		game_manager.reset_for_new_round()
-	is_game_phase = false
-	prepare_phase.emit()
 
 
 func _setup_game_manager() -> void:
@@ -80,7 +75,6 @@ func _setup_seeker() -> void:
 		logger.warn("No xr_player found; seeker controls disabled")
 		return
 
-	var left_controller := xr_player.get_node_or_null("SubViewport/XRPlayer/LeftHand") as XRController3D
 	var right_controller := xr_player.get_node_or_null("SubViewport/XRPlayer/RightHand") as XRController3D
 	var right_pointer := xr_player.get_node_or_null("SubViewport/XRPlayer/RightHand/FunctionPointer2") as XRToolsFunctionPointer
 	var player_body := xr_player.get_node_or_null("SubViewport/XRPlayer/PlayerBody") as XRToolsPlayerBody
@@ -90,18 +84,6 @@ func _setup_seeker() -> void:
 	# the world geometry (mask stays 1, set in the shared vr_space).
 	if player_body:
 		player_body.collision_layer = 4
-
-	# Smooth locomotion on the left thumbstick (scoped to this scene).
-	if left_controller:
-		var move := XRToolsMovementDirect.new()
-		move.max_speed = 1.6
-		move.input_action = "primary"
-		move.order = 10
-		move.add_to_group("movement_providers")
-		left_controller.add_child(move)
-		if player_body:
-			player_body._movement_providers.append(move)
-			player_body._movement_providers.sort_custom(Callable(player_body, "sort_by_order"))
 
 	# Right-hand tag (trigger) and scan (grip).
 	if right_controller and right_pointer:
@@ -143,10 +125,14 @@ func _collect_locations_recursive(node: Node, out: Array[InteractiveLocation]) -
 
 func _on_prepare_phase() -> void:
 	logger.info("Prepare phase started")
+	_connect_hud()
 	_recenter_vr_player()
 	if game_manager:
 		game_manager.phase = HideAndSeekGame.Phase.SETUP
 	_update_player_statuses()
+	var hud := _get_hud()
+	if hud:
+		hud.set_game_active(true)
 
 
 func _on_game_phase() -> void:
@@ -157,10 +143,8 @@ func _on_phase_changed(new_phase: int) -> void:
 	match new_phase:
 		HideAndSeekGame.Phase.SETUP:
 			logger.info("Setup phase started (%.0fs)" % (game_manager.setup_duration if game_manager else 10.0))
-			#_set_preparing(true)
 		HideAndSeekGame.Phase.HUNT:
 			logger.info("Hunt phase started!")
-			#_set_preparing(false)
 		HideAndSeekGame.Phase.ENDED:
 			logger.info("Round ended")
 
@@ -210,8 +194,34 @@ func _process(_delta: float) -> void:
 		tag_cooldown = seeker_tag.cooldown_time
 
 
+func _connect_hud() -> void:
+	var hud := _get_hud()
+	if not hud:
+		return
+	if not hud.start_pressed.is_connected(_on_hud_start_pressed):
+		hud.start_pressed.connect(_on_hud_start_pressed)
+	_on_ready_changed()
+
+
+func _get_hud() -> HideSeekHUD:
+	if vr_screen:
+		return vr_screen.get_scene_instance() as HideSeekHUD
+	return null
+
+
+func _on_ready_changed() -> void:
+	var hud := _get_hud()
+	if hud and player_list:
+		hud.update_ready(player_list.get_ready_count(), player_list.get_player_count())
+
+
+func _on_hud_start_pressed() -> void:
+	check_all_ready(true)
+
+
 func _on_player_list_player_created(_uuid: String) -> void:
 	_update_player_statuses()
+	_on_ready_changed()
 
 
 func _update_player_statuses() -> void:
