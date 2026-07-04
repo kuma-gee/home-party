@@ -2,28 +2,45 @@
 
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="1_icbg5"]
 
-[node name="FeedbackEnd" type="VBoxContainer" unique_id=605826142]
+[node name="PanelContainer" type="PanelContainer" unique_id=675997998]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_icbg5")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=864109014]
+layout_mode = 2
+
+[node name="FeedbackEnd" type="VBoxContainer" parent="MarginContainer" unique_id=605826142]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme = ExtResource("1_icbg5")
 theme_override_constants/separation = 32
 
-[node name="Label4" type="Label" parent="." unique_id=1099184865]
+[node name="Label4" type="Label" parent="MarginContainer/FeedbackEnd" unique_id=1099184865]
+visible = false
 layout_mode = 2
 theme_type_variation = &"LabelLarge"
 text = "GameOver"
 horizontal_alignment = 1
 
-[node name="Label" type="Label" parent="." unique_id=1782285264]
+[node name="Label" type="Label" parent="MarginContainer/FeedbackEnd" unique_id=1782285264]
 layout_mode = 2
 text = "Thanks for playing!"
 horizontal_alignment = 1
 
-[node name="Label2" type="Label" parent="." unique_id=969034176]
+[node name="Label2" type="Label" parent="MarginContainer/FeedbackEnd" unique_id=969034176]
 layout_mode = 2
-text = "If you don't mind, I would appreciate
-some feedback using the link below"
+size_flags_horizontal = 4
+text = "If you don't mind, I would
+appreciate some feedback
+using the link below"
 horizontal_alignment = 1
 
-[node name="LinkButton" type="LinkButton" parent="." unique_id=1684441593]
+[node name="LinkButton" type="LinkButton" parent="MarginContainer/FeedbackEnd" unique_id=1684441593]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Form"

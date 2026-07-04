@@ -13,6 +13,7 @@ var _logger := KumaLog.new("Env")
 var _live := false
 var _enable_steam := true
 var _default_log_level := KumaLog.Level.INFO
+var _has_played_game := false
 
 func _ready():
 	var args = _args_dictionary()
@@ -68,6 +69,14 @@ func is_web() -> bool:
 
 func is_demo() -> bool:
 	return not _live
+
+
+func mark_game_played() -> void:
+	_has_played_game = true
+
+
+func has_played_game() -> bool:
+	return _has_played_game
 
 
 func is_game_available(game: GameResource) -> bool:

@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://bivy5472plhpi"]
+
+[ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_pkbl1"]
+[ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="2_vp2d3"]
+[ext_resource type="PackedScene" uid="uid://duvfm43b30g8e" path="res://main/ui/feedback_end.tscn" id="3_fbui1"]
+[ext_resource type="PackedScene" uid="uid://c25yxb0vt53vc" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_left.tscn" id="4_gpflt"]
+[ext_resource type="PackedScene" uid="uid://ctw7nbntd5pcj" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_right.tscn" id="5_gprgt"]
+[ext_resource type="Script" uid="uid://cdl5kcr2wvnav" path="res://addons/godot-xr-tools/objects/highlight/highlight_material.gd" id="6_hlmat"]
+[ext_resource type="Material" uid="uid://dyuaw57o8y3i" path="res://addons/godot-xr-tools/materials/highlight.tres" id="7_hlres"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fdbk1"]
+size = Vector3(0.2, 0.3, 0.0068359375)
+
+[sub_resource type="QuadMesh" id="QuadMesh_mqqbv"]
+resource_local_to_scene = true
+size = Vector2(0.2, 0.3)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_6e0fr"]
+viewport_path = NodePath("Viewport2Din3D/Viewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1i3yd"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_6e0fr")
+texture_filter = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_44nxj"]
+resource_local_to_scene = true
+size = Vector3(0.2, 0.3, 0.02)
+
+[sub_resource type="BoxMesh" id="BoxMesh_mqqbv"]
+size = Vector3(0.2, 0.3, 0.005)
+
+[node name="FeedbackFormPickup" unique_id=1160042001 instance=ExtResource("1_pkbl1")]
+second_hand_grab = 1
+
+[node name="CollisionShape3D" parent="." index="0" unique_id=1198871219]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.00161428)
+shape = SubResource("BoxShape3D_fdbk1")
+
+[node name="Viewport2Din3D" parent="." index="1" unique_id=1160042003 instance=ExtResource("2_vp2d3")]
+screen_size = Vector2(0.2, 0.3)
+scene = ExtResource("3_fbui1")
+viewport_size = Vector2(640, 960)
+unshaded = true
+
+[node name="Viewport" parent="Viewport2Din3D" index="0" unique_id=434808864]
+size = Vector2i(640, 960)
+
+[node name="Screen" parent="Viewport2Din3D" index="1" unique_id=1761931612]
+mesh = SubResource("QuadMesh_mqqbv")
+surface_material_override/0 = SubResource("StandardMaterial3D_1i3yd")
+
+[node name="StaticBody3D" parent="Viewport2Din3D" index="2" unique_id=1882660186]
+screen_size = Vector2(0.2, 0.3)
+viewport_size = Vector2(640, 960)
+
+[node name="CollisionShape3D" parent="Viewport2Din3D/StaticBody3D" index="0" unique_id=507281989]
+shape = SubResource("BoxShape3D_44nxj")
+
+[node name="GrabPointHandLeft" parent="." index="2" unique_id=1160042004 instance=ExtResource("4_gpflt")]
+transform = Transform3D(1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, -0.09, 0, -0.03868731)
+
+[node name="GrabPointHandRight" parent="." index="3" unique_id=1160042005 instance=ExtResource("5_gprgt")]
+transform = Transform3D(1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, 0.09, 0, -0.03868731)
+
+[node name="XRToolsHighlightMaterial" type="Node" parent="." index="4" unique_id=1160042006]
+script = ExtResource("6_hlmat")
+highlight_mesh_instance = NodePath("../Viewport2Din3D/Screen")
+highlight_material = ExtResource("7_hlres")
+metadata/_custom_type_script = "uid://cdl5kcr2wvnav"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." index="5" unique_id=1134863683]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0030012913)
+visible = false
+mesh = SubResource("BoxMesh_mqqbv")
+
+[node name="XRToolsHighlightMaterial2" type="Node" parent="." index="6" unique_id=2113097499]
+script = ExtResource("6_hlmat")
+highlight_mesh_instance = NodePath("../Viewport2Din3D/Screen")
+highlight_material = ExtResource("7_hlres")
+metadata/_custom_type_script = "uid://cdl5kcr2wvnav"
+
+[editable path="Viewport2Din3D"]

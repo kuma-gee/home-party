@@ -23,6 +23,7 @@ func _prepare_game():
 	prepare_phase.emit()
 
 func _start_game():
+	Env.mark_game_played()
 	is_game_phase = true
 	game_phase.emit()
 
