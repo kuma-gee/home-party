@@ -40,6 +40,7 @@ Staging="*uid://bnqnnnet4dw12"
 GameSettings="*res://main/utils/game_settings.gd"
 GodotMcpBridge="*uid://ww7lcv2jh241"
 UserSettings="*res://main/utils/user_settings.gd"
+Env="*uid://0ipmpt231n4f"
 
 [display]
 

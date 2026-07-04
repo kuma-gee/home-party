@@ -27,10 +27,11 @@ shader_parameter/outline_size = 1.0
 [sub_resource type="ViewportTexture" id="ViewportTexture_5tn1g"]
 viewport_path = NodePath("Sprite3D/SubViewport")
 
-[node name="GameObject" unique_id=777328390 node_paths=PackedStringArray("icon_viewport", "label") groups=["game_select"] instance=ExtResource("1_u8ifv")]
+[node name="GameObject" unique_id=777328390 node_paths=PackedStringArray("icon_viewport", "label", "demo_indicator") groups=["game_select"] instance=ExtResource("1_u8ifv")]
 script = ExtResource("2_r842p")
 icon_viewport = NodePath("Sprite3D/SubViewport/Control/PanelContainer2/CenterContainer/SubViewportContainer/SubViewport")
 label = NodePath("Sprite3D/SubViewport/Control/PanelContainer/MarginContainer/GameName")
+demo_indicator = NodePath("Sprite3D/SubViewport/Control/DemoIndicator")
 ranged_grab_method = 2
 second_hand_grab = 1
 
@@ -106,6 +107,24 @@ size = 0.23
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Sprite3D/SubViewport/Control/PanelContainer2/CenterContainer/SubViewportContainer/SubViewport" index="1" unique_id=1356944321]
 transform = Transform3D(1, 0, 0, 0, 0.8708108, 0.49161828, 0, -0.49161828, 0.8708108, 0, 0, 0)
+
+[node name="DemoIndicator" type="PanelContainer" parent="Sprite3D/SubViewport/Control" index="2" unique_id=113845782]
+visible = false
+layout_mode = 2
+theme_type_variation = &"PanelContainerPrimary"
+
+[node name="MarginContainer" type="MarginContainer" parent="Sprite3D/SubViewport/Control/DemoIndicator" index="0" unique_id=739945830]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 8
+
+[node name="Label" type="Label" parent="Sprite3D/SubViewport/Control/DemoIndicator/MarginContainer" index="0" unique_id=1390501460]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.4117647, 0.4117647, 1)
+text = "Not available in demo"
+horizontal_alignment = 1
 
 [node name="GrabPointHandLeft" parent="." index="6" unique_id=373562343 instance=ExtResource("5_vkcnx")]
 transform = Transform3D(0.9316151, 0, -0.36344638, -0.16361497, 0.8929397, -0.4193911, 0.3245357, 0.45017636, 0.8318761, -0.029784683, 0.06942275, -0.061956365)

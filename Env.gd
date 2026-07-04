@@ -1,13 +1,16 @@
 extends Node
 
-const APP_ID = 3191960
+const APP_ID = 4797040
+
+const CASTLE_DEFENSE = preload("uid://bisblrq6vyivi")
+const DRAW_AND_GUESS = preload("uid://dagresource")
+const demo_games: Array[GameResource] = [CASTLE_DEFENSE, DRAW_AND_GUESS]
 
 var log_level := KumaLog.Level.DEBUG
 var version := Build.VERSION
-
 var _logger := KumaLog.new("Env")
 
-var _live := true
+var _live := false
 var _enable_steam := true
 var _default_log_level := KumaLog.Level.INFO
 
@@ -18,9 +21,7 @@ func _ready():
 	_reset_values()
 	_parse_logging_arg(args)
 	_parse_live_arg(args)
-	
-	if args.has("steam"):
-		_enable_steam = true
+	_parse_steam_arg(args)
 	
 	if _enable_steam and Build.STEAM_APP != APP_ID and not is_editor():
 		_live = false
@@ -32,11 +33,13 @@ func _ready():
 		"log_level": KumaLog.Level.keys()[log_level],
 	}])
 
+
 func _reset_values():
 	if not is_editor():
 		_live = false
 		_enable_steam = false
 		log_level = _default_log_level
+
 
 func _parse_logging_arg(args):
 	if "logging" in args:
@@ -44,12 +47,19 @@ func _parse_logging_arg(args):
 		log_level = KumaLog.Level[lvl_str] if lvl_str in KumaLog.Level else _default_log_level
 		_logger.info("Setting log level to %s" % KumaLog.Level.keys()[log_level])
 
+
 func _parse_live_arg(args):
 	if "live" in args:
 		var used_hash = args["live"].sha256_text()
 		_logger.debug("Checking hash %s is equal %s" % [used_hash, Build.GAME_HASH])
 		_live = used_hash == Build.GAME_HASH or is_editor()
-	
+
+
+func _parse_steam_arg(args):
+	if "steam" in args:
+		_enable_steam = true
+
+
 func is_editor():
 	return OS.is_debug_build()
 
@@ -58,6 +68,19 @@ func is_web() -> bool:
 
 func is_demo() -> bool:
 	return not _live
+
+
+func is_game_available(game: GameResource) -> bool:
+	if not game:
+		return false
+	if not is_demo():
+		return true
+	for demo_game in demo_games:
+		if demo_game == game:
+			return true
+		if demo_game and demo_game.resource_path == game.resource_path:
+			return true
+	return false
 
 func is_steam() -> bool:
 	return _enable_steam

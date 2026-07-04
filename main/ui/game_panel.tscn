@@ -6,7 +6,7 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_664q2"]
 
-[node name="PanelContainer" type="PanelContainer" unique_id=357869800 node_paths=PackedStringArray("name_label", "desc_label", "player_label", "bg_image")]
+[node name="PanelContainer" type="PanelContainer" unique_id=357869800 node_paths=PackedStringArray("name_label", "desc_label", "player_label", "bg_image", "demo_label")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -19,6 +19,7 @@ name_label = NodePath("MarginContainer2/MarginContainer/VBoxContainer/Name")
 desc_label = NodePath("MarginContainer2/MarginContainer/VBoxContainer/Desc")
 player_label = NodePath("MarginContainer2/MarginContainer/VBoxContainer/Players")
 bg_image = NodePath("MarginContainer2/TextureRect")
+demo_label = NodePath("MarginContainer2/MarginContainer/VBoxContainer/Demo")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=737270966]
 layout_mode = 2
@@ -58,6 +59,13 @@ layout_mode = 2
 size_flags_vertical = 3
 text = "This game is gonna be super amazing and fun to play for everyone!"
 autowrap_mode = 2
+
+[node name="Demo" type="Label" parent="MarginContainer2/MarginContainer/VBoxContainer" unique_id=1473829201]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.4117647, 0.4117647, 1)
+text = "Not available in demo"
+horizontal_alignment = 1
 
 [node name="Players" type="Label" parent="MarginContainer2/MarginContainer/VBoxContainer" unique_id=548465603]
 visible = false
