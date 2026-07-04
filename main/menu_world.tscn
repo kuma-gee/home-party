@@ -265,7 +265,6 @@ game_details_desktop = NodePath("../CanvasLayer/Control/GameDetailsRoot/GameDeta
 game_details_vr = NodePath("../GameDetails/SubViewport/GameDetailsContainer/GameDetailsVR")
 scene = ExtResource("11_4lkid")
 axis = Vector3(0, 0, -1)
-item_spacing = 0.1
 player_list = NodePath("../CanvasLayer/Control/MarginContainer/PlayerList")
 
 [node name="GameLoader" type="Node" parent="GameShelve" unique_id=649126648]
@@ -276,7 +275,7 @@ metadata/_custom_type_script = "uid://ddetao6ypdnd4"
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.23472413, -0.067163646, 0.0069997907)
 
 [node name="GamesRoot" type="Node3D" parent="GameShelve" unique_id=1388090775]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.29792672, -0.028303802, -0.29991394)
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.27174932, 0.067565024, -0.29991394)
 
 [node name="TVRemote" parent="GameShelve" unique_id=777328390 instance=ExtResource("17_67j6m")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.22379893, -0.059525907, 0.25353137)

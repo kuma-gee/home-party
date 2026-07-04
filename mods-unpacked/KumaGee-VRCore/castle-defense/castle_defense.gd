@@ -249,5 +249,5 @@ func _finish_game(message: String) -> void:
 	logger.info("Game over: %s" % message)
 	_show_vr_gameover(message)
 	if desktop_gameover:
-		desktop_gameover.show_gameover(message, StatsManager.get_rankings())
+		desktop_gameover.show_leaderboard(message, StatsManager.get_rankings())
 	play_time.stop()

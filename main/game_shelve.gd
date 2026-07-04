@@ -8,7 +8,7 @@ signal started_game(game: GameResource)
 @export var game_details_vr: GameDetailsPanel
 @export var scene: PackedScene
 @export var axis := Vector3.RIGHT
-@export var item_spacing := 0.3
+@export var item_spacing := 0.05
 @export var player_list: PlayerList
 
 @onready var game_loader: GameLoader = $GameLoader

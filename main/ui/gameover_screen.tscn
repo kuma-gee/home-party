@@ -2,11 +2,10 @@
 
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="1_7htws"]
 [ext_resource type="Script" uid="uid://84vm3ojuip7r" path="res://main/ui/gameover_screen.gd" id="2_qcyic"]
-[ext_resource type="PackedScene" uid="uid://c4pqwertyuiop" path="res://main/ui/score_table.tscn" id="3_score"]
 [ext_resource type="PackedScene" uid="uid://d3m1bp3cu88eg" path="res://main/ui/leaderboard.tscn" id="4_lb"]
 [ext_resource type="PackedScene" uid="uid://duvfm43b30g8e" path="res://main/ui/feedback_end.tscn" id="5_xapf2"]
 
-[node name="GameoverPanel" type="Panel" unique_id=658525110 node_paths=PackedStringArray("score_table", "leaderboard", "menu_button", "restart_button")]
+[node name="GameoverPanel" type="Panel" unique_id=658525110 node_paths=PackedStringArray("leaderboard", "menu_button", "restart_button")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -14,7 +13,6 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_7htws")
 script = ExtResource("2_qcyic")
-score_table = NodePath("VBoxContainer/ScoreTable")
 leaderboard = NodePath("VBoxContainer/Leaderboard")
 menu_button = NodePath("VBoxContainer/MarginContainer/HBoxContainer/MenuButton")
 restart_button = NodePath("VBoxContainer/MarginContainer/HBoxContainer/RestartButton")
@@ -28,17 +26,12 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 16
 
-[node name="ScoreTable" parent="VBoxContainer" unique_id=1364246842 instance=ExtResource("3_score")]
-visible = false
-layout_mode = 2
-
 [node name="Leaderboard" parent="VBoxContainer" unique_id=1000000101 instance=ExtResource("4_lb")]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
 [node name="FeedbackEnd" parent="VBoxContainer" unique_id=605826142 instance=ExtResource("5_xapf2")]
-visible = false
 layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer" unique_id=1335506024]

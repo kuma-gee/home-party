@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://tbx170onwvxm"]
 
-[ext_resource type="PackedScene" uid="uid://c4pqwertyuiop" path="res://main/ui/score_table.tscn" id="1_score"]
 [ext_resource type="Shader" uid="uid://ca6cb6krfshuo" path="res://shader/blur.gdshader" id="2_cd3l8"]
 [ext_resource type="Script" uid="uid://d3mcxierxk4y8" path="res://main/ui/desktop_gameover.gd" id="2_script"]
 [ext_resource type="PackedScene" uid="uid://duvfm43b30g8e" path="res://main/ui/feedback_end.tscn" id="3_wjnq2"]
@@ -11,7 +10,7 @@ shader = ExtResource("2_cd3l8")
 shader_parameter/lod = 1.0
 shader_parameter/mix_percentage = 0.3
 
-[node name="DesktopGameover" type="Control" unique_id=2068257365 node_paths=PackedStringArray("score_table", "leaderboard", "background", "container")]
+[node name="DesktopGameover" type="Control" unique_id=2068257365 node_paths=PackedStringArray("leaderboard", "background", "container")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,7 +19,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("2_script")
-score_table = NodePath("CenterContainer/VBoxContainer/ScoreTable")
 leaderboard = NodePath("CenterContainer/Leaderboard")
 background = NodePath("ColorRect")
 container = NodePath("CenterContainer")
@@ -48,11 +46,6 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=614835749]
-layout_mode = 2
-
-[node name="ScoreTable" parent="CenterContainer/VBoxContainer" unique_id=1516414800 instance=ExtResource("1_score")]
-visible = false
-custom_minimum_size = Vector2(900, 700)
 layout_mode = 2
 
 [node name="FeedbackEnd" parent="CenterContainer/VBoxContainer" unique_id=605826142 instance=ExtResource("3_wjnq2")]
