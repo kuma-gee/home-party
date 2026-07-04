@@ -15,7 +15,9 @@ func _ready():
 		visible = false
 
 	# Hook the highlight update
-	get_parent().connect("highlight_updated", _on_highlight_updated)
+	var parent := get_parent()
+	if parent and parent.has_signal("highlight_updated"):
+		parent.connect("highlight_updated", _on_highlight_updated)
 
 
 # Called when the pickable highlight changes

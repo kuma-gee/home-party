@@ -11,11 +11,13 @@ extends BaseGame
 @export var npc_spawner: NpcSpawner
 @export var hider_scene: PackedScene
 @export var museum_gallery: Node3D
+@export var seeker_tag_scene: PackedScene = preload("res://mods-unpacked/KumaGee-VRCore/hide-and-seek/seeker_tag.tscn")
+
+@export var seeker_tag: SeekerTag
+@export var seeker_scan: SeekerScan
 
 var logger := KumaLog.new("HIDE_AND_SEEK")
 var game_manager: HideAndSeekGame
-var seeker_tag: SeekerTag
-var seeker_scan: SeekerScan
 var _recentered: bool = false
 
 var hider_count: int = 0:
@@ -75,8 +77,6 @@ func _setup_seeker() -> void:
 		logger.warn("No xr_player found; seeker controls disabled")
 		return
 
-	var right_controller := xr_player.get_node_or_null("SubViewport/XRPlayer/RightHand") as XRController3D
-	var right_pointer := xr_player.get_node_or_null("SubViewport/XRPlayer/RightHand/FunctionPointer2") as XRToolsFunctionPointer
 	var player_body := xr_player.get_node_or_null("SubViewport/XRPlayer/PlayerBody") as XRToolsPlayerBody
 
 	# Move the VR body to its own collision layer so the crowd (mask = world |
@@ -85,18 +85,13 @@ func _setup_seeker() -> void:
 	if player_body:
 		player_body.collision_layer = 4
 
-	# Right-hand tag (trigger) and scan (grip).
-	if right_controller and right_pointer:
-		seeker_tag = SeekerTag.new()
-		right_controller.add_child(seeker_tag)
-		seeker_tag.setup(right_controller, right_pointer)
-		if game_manager:
-			seeker_tag.hider_tagged.connect(game_manager.on_hider_tagged)
-			seeker_tag.wrong_tag.connect(game_manager.on_wrong_tag)
+	if seeker_tag and game_manager:
+		seeker_tag.hider_tagged.connect(game_manager.on_hider_tagged)
+		seeker_tag.wrong_tag.connect(game_manager.on_wrong_tag)
 
-		seeker_scan = SeekerScan.new()
-		right_controller.add_child(seeker_scan)
-		seeker_scan.setup(right_controller, right_pointer, Callable(game_manager, "get_hiders"), self)
+	if seeker_scan and game_manager:
+		seeker_scan.set_hiders_getter(Callable(game_manager, "get_hiders"))
+		seeker_scan.set_marker_parent(self)
 
 
 func _recenter_vr_player() -> void:

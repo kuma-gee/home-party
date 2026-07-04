@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cs3k7yh4mpxrv"]
+
+[ext_resource type="Script" uid="uid://crhed24tiwtei" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/seeker_tag.gd" id="1"]
+
+[node name="SeekerTag" type="Node3D"]
+script = ExtResource("1")

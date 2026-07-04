@@ -24,8 +24,8 @@ on:
         default: false
 
 env:
-  STEAM_APP: 0
-  STEAM_DEMO_APP: 0
+  STEAM_APP: 4797040
+  STEAM_DEMO_APP: 4928350
 
 jobs:
   build-info:

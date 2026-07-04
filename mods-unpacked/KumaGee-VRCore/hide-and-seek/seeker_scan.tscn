@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://c8ns2plmv7wxq"]
+
+[ext_resource type="Script" uid="uid://sku8x3feqng7" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/seeker_scan.gd" id="1"]
+
+[node name="SeekerScan" type="Node3D"]
+script = ExtResource("1")

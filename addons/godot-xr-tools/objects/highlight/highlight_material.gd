@@ -23,7 +23,9 @@ func _ready():
 		_highlight_mesh_instance = get_node(highlight_mesh_instance)
 		save_surface_materials()
 
-	get_parent().connect("highlight_updated", _on_highlight_updated)
+	var parent := get_parent()
+	if parent and parent.has_signal("highlight_updated"):
+		parent.connect("highlight_updated", _on_highlight_updated)
 
 func save_surface_materials():
 	_original_materials.clear()

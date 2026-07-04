@@ -1,29 +1,45 @@
+@tool
 class_name SeekerScan
-extends Node
+extends Node3D
 
-## VR Seeker scan mechanic. On right grip press, fires a directional cone that
-## reveals footprint markers at each in-cone hider's position from ~3 seconds
-## ago, with an arrow indicating the direction they were heading.
+## VR Seeker scan mechanic. Attach as a child of an [XRController3D]. On the
+## configured grip press, fires a directional cone that reveals footprint
+## markers at each in-cone hider's position from ~3 seconds ago, with an arrow
+## indicating the direction they were heading.
 
 @export var cone_angle_deg: float = 60.0
 @export var range: float = 10.0
 @export var cooldown_duration: float = 8.0
 @export var marker_duration: float = 2.0
+@export var grip_button: String = "grip_click"
+@export var _function_pointer: XRToolsFunctionPointer
 
-var function_pointer: XRToolsFunctionPointer
-var controller: XRController3D
+var cooldown_time: float = 0.0
 var hiders_getter: Callable
 var marker_parent: Node3D
-var cooldown_time: float = 0.0
 
+var _controller: XRController3D
 var _cooldown: float = 0.0
 
 
+func _enter_tree() -> void:
+	_controller = XRHelpers.get_xr_controller(self)
+	if _controller and not _controller.button_pressed.is_connected(_on_button_pressed):
+		_controller.button_pressed.connect(_on_button_pressed)
+
+
+func _exit_tree() -> void:
+	if _controller and _controller.button_pressed.is_connected(_on_button_pressed):
+		_controller.button_pressed.disconnect(_on_button_pressed)
+	_controller = null
+	_function_pointer = null
+
+
 func _process(delta: float) -> void:
+	if Engine.is_editor_hint():
+		return
 	if _cooldown > 0.0:
-		_cooldown -= delta
-		if _cooldown < 0.0:
-			_cooldown = 0.0
+		_cooldown = maxf(0.0, _cooldown - delta)
 	cooldown_time = _cooldown
 
 
@@ -35,19 +51,29 @@ func is_on_cooldown() -> bool:
 	return _cooldown > 0.0
 
 
-func setup(p_controller: XRController3D, p_function_pointer: XRToolsFunctionPointer, p_hiders_getter: Callable, p_marker_parent: Node3D) -> void:
-	controller = p_controller
-	function_pointer = p_function_pointer
-	hiders_getter = p_hiders_getter
-	marker_parent = p_marker_parent
-	if controller:
-		controller.button_pressed.connect(_on_button_pressed)
+func set_function_pointer(pointer: XRToolsFunctionPointer) -> void:
+	_function_pointer = pointer
+
+
+func set_hiders_getter(getter: Callable) -> void:
+	hiders_getter = getter
+
+
+func set_marker_parent(node: Node3D) -> void:
+	marker_parent = node
+
+
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings: PackedStringArray = []
+	if not XRHelpers.get_xr_controller(self):
+		warnings.append("This node must be within a branch of an XRController3D node")
+	return warnings
 
 
 func _on_button_pressed(button: String) -> void:
-	if button != "grip_click":
+	if button != grip_button:
 		return
-	if is_on_cooldown() or not function_pointer:
+	if is_on_cooldown() or not _function_pointer:
 		return
 	_perform_scan()
 	set_cooldown(cooldown_duration)
@@ -57,8 +83,8 @@ func _perform_scan() -> void:
 	if not hiders_getter.is_valid():
 		return
 
-	var origin: Vector3 = function_pointer.global_position
-	var forward: Vector3 = -function_pointer.global_transform.basis.z
+	var origin: Vector3 = _function_pointer.global_position
+	var forward: Vector3 = -_function_pointer.global_transform.basis.z
 	var half_cone: float = deg_to_rad(cone_angle_deg * 0.5)
 
 	var hiders: Array = hiders_getter.call()
@@ -90,7 +116,7 @@ func _spawn_footprint(hider: HiderCharacter) -> void:
 	var dir: Vector3 = next_pos - samples[0]
 	dir.y = 0.0
 
-	var parent: Node3D = marker_parent if marker_parent else get_parent()
+	var parent: Node3D = marker_parent if marker_parent else get_parent() as Node3D
 	if not parent:
 		return
 
