@@ -69,18 +69,27 @@ func _on_player_created(uuid: String) -> void:
 		scoring.init_player(uuid)
 
 func _on_player_word_submitted(word: String, player_ui: DrawPlayerUI) -> void:
+	var pet := pet_spawner.get_pet(player_ui.uuid)
+	if pet:
+		pet.show_typed_word(word)
 	var result = word_manager.submit_word(word, player_ui.uuid)
 	match result:
 		DrawGuessWordManager.SubmitResult.INVALID:
 			if player_ui.game_client is GameClient:
 				player_ui.game_client.send_text("word_ack;invalid")
+			if pet:
+				pet.on_incorrect_guess(word)
 			logger.debug("Invalid word from %s: %s" % [player_ui.uuid, word.strip_edges()])
 		DrawGuessWordManager.SubmitResult.DUPLICATE:
 			if player_ui.game_client is GameClient:
 				player_ui.game_client.send_text("word_ack;duplicate")
+			if pet:
+				pet.on_incorrect_guess(word)
 			logger.debug("Duplicate word from %s: %s" % [player_ui.uuid, word.strip_edges()])
 		DrawGuessWordManager.SubmitResult.ACCEPTED:
 			player_ui.mark_word_submitted()
+			if pet:
+				pet.on_correct_guess(word)
 			logger.info("Word accepted from %s: %s" % [player_ui.uuid, word.strip_edges()])
 			_update_ui()
 
@@ -102,7 +111,7 @@ func _on_player_guessed(guess: String, player_ui: DrawPlayerUI) -> void:
 		player_ui.mark_guessed_correctly()
 		var pet := pet_spawner.get_pet(player_ui.uuid)
 		if pet:
-			pet.on_correct_guess()
+			pet.on_correct_guess(guess)
 	else:
 		logger.debug("Incorrect guess from %s: %s" % [player_ui.uuid, guess])
 		if player_ui.game_client is GameClient:
@@ -110,7 +119,7 @@ func _on_player_guessed(guess: String, player_ui: DrawPlayerUI) -> void:
 		player_ui.mark_guessed_incorrectly()
 		var pet := pet_spawner.get_pet(player_ui.uuid)
 		if pet:
-			pet.on_incorrect_guess()
+			pet.on_incorrect_guess(guess)
 
 func _update_ui() -> void:
 	var active_players = PlayerManager.get_active_players().map(func(x): return player_list.find_existing_node(x.uuid))

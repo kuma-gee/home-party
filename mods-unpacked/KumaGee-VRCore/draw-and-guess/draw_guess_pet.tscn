@@ -28,7 +28,13 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("4_6t06n")
 
-[node name="CorrectIcon" type="Label" parent="Sprite3D/SubViewport/CenterContainer" index="0" unique_id=2090105779]
+[node name="VBoxContainer" type="VBoxContainer" parent="Sprite3D/SubViewport/CenterContainer" index="0" unique_id=245981100]
+layout_mode = 2
+
+[node name="StatusContainer" type="CenterContainer" parent="Sprite3D/SubViewport/CenterContainer/VBoxContainer" index="0" unique_id=1971211667]
+layout_mode = 2
+
+[node name="CorrectIcon" type="Label" parent="Sprite3D/SubViewport/CenterContainer/VBoxContainer/StatusContainer" index="0" unique_id=2090105779]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
@@ -36,7 +42,7 @@ text = "✓"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="IncorrectIcon" type="Label" parent="Sprite3D/SubViewport/CenterContainer" index="1" unique_id=97971072]
+[node name="IncorrectIcon" type="Label" parent="Sprite3D/SubViewport/CenterContainer/VBoxContainer/StatusContainer" index="1" unique_id=97971072]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(40, 40)
@@ -44,3 +50,12 @@ layout_mode = 2
 text = "x"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="WordLabel" type="Label" parent="Sprite3D/SubViewport/CenterContainer/VBoxContainer" index="1" unique_id=431396190]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+text = ""
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
