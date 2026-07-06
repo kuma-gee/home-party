@@ -15,7 +15,6 @@ var guessed_players: Array[String] = []
 var first_guess_elapsed: float = -1.0
 
 @onready var round_timer: Timer = %RoundTimer
-@onready var reveal_timer: Timer = %RevealTimer
 @onready var scoring: DrawGuessScoring = %Scoring
 @onready var player_list: PlayerList = %PlayerList
 
@@ -23,7 +22,6 @@ var logger := KumaLog.new("DrawRoundManager")
 
 func _ready() -> void:
 	round_timer.timeout.connect(_on_round_timeout)
-	reveal_timer.timeout.connect(_on_reveal_timeout)
 
 func _count_mobile_players() -> int:
 	var count := 0
@@ -92,9 +90,6 @@ func _end_round_early() -> void:
 func start_round_timer() -> void:
 	round_timer.start()
 
-func start_reveal_timer(duration: float) -> void:
-	reveal_timer.start(duration)
-
 func continue_after_reveal() -> void:
 	if phase != Phase.REVEALING:
 		return
@@ -110,6 +105,3 @@ func _on_round_timeout() -> void:
 	
 	end_round()
 	timed_out.emit(current_word)
-
-func _on_reveal_timeout() -> void:
-	continue_after_reveal()

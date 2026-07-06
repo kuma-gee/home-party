@@ -135,10 +135,15 @@ func _on_player_guessed(guess: String, player_ui: DrawPlayerUI) -> void:
 			pet.on_incorrect_guess(guess)
 
 func _update_ui() -> void:
+	if not prepare_scene:
+		return
 	var active_players = PlayerManager.get_active_players().map(func(x): return player_list.find_existing_node(x.uuid))
 	prepare_scene.update(active_players, word_manager.size(), word_manager.max_words_per_player())
 
 func _on_vr_ready_pressed() -> void:
+	if word_manager.size() <= 0:
+		logger.debug("Cannot start Draw & Guess without submitted words")
+		return
 	check_all_ready(true)
 
 func _on_round_skipped(word: String) -> void:
@@ -185,7 +190,13 @@ func _on_round_timed_out(word: String) -> void:
 	if reveal_label:
 		reveal_label.text = "The word was: %s" % word
 		reveal_label.show()
+	_send_phone_reveal(word)
 	prepare_scene.show_reveal()
+
+func _send_phone_reveal(word: String) -> void:
+	for child in player_list.get_children():
+		if child is DrawPlayerUI and child.game_client is GameClient:
+			child.game_client.send_text("word_ack;reveal;%s" % word)
 
 func _end_game() -> void:
 	round_manager.finish_game()

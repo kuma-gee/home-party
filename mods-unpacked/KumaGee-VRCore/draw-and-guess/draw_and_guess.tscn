@@ -333,12 +333,7 @@ script = ExtResource("16_njhln")
 unique_name_in_owner = true
 script = ExtResource("17_17l5l")
 
-[node name="RevealTimer" type="Timer" parent="RoundManager" index="1" unique_id=1026180316]
-unique_name_in_owner = true
-wait_time = 5.0
-one_shot = true
-
-[node name="RoundTimer" type="Timer" parent="RoundManager" index="2" unique_id=1449348992]
+[node name="RoundTimer" type="Timer" parent="RoundManager" index="1" unique_id=1449348992]
 unique_name_in_owner = true
 wait_time = 60.0
 one_shot = true

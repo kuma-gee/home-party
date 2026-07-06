@@ -42,6 +42,10 @@
 			} else if (msg.text === 'word_ack;incorrect') {
 				showFeedback('incorrect');
 				inputText = '';
+			} else if (msg.text.startsWith('word_ack;reveal;')) {
+				const revealedWord = msg.text.substring('word_ack;reveal;'.length);
+				message = `The word was: ${revealedWord}`;
+				inputText = '';
 			} else if (msg.text === 'word_ack;reset') {
 				console.log('Resetting word input state');
 				mode = 'guess';

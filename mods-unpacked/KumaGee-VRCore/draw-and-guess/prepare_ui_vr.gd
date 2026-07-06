@@ -54,7 +54,7 @@ func update(list: Array, total_words := 0, max_words_per_player := 1):
 	var total_players = list.size()
 	var max_words: int = total_players * max_words_per_player
 	word_count.text = "%d / %d words\n%d / %d players ready" % [total_words, max_words, active_client_count, total_players]
-	ready_button.disabled = active_client_count < total_players
+	ready_button.disabled = active_client_count < total_players or total_words <= 0
 
 func start_new_game(word: String, r: int, total_round: int):
 	_is_revealing = false
