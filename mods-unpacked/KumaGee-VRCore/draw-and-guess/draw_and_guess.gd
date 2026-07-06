@@ -14,6 +14,7 @@ extends BaseGame
 
 var logger := KumaLog.new("DrawAndGuess")
 var prepare_scene: DrawPrepareScene
+var freestyle_mode := false
 
 const DRAW_PLAYER_UI_SCENE := preload("res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_player_ui.tscn")
 
@@ -25,6 +26,7 @@ func _ready() -> void:
 	round_manager.timed_out.connect(_on_round_timed_out)
 	round_manager.reveal_finished.connect(_start_next_round)
 	round_manager.round_skipped.connect(_on_round_skipped)
+	round_manager.freestyle_round_ended.connect(_on_freestyle_round_ended)
 	game_phase.connect(_on_game_phase)
 	prepare_phase.connect(_on_prepare_phase)
 	ai_manager.ai_guessed.connect(_on_player_guessed)
@@ -44,6 +46,10 @@ func _on_prepare_phase():
 	prepare_scene.ready_clicked.connect(_on_vr_ready_pressed)
 	prepare_scene.skipped.connect(func(): round_manager.skip_round())
 	prepare_scene.continued.connect(func(): round_manager.continue_after_reveal())
+	prepare_scene.freestyle_timer_started.connect(_on_freestyle_timer_started)
+	prepare_scene.freestyle_correct.connect(func(): _on_freestyle_result(true))
+	prepare_scene.freestyle_wrong.connect(func(): _on_freestyle_result(false))
+	prepare_scene.freestyle_stopped.connect(_end_game)
 	prepare_scene.round_timer = round_manager.round_timer
 	ai_manager.on_prepare_phase_entered()
 	_update_ui()
@@ -51,9 +57,13 @@ func _on_prepare_phase():
 	
 func _on_clients_changed() -> void:
 	LobbyServer.send_layout("guess")
+	var freestyle_available := _is_freestyle_available()
 
 	for child in player_list.get_children():
 		if child is DrawPlayerUI:
+			if freestyle_mode or freestyle_available:
+				_send_freestyle_phone_state(child)
+				continue
 			if is_game_phase:
 				if round_manager.has_guessed(child.uuid):
 					child.mark_guessed_correctly()
@@ -62,6 +72,8 @@ func _on_clients_changed() -> void:
 					word_manager.get_player_submission_count(child.uuid),
 					word_manager.max_words_per_player()
 				)
+			elif child.game_client is GameClient:
+				child.game_client.send_text("word_ack;submit")
 
 	_update_ui()
 	
@@ -70,7 +82,12 @@ func _on_player_created(uuid: String) -> void:
 	if player_ui:
 		player_ui.guessed.connect(_on_player_guessed.bind(player_ui))
 		player_ui.reset_for_round()
+		if freestyle_mode or _is_freestyle_available():
+			_send_freestyle_phone_state(player_ui)
+		elif not is_game_phase and player_ui.game_client is GameClient:
+			player_ui.game_client.send_text("word_ack;submit")
 		scoring.init_player(uuid)
+		_on_clients_changed()
 
 func _on_player_word_submitted(word: String, player_ui: DrawPlayerUI) -> void:
 	var pet := pet_spawner.get_pet(player_ui.uuid)
@@ -107,6 +124,11 @@ func _on_player_word_submitted(word: String, player_ui: DrawPlayerUI) -> void:
 			_update_ui()
 
 func _on_player_guessed(guess: String, player_ui: DrawPlayerUI) -> void:
+	if freestyle_mode or _is_freestyle_available():
+		if player_ui.game_client is GameClient:
+			player_ui.game_client.send_text("word_ack;freestyle")
+		return
+
 	if not is_game_phase:
 		_on_player_word_submitted(guess, player_ui)
 		return
@@ -138,9 +160,14 @@ func _update_ui() -> void:
 	if not prepare_scene:
 		return
 	var active_players = PlayerManager.get_active_players().map(func(x): return player_list.find_existing_node(x.uuid))
-	prepare_scene.update(active_players, word_manager.size(), word_manager.max_words_per_player())
+	prepare_scene.update(active_players, word_manager.size(), word_manager.max_words_per_player(), _is_freestyle_available())
 
 func _on_vr_ready_pressed() -> void:
+	if _is_freestyle_available():
+		freestyle_mode = true
+		_start_game()
+		return
+
 	if word_manager.size() <= 0:
 		logger.debug("Cannot start Draw & Guess without submitted words")
 		return
@@ -151,6 +178,18 @@ func _on_round_skipped(word: String) -> void:
 	_start_next_round()
 
 func _on_game_phase() -> void:
+	if freestyle_mode:
+		logger.info("Starting freestyle mode")
+		_on_clients_changed()
+		ai_manager.stop_guessing()
+		round_manager.start_freestyle_game()
+		prepare_scene.show_freestyle_ready(0)
+		if progress_label:
+			progress_label.text = "Freestyle"
+		if reveal_label:
+			reveal_label.hide()
+		return
+
 	logger.info("Starting game with %d words in pool" % word_manager.size())
 	_on_clients_changed()
 	scoring.init_player(DrawGuessScoring.VR_PLAYER_ID)
@@ -198,10 +237,63 @@ func _send_phone_reveal(word: String) -> void:
 		if child is DrawPlayerUI and child.game_client is GameClient:
 			child.game_client.send_text("word_ack;reveal;%s" % word)
 
+func _is_freestyle_available() -> bool:
+	if is_game_phase:
+		return false
+	var active_count := PlayerManager.get_active_players().size()
+	var mobile_count := 0
+	for child in player_list.get_children():
+		if child is DrawPlayerUI:
+			mobile_count += 1
+	return active_count == 1 and mobile_count == 1
+
+func _send_freestyle_phone_state(player_ui: DrawPlayerUI) -> void:
+	if player_ui.game_client is GameClient:
+		player_ui.game_client.send_text("word_ack;freestyle")
+
+func _on_freestyle_timer_started() -> void:
+	if not freestyle_mode:
+		return
+	round_manager.start_freestyle_round()
+	prepare_scene.show_freestyle_drawing(round_manager.current_round)
+	if progress_label:
+		progress_label.text = round_manager.get_progress_text()
+	if reveal_label:
+		reveal_label.hide()
+	for child in player_list.get_children():
+		if child is DrawPlayerUI:
+			child.reset_for_round()
+			_send_freestyle_phone_state(child)
+	for pet in pet_spawner.get_children():
+		if pet is DrawGuessPet:
+			pet.reset_for_round()
+
+func _on_freestyle_result(guessed: bool) -> void:
+	if not freestyle_mode:
+		return
+	round_manager.complete_freestyle_round(guessed)
+
+func _on_freestyle_round_ended(guessed: bool) -> void:
+	if not freestyle_mode:
+		return
+	logger.info("Freestyle word %d ended: %s" % [round_manager.current_round, "guessed" if guessed else "missed"])
+	prepare_scene.show_freestyle_ready(round_manager.current_round)
+	if progress_label:
+		progress_label.text = "Freestyle word %d done" % round_manager.current_round
+
 func _end_game() -> void:
 	round_manager.finish_game()
 	ai_manager.stop_guessing()
 	logger.info("Game ended - all words used")
+
+	if freestyle_mode:
+		prepare_scene.show_freestyle_finished()
+		if reveal_label:
+			reveal_label.text = "Game Over!"
+			reveal_label.show()
+		if desktop_gameover:
+			desktop_gameover.hide()
+		return
 
 	var entries:= scoring.get_scores()
 	prepare_scene.show_leaderboard("Game Over!", entries)

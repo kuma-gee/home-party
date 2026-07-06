@@ -48,9 +48,16 @@ The prompt must include:
 2. **Where to look** — specification file paths, scene/script paths
 3. **Test scenarios** — concrete things to test (see "Test scenarios" below)
 4. **Expected outcomes** — what correct behaviour looks like
+5. **Mini-game start info** — if testing a mini-game, include its name and
+   `GameResource` `.tres` path, and tell tester to load `start-minigame`
 
 If context from step 1 is large, include file paths and let the tester read
 them directly. Prefer concise delegation over bloated prompts.
+
+For mini-game verification, include this line in the tester prompt:
+
+> Load the `start-minigame` skill. Start `<MINI_GAME>` using
+> `<GAME_RESOURCE_TRES_PATH>`, then run the scenarios below.
 
 ### 3. Collect results
 

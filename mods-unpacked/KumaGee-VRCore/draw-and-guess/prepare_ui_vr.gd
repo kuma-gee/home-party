@@ -4,6 +4,10 @@ extends Control
 signal ready_clicked()
 signal skipped()
 signal continued()
+signal freestyle_timer_started()
+signal freestyle_correct()
+signal freestyle_wrong()
+signal freestyle_stopped()
 
 # Doesn't work as @export ?!?!?!
 @onready var ready_button: Button = %ReadyButton
@@ -15,6 +19,11 @@ signal continued()
 @onready var word_label: Label = %Word
 @onready var time: Label = %Time
 @onready var leaderboard: Leaderboard = %Leaderboard
+@onready var start_timer_button: Button = %StartTimerButton
+@onready var result_buttons: HBoxContainer = %ResultButtons
+@onready var correct_button: Button = %CorrectButton
+@onready var wrong_button: Button = %WrongButton
+@onready var stop_game_button: Button = %StopGameButton
 
 var round_timer: Timer:
 	set(v):
@@ -22,10 +31,15 @@ var round_timer: Timer:
 		time.timer = v
 
 var _is_revealing := false
+var _is_freestyle := false
 
 func _ready() -> void:
 	ready_button.pressed.connect(func(): ready_clicked.emit())
 	skip_button.pressed.connect(_on_skip_button_pressed)
+	start_timer_button.pressed.connect(func(): freestyle_timer_started.emit())
+	correct_button.pressed.connect(func(): freestyle_correct.emit())
+	wrong_button.pressed.connect(func(): freestyle_wrong.emit())
+	stop_game_button.pressed.connect(func(): freestyle_stopped.emit())
 	_show_container(prepare)
 
 func _on_skip_button_pressed() -> void:
@@ -45,7 +59,13 @@ func show_leaderboard(title, entries):
 	leaderboard.set_entries(entries)
 	_show_container(leaderboard)
 
-func update(list: Array, total_words := 0, max_words_per_player := 1):
+func update(list: Array, total_words := 0, max_words_per_player := 1, freestyle_available := false):
+	_is_freestyle = freestyle_available
+	if freestyle_available:
+		word_count.text = "Freestyle mode\n1 mobile player connected"
+		ready_button.disabled = false
+		return
+
 	var active_client_count = 0
 	for child in list:
 		if child is DrawPlayerUI and child.is_ready:
@@ -57,8 +77,11 @@ func update(list: Array, total_words := 0, max_words_per_player := 1):
 	ready_button.disabled = active_client_count < total_players or total_words <= 0
 
 func start_new_game(word: String, r: int, total_round: int):
+	_is_freestyle = false
 	_is_revealing = false
 	_show_container(in_game)
+	_set_freestyle_controls(false, false)
+	skip_button.show()
 	round_label.text = "Word %d of %d" % [r, total_round]
 	word_label.text = word
 	skip_button.text = "Skip Word"
@@ -73,3 +96,35 @@ func start_new_game(word: String, r: int, total_round: int):
 func show_reveal() -> void:
 	_is_revealing = true
 	skip_button.text = "Next Word"
+
+func show_freestyle_ready(last_round: int) -> void:
+	_is_freestyle = true
+	_is_revealing = false
+	_show_container(in_game)
+	round_label.text = "Freestyle"
+	word_label.text = "Start timer when ready for next word."
+	if last_round > 0:
+		word_label.text = "Word %d finished. Start timer when ready." % last_round
+	_set_freestyle_controls(true, false)
+
+func show_freestyle_drawing(round_number: int) -> void:
+	_is_freestyle = true
+	_show_container(in_game)
+	round_label.text = "Freestyle word %d" % round_number
+	word_label.text = "Draw your word."
+	_set_freestyle_controls(false, true)
+
+func show_freestyle_finished() -> void:
+	_is_freestyle = true
+	_show_container(in_game)
+	round_label.text = "Freestyle ended"
+	word_label.text = "Game Over!"
+	_set_freestyle_controls(false, false)
+
+func _set_freestyle_controls(waiting_for_timer: bool, drawing: bool) -> void:
+	skip_button.visible = not _is_freestyle
+	start_timer_button.visible = _is_freestyle and waiting_for_timer
+	stop_game_button.visible = _is_freestyle and waiting_for_timer
+	result_buttons.visible = _is_freestyle and drawing
+	correct_button.visible = _is_freestyle and drawing
+	wrong_button.visible = _is_freestyle and drawing

@@ -6,7 +6,7 @@
 	let submitted = $state(false);
 	let submittedCount = $state(0);
 	let maxSubmissions = $state(3);
-	let mode = $state<'submit' | 'guess'>('submit');
+	let mode = $state<'submit' | 'guess' | 'freestyle'>('submit');
 	let feedback = $state<'correct' | 'incorrect' | null>(null);
 	let message = $state('');
 	let feedbackTimer: number | null = null;
@@ -41,6 +41,18 @@
 				inputText = '';
 			} else if (msg.text === 'word_ack;incorrect') {
 				showFeedback('incorrect');
+				inputText = '';
+			} else if (msg.text === 'word_ack;freestyle') {
+				mode = 'freestyle';
+				submitted = false;
+				feedback = null;
+				message = '';
+				inputText = '';
+			} else if (msg.text === 'word_ack;submit') {
+				mode = 'submit';
+				submitted = false;
+				feedback = null;
+				message = '';
 				inputText = '';
 			} else if (msg.text.startsWith('word_ack;reveal;')) {
 				const revealedWord = msg.text.substring('word_ack;reveal;'.length);
@@ -99,6 +111,13 @@
 			<p>Waiting for others and VR player to start...</p>
 		</div>
 	{:else}
+		{#if mode === 'freestyle'}
+			<div class="submitted-state">
+				<div class="checkmark-icon">🎨</div>
+				<h2>Freestyle Mode</h2>
+				<p>Guess out loud. VR player controls timer and result.</p>
+			</div>
+		{:else}
 		<div class="form-container">
 			<h2>{mode === 'submit' ? 'Enter Word' : 'Enter Guess'}</h2>
 			<p class="instructions">
@@ -127,6 +146,7 @@
 				<div class="message-banner">{message}</div>
 			{/if}
 		</div>
+		{/if}
 	{/if}
 
 	{#if feedback === 'correct'}

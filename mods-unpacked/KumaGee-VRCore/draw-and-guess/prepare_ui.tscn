@@ -105,3 +105,32 @@ autowrap_mode = 1
 unique_name_in_owner = true
 layout_mode = 2
 text = "Skip Word"
+
+[node name="StartTimerButton" type="Button" parent="MarginContainer/InGame" unique_id=2000000401]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "Start Timer"
+
+[node name="ResultButtons" type="HBoxContainer" parent="MarginContainer/InGame" unique_id=2000000402]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="CorrectButton" type="Button" parent="MarginContainer/InGame/ResultButtons" unique_id=2000000403]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "✓"
+
+[node name="WrongButton" type="Button" parent="MarginContainer/InGame/ResultButtons" unique_id=2000000404]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "✗"
+
+[node name="StopGameButton" type="Button" parent="MarginContainer/InGame" unique_id=2000000405]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "Stop Game"
