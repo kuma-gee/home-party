@@ -3,6 +3,7 @@ extends Control
 
 signal ready_clicked()
 signal skipped()
+signal continued()
 
 # Doesn't work as @export ?!?!?!
 @onready var ready_button: Button = %ReadyButton
@@ -20,10 +21,18 @@ var round_timer: Timer:
 		round_timer = v
 		time.timer = v
 
+var _is_revealing := false
+
 func _ready() -> void:
 	ready_button.pressed.connect(func(): ready_clicked.emit())
-	skip_button.pressed.connect(func(): skipped.emit())
+	skip_button.pressed.connect(_on_skip_button_pressed)
 	_show_container(prepare)
+
+func _on_skip_button_pressed() -> void:
+	if _is_revealing:
+		continued.emit()
+		return
+	skipped.emit()
 
 func _show_container(container) -> void:
 	prepare.hide()
@@ -48,9 +57,11 @@ func update(list: Array, total_words := 0, max_words_per_player := 1):
 	ready_button.disabled = active_client_count < total_players
 
 func start_new_game(word: String, r: int, total_round: int):
+	_is_revealing = false
 	_show_container(in_game)
 	round_label.text = "Word %d of %d" % [r, total_round]
 	word_label.text = word
+	skip_button.text = "Skip Word"
 	var len = word.length()
 	if len < 8:
 		word_label.theme_type_variation = "LabelLarge"
@@ -58,3 +69,7 @@ func start_new_game(word: String, r: int, total_round: int):
 		word_label.theme_type_variation = ""
 	else:
 		word_label.theme_type_variation = "LabelSmall"
+
+func show_reveal() -> void:
+	_is_revealing = true
+	skip_button.text = "Next Word"

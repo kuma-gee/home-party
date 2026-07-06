@@ -43,6 +43,7 @@ func _on_prepare_phase():
 	prepare_scene = vr_scene.get_scene_instance()
 	prepare_scene.ready_clicked.connect(_on_vr_ready_pressed)
 	prepare_scene.skipped.connect(func(): round_manager.skip_round())
+	prepare_scene.continued.connect(func(): round_manager.continue_after_reveal())
 	prepare_scene.round_timer = round_manager.round_timer
 	ai_manager.on_prepare_phase_entered()
 	_update_ui()
@@ -184,6 +185,7 @@ func _on_round_timed_out(word: String) -> void:
 	if reveal_label:
 		reveal_label.text = "The word was: %s" % word
 		reveal_label.show()
+	prepare_scene.show_reveal()
 
 func _end_game() -> void:
 	round_manager.finish_game()

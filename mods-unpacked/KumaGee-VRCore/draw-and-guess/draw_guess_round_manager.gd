@@ -95,6 +95,12 @@ func start_round_timer() -> void:
 func start_reveal_timer(duration: float) -> void:
 	reveal_timer.start(duration)
 
+func continue_after_reveal() -> void:
+	if phase != Phase.REVEALING:
+		return
+	finish_reveal()
+	reveal_finished.emit()
+
 func get_progress_text() -> String:
 	return "Word %d of %d" % [current_round, total_rounds]
 
@@ -104,8 +110,6 @@ func _on_round_timeout() -> void:
 	
 	end_round()
 	timed_out.emit(current_word)
-	reveal_timer.start()
 
 func _on_reveal_timeout() -> void:
-	finish_reveal()
-	reveal_finished.emit()
+	continue_after_reveal()
