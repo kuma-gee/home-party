@@ -57,7 +57,10 @@ func _on_clients_changed() -> void:
 				if round_manager.has_guessed(child.uuid):
 					child.mark_guessed_correctly()
 			elif word_manager.is_player_submitted(child.uuid):
-				child.mark_word_submitted()
+				child.mark_word_submitted(
+					word_manager.get_player_submission_count(child.uuid),
+					word_manager.max_words_per_player()
+				)
 
 	_update_ui()
 	
@@ -86,8 +89,17 @@ func _on_player_word_submitted(word: String, player_ui: DrawPlayerUI) -> void:
 			if pet:
 				pet.on_incorrect_guess(word)
 			logger.debug("Duplicate word from %s: %s" % [player_ui.uuid, word.strip_edges()])
+		DrawGuessWordManager.SubmitResult.LIMIT_REACHED:
+			if player_ui.game_client is GameClient:
+				player_ui.game_client.send_text("word_ack;limit;%d" % word_manager.max_words_per_player())
+			if pet:
+				pet.on_incorrect_guess(word)
+			logger.debug("Word limit reached for %s" % player_ui.uuid)
 		DrawGuessWordManager.SubmitResult.ACCEPTED:
-			player_ui.mark_word_submitted()
+			player_ui.mark_word_submitted(
+				word_manager.get_player_submission_count(player_ui.uuid),
+				word_manager.max_words_per_player()
+			)
 			if pet:
 				pet.on_correct_guess(word)
 			logger.info("Word accepted from %s: %s" % [player_ui.uuid, word.strip_edges()])
@@ -123,7 +135,7 @@ func _on_player_guessed(guess: String, player_ui: DrawPlayerUI) -> void:
 
 func _update_ui() -> void:
 	var active_players = PlayerManager.get_active_players().map(func(x): return player_list.find_existing_node(x.uuid))
-	prepare_scene.update(active_players)
+	prepare_scene.update(active_players, word_manager.size(), word_manager.max_words_per_player())
 
 func _on_vr_ready_pressed() -> void:
 	check_all_ready(true)

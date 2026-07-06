@@ -12,6 +12,6 @@ func setup_ai(idx: int, uuid_str: String, color: Color) -> void:
 		player_icon.icon.text = "P%d" % (idx + 1)
 	move_in()
 
-func mark_word_submitted() -> void:
+func mark_word_submitted(count := 1, max_count := 1) -> void:
 	checkmark.show()
 	set_ready()

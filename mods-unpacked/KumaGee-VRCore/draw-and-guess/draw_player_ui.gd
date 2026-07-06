@@ -17,8 +17,8 @@ func _on_input_received(input: String, value) -> void:
 	if input == "word":
 		guessed.emit(str(value))
 
-func mark_word_submitted() -> void:
-	game_client.send_text("word_ack;ok")
+func mark_word_submitted(count := 1, max_count := 1) -> void:
+	game_client.send_text("word_ack;ok;%d;%d" % [count, max_count])
 	checkmark.show()
 	set_ready()
 

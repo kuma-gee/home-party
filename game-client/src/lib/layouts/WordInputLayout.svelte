@@ -4,6 +4,9 @@
 
 	let inputText = $state('');
 	let submitted = $state(false);
+	let submittedCount = $state(0);
+	let maxSubmissions = $state(3);
+	let mode = $state<'submit' | 'guess'>('submit');
 	let feedback = $state<'correct' | 'incorrect' | null>(null);
 	let message = $state('');
 	let feedbackTimer: number | null = null;
@@ -12,9 +15,20 @@
 		const unsubscribe = serverMessage.subscribe((msg) => {
 			if (!msg || !msg.text) return;
 
-			if (msg.text === 'word_ack;ok') {
-				submitted = true;
+			if (msg.text.startsWith('word_ack;ok')) {
+				const parts = msg.text.split(';');
+				mode = 'submit';
+				submittedCount = Number(parts[2] ?? submittedCount + 1);
+				maxSubmissions = Number(parts[3] ?? maxSubmissions);
+				submitted = submittedCount >= maxSubmissions;
 				message = '';
+				inputText = '';
+			} else if (msg.text.startsWith('word_ack;limit')) {
+				const parts = msg.text.split(';');
+				mode = 'submit';
+				maxSubmissions = Number(parts[2] ?? maxSubmissions);
+				submitted = true;
+				message = `Maximum ${maxSubmissions} words submitted.`;
 				inputText = '';
 			} else if (msg.text === 'word_ack;duplicate') {
 				message = 'There is already a similar word. Try another.';
@@ -30,7 +44,10 @@
 				inputText = '';
 			} else if (msg.text === 'word_ack;reset') {
 				console.log('Resetting word input state');
+				mode = 'guess';
 				submitted = false;
+				submittedCount = 0;
+				maxSubmissions = 3;
 				feedback = null;
 				message = '';
 				inputText = '';
@@ -74,13 +91,17 @@
 	{#if submitted}
 		<div class="submitted-state">
 			<div class="checkmark-icon">✓</div>
-			<h2>Word Submitted!</h2>
+			<h2>{submittedCount} / {maxSubmissions} Words Submitted!</h2>
 			<p>Waiting for others and VR player to start...</p>
 		</div>
 	{:else}
 		<div class="form-container">
-			<h2>Enter Text</h2>
-			<p class="instructions">Type a response and submit</p>
+			<h2>{mode === 'submit' ? 'Enter Word' : 'Enter Guess'}</h2>
+			<p class="instructions">
+				{mode === 'submit'
+					? `Submit up to ${maxSubmissions} words (${submittedCount} submitted)`
+					: 'Type your guess and submit'}
+			</p>
 
 			<div class="input-group">
 				<input

@@ -36,14 +36,15 @@ func show_leaderboard(title, entries):
 	leaderboard.set_entries(entries)
 	_show_container(leaderboard)
 
-func update(list: Array):
+func update(list: Array, total_words := 0, max_words_per_player := 1):
 	var active_client_count = 0
 	for child in list:
 		if child is DrawPlayerUI and child.is_ready:
 			active_client_count += 1
 	
 	var total_players = list.size()
-	word_count.text = "%d / %d" % [active_client_count, total_players]
+	var max_words: int = total_players * max_words_per_player
+	word_count.text = "%d / %d words\n%d / %d players ready" % [total_words, max_words, active_client_count, total_players]
 	ready_button.disabled = active_client_count < total_players
 
 func start_new_game(word: String, r: int, total_round: int):
