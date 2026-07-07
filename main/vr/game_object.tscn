@@ -109,7 +109,6 @@ size = 0.23
 transform = Transform3D(1, 0, 0, 0, 0.8708108, 0.49161828, 0, -0.49161828, 0.8708108, 0, 0, 0)
 
 [node name="DemoIndicator" type="PanelContainer" parent="Sprite3D/SubViewport/Control" index="2" unique_id=113845782]
-visible = false
 layout_mode = 2
 theme_type_variation = &"PanelContainerPrimary"
 
@@ -122,7 +121,7 @@ theme_override_constants/margin_bottom = 8
 
 [node name="Label" type="Label" parent="Sprite3D/SubViewport/Control/DemoIndicator/MarginContainer" index="0" unique_id=1390501460]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.4117647, 0.4117647, 1)
+theme_type_variation = &"LabelError"
 text = "Not available in demo"
 horizontal_alignment = 1
 

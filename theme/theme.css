@@ -11,6 +11,7 @@
     --secondary-color: #393E46;
     --text-color: #EEEEEE;
     --health-color: #37CF46;
+    --error-color: #FF6969;
 }
 
 LinkButton {
@@ -42,13 +43,13 @@ Button:hover, Button:hover_pressed, Button:focus {
   background: var(--primary-highlight-color);
 }
 
-Label, Label.Large, Label.Small, Label.Smallest, Label.Largest {
+Label, Label.Large, Label.Small, Label.Smallest, Label.Largest, Label.Error {
   color: var(--text-color);
   padding: 10 0 0 0;
   --const-outline-size: var(--label-outline);
 }
 
-Label.Largest {
+Label.Large {
   font-size: 48;
 }
 
@@ -63,6 +64,11 @@ Label.Smallest {
 Label.Largest {
   font-size: 91;
   --const-outline-size: var(--label-large-outline);
+}
+
+Label.Error {
+  color: var(--error-color);
+  font-size: 48;
 }
 
 MarginContainer {
