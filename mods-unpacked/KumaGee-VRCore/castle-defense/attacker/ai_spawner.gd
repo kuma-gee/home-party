@@ -67,10 +67,13 @@ func _init_controller(scene: PackedScene, count: int, i: int, spawn_origin: Vect
 	var spawn_pos := spawn_origin + Vector3.RIGHT * ((i - (count - 1) / 2.0) * 1.5)
 	var controller := AIClientController.new()
 	add_child(controller)
+	# Timers fire in random order, so the array slot an agent lands in
+	# is not necessarily i. Capture the real slot for died/pickup callbacks.
+	var slot := _controllers.size()
 	var player := _spawn_agent(scene, i, spawn_pos, controller)
 
 	_controllers.append(controller)
-	_connect_died(player, i)
+	_connect_died(player, slot)
 	_agents.append(player)
 	_agent_states.append(_State.IDLE)
 	_agent_targets.append(spawn_pos)
@@ -78,7 +81,7 @@ func _init_controller(scene: PackedScene, count: int, i: int, spawn_origin: Vect
 	_spawn_positions.append(spawn_pos)
 	_agent_skill_cooldowns.append(0.0)
 	_agent_bombs.append(null)
-	player.snap_zone.has_picked_up.connect(func(obj): _on_agent_pickup(i, obj))
+	player.snap_zone.has_picked_up.connect(func(obj): _on_agent_pickup(slot, obj))
 	
 
 func _resolve_player_scene() -> PackedScene:
