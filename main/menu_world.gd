@@ -2,11 +2,13 @@ extends XRToolsSceneBase
 
 @onready var game_shelve: GameShelve = $GameShelve
 @onready var feedback_form_pickup: XRToolsPickable = %FeedbackFormPickup
+@onready var reset_area: Area3D = $GameShelve/ResetArea
 
 var starting := false
 
 func _ready() -> void:
 	game_shelve.started_game.connect(start_game)
+	reset_area.area_entered.connect(func(_a): game_shelve.reset_objects())
 	_update_feedback_form_pickup()
 
 

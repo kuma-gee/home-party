@@ -73,7 +73,7 @@ data = {
 [sub_resource type="ImageTexture" id="ImageTexture_67j6m"]
 image = SubResource("Image_3vjtu")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_ve3ly"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_3vjtu"]
 viewport_path = NodePath("GameDetails/SubViewport")
 
 [sub_resource type="Gradient" id="Gradient_67j6m"]
@@ -101,6 +101,9 @@ curve = SubResource("Curve_67j6m")
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_67j6m"]
 gravity = Vector3(0, 0, 0)
 alpha_curve = SubResource("CurveTexture_rtmvl")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_3vjtu"]
+radius = 0.05
 
 [node name="MenuWorld" type="Node3D" unique_id=1335721879 node_paths=PackedStringArray("xr_player")]
 script = ExtResource("1_uouel")
@@ -220,8 +223,8 @@ current = true
 size = 6.0625043
 
 [node name="GameDetails" type="Sprite3D" parent="." unique_id=40414504]
-transform = Transform3D(0.14999999, 0, 4.440892e-16, 0, 0.14999999, 0, -4.440892e-16, 0, 0.14999999, 0.13998482, 1.6233156, -2.4253056)
-texture = SubResource("ViewportTexture_ve3ly")
+transform = Transform3D(0.14999999, 0, 4.440892e-16, 0, 0.14999999, 0, -4.440892e-16, 0, 0.14999999, 0.13998482, 1.6233156, -2.3938222)
+texture = SubResource("ViewportTexture_3vjtu")
 script = ExtResource("11_67j6m")
 
 [node name="SubViewport" type="SubViewport" parent="GameDetails" unique_id=1089874768]
@@ -270,6 +273,7 @@ game_details_desktop = NodePath("../CanvasLayer/Control/GameDetailsRoot/GameDeta
 game_details_vr = NodePath("../GameDetails/SubViewport/GameDetailsContainer/GameDetailsVR")
 scene = ExtResource("11_4lkid")
 axis = Vector3(0, 0, -1)
+item_spacing = 0.1
 player_list = NodePath("../CanvasLayer/Control/MarginContainer/PlayerList")
 
 [node name="GameLoader" type="Node" parent="GameShelve" unique_id=649126648]
@@ -280,7 +284,7 @@ metadata/_custom_type_script = "uid://ddetao6ypdnd4"
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.23472413, -0.067163646, 0.0069997907)
 
 [node name="GamesRoot" type="Node3D" parent="GameShelve" unique_id=1388090775]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.27174932, 0.067565024, -0.29991394)
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.2230165, -0.064050615, -0.29991394)
 
 [node name="TVRemote" parent="GameShelve" unique_id=777328390 instance=ExtResource("17_67j6m")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.22379893, -0.059525907, 0.25353137)
@@ -292,6 +296,25 @@ amount = 2
 lifetime = 2.0
 process_material = SubResource("ParticleProcessMaterial_67j6m")
 draw_pass_1 = ExtResource("17_rtmvl")
+
+[node name="ResetArea" type="Area3D" parent="GameShelve" unique_id=877294309]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.40895444, -0.15490109, -0.17915854)
+collision_layer = 0
+collision_mask = 131072
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GameShelve/ResetArea" unique_id=2082130484]
+shape = SubResource("SphereShape3D_3vjtu")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="GameShelve/ResetArea" unique_id=1496447791]
+radius = 0.04
+height = 0.01
+sides = 16
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="GameShelve/ResetArea" unique_id=624118567]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.008480608, 0)
+radius = 0.02
+height = 0.01
+sides = 16
 
 [node name="Room" parent="." unique_id=1197402855 instance=ExtResource("15_5dw5n")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.67038333, 0, -1.2246983)

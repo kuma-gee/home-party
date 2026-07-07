@@ -71,6 +71,9 @@ nodes/Trigger/node = SubResource("AnimationNodeBlend2_0wydl")
 nodes/Trigger/position = Vector2(-360, 20)
 node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1"]
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_icwxr"]
+radius = 0.062045835
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_07sco"]
 animation = &"Grip"
 
@@ -270,12 +273,28 @@ show_laser = 2
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.02, 0.05, -0.1)
 menu_scene = ExtResource("11_h8p7v")
 
+[node name="HandArea" type="Area3D" parent="SubViewport/XRPlayer/LeftHand" unique_id=168408834]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.038919)
+collision_layer = 131072
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewport/XRPlayer/LeftHand/HandArea" unique_id=2077643596]
+shape = SubResource("SphereShape3D_icwxr")
+
 [node name="RightHand" type="XRController3D" parent="SubViewport/XRPlayer" unique_id=1667605568]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, -0.28195375)
 tracker = &"right_hand"
 
 [node name="RightRotation" type="Node3D" parent="SubViewport/XRPlayer/RightHand" unique_id=233949792]
 transform = Transform3D(0.068881676, 0.32787022, 0.21853243, -0.39334264, 0.044172365, 0.057709083, 0.023169983, -0.2248331, 0.3300201, 0, 0, 0)
+
+[node name="HandArea2" type="Area3D" parent="SubViewport/XRPlayer/RightHand" unique_id=1330981504]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.039)
+collision_layer = 131072
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewport/XRPlayer/RightHand/HandArea2" unique_id=1603056972]
+shape = SubResource("SphereShape3D_icwxr")
 
 [node name="RightHand" parent="SubViewport/XRPlayer/RightHand" unique_id=40282269 instance=ExtResource("8_0yltu")]
 

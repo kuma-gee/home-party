@@ -8,7 +8,7 @@ signal started_game(game: GameResource)
 @export var game_details_vr: GameDetailsPanel
 @export var scene: PackedScene
 @export var axis := Vector3.RIGHT
-@export var item_spacing := 0.05
+@export var item_spacing := 0.2
 @export var player_list: PlayerList
 
 @onready var game_loader: GameLoader = $GameLoader
@@ -69,11 +69,28 @@ func _populate() -> void:
 		inst.name = "game_icon_%d" % i
 		inst.game = g
 		games_root.add_child(inst)
+		_place(inst, i, n)
 
-		# Place in a line along the configured axis with fixed spacing
-		var offset = axis.normalized() * (float(i) - float(n - 1) / 2.0) * item_spacing
-		inst.transform.origin = offset
-		inst.rotation.x = deg_to_rad(-20.0)
+
+func _place(inst: Node3D, i: int, n: int) -> void:
+	# Place in a line along the configured axis with fixed spacing
+	var offset = axis.normalized() * (float(i) - float(n - 1) / 2.0) * item_spacing
+	inst.transform.origin = offset
+	inst.rotation.x = deg_to_rad(-20.0)
+
+
+func reset_objects() -> void:
+	var n: int = games.size()
+	for child in games_root.get_children():
+		if not (typeof(child) == TYPE_OBJECT and child.name.begins_with("game_icon_")):
+			continue
+		if child.has_method("drop") and child.has_method("is_picked_up") and child.is_picked_up():
+			child.drop()
+		var idx := child.name.trim_prefix("game_icon_").to_int()
+		_place(child, idx, n)
+		if child is RigidBody3D:
+			child.linear_velocity = Vector3.ZERO
+			child.angular_velocity = Vector3.ZERO
 
 func _on_game_selected(game: GameResource) -> void:
 	selected_game = game
