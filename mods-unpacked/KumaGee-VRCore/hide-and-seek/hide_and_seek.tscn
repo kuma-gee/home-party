@@ -5,7 +5,6 @@
 [ext_resource type="PackedScene" uid="uid://cjubxgaipy7ii" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/museum_gallery.tscn" id="3_museum"]
 [ext_resource type="PackedScene" uid="uid://brhlt5hsqr24n" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/ui/hide_seek_hud.tscn" id="4_hud"]
 [ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/ui/hide_seek_scoreboard.tscn" id="5_score"]
-[ext_resource type="PackedScene" uid="uid://bl2nuu3qhlb5k" path="res://addons/godot-xr-tools/functions/movement_direct.tscn" id="6_1lmmf"]
 [ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/npc.tscn" id="6_npc"]
 [ext_resource type="PackedScene" uid="uid://cs3k7yh4mpxrv" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/seeker_tag.tscn" id="6_u1ue4"]
 [ext_resource type="PackedScene" uid="uid://clwvb6ruabojf" path="res://mods-unpacked/KumaGee-VRCore/hide-and-seek/ui/hide_seek_player.tscn" id="6_yrfa8"]
@@ -119,10 +118,6 @@ fov = 24.0
 
 [node name="AnimationTree" parent="XRPlayer/SubViewport/XRPlayer/LeftHand/LeftHand" parent_id_path=PackedInt32Array(10000004, 801242371) index="1" unique_id=1971929839]
 tree_root = SubResource("AnimationNodeBlendTree_inw17")
-
-[node name="MovementDirect" parent="XRPlayer/SubViewport/XRPlayer/LeftHand" parent_id_path=PackedInt32Array(10000004, 2106749189) index="1" unique_id=741586963 instance=ExtResource("6_1lmmf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -1, 0.5)
-max_speed = 2.0
 
 [node name="SeekerTag" parent="XRPlayer/SubViewport/XRPlayer/LeftHand" parent_id_path=PackedInt32Array(10000004, 2106749189) index="5" unique_id=1325768969 instance=ExtResource("6_u1ue4")]
 

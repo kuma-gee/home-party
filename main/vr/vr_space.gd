@@ -14,7 +14,7 @@ signal back_to_home()
 @export var reset_area: Area3D
 @export var settings_viewport: XRToolsViewport2DIn3D
 
-const SETTINGS_PANEL_DISTANCE := 1.5
+const SETTINGS_PANEL_DISTANCE := 0.8
 
 var was_paused := false
 var _settings_panel_instance: SettingsPanel = null
@@ -76,6 +76,7 @@ func _place_in_front_of_player(node: Node3D, distance: float) -> void:
 	forward = forward.normalized()
 	node.global_position = cam_transform.origin + forward * distance
 	node.look_at(cam_transform.origin, Vector3.UP)
+	node.rotate_object_local(Vector3.UP, PI)
 
 func _on_settings_back_pressed():
 	_on_menu_closed(true)

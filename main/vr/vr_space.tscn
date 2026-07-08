@@ -19,6 +19,8 @@
 [ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="15_f1ooe"]
 [ext_resource type="PackedScene" uid="uid://dgjixfx6ncu75" path="res://assets/characters/player.glb" id="18_lisjs"]
 [ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="20_tic4c"]
+[ext_resource type="PackedScene" uid="uid://bl2nuu3qhlb5k" path="res://addons/godot-xr-tools/functions/movement_direct.tscn" id="21_movdi"]
+[ext_resource type="Script" uid="uid://cjfu28jmrajlo" path="res://addons/godot-xr-tools/overrides/ground_physics_settings.gd" id="22_gps"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_0yltu"]
 custom_aabb = AABB(-5000, -5000, -5000, 10000, 10000, 10000)
@@ -123,6 +125,12 @@ texture_filter = 1
 resource_local_to_scene = true
 size = Vector3(1.5, 1, 0.02)
 
+[sub_resource type="Resource" id="XRToolsGroundPhysicsSettings_snappy"]
+script = ExtResource("22_gps")
+flags = 3
+move_drag = 8.0
+move_traction = 45.0
+
 [node name="VRSpace" type="Node3D" unique_id=841158329 node_paths=PackedStringArray("origin", "camera", "pause_menu", "overlay_mesh", "menu_function", "reset_area", "settings_viewport")]
 process_mode = 3
 script = ExtResource("1_2vxk7")
@@ -164,6 +172,7 @@ shape = SubResource("BoxShape3D_icwxr")
 [node name="PlayerBody" parent="SubViewport/XRPlayer" unique_id=1745649098 instance=ExtResource("4_c1qvc")]
 collision_mask = 1
 push_rigid_bodies = false
+physics = SubResource("XRToolsGroundPhysicsSettings_snappy")
 
 [node name="Body" type="Node3D" parent="SubViewport/XRPlayer/PlayerBody" unique_id=1031441429]
 transform = Transform3D(-0.5, 0, -4.371139e-08, 0, 0.5, 0, 4.371139e-08, 0, -0.5, 0, 0, 0.09987366)
@@ -272,6 +281,10 @@ show_laser = 2
 [node name="FunctionMenu" parent="SubViewport/XRPlayer/LeftHand" unique_id=945997168 instance=ExtResource("10_c1qvc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.02, 0.05, -0.1)
 menu_scene = ExtResource("11_h8p7v")
+
+[node name="MovementDirect" parent="SubViewport/XRPlayer/LeftHand" unique_id=2129223259 instance=ExtResource("21_movdi")]
+max_speed = 2.2
+strafe = true
 
 [node name="HandArea" type="Area3D" parent="SubViewport/XRPlayer/LeftHand" unique_id=168408834]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.038919)
