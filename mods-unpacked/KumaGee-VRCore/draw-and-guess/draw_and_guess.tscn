@@ -17,6 +17,7 @@
 [ext_resource type="Script" uid="uid://boeltefq2hhei" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_guess_word_manager.gd" id="15_3yl70"]
 [ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="15_17l5l"]
 [ext_resource type="PackedScene" uid="uid://nfb07g0lpf00" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/prepare_ui.tscn" id="16_5whue"]
+[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/prepare_instructions.tscn" id="25_instr"]
 [ext_resource type="Script" uid="uid://8hrue6w8tkux" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_guess_round_manager.gd" id="16_njhln"]
 [ext_resource type="Script" uid="uid://dtpfedxuvv01r" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_guess_scoring.gd" id="17_17l5l"]
 [ext_resource type="Script" uid="uid://1uy4b8ulko1y" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_guess_pet_spawner.gd" id="18_yk83c"]
@@ -102,9 +103,10 @@ resource_local_to_scene = true
 shading_mode = 0
 albedo_texture = SubResource("ViewportTexture_jdu6v")
 
-[node name="DrawAndGuess" unique_id=10015973 node_paths=PackedStringArray("vr_scene", "timer_label", "progress_label", "reveal_label") instance=ExtResource("1_ul2m3")]
+[node name="DrawAndGuess" unique_id=10015973 node_paths=PackedStringArray("vr_scene", "instructions_vr_scene", "timer_label", "progress_label", "reveal_label") instance=ExtResource("1_ul2m3")]
 script = ExtResource("2_623r5")
 vr_scene = NodePath("BaseSceneContent/draw_room/Plane_006/Viewport2Din3D2")
+instructions_vr_scene = NodePath("BaseSceneContent/draw_room/FrontWall/InstructionsViewport")
 timer_label = NodePath("CanvasLayer/Control/GameUI/TimerLabel")
 progress_label = NodePath("CanvasLayer/Control/GameUI/ProgressLabel")
 reveal_label = NodePath("CanvasLayer/Control/GameUI/RevealLabel")
@@ -294,6 +296,13 @@ skeleton = NodePath("")
 
 [node name="FrontWall" parent="BaseSceneContent/draw_room" index="15" unique_id=1346987431]
 layers = 262144
+
+[node name="InstructionsViewport" parent="BaseSceneContent/draw_room/FrontWall" unique_id=3000000101 instance=ExtResource("15_17l5l")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -0.1, -0.14, 0)
+visible = false
+screen_size = Vector2(2.2, 1.6)
+scene = ExtResource("25_instr")
+viewport_size = Vector2(440, 320)
 
 [node name="DesktopView" type="MeshInstance3D" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="8" unique_id=727167106]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 3.8365173, 1.8189988, 0)

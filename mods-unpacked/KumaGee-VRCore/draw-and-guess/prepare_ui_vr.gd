@@ -1,7 +1,6 @@
 class_name DrawPrepareScene
 extends Control
 
-signal ready_clicked()
 signal skipped()
 signal continued()
 signal freestyle_timer_started()
@@ -10,8 +9,6 @@ signal freestyle_wrong()
 signal freestyle_stopped()
 
 # Doesn't work as @export ?!?!?!
-@onready var ready_button: Button = %ReadyButton
-@onready var word_count: Label = %WordCount
 @onready var skip_button: Button = %SkipButton
 @onready var in_game: VBoxContainer = %InGame
 @onready var prepare: VBoxContainer = %Prepare
@@ -34,7 +31,6 @@ var _is_revealing := false
 var _is_freestyle := false
 
 func _ready() -> void:
-	ready_button.pressed.connect(func(): ready_clicked.emit())
 	skip_button.pressed.connect(_on_skip_button_pressed)
 	start_timer_button.pressed.connect(func(): freestyle_timer_started.emit())
 	correct_button.pressed.connect(func(): freestyle_correct.emit())
@@ -58,23 +54,6 @@ func show_leaderboard(title, entries):
 	leaderboard.set_title(title)
 	leaderboard.set_entries(entries)
 	_show_container(leaderboard)
-
-func update(list: Array, total_words := 0, max_words_per_player := 1, freestyle_available := false):
-	_is_freestyle = freestyle_available
-	if freestyle_available:
-		word_count.text = "Freestyle mode\n1 mobile player connected"
-		ready_button.disabled = false
-		return
-
-	var active_client_count = 0
-	for child in list:
-		if child is DrawPlayerUI and child.is_ready:
-			active_client_count += 1
-	
-	var total_players = list.size()
-	var max_words: int = total_players * max_words_per_player
-	word_count.text = "%d / %d words\n%d / %d players ready" % [total_words, max_words, active_client_count, total_players]
-	ready_button.disabled = active_client_count < total_players or total_words <= 0
 
 func start_new_game(word: String, r: int, total_round: int):
 	_is_freestyle = false
