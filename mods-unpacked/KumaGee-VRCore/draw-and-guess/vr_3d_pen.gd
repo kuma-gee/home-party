@@ -121,6 +121,7 @@ func _start_stroke():
 	current_material.albedo_color = line_color
 	current_material.vertex_color_use_as_albedo = true
 	current_material.cull_mode = BaseMaterial3D.CULL_DISABLED
+	current_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	
 	mesh_instance.mesh = current_mesh
 	mesh_instance.material_override = current_material
