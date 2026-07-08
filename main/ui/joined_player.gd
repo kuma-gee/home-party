@@ -43,8 +43,15 @@ func move_in():
 		tw.stop()
 	tw = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	tw.tween_property(container, "position:x", in_pos, 1.0)
+	tw.parallel().tween_property(self, "modulate", Color(1, 1, 1, 1), 0.3)
 
 func move_out():
+	if tw:
+		tw.stop()
+	tw = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	tw.tween_property(self, "modulate", Color(0.4, 0.4, 0.4, 1), 0.6)
+
+func leave():
 	if tw:
 		tw.stop()
 	tw = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)

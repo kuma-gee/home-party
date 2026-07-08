@@ -23,6 +23,9 @@ static func get_color(idx: int) -> Color:
 @export var initial_delay := 1.0
 @export var create_delay := 0.1
 @export var allow_empty := true
+## Fully remove (slide out + free) a player node on disconnect instead of just graying it out.
+## Used for the lobby, where a disconnect means the player actually left.
+@export var remove_on_disconnect := false
 
 var current_game: GameResource
 var _refresh_generation := 0
@@ -70,7 +73,10 @@ func _refresh_list() -> void:
 
 	for child in get_children():
 		if child is JoinedPlayer and child.uuid not in current_uuids and child.uuid not in persistent_uuids:
-			child.move_out()
+			if remove_on_disconnect:
+				child.leave()
+			else:
+				child.move_out()
 			player_removed.emit(child.uuid)
 
 func update_selection(game: GameResource) -> void:

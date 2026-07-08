@@ -64,35 +64,34 @@ func _on_prepare_phase():
 	
 func _on_clients_changed() -> void:
 	LobbyServer.send_layout("guess")
-	var freestyle_available := _is_freestyle_available()
 
 	for child in player_list.get_children():
 		if child is DrawPlayerUI:
-			if freestyle_mode or freestyle_available:
-				_send_freestyle_phone_state(child)
-				continue
-			if is_game_phase:
-				if round_manager.has_guessed(child.uuid):
-					child.mark_guessed_correctly()
-			elif word_manager.is_player_submitted(child.uuid):
-				child.mark_word_submitted(
-					word_manager.get_player_submission_count(child.uuid),
-					word_manager.max_words_per_player()
-				)
-			elif child.game_client is GameClient:
-				child.game_client.send_text("word_ack;submit")
+			if child.game_client is GameClient and not child.game_client.data_channel_opened.is_connected(_sync_player_ui.bind(child)):
+				child.game_client.data_channel_opened.connect(_sync_player_ui.bind(child))
+			_sync_player_ui(child)
 
 	_update_ui()
-	
+
+func _sync_player_ui(child: DrawPlayerUI) -> void:
+	if freestyle_mode or _is_freestyle_available():
+		_send_freestyle_phone_state(child)
+	elif is_game_phase:
+		if round_manager.has_guessed(child.uuid):
+			child.mark_guessed_correctly()
+	elif word_manager.is_player_submitted(child.uuid):
+		child.mark_word_submitted(
+			word_manager.get_player_submission_count(child.uuid),
+			word_manager.max_words_per_player()
+		)
+	elif child.game_client is GameClient:
+		child.game_client.send_text("word_ack;submit")
+
 func _on_player_created(uuid: String) -> void:
 	var player_ui = player_list.find_existing_node(uuid) as DrawPlayerUI
 	if player_ui:
 		player_ui.guessed.connect(_on_player_guessed.bind(player_ui))
 		player_ui.reset_for_round()
-		if freestyle_mode or _is_freestyle_available():
-			_send_freestyle_phone_state(player_ui)
-		elif not is_game_phase and player_ui.game_client is GameClient:
-			player_ui.game_client.send_text("word_ack;submit")
 		scoring.init_player(uuid)
 		_on_clients_changed()
 

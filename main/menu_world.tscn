@@ -165,6 +165,7 @@ grow_horizontal = 0
 layout_mode = 2
 theme_override_constants/separation = 0
 script = ExtResource("4_4lkid")
+remove_on_disconnect = true
 player_scene = ExtResource("5_5dw5n")
 
 [node name="JoinCode" type="PanelContainer" parent="CanvasLayer/Control" unique_id=1744107384]
