@@ -39,6 +39,7 @@ func _on_player_created(uuid: String) -> void:
 	var color = PlayerList.get_color(idx)
 	var controller = PlayerManager.find_player_by_uuid(uuid)
 	pet.setup(idx, uuid, color, controller)
+	pet.reset_for_round()
 
 	_pets[uuid] = pet
 
@@ -67,6 +68,7 @@ func spawn_for_ai(idx: int, uuid: String, color: Color) -> void:
 	pet.rotation = Vector3(0, randf_range(0, TAU), 0)
 	add_child(pet)
 	pet.setup(idx, uuid, color, null)
+	pet.reset_for_round()
 	_pets[uuid] = pet
 
 

@@ -36,6 +36,7 @@ layout_mode = 2
 
 [node name="CorrectIcon" type="Label" parent="Sprite3D/SubViewport/CenterContainer/VBoxContainer/StatusContainer" index="0" unique_id=2090105779]
 unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 text = "✓"
