@@ -42,9 +42,8 @@ func _refresh_list() -> void:
 	var gen := _refresh_generation
 
 	var players_data: Array[Dictionary] = []
-	for child in PlayerManager.get_children():
-		if child is ClientController and child.active:
-			players_data.append(child.get_display_data())
+	for child in PlayerManager.get_active_players():
+		players_data.append(child.get_display_data())
 
 	var current_uuids: Array = []
 	for player_data in players_data:

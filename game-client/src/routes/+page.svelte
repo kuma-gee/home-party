@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-	import { connectionStore, isConnected, inputLayout, webrtcDataChannelOpen, reconnecting, reconnectAttempts } from '../lib/store';
+	import { connectionStore, isConnected, inputLayout, webrtcDataChannelOpen, reconnecting, reconnectAttempts, blocked } from '../lib/store';
 	import JoystickLayout from '../lib/layouts/JoystickLayout.svelte';
 	import WordInputLayout from '../lib/layouts/WordInputLayout.svelte';
 
@@ -120,6 +120,15 @@
 			{#if errorMessage}
 				<p class="error">{errorMessage}</p>
 			{/if}
+		</div>
+	{:else if $blocked}
+		<div class="blocked-screen">
+			<div class="blocked-content">
+				<div class="blocked-icon">🚫</div>
+				<h2>Game Already Started</h2>
+				<p>This game is in progress. Wait for the next round to join.</p>
+				<button onclick={handleDisconnect} class="cancel-btn">Disconnect</button>
+			</div>
 		</div>
 	{:else}
 		{#if $webrtcDataChannelOpen}
@@ -280,6 +289,46 @@
 		color: #333;
 		margin-bottom: 2rem;
 		font-size: 1.5rem;
+	}
+
+	.blocked-screen {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		background: linear-gradient(135deg, #eb5757 0%, #7a1f1f 100%);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 2rem;
+		box-sizing: border-box;
+	}
+
+	.blocked-content {
+		background: rgba(255, 255, 255, 0.95);
+		border-radius: 16px;
+		padding: 3rem 2rem;
+		max-width: 400px;
+		width: 100%;
+		text-align: center;
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+	}
+
+	.blocked-icon {
+		font-size: 4rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.blocked-content h2 {
+		color: #333;
+		margin-bottom: 1rem;
+		font-size: 1.5rem;
+	}
+
+	.blocked-content p {
+		color: #666;
+		margin-bottom: 2rem;
 	}
 
 	.cancel-btn {

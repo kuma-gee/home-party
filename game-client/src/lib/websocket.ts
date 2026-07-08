@@ -51,6 +51,7 @@ export enum MessageType {
   GameClientSession = 1,
   GameClientIceCandidate = 2,
   InputLayout = 3,
+  Blocked = 4,
 }
 
 export interface Message {
@@ -98,6 +99,7 @@ export class WebSocketClient {
   onMessage?: (message: Message) => void;
   onIdReceived?: (id: number) => void;
   onInputLayoutReceived?: (layout: string) => void;
+  onBlocked?: () => void;
   onWebRTCStateChange?: (state: RTCPeerConnectionState) => void;
   onWebRTCDataChannelOpen?: () => void;
   onDataChannelMessage?: (data: string) => void;
@@ -222,6 +224,10 @@ export class WebSocketClient {
         const inputLayoutMsg = message as InputLayoutMessage;
         console.log(`Received input layout: ${inputLayoutMsg.layout}`);
         this.onInputLayoutReceived?.(inputLayoutMsg.layout);
+        break;
+      case MessageType.Blocked:
+        console.log("Received blocked message: game already in progress");
+        this.onBlocked?.();
         break;
     }
   }

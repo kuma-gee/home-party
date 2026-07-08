@@ -13,6 +13,7 @@ export interface ConnectionState {
 	reconnectAttempts: number;
 	maxReconnectAttempts: number;
 	serverMessage: string | null;
+	blocked: boolean;
 }
 
 function createConnectionStore() {
@@ -28,6 +29,7 @@ function createConnectionStore() {
 		reconnectAttempts: 0,
 		maxReconnectAttempts: 5,
 		serverMessage: null,
+		blocked: false,
 	});
 
 	let client: WebSocketClient | null = null;
@@ -42,7 +44,11 @@ function createConnectionStore() {
 			client = new WebSocketClient(serverIp);
 
 			client.onConnected = () => {
-				update(state => ({ ...state, connected: true, serverIp, error: null }));
+				update(state => ({ ...state, connected: true, serverIp, error: null, blocked: false }));
+			};
+
+			client.onBlocked = () => {
+				update(state => ({ ...state, blocked: true }));
 			};
 
 			client.onDisconnected = () => {
@@ -111,6 +117,7 @@ function createConnectionStore() {
 				reconnectAttempts: 0,
 				maxReconnectAttempts: 5,
 				serverMessage: null,
+				blocked: false,
 			});
 		},
 		send: (data: any) => {
@@ -186,4 +193,9 @@ export const serverMessage = derived(
 		const msg = $connectionStore.serverMessage;
 		return msg === null ? null : { text: msg };
 	}
+);
+
+export const blocked = derived(
+	connectionStore,
+	$connectionStore => $connectionStore.blocked
 );

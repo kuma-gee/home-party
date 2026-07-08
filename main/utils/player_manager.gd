@@ -68,7 +68,8 @@ func get_active_players() -> Array[ClientController]:
 	var active_players: Array[ClientController] = []
 	for player in get_children():
 		if player is ClientController and player.active:
-			active_players.append(player)
+			if playing_clients.is_empty() or player in playing_clients:
+				active_players.append(player)
 	return active_players
 
 func _assign_index(uuid: String) -> int:
@@ -96,6 +97,7 @@ func create_peer(data: Dictionary):
 		return
 
 	var uuid = data.get("client_id", "")
+	var is_late_join := not playing_clients.is_empty() and not _is_uuid_playing(uuid)
 	var existing = find_player_by_uuid(uuid)
 	if existing:
 		existing.initialize()
@@ -112,6 +114,16 @@ func create_peer(data: Dictionary):
 
 	_assign_index(uuid)
 	clients_changed.emit()
+
+	if is_late_join:
+		logger.info("Rejecting late join from %s: game already in progress" % uuid)
+		LobbyServer.send_blocked(uuid)
+
+func _is_uuid_playing(uuid: String) -> bool:
+	for p in playing_clients:
+		if p.uuid == uuid:
+			return true
+	return false
 
 func remove_peer(client_id: String):
 	var player = find_player_by_uuid(client_id)
