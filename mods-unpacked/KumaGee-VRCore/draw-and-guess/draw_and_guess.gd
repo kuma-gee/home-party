@@ -6,6 +6,7 @@ extends BaseGame
 @export var timer_label: Label
 @export var progress_label: Label
 @export var reveal_label: Label
+@export var prepare_label: Label
 
 @onready var scoring: DrawGuessScoring = %Scoring
 @onready var word_manager: DrawGuessWordManager = %WordManager
@@ -166,6 +167,8 @@ func _on_player_guessed(guess: String, player_ui: DrawPlayerUI) -> void:
 			pet.on_incorrect_guess(guess)
 
 func _update_ui() -> void:
+	if prepare_label:
+		prepare_label.text = "Freestyle mode!" if _is_freestyle_available() else "Submit your words!"
 	if not instructions_scene:
 		return
 	var active_players = PlayerManager.get_active_players().map(func(x): return player_list.find_existing_node(x.uuid))

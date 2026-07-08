@@ -110,13 +110,14 @@ transparency = 1
 shading_mode = 0
 albedo_texture = ExtResource("26_ring_tex")
 
-[node name="DrawAndGuess" unique_id=10015973 node_paths=PackedStringArray("vr_scene", "instructions_vr_scene", "timer_label", "progress_label", "reveal_label") instance=ExtResource("1_ul2m3")]
+[node name="DrawAndGuess" unique_id=10015973 node_paths=PackedStringArray("vr_scene", "instructions_vr_scene", "timer_label", "progress_label", "reveal_label", "prepare_label") instance=ExtResource("1_ul2m3")]
 script = ExtResource("2_623r5")
 vr_scene = NodePath("BaseSceneContent/draw_room/Plane_006/Viewport2Din3D2")
 instructions_vr_scene = NodePath("BaseSceneContent/draw_room/FrontWall/InstructionsViewport")
 timer_label = NodePath("CanvasLayer/Control/GameUI/TimerLabel")
 progress_label = NodePath("CanvasLayer/Control/GameUI/ProgressLabel")
 reveal_label = NodePath("CanvasLayer/Control/GameUI/RevealLabel")
+prepare_label = NodePath("CanvasLayer/Control/PrepareUI/Label")
 bgm_audio = ExtResource("3_rtgeu")
 
 [node name="WorldEnvironment" parent="." index="0" unique_id=10000001]
