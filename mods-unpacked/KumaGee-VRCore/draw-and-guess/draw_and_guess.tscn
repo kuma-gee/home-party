@@ -28,6 +28,7 @@
 [ext_resource type="Script" uid="uid://bthqkssfdac5r" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_guess_ai_manager.gd" id="23_aimgr"]
 [ext_resource type="PackedScene" uid="uid://da2qgxxwwitl6" path="res://addons/godot-xr-tools/objects/highlight/highlight_ring.tscn" id="24_ring"]
 [ext_resource type="Texture2D" uid="uid://8s03ra8tp0hr" path="res://addons/godot-xr-tools/images/ring.png" id="26_ring_tex"]
+[ext_resource type="Script" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/pen_snap_ring.gd" id="27_snapring"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_c22f1"]
 panorama = ExtResource("2_bu42w")
@@ -224,6 +225,7 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0
 
 [node name="HighlightRing" parent="BaseSceneContent/ColorPalette/SnapZone" index="3" unique_id=3000000001 instance=ExtResource("24_ring")]
 surface_material_override/0 = SubResource("StandardMaterial3D_ring_snap")
+script = ExtResource("27_snapring")
 
 [node name="SnapZoneSmall" parent="BaseSceneContent/ColorPalette" index="4" unique_id=2000000101 instance=ExtResource("4_tgrmj")]
 transform = Transform3D(0.70313406, -0.7110573, 3.1081296e-08, -1.4428919e-15, -4.371139e-08, -1, 0.7110573, 0.70313406, -3.073497e-08, -0.23584102, -0.026395082, -0.295722)
@@ -233,6 +235,7 @@ initial_object = NodePath("../../PenSmall")
 
 [node name="HighlightRing" parent="BaseSceneContent/ColorPalette/SnapZoneSmall" index="2" unique_id=3000000002 instance=ExtResource("24_ring")]
 surface_material_override/0 = SubResource("StandardMaterial3D_ring_snap")
+script = ExtResource("27_snapring")
 
 [node name="SnapZoneMedium" parent="BaseSceneContent/ColorPalette" index="5" unique_id=2000000201 instance=ExtResource("4_tgrmj")]
 transform = Transform3D(0.70313406, -0.7110573, 3.1081296e-08, -1.4428919e-15, -4.371139e-08, -1, 0.7110573, 0.70313406, -3.073497e-08, -0.16593736, -0.026857734, -0.22451705)
@@ -242,6 +245,7 @@ initial_object = NodePath("../../PenMedium")
 
 [node name="HighlightRing" parent="BaseSceneContent/ColorPalette/SnapZoneMedium" index="2" unique_id=3000000003 instance=ExtResource("24_ring")]
 surface_material_override/0 = SubResource("StandardMaterial3D_ring_snap")
+script = ExtResource("27_snapring")
 
 [node name="SnapZoneLarge" parent="BaseSceneContent/ColorPalette" index="6" unique_id=2000000301 instance=ExtResource("4_tgrmj")]
 transform = Transform3D(0.70443946, -0.7097325, 0.00669698, 0.00902666, -0.0004761964, -0.9999592, 0.7097066, 0.7044711, 0.0060710628, -0.09521418, -0.040106356, -0.15351063)
@@ -251,6 +255,7 @@ initial_object = NodePath("../../PenLarge")
 
 [node name="HighlightRing" parent="BaseSceneContent/ColorPalette/SnapZoneLarge" index="2" unique_id=3000000004 instance=ExtResource("24_ring")]
 surface_material_override/0 = SubResource("StandardMaterial3D_ring_snap")
+script = ExtResource("27_snapring")
 
 [node name="EraserTool" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="1" unique_id=1045651359 instance=ExtResource("6_k863p")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0760634, 0.7606643, 0.1352395)
