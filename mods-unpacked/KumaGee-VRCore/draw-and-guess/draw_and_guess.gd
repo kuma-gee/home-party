@@ -127,6 +127,9 @@ func _on_player_guessed(guess: String, player_ui: DrawPlayerUI) -> void:
 	if freestyle_mode or _is_freestyle_available():
 		if player_ui.game_client is GameClient:
 			player_ui.game_client.send_text("word_ack;freestyle")
+		var pet := pet_spawner.get_pet(player_ui.uuid)
+		if pet:
+			pet.show_typed_word(guess)
 		return
 
 	if not is_game_phase:

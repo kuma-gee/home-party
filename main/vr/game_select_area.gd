@@ -10,9 +10,13 @@ var game: GameResource
 
 func _ready() -> void:
 	super()
+	if not game: return
+
 	if game.icon:
 		var node = game.icon.instantiate()
 		icon_viewport.add_child(node)
+
 	label.text = game.name
+
 	if demo_indicator:
 		demo_indicator.visible = Env.is_demo() and not Env.is_game_available(game)

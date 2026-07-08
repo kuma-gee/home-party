@@ -57,6 +57,12 @@ func change_color(color: Color):
 	mesh.set_surface_override_material(2, color_mat)
 	color_changed.emit(color)
 
+	# Highlight caches surface materials at _ready() to restore on un-highlight;
+	# refresh that cache or it snaps the tip back to the stale placeholder color.
+	var highlight_node = get_node_or_null("XRToolsHighlightMaterial")
+	if highlight_node:
+		highlight_node.save_surface_materials()
+
 func _on_pen_tip_area_entered(area: Area3D):
 	var swatch := area as DrawingColorSwatch
 	if swatch:

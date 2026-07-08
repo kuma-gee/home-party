@@ -25,6 +25,7 @@
 [ext_resource type="PackedScene" uid="uid://c4ghwkcnf8f26" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/pen_medium.tscn" id="21_medium"]
 [ext_resource type="PackedScene" uid="uid://kqiq00ql5wo8" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/pen_large.tscn" id="22_large"]
 [ext_resource type="Script" uid="uid://bthqkssfdac5r" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_guess_ai_manager.gd" id="23_aimgr"]
+[ext_resource type="PackedScene" uid="uid://da2qgxxwwitl6" path="res://addons/godot-xr-tools/objects/highlight/highlight_ring.tscn" id="24_ring"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_c22f1"]
 panorama = ExtResource("2_bu42w")
@@ -206,26 +207,38 @@ collision_mask = 196611
 
 [node name="SnapZone" parent="BaseSceneContent/ColorPalette" index="3" unique_id=1883047161 instance=ExtResource("4_tgrmj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09163487, 0.017678618, -0.12072617)
+grab_distance = 0.15
 snap_require = "eraser"
 initial_object = NodePath("../../EraserTool")
 
 [node name="ClearSwatch" parent="BaseSceneContent/ColorPalette/SnapZone" index="2" unique_id=1492562334 instance=ExtResource("5_o2dnm")]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.0052658916, 0)
 
+[node name="HighlightRing" parent="BaseSceneContent/ColorPalette/SnapZone" index="3" unique_id=3000000001 instance=ExtResource("24_ring")]
+
 [node name="SnapZoneSmall" parent="BaseSceneContent/ColorPalette" index="4" unique_id=2000000101 instance=ExtResource("4_tgrmj")]
 transform = Transform3D(0.70313406, -0.7110573, 3.1081296e-08, -1.4428919e-15, -4.371139e-08, -1, 0.7110573, 0.70313406, -3.073497e-08, -0.23584102, -0.026395082, -0.295722)
+grab_distance = 0.15
 snap_require = "pen_small"
 initial_object = NodePath("../../PenSmall")
 
+[node name="HighlightRing" parent="BaseSceneContent/ColorPalette/SnapZoneSmall" index="2" unique_id=3000000002 instance=ExtResource("24_ring")]
+
 [node name="SnapZoneMedium" parent="BaseSceneContent/ColorPalette" index="5" unique_id=2000000201 instance=ExtResource("4_tgrmj")]
 transform = Transform3D(0.70313406, -0.7110573, 3.1081296e-08, -1.4428919e-15, -4.371139e-08, -1, 0.7110573, 0.70313406, -3.073497e-08, -0.16593736, -0.026857734, -0.22451705)
+grab_distance = 0.15
 snap_require = "pen_medium"
 initial_object = NodePath("../../PenMedium")
 
+[node name="HighlightRing" parent="BaseSceneContent/ColorPalette/SnapZoneMedium" index="2" unique_id=3000000003 instance=ExtResource("24_ring")]
+
 [node name="SnapZoneLarge" parent="BaseSceneContent/ColorPalette" index="6" unique_id=2000000301 instance=ExtResource("4_tgrmj")]
 transform = Transform3D(0.70443946, -0.7097325, 0.00669698, 0.00902666, -0.0004761964, -0.9999592, 0.7097066, 0.7044711, 0.0060710628, -0.09521418, -0.040106356, -0.15351063)
+grab_distance = 0.15
 snap_require = "pen_large"
 initial_object = NodePath("../../PenLarge")
+
+[node name="HighlightRing" parent="BaseSceneContent/ColorPalette/SnapZoneLarge" index="2" unique_id=3000000004 instance=ExtResource("24_ring")]
 
 [node name="EraserTool" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="1" unique_id=1045651359 instance=ExtResource("6_k863p")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0760634, 0.7606643, 0.1352395)
