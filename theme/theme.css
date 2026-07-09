@@ -1,10 +1,11 @@
 :root {
     --default-margin: 16;
     --default-separation: 8;
-    --default-border-radius: 16;
+    --default-border-radius: 8;
     --label-outline: 16;
     --label-large-outline: 32;
     --slider-height: 16;
+    
     --background-color: #222831;
     --primary-color: #00ADB5;
     --primary-highlight-color: #55CFD7;
@@ -12,18 +13,24 @@
     --text-color: #EEEEEE;
     --health-color: #37CF46;
     --error-color: #FF6969;
+    
+    --text-normal: 36;
+    --text-small: 24;
+    --text-smallest: 18;
+    --text-large: 48;
+    --text-largest: 91;
+}
+
+body {
+  font-size: var(--text-normal);
+  font-family: url(default_font.tres);
 }
 
 LinkButton {
   color: var(--primary-color);
 }
 
-body {
-  font-size: 36;
-  font-family: url(default_font.tres);
-}
-
-Button, Button:pressed, Button:hover, Button:hover_pressed, Button:disabled, Button:focus {
+Button {
   color: var(--text-color);
   background: var(--primary-color);
   border-radius: var(--default-border-radius);
@@ -32,6 +39,7 @@ Button, Button:pressed, Button:hover, Button:hover_pressed, Button:disabled, But
 
 Button:disabled {
   background: var(--secondary-color);
+  color: var(--background-color);
 }
 
 Button:pressed {
@@ -43,32 +51,41 @@ Button:hover, Button:hover_pressed, Button:focus {
   background: var(--primary-highlight-color);
 }
 
-Label, Label.Large, Label.Small, Label.Smallest, Label.Largest, Label.Error {
+Button.Small {
+  font-size: var(--text-small);
+}
+
+Label {
   color: var(--text-color);
   padding: 10 0 0 0;
   --const-outline-size: var(--label-outline);
 }
 
 Label.Large {
-  font-size: 48;
+  font-size: var(--text-large);
 }
 
 Label.Small {
-  font-size: 24;
+  font-size: var(--text-small);
 }
 
 Label.Smallest {
-  font-size: 18;
+  font-size: var(--text-smallest);
 }
 
 Label.Largest {
-  font-size: 91;
+  font-size: var(--text-largest);
   --const-outline-size: var(--label-large-outline);
 }
 
 Label.Error {
   color: var(--error-color);
-  font-size: 48;
+  font-size: var(--text-large);
+}
+
+GridContainer {
+  --const-h-separation: 32;
+  --const-v-separation: 16;
 }
 
 MarginContainer {
@@ -82,7 +99,38 @@ VBoxContainer, HBoxContainer {
   gap: var(--default-separation);
 }
 
-PanelContainer, TabContainer:panel {
+TabContainer {
+  --const-side-margin: 0;
+  --const-tab-separation: 8;
+  --colors-font-unselected-color: var(--primary-highlight-color);
+  --colors-font-hovered-color: var(--text-color);
+  --colors-font-disabled-color: var(--background-color);
+}
+
+TabContainer:tab-selected, TabContainer:tab-unselected, TabContainer:tab-hovered, TabContainer:tab-focus, TabContainer:tab-disabled {
+  background: var(--primary-color);
+  padding: 20 16 8 16;
+  border-radius: var(--default-border-radius) var(--default-border-radius) 0 0;
+}
+
+TabContainer:tab-selected {
+  background: var(--background-color);
+}
+
+TabContainer:tab-hovered, TabContainer:tab-focus {
+  background: var(--primary-highlight-color);
+}
+
+TabContainer:tab-disabled {
+  background: var(--secondary-color);
+}
+
+TabContainer:panel {
+  background: var(--background-color);
+  border-radius: 0 0 var(--default-border-radius) var(--default-border-radius);
+}
+
+PanelContainer {
   background: var(--background-color);
   border-radius: var(--default-border-radius);
 }
