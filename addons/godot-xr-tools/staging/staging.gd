@@ -1,4 +1,5 @@
-@tool
+# This cannot be a tool, makes the whole editor black on startup!
+#@tool
 class_name XRToolsStaging
 extends Node3D
 
