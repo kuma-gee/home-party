@@ -249,6 +249,7 @@ albedo_color = Color(0.5686275, 0.3254902, 0.16470589, 1)
 
 [node name="CastleDefense" unique_id=1524346607 node_paths=PackedStringArray("gate_hurtbox", "orbs", "arrow_types", "spawn_hint", "ai_count_viewport", "sieges", "vr_screen", "win_sound") instance=ExtResource("1_base")]
 script = ExtResource("1_cdef")
+disable_locomotion = true
 gate_hurtbox = NodePath("BaseSceneContent/Castle/Gate/GateHurtBox")
 gate_destruction_vfx = ExtResource("54_gatevfx")
 tutorial_scene = ExtResource("50_vrtut")

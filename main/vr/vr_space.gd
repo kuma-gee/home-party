@@ -13,6 +13,8 @@ signal back_to_home()
 @export var menu_function: XRToolsFunctionMenu
 @export var reset_area: Area3D
 @export var settings_viewport: XRToolsViewport2DIn3D
+@export var direct_movement: XRToolsMovementProvider
+@export var teleport_function: XRToolsFunctionTeleport
 
 const SETTINGS_PANEL_DISTANCE := 0.8
 
@@ -63,6 +65,12 @@ func _on_menu_closed(from_settings := false):
 func activate():
 	origin.current = true
 	camera.current = true
+
+## Toggle player-driven movement (walking + teleport) for games that
+## don't want free player locomotion (e.g. fixed-position defense games).
+func set_locomotion_enabled(value: bool) -> void:
+	direct_movement.enabled = value
+	teleport_function.enabled = value
 
 func _on_settings_pressed():
 	_place_in_front_of_player(settings_viewport, SETTINGS_PANEL_DISTANCE)

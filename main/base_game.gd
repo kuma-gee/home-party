@@ -4,6 +4,10 @@ extends XRToolsSceneBase
 signal prepare_phase()
 signal game_phase()
 
+## Set true on games that shouldn't let the player walk/teleport around
+## (e.g. fixed-position defense games).
+@export var disable_locomotion := false
+
 @onready var game_ui: Control = %GameUI
 @onready var prepare_ui: Control = %PrepareUI
 @onready var player_list: PlayerList = %PlayerList
@@ -17,6 +21,8 @@ var is_game_phase := false:
 
 func _ready() -> void:
 	scene_loaded_finish.connect(_prepare_game)
+	if disable_locomotion:
+		xr_player.set_locomotion_enabled(false)
 
 func _prepare_game():
 	is_game_phase = false
