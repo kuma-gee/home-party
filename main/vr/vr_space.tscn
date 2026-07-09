@@ -22,6 +22,7 @@
 [ext_resource type="PackedScene" uid="uid://bl2nuu3qhlb5k" path="res://addons/godot-xr-tools/functions/movement_direct.tscn" id="21_movdi"]
 [ext_resource type="Script" uid="uid://cjfu28jmrajlo" path="res://addons/godot-xr-tools/overrides/ground_physics_settings.gd" id="22_gps"]
 [ext_resource type="PackedScene" uid="uid://fiul51tsyoop" path="res://addons/godot-xr-tools/functions/function_teleport.tscn" id="23_tele"]
+[ext_resource type="PackedScene" uid="uid://cc6ngdqie8o8c" path="res://addons/godot-xr-tools/effects/vignette.tscn" id="24_vignette"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_0yltu"]
 custom_aabb = AABB(-5000, -5000, -5000, 10000, 10000, 10000)
@@ -132,7 +133,7 @@ flags = 3
 move_drag = 8.0
 move_traction = 45.0
 
-[node name="VRSpace" type="Node3D" unique_id=841158329 node_paths=PackedStringArray("origin", "camera", "pause_menu", "overlay_mesh", "menu_function", "reset_area", "settings_viewport", "direct_movement", "teleport_function")]
+[node name="VRSpace" type="Node3D" unique_id=841158329 node_paths=PackedStringArray("origin", "camera", "pause_menu", "overlay_mesh", "menu_function", "reset_area", "settings_viewport", "direct_movement", "teleport_function", "vignette", "player_body")]
 process_mode = 3
 script = ExtResource("1_2vxk7")
 origin = NodePath("SubViewport/XRPlayer")
@@ -144,6 +145,8 @@ reset_area = NodePath("SubViewport/ResetArea")
 settings_viewport = NodePath("Viewport2Din3D")
 direct_movement = NodePath("SubViewport/XRPlayer/LeftHand/MovementDirect")
 teleport_function = NodePath("SubViewport/XRPlayer/RightHand/FunctionTeleport")
+vignette = NodePath("SubViewport/XRPlayer/XRCamera3D/Vignette")
+player_body = NodePath("SubViewport/XRPlayer/PlayerBody")
 
 [node name="StartXR" parent="." unique_id=1916138429 node_paths=PackedStringArray("viewport") instance=ExtResource("2_ajv2u")]
 process_mode = 3
@@ -250,6 +253,9 @@ surface_material_override/0 = SubResource("StandardMaterial3D_eoj1g")
 [node name="XRCamera3D" type="XRCamera3D" parent="SubViewport/XRPlayer" unique_id=227782039]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
 cull_mask = 524287
+
+[node name="Vignette" parent="SubViewport/XRPlayer/XRCamera3D" instance=ExtResource("24_vignette")]
+auto_velocity_limit = 1.5
 
 [node name="LeftPole" type="Node3D" parent="SubViewport/XRPlayer/XRCamera3D" unique_id=878622117]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, -0.70000005, 0.360556)

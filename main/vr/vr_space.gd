@@ -15,24 +15,57 @@ signal back_to_home()
 @export var settings_viewport: XRToolsViewport2DIn3D
 @export var direct_movement: XRToolsMovementProvider
 @export var teleport_function: XRToolsFunctionTeleport
+@export var vignette: XRToolsVignette
+@export var player_body: XRToolsPlayerBody
 
 const SETTINGS_PANEL_DISTANCE := 0.8
+const SEATED_HEIGHT_OVERRIDE := 1.0
 
 var was_paused := false
 var _settings_panel_instance: SettingsPanel = null
+var _locomotion_enabled := true
 
 func _ready() -> void:
 	menu_function.menu_opened.connect(_connect_menu)
 	menu_function.menu_closed.connect(_on_menu_closed)
 	reset_area.body_entered.connect(func(_b): reset_space())
 	pause_menu.hide()
-	
+
 	if initial_transform:
 		origin.transform = initial_transform.transform
-	
+
 	settings_viewport.hide()
 	_settings_panel_instance = settings_viewport.get_scene_instance()
 	_settings_panel_instance.back_pressed.connect(_on_settings_back_pressed)
+
+	UserSettings.setting_changed.connect(_on_setting_changed)
+	_apply_movement_mode()
+	_apply_vignette_enabled()
+	_apply_seated_mode()
+
+func _on_setting_changed(section: String, key: String) -> void:
+	if section != "comfort":
+		return
+	if key == "movement_mode":
+		_apply_movement_mode()
+	elif key == "vignette_enabled":
+		_apply_vignette_enabled()
+	elif key == "seated_mode":
+		_apply_seated_mode()
+
+func _apply_vignette_enabled() -> void:
+	var enabled := UserSettings.get_vignette_enabled()
+	vignette.auto_adjust = enabled
+	if not enabled:
+		vignette.set_radius(1.0)
+
+## Seated mode locks the player's collider to a fixed low height so real-world
+## floor-height tracking doesn't fight a seated player's actual HMD height.
+func _apply_seated_mode() -> void:
+	if UserSettings.get_seated_mode():
+		player_body.override_player_height(&"comfort_seated", SEATED_HEIGHT_OVERRIDE)
+	else:
+		player_body.override_player_height(&"comfort_seated")
 
 func _connect_menu(menu: VRMenuPanel):
 	menu.quit_pressed.connect(func(): back_to_home.emit())
@@ -69,8 +102,19 @@ func activate():
 ## Toggle player-driven movement (walking + teleport) for games that
 ## don't want free player locomotion (e.g. fixed-position defense games).
 func set_locomotion_enabled(value: bool) -> void:
-	direct_movement.enabled = value
-	teleport_function.enabled = value
+	_locomotion_enabled = value
+	_apply_movement_mode()
+
+## Movement mode is exclusive: only smooth (direct) OR teleport is active,
+## per the player's comfort setting.
+func _apply_movement_mode() -> void:
+	if not _locomotion_enabled:
+		direct_movement.enabled = false
+		teleport_function.enabled = false
+		return
+	var mode := UserSettings.get_movement_mode()
+	direct_movement.enabled = mode == UserSettings.MovementMode.SMOOTH
+	teleport_function.enabled = mode == UserSettings.MovementMode.TELEPORT
 
 func _on_settings_pressed():
 	_place_in_front_of_player(settings_viewport, SETTINGS_PANEL_DISTANCE)

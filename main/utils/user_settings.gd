@@ -13,6 +13,12 @@ var _music_volume: float = 1.0
 var _render_scale: float = 1.0
 var _antialiasing: bool = true
 
+# Comfort
+enum MovementMode { SMOOTH, TELEPORT }
+var _movement_mode: MovementMode = MovementMode.SMOOTH
+var _vignette_enabled: bool = false
+var _seated_mode: bool = false
+
 
 func _ready() -> void:
 	load_settings()
@@ -94,6 +100,40 @@ func set_antialiasing(value: bool) -> void:
 
 
 # ------------------------------------------------------------------------------
+# Comfort
+# ------------------------------------------------------------------------------
+
+func get_movement_mode() -> MovementMode:
+	return _movement_mode
+
+
+func set_movement_mode(value: MovementMode) -> void:
+	_movement_mode = value
+	_save()
+	setting_changed.emit("comfort", "movement_mode")
+
+
+func get_vignette_enabled() -> bool:
+	return _vignette_enabled
+
+
+func set_vignette_enabled(value: bool) -> void:
+	_vignette_enabled = value
+	_save()
+	setting_changed.emit("comfort", "vignette_enabled")
+
+
+func get_seated_mode() -> bool:
+	return _seated_mode
+
+
+func set_seated_mode(value: bool) -> void:
+	_seated_mode = value
+	_save()
+	setting_changed.emit("comfort", "seated_mode")
+
+
+# ------------------------------------------------------------------------------
 # Persistence
 # ------------------------------------------------------------------------------
 
@@ -105,6 +145,9 @@ func _save() -> void:
 	config.set_value("audio", "music_volume", _music_volume)
 	config.set_value("graphics", "render_scale", _render_scale)
 	config.set_value("graphics", "antialiasing", _antialiasing)
+	config.set_value("comfort", "movement_mode", _movement_mode)
+	config.set_value("comfort", "vignette_enabled", _vignette_enabled)
+	config.set_value("comfort", "seated_mode", _seated_mode)
 
 	var result := config.save(CONFIG_PATH)
 	if result != OK:
@@ -123,6 +166,9 @@ func load_settings() -> void:
 	_music_volume = clampf(config.get_value("audio", "music_volume", 1.0), 0.0, 1.0)
 	_render_scale = clampf(config.get_value("graphics", "render_scale", 1.0), 0.5, 2.0)
 	_antialiasing = config.get_value("graphics", "antialiasing", true)
+	_movement_mode = config.get_value("comfort", "movement_mode", MovementMode.SMOOTH) as MovementMode
+	_vignette_enabled = config.get_value("comfort", "vignette_enabled", false)
+	_seated_mode = config.get_value("comfort", "seated_mode", false)
 
 	_apply_all()
 

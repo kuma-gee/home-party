@@ -31,7 +31,7 @@ radius = 0.24853516
 size = Vector3(0.22131348, 0.091033936, 0.26464844)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_58mu4"]
-size = Vector3(5.145508, 0.22875977, 4.7145996)
+size = Vector3(5.146, 0.4, 4.715)
 
 [node name="Room" type="Node3D" unique_id=1197402855]
 
@@ -73,30 +73,30 @@ omni_attenuation = 0.6
 
 [node name="room" parent="." unique_id=126659612 instance=ExtResource("2_02r63")]
 
-[node name="sofa" parent="room" index="4" unique_id=1934393848]
+[node name="sofa" parent="room" index="4" unique_id=1175682072]
 surface_material_override/0 = ExtResource("3_6tfwr")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="room/Table" parent_id_path=PackedInt32Array(126659612, 2088148114) index="0" unique_id=1220997989]
+[node name="StaticBody3D" type="StaticBody3D" parent="room/Table" parent_id_path=PackedInt32Array(126659612, 1909878505) index="0" unique_id=1220997989]
 collision_layer = 2
 collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="room/Table/StaticBody3D" unique_id=153892589]
 shape = SubResource("ConcavePolygonShape3D_8bwq7")
 
-[node name="window" parent="room" index="6" unique_id=231401450]
+[node name="window" parent="room" index="6" unique_id=328170741]
 layers = 2
 surface_material_override/1 = SubResource("StandardMaterial3D_pa738")
 
-[node name="Wall_004" parent="room" index="8" unique_id=1397546090]
+[node name="Wall_004" parent="room" index="8" unique_id=1306177236]
 layers = 262144
 
-[node name="Floor" parent="room" index="10" unique_id=1594617327]
+[node name="Floor" parent="room" index="10" unique_id=1719909620]
 surface_material_override/1 = ExtResource("2_6tfwr")
 
-[node name="Top" parent="room" index="11" unique_id=578044216]
+[node name="Top" parent="room" index="11" unique_id=457316849]
 layers = 262144
 
-[node name="Wall_002" parent="room" index="12" unique_id=253382966]
+[node name="Wall_002" parent="room" index="12" unique_id=972998240]
 layers = 262144
 
 [node name="Furniture" type="StaticBody3D" parent="." unique_id=544776648]
