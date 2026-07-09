@@ -29,6 +29,7 @@
 [ext_resource type="PackedScene" uid="uid://da2qgxxwwitl6" path="res://addons/godot-xr-tools/objects/highlight/highlight_ring.tscn" id="24_ring"]
 [ext_resource type="Texture2D" uid="uid://8s03ra8tp0hr" path="res://addons/godot-xr-tools/images/ring.png" id="26_ring_tex"]
 [ext_resource type="Script" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/pen_snap_ring.gd" id="27_snapring"]
+[ext_resource type="PackedScene" uid="uid://dtik0q104occg" path="res://main/ui/gameover_screen.tscn" id="28_gameover"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_c22f1"]
 panorama = ExtResource("2_bu42w")
@@ -119,6 +120,7 @@ progress_label = NodePath("CanvasLayer/Control/GameUI/ProgressLabel")
 reveal_label = NodePath("CanvasLayer/Control/GameUI/RevealLabel")
 prepare_label = NodePath("CanvasLayer/Control/PrepareUI/Label")
 bgm_audio = ExtResource("3_rtgeu")
+gameover_scene = ExtResource("28_gameover")
 
 [node name="WorldEnvironment" parent="." index="0" unique_id=10000001]
 environment = SubResource("Environment_1ixqa")

@@ -15,7 +15,6 @@ signal freestyle_stopped()
 @onready var round_label: Label = %Round
 @onready var word_label: Label = %Word
 @onready var time: Label = %Time
-@onready var leaderboard: Leaderboard = %Leaderboard
 @onready var start_timer_button: Button = %StartTimerButton
 @onready var result_buttons: HBoxContainer = %ResultButtons
 @onready var correct_button: Button = %CorrectButton
@@ -47,13 +46,7 @@ func _on_skip_button_pressed() -> void:
 func _show_container(container) -> void:
 	prepare.hide()
 	in_game.hide()
-	leaderboard.hide()
 	container.show()
-
-func show_leaderboard(title, entries):
-	leaderboard.set_title(title)
-	leaderboard.set_entries(entries)
-	_show_container(leaderboard)
 
 func start_new_game(word: String, r: int, total_round: int):
 	_is_freestyle = false
@@ -92,13 +85,6 @@ func show_freestyle_drawing(round_number: int) -> void:
 	round_label.text = "Freestyle word %d" % round_number
 	word_label.text = "Draw your word."
 	_set_freestyle_controls(false, true)
-
-func show_freestyle_finished() -> void:
-	_is_freestyle = true
-	_show_container(in_game)
-	round_label.text = "Freestyle ended"
-	word_label.text = "Game Over!"
-	_set_freestyle_controls(false, false)
 
 func _set_freestyle_controls(waiting_for_timer: bool, drawing: bool) -> void:
 	skip_button.visible = not _is_freestyle
