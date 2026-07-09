@@ -51,6 +51,10 @@ function createConnectionStore() {
 				update(state => ({ ...state, blocked: true }));
 			};
 
+			client.onJoinAvailable = () => {
+				update(state => ({ ...state, blocked: false }));
+			};
+
 			client.onDisconnected = () => {
 				update(state => ({ 
 					...state, 

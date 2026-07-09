@@ -12,6 +12,7 @@ enum Message {
 	GameClientIceCandidate,
 	InputLayout,
 	Blocked,
+	JoinAvailable,
 }
 
 const PORT = 14412
@@ -43,6 +44,12 @@ func send_blocked(client_id: String):
 	_send_to_peer(peer_id, {
 		"msg": Message.Blocked,
 	})
+
+func send_join_available() -> void:
+	for peer_id in peer_to_uuid.keys():
+		_send_to_peer(peer_id, {
+			"msg": Message.JoinAvailable,
+		})
 
 func _peer_connected(id: int):
 	logger.info("Peer connected: %d" % id)

@@ -52,6 +52,7 @@ export enum MessageType {
   GameClientIceCandidate = 2,
   InputLayout = 3,
   Blocked = 4,
+  JoinAvailable = 5,
 }
 
 export interface Message {
@@ -100,6 +101,7 @@ export class WebSocketClient {
   onIdReceived?: (id: number) => void;
   onInputLayoutReceived?: (layout: string) => void;
   onBlocked?: () => void;
+  onJoinAvailable?: () => void;
   onWebRTCStateChange?: (state: RTCPeerConnectionState) => void;
   onWebRTCDataChannelOpen?: () => void;
   onDataChannelMessage?: (data: string) => void;
@@ -228,6 +230,10 @@ export class WebSocketClient {
       case MessageType.Blocked:
         console.log("Received blocked message: game already in progress");
         this.onBlocked?.();
+        break;
+      case MessageType.JoinAvailable:
+        console.log("Received join available message: lobby open");
+        this.onJoinAvailable?.();
         break;
     }
   }

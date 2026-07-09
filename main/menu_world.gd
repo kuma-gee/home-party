@@ -8,6 +8,8 @@ var starting := false
 
 func _ready() -> void:
 	PlayerManager.playing_clients = []
+	LobbyServer.send_join_available()
+	LobbyServer.send_layout("joystick")
 	game_shelve.started_game.connect(start_game)
 	reset_area.area_entered.connect(func(_a): game_shelve.reset_objects())
 	_update_feedback_form_pickup()

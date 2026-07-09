@@ -18,11 +18,14 @@ custom_aabb = AABB(-1, -1, -1, 1, 1, 1)
 
 [node name="Vignette" type="Node3D" unique_id=1768102161]
 script = ExtResource("1")
+auto_fade_out_factor = 1.0
+auto_fade_delay = 0.5
+layers = 262144
 
 [node name="Mesh" type="MeshInstance3D" parent="." unique_id=1387817140]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 visible = false
-layers = 2
+layers = 262144
 cast_shadow = 0
 ignore_occlusion_culling = true
 mesh = SubResource("ArrayMesh_yyajy")

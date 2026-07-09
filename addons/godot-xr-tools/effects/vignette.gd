@@ -13,6 +13,8 @@ extends Node3D
 @export var auto_rotation_limit : float = 20.0: set = set_auto_rotation_limit
 @export var auto_velocity_limit : float = 10.0
 
+const AUTO_ADJUST_EPSILON := 0.1
+
 @export_flags_3d_render var layers = 2:
 	set(value):
 		layers = value
@@ -171,13 +173,17 @@ func _process(delta):
 		target_radius = min(target_radius, 1.0 - (
 				clamp(velocity / auto_velocity_limit, 0.0, 1.0) * (1.0 - auto_inner_radius)))
 
-	# Keep fade delay refreshed while motion still demands vignette.
-	# Without this, steady continuous movement can start fading out once the
-	# current radius already matches target_radius.
+	if is_equal_approx(target_radius, 1.0) or target_radius > 1.0 - AUTO_ADJUST_EPSILON:
+		target_radius = 1.0
+
+	# Keep fade delay refreshed while motion still demands current vignette.
+	# This preserves continuous-motion behavior while allowing tiny tracking
+	# jitter near full radius to fade out cleanly after movement stops.
 	if target_radius < 1.0:
 		if target_radius < radius:
 			set_radius(target_radius)
-		fade_delay = auto_fade_delay
+		if target_radius <= radius + AUTO_ADJUST_EPSILON:
+			fade_delay = auto_fade_delay
 	elif fade_delay > 0.0:
 		fade_delay -= delta
 	else:
