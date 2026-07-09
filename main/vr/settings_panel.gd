@@ -1,5 +1,5 @@
 class_name SettingsPanel
-extends PanelContainer
+extends Control
 
 signal back_pressed
 
