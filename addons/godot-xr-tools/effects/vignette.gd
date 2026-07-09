@@ -10,6 +10,7 @@ extends Node3D
 @export var auto_inner_radius : float = 0.35
 @export var auto_fade_out_factor : float = 1.5
 @export var auto_fade_delay : float = 1.0
+@export var auto_startup_grace_period : float = 2.0
 @export var auto_rotation_limit : float = 20.0: set = set_auto_rotation_limit
 @export var auto_velocity_limit : float = 10.0
 
@@ -25,6 +26,7 @@ var material : ShaderMaterial = preload("res://addons/godot-xr-tools/effects/vig
 
 var auto_first = true
 var fade_delay = 0.0
+var startup_grace_remaining = 0.0
 var origin_node = null
 var last_origin_basis : Basis
 var last_location : Vector3
@@ -100,6 +102,8 @@ func _update_auto_adjust() -> void:
 	# Turn process on if auto adjust is true.
 	# Note we don't turn it off here, we want to finish fading out the vignette if needed
 	if auto_adjust:
+		startup_grace_remaining = auto_startup_grace_period
+		auto_first = true
 		set_process(true)
 
 func set_auto_rotation_limit(new_auto_rotation_limit : float) -> void:
@@ -145,6 +149,12 @@ func _process(delta):
 		last_origin_basis = origin_node.global_transform.basis
 		last_location = global_transform.origin
 		auto_first = false
+		return
+
+	if startup_grace_remaining > 0.0:
+		startup_grace_remaining = max(startup_grace_remaining - delta, 0.0)
+		last_origin_basis = origin_node.global_transform.basis
+		last_location = global_transform.origin
 		return
 
 	# Get our delta transform
