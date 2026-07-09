@@ -134,30 +134,6 @@ size_flags_horizontal = 3
 theme_type_variation = &"LabelSmall"
 text = "-- Graphics --"
 
-[node name="RenderScaleRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer/General" unique_id=280175501]
-layout_mode = 2
-theme_override_constants/separation = 16
-
-[node name="RenderScaleLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/General/RenderScaleRow" unique_id=1045274020]
-layout_mode = 2
-size_flags_horizontal = 0
-text = "Render Scale"
-
-[node name="RenderScaleSlider" type="HSlider" parent="MarginContainer/VBoxContainer/TabContainer/General/RenderScaleRow" unique_id=508014355]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
-step = 10.0
-tick_count = 7
-
-[node name="RenderScaleValue" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/General/RenderScaleRow" unique_id=374637560]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 0
-text = "×1.0"
-horizontal_alignment = 2
-
 [node name="AntiAliasingRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer/General" unique_id=1433646824]
 layout_mode = 2
 theme_override_constants/separation = 16
@@ -173,6 +149,66 @@ layout_mode = 2
 size_flags_horizontal = 3
 button_pressed = true
 text = "FXAA"
+
+[node name="MSAARow" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer/General" unique_id=900000001]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="MSAALabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/General/MSAARow" unique_id=900000002]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "MSAA"
+
+[node name="MSAAOption" type="OptionButton" parent="MarginContainer/VBoxContainer/TabContainer/General/MSAARow" unique_id=900000003]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+item_count = 4
+selected = 0
+popup/item_0/text = "Off"
+popup/item_1/text = "2x"
+popup/item_1/id = 1
+popup/item_2/text = "4x"
+popup/item_2/id = 2
+popup/item_3/text = "8x"
+popup/item_3/id = 3
+
+[node name="ShadowQualityRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer/General" unique_id=900000004]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="ShadowQualityLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/General/ShadowQualityRow" unique_id=900000005]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Shadow Quality"
+
+[node name="ShadowQualityOption" type="OptionButton" parent="MarginContainer/VBoxContainer/TabContainer/General/ShadowQualityRow" unique_id=900000006]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+item_count = 3
+selected = 1
+popup/item_0/text = "Low"
+popup/item_1/text = "Medium"
+popup/item_1/id = 1
+popup/item_2/text = "High"
+popup/item_2/id = 2
+
+[node name="VSyncRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer/General" unique_id=900000007]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="VSyncLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/General/VSyncRow" unique_id=900000008]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "VSync"
+
+[node name="VSyncToggle" type="CheckBox" parent="MarginContainer/VBoxContainer/TabContainer/General/VSyncRow" unique_id=900000009]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+button_pressed = true
+text = "On"
 
 [node name="Comfort" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer" unique_id=-474793100]
 visible = false

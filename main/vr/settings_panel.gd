@@ -9,9 +9,10 @@ signal back_pressed
 @onready var _sfx_value_label: Label = %SFXValue
 @onready var _music_slider: HSlider = %MusicSlider
 @onready var _music_value_label: Label = %MusicValue
-@onready var _render_scale_slider: HSlider = %RenderScaleSlider
-@onready var _render_scale_value_label: Label = %RenderScaleValue
 @onready var _antialiasing_toggle: CheckBox = %AntiAliasingToggle
+@onready var _msaa_option: OptionButton = %MSAAOption
+@onready var _shadow_quality_option: OptionButton = %ShadowQualityOption
+@onready var _vsync_toggle: CheckBox = %VSyncToggle
 @onready var _smooth_movement_button: CheckBox = %SmoothMovementButton
 @onready var _teleport_movement_button: CheckBox = %TeleportMovementButton
 @onready var _vignette_toggle: CheckBox = %VignetteToggle
@@ -30,8 +31,10 @@ func _ready() -> void:
 	_master_slider.value = UserSettings.get_master_volume()
 	_sfx_slider.value = UserSettings.get_sfx_volume()
 	_music_slider.value = UserSettings.get_music_volume()
-	_render_scale_slider.value = UserSettings.get_render_scale()
 	_antialiasing_toggle.button_pressed = UserSettings.get_antialiasing()
+	_msaa_option.selected = UserSettings.get_msaa_level()
+	_shadow_quality_option.selected = UserSettings.get_shadow_quality()
+	_vsync_toggle.button_pressed = UserSettings.get_vsync()
 	if UserSettings.get_movement_mode() == UserSettings.MovementMode.TELEPORT:
 		_teleport_movement_button.button_pressed = true
 	else:
@@ -46,15 +49,16 @@ func _ready() -> void:
 	_update_master_label(_master_slider.value)
 	_update_sfx_label(_sfx_slider.value)
 	_update_music_label(_music_slider.value)
-	_update_render_scale_label(_render_scale_slider.value)
 	_update_player_height_label(_player_height_slider.value)
 
 	# Connect UI signals → UserSettings
 	_master_slider.value_changed.connect(_on_master_changed)
 	_sfx_slider.value_changed.connect(_on_sfx_changed)
 	_music_slider.value_changed.connect(_on_music_changed)
-	_render_scale_slider.value_changed.connect(_on_render_scale_changed)
 	_antialiasing_toggle.toggled.connect(_on_antialiasing_toggled)
+	_msaa_option.item_selected.connect(_on_msaa_selected)
+	_shadow_quality_option.item_selected.connect(_on_shadow_quality_selected)
+	_vsync_toggle.toggled.connect(_on_vsync_toggled)
 	_smooth_movement_button.toggled.connect(_on_smooth_movement_toggled)
 	_teleport_movement_button.toggled.connect(_on_teleport_movement_toggled)
 	_vignette_toggle.toggled.connect(_on_vignette_toggled)
@@ -95,17 +99,20 @@ func _update_music_label(value: float) -> void:
 	_music_value_label.text = "%d%%" % (value * 100)
 
 
-func _on_render_scale_changed(value: float) -> void:
-	UserSettings.set_render_scale(value)
-	_update_render_scale_label(value)
-
-
-func _update_render_scale_label(value: float) -> void:
-	_render_scale_value_label.text = "×%.1f" % value
-
-
 func _on_antialiasing_toggled(enabled: bool) -> void:
 	UserSettings.set_antialiasing(enabled)
+
+
+func _on_msaa_selected(index: int) -> void:
+	UserSettings.set_msaa_level(index)
+
+
+func _on_shadow_quality_selected(index: int) -> void:
+	UserSettings.set_shadow_quality(index)
+
+
+func _on_vsync_toggled(enabled: bool) -> void:
+	UserSettings.set_vsync(enabled)
 
 
 func _on_smooth_movement_toggled(pressed: bool) -> void:

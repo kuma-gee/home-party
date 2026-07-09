@@ -10,8 +10,11 @@ var _sfx_volume: float = 1.0
 var _music_volume: float = 1.0
 
 # Graphics
-var _render_scale: float = 1.0
 var _antialiasing: bool = true
+enum ShadowQuality { LOW, MEDIUM, HIGH }
+var _msaa_level: int = 0
+var _shadow_quality: ShadowQuality = ShadowQuality.MEDIUM
+var _vsync: bool = true
 
 # Comfort
 enum MovementMode { SMOOTH, TELEPORT }
@@ -74,17 +77,6 @@ func set_music_volume(value: float) -> void:
 # Graphics
 # ------------------------------------------------------------------------------
 
-func get_render_scale() -> float:
-	return _render_scale
-
-
-func set_render_scale(value: float) -> void:
-	_render_scale = clampf(value, 0.5, 2.0)
-	_save()
-	setting_changed.emit("graphics", "render_scale")
-	get_viewport().scaling_3d_scale = _render_scale
-
-
 func get_antialiasing() -> bool:
 	return _antialiasing
 
@@ -97,6 +89,55 @@ func set_antialiasing(value: bool) -> void:
 		get_viewport().screen_space_aa = Viewport.SCREEN_SPACE_AA_FXAA
 	else:
 		get_viewport().screen_space_aa = Viewport.SCREEN_SPACE_AA_DISABLED
+
+
+const _MSAA_VALUES: Array[Viewport.MSAA] = [
+	Viewport.MSAA_DISABLED, Viewport.MSAA_2X, Viewport.MSAA_4X, Viewport.MSAA_8X
+]
+
+
+func get_msaa_level() -> int:
+	return _msaa_level
+
+
+func set_msaa_level(value: int) -> void:
+	_msaa_level = clampi(value, 0, _MSAA_VALUES.size() - 1)
+	_save()
+	setting_changed.emit("graphics", "msaa_level")
+	get_viewport().msaa_3d = _MSAA_VALUES[_msaa_level]
+
+
+const _SHADOW_QUALITY_VALUES: Array[RenderingServer.ShadowQuality] = [
+	RenderingServer.SHADOW_QUALITY_HARD,
+	RenderingServer.SHADOW_QUALITY_SOFT_MEDIUM,
+	RenderingServer.SHADOW_QUALITY_SOFT_HIGH,
+]
+
+
+func get_shadow_quality() -> ShadowQuality:
+	return _shadow_quality
+
+
+func set_shadow_quality(value: int) -> void:
+	_shadow_quality = clampi(value, 0, _SHADOW_QUALITY_VALUES.size() - 1) as ShadowQuality
+	_save()
+	setting_changed.emit("graphics", "shadow_quality")
+	var quality: RenderingServer.ShadowQuality = _SHADOW_QUALITY_VALUES[_shadow_quality]
+	RenderingServer.directional_soft_shadow_filter_set_quality(quality)
+	RenderingServer.positional_soft_shadow_filter_set_quality(quality)
+
+
+func get_vsync() -> bool:
+	return _vsync
+
+
+func set_vsync(value: bool) -> void:
+	_vsync = value
+	_save()
+	setting_changed.emit("graphics", "vsync")
+	DisplayServer.window_set_vsync_mode(
+		DisplayServer.VSYNC_ENABLED if _vsync else DisplayServer.VSYNC_DISABLED
+	)
 
 
 # ------------------------------------------------------------------------------
@@ -143,8 +184,10 @@ func _save() -> void:
 	config.set_value("audio", "master_volume", _master_volume)
 	config.set_value("audio", "sfx_volume", _sfx_volume)
 	config.set_value("audio", "music_volume", _music_volume)
-	config.set_value("graphics", "render_scale", _render_scale)
 	config.set_value("graphics", "antialiasing", _antialiasing)
+	config.set_value("graphics", "msaa_level", _msaa_level)
+	config.set_value("graphics", "shadow_quality", _shadow_quality)
+	config.set_value("graphics", "vsync", _vsync)
 	config.set_value("comfort", "movement_mode", _movement_mode)
 	config.set_value("comfort", "vignette_enabled", _vignette_enabled)
 	config.set_value("comfort", "seated_mode", _seated_mode)
@@ -164,8 +207,13 @@ func load_settings() -> void:
 	_master_volume = clampf(config.get_value("audio", "master_volume", 1.0), 0.0, 1.0)
 	_sfx_volume = clampf(config.get_value("audio", "sfx_volume", 1.0), 0.0, 1.0)
 	_music_volume = clampf(config.get_value("audio", "music_volume", 1.0), 0.0, 1.0)
-	_render_scale = clampf(config.get_value("graphics", "render_scale", 1.0), 0.5, 2.0)
 	_antialiasing = config.get_value("graphics", "antialiasing", true)
+	_msaa_level = clampi(config.get_value("graphics", "msaa_level", 0), 0, _MSAA_VALUES.size() - 1)
+	_shadow_quality = clampi(
+		config.get_value("graphics", "shadow_quality", ShadowQuality.MEDIUM),
+		0, _SHADOW_QUALITY_VALUES.size() - 1
+	) as ShadowQuality
+	_vsync = config.get_value("graphics", "vsync", true)
 	_movement_mode = config.get_value("comfort", "movement_mode", MovementMode.SMOOTH) as MovementMode
 	_vignette_enabled = config.get_value("comfort", "vignette_enabled", false)
 	_seated_mode = config.get_value("comfort", "seated_mode", false)
@@ -186,8 +234,14 @@ func _apply_all() -> void:
 		AudioServer.get_bus_index("Music"),
 		linear_to_db(_music_volume)
 	)
-	get_viewport().scaling_3d_scale = _render_scale
 	if _antialiasing:
 		get_viewport().screen_space_aa = Viewport.SCREEN_SPACE_AA_FXAA
 	else:
 		get_viewport().screen_space_aa = Viewport.SCREEN_SPACE_AA_DISABLED
+	get_viewport().msaa_3d = _MSAA_VALUES[_msaa_level]
+	var shadow_quality: RenderingServer.ShadowQuality = _SHADOW_QUALITY_VALUES[_shadow_quality]
+	RenderingServer.directional_soft_shadow_filter_set_quality(shadow_quality)
+	RenderingServer.positional_soft_shadow_filter_set_quality(shadow_quality)
+	DisplayServer.window_set_vsync_mode(
+		DisplayServer.VSYNC_ENABLED if _vsync else DisplayServer.VSYNC_DISABLED
+	)
