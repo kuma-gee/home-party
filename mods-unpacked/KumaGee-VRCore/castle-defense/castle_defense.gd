@@ -11,8 +11,6 @@ signal game_started
 @export var spawn_hint: SpawnHint
 @export var ai_count_viewport: Node3D
 @export var sieges: Node3D
-@export var vr_screen: XRToolsViewport2DIn3D
-@export var gameover_scene: PackedScene
 @export var win_sound: AudioStreamPlayer3D
 
 @onready var play_time: Timer = $PlayTime
@@ -45,10 +43,11 @@ func _ready() -> void:
 	_set_bow_active(true)
 	health_sprite.hide()
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey:
-		if event.is_pressed() and event.shift_pressed and event.keycode == KEY_1:
-			_on_vr_ready([Arrow.Element.FIRE])
+func _debug_advance() -> void:
+	if not is_game_phase:
+		_on_vr_ready([Arrow.Element.FIRE])
+	else:
+		_finish_game("Debug ended (Shift+1)")
 
 ## VR player signals ready with default elements.
 ## Used by E2E tests to simulate VR player readiness without needing
@@ -75,16 +74,6 @@ func _show_vr_screen(scene: PackedScene) -> Node:
 
 func _hide_vr_screen() -> void:
 	vr_screen.hide()
-
-func _show_vr_gameover(message: String) -> void:
-	var screen = _show_vr_screen(gameover_scene) as GameoverPanel
-	if not screen:
-		return
-	screen.back_to_menu.connect(func(): xr_player.back_to_home.emit())
-	screen.restart_game.connect(func(): xr_player.restart_game.emit())
-	screen.set_title(message)
-	var rankings = StatsManager.get_rankings()
-	screen.set_rankings(rankings)
 
 func _on_prepare_phase() -> void:
 	# Lower the BGM during the prepare/tutorial phase
@@ -247,7 +236,5 @@ func _disable_attackers() -> void:
 
 func _finish_game(message: String) -> void:
 	logger.info("Game over: %s" % message)
-	_show_vr_gameover(message)
-	if desktop_gameover:
-		desktop_gameover.show_leaderboard(message, StatsManager.get_rankings())
+	finish_game(message, func(lb): lb.set_rankings(StatsManager.get_rankings()))
 	play_time.stop()

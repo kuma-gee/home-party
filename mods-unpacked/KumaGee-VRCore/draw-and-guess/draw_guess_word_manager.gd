@@ -5,6 +5,11 @@ enum SubmitResult { ACCEPTED, INVALID, DUPLICATE, LIMIT_REACHED }
 
 const MAX_WORDS_PER_PLAYER := 3
 
+const FALLBACK_WORDS: Array[String] = [
+	"apple", "rocket", "guitar", "penguin", "castle", "sandwich",
+	"bicycle", "dragon", "umbrella", "robot", "volcano", "pirate",
+]
+
 var word_pool: Array[String] = []
 var submitted_players: Array[String] = []
 var submitted_counts: Dictionary = {}
@@ -50,3 +55,11 @@ func size() -> int:
 
 func is_empty() -> bool:
 	return word_pool.is_empty()
+
+## Tops up an empty pool with fallback words so the game can start without
+## waiting on submissions (e.g. solo/debug testing).
+func fill_with_random_words(count := 4) -> void:
+	var choices := FALLBACK_WORDS.duplicate()
+	choices.shuffle()
+	for i in mini(count, choices.size()):
+		word_pool.append(choices[i])

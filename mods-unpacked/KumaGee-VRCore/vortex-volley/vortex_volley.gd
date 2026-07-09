@@ -78,9 +78,14 @@ func _on_game_phase() -> void:
 func _on_round_ended(scores: Array[Dictionary]) -> void:
 	if hud:
 		hud.set_state("Round Over!")
-	if desktop_gameover:
-		desktop_gameover.show_leaderboard("Vortex Volley", scores)
+	finish_game("Vortex Volley", func(lb): lb.set_entries(scores))
 
 func _on_lives_updated(data: Array[Dictionary]) -> void:
 	if hud:
 		hud.update_lives(data)
+
+func _debug_advance() -> void:
+	if is_game_phase and game_manager:
+		game_manager.force_end_round()
+	else:
+		super._debug_advance()

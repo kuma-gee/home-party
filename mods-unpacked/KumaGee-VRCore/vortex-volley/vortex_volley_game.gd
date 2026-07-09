@@ -141,6 +141,10 @@ func _score_on(player: DeflectorPlayer, orb: GameOrb) -> void:
 	_target_ball_count = mini(_target_ball_count + 1, _max_active_balls)
 	get_tree().create_timer(RESPAWN_DELAY).timeout.connect(_spawn_orbs_until_target, CONNECT_ONE_SHOT)
 
+## Debug-only: force the round to end early (Shift+1 hotkey).
+func force_end_round() -> void:
+	_end_round()
+
 func _end_round() -> void:
 	if phase == Phase.ENDED:
 		return

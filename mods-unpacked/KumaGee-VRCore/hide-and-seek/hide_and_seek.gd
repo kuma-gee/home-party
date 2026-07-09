@@ -7,7 +7,6 @@ extends BaseGame
 
 @export var scoreboard_scene: PackedScene
 @export var hud_scene: PackedScene
-@export var vr_screen: XRToolsViewport2DIn3D
 @export var npc_spawner: NpcSpawner
 @export var hider_scene: PackedScene
 @export var museum_gallery: Node3D
@@ -182,7 +181,7 @@ func _show_scoreboard(vr_won: bool, vr_score: int, hider_scores: Array[Dictionar
 	for h in hider_scores:
 		entries.append({"name": h.get("name", "Unknown"), "score": h.get("score", 0)})
 	if desktop_gameover:
-		desktop_gameover.show_leaderboard("Hide & Seek", entries)
+		desktop_gameover.show_gameover("Hide & Seek", func(lb): lb.set_entries(entries))
 
 func _process(_delta: float) -> void:
 	if seeker_tag:
@@ -212,6 +211,13 @@ func _on_ready_changed() -> void:
 
 func _on_hud_start_pressed() -> void:
 	check_all_ready(true)
+
+
+func _debug_advance() -> void:
+	if is_game_phase and game_manager:
+		game_manager.end_round(true)
+	else:
+		super._debug_advance()
 
 
 func _on_player_list_player_created(_uuid: String) -> void:

@@ -2,7 +2,6 @@ extends BaseGame
 
 @export var vr_scene: XRToolsViewport2DIn3D
 @export var instructions_vr_scene: XRToolsViewport2DIn3D
-@export var gameover_scene: PackedScene
 
 @export var timer_label: Label
 @export var progress_label: Label
@@ -36,14 +35,18 @@ func _ready() -> void:
 	ai_manager.ai_guessed.connect(_on_player_guessed)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey:
-		if event.is_pressed() and event.shift_pressed and event.keycode == KEY_1:
-			_on_vr_ready_pressed()
+	super._unhandled_input(event)
 	if not is_game_phase:
 		if event.is_action_pressed("debug_ai_increase"):
 			ai_manager.increase_ai_count()
 		elif event.is_action_pressed("debug_ai_decrease"):
 			ai_manager.decrease_ai_count()
+
+func _debug_advance() -> void:
+	if not is_game_phase:
+		_on_vr_ready_pressed()
+	else:
+		_end_game()
 
 func _on_prepare_phase():
 	prepare_scene = vr_scene.get_scene_instance()
@@ -180,9 +183,9 @@ func _on_vr_ready_pressed() -> void:
 		_start_game()
 		return
 
-	if word_manager.size() <= 0:
-		logger.debug("Cannot start Draw & Guess without submitted words")
-		return
+	if word_manager.is_empty():
+		word_manager.fill_with_random_words()
+		logger.debug("No submitted words - filled pool with fallback words")
 	check_all_ready(true)
 
 func _on_round_skipped(word: String) -> void:
@@ -294,19 +297,6 @@ func _on_freestyle_round_ended(guessed: bool) -> void:
 	if progress_label:
 		progress_label.text = "Freestyle word %d done" % round_manager.current_round
 
-func _show_vr_gameover(title: String, entries: Array = []) -> void:
-	vr_scene.set_scene(gameover_scene)
-	vr_scene.show()
-	var screen = vr_scene.get_scene_instance() as GameoverPanel
-	if not screen:
-		return
-	screen.back_to_menu.connect(func(): xr_player.back_to_home.emit())
-	screen.restart_game.connect(func(): xr_player.restart_game.emit())
-	if entries.is_empty():
-		screen.set_title(title)
-	else:
-		screen.set_leaderboard(entries, title)
-
 func _end_game() -> void:
 	round_manager.finish_game()
 	ai_manager.stop_guessing()
@@ -316,12 +306,8 @@ func _end_game() -> void:
 		if reveal_label:
 			reveal_label.text = "Game Over!"
 			reveal_label.show()
-		_show_vr_gameover("Game Over!")
-		if desktop_gameover:
-			desktop_gameover.hide()
+		finish_game("Game Over!")
 		return
 
 	var entries := scoring.get_scores()
-	_show_vr_gameover("Game Over!", entries)
-	if desktop_gameover:
-		desktop_gameover.show_leaderboard("Game Over!", entries)
+	finish_game("Game Over!", func(lb): lb.set_entries(entries))

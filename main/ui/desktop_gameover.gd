@@ -8,10 +8,15 @@ extends Control
 func _ready() -> void:
 	hide()
 
-func show_leaderboard(title: String, entries: Array) -> void:
-	leaderboard.show()
+## populate_leaderboard, if given, is called with the Leaderboard node to
+## fill it; omit it to hide the leaderboard and show just the title.
+func show_gameover(title: String, populate_leaderboard: Callable = Callable()) -> void:
 	leaderboard.set_title(title)
-	leaderboard.set_entries(entries)
+	if populate_leaderboard.is_valid():
+		leaderboard.show()
+		populate_leaderboard.call(leaderboard)
+	else:
+		leaderboard.hide()
 
 	background.modulate = Color.TRANSPARENT
 	container.modulate = Color.TRANSPARENT

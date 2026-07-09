@@ -17,12 +17,3 @@ func _ready() -> void:
 
 func set_title(txt: String) -> void:
 	leaderboard.set_title(txt)
-
-func set_rankings(rankings: Array) -> void:
-	leaderboard.show()
-	leaderboard.set_rankings(rankings)
-
-func set_leaderboard(entries: Array, title: String = "Leaderboard") -> void:
-	leaderboard.set_title(title)
-	leaderboard.show()
-	leaderboard.set_entries(entries)
