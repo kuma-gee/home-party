@@ -2,6 +2,7 @@ class_name SettingsPanel
 extends Control
 
 signal back_pressed
+signal player_height_changed(new_height: float)
 
 @onready var _master_slider: HSlider = %MasterSlider
 @onready var _master_value_label: Label = %MasterValue
@@ -63,7 +64,8 @@ func _ready() -> void:
 	_teleport_movement_button.toggled.connect(_on_teleport_movement_toggled)
 	_vignette_toggle.toggled.connect(_on_vignette_toggled)
 	_snap_turn_toggle.toggled.connect(_on_snap_turn_toggled)
-	_player_height_slider.value_changed.connect(_on_player_height_changed)
+	_player_height_slider.value_changed.connect(_on_player_height_value_changed)
+	_player_height_slider.drag_ended.connect(_on_player_height_drag_ended)
 	_seated_mode_toggle.toggled.connect(_on_seated_mode_toggled)
 	_back_button.pressed.connect(back_pressed.emit)
 
@@ -134,10 +136,18 @@ func _on_snap_turn_toggled(enabled: bool) -> void:
 	XRToolsUserSettings.save()
 
 
-func _on_player_height_changed(value: float) -> void:
+func _on_player_height_value_changed(value: float) -> void:
+	_update_player_height_label(value)
+
+
+func _on_player_height_drag_ended(value_changed: bool) -> void:
+	if not value_changed:
+		return
+
+	var value := _player_height_slider.value
 	XRToolsUserSettings.player_height = value
 	XRToolsUserSettings.save()
-	_update_player_height_label(value)
+	player_height_changed.emit(value)
 
 
 func _update_player_height_label(value: float) -> void:

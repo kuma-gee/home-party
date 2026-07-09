@@ -171,9 +171,12 @@ func _process(delta):
 		target_radius = min(target_radius, 1.0 - (
 				clamp(velocity / auto_velocity_limit, 0.0, 1.0) * (1.0 - auto_inner_radius)))
 
-	# if our radius is small then our current we apply it
-	if target_radius < radius:
-		set_radius(target_radius)
+	# Keep fade delay refreshed while motion still demands vignette.
+	# Without this, steady continuous movement can start fading out once the
+	# current radius already matches target_radius.
+	if target_radius < 1.0:
+		if target_radius < radius:
+			set_radius(target_radius)
 		fade_delay = auto_fade_delay
 	elif fade_delay > 0.0:
 		fade_delay -= delta

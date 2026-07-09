@@ -24,6 +24,7 @@ const SEATED_HEIGHT_OVERRIDE := 1.0
 var was_paused := false
 var _settings_panel_instance: SettingsPanel = null
 var _locomotion_enabled := true
+var _settings_panel_y_offset := 0.0
 
 func _ready() -> void:
 	menu_function.menu_opened.connect(_connect_menu)
@@ -37,11 +38,21 @@ func _ready() -> void:
 	settings_viewport.hide()
 	_settings_panel_instance = settings_viewport.get_scene_instance()
 	_settings_panel_instance.back_pressed.connect(_on_settings_back_pressed)
+	_settings_panel_instance.player_height_changed.connect(_on_player_height_changed)
 
 	UserSettings.setting_changed.connect(_on_setting_changed)
 	_apply_movement_mode()
 	_apply_vignette_enabled()
 	_apply_seated_mode()
+
+
+func _process(_delta: float) -> void:
+	if not settings_viewport.visible:
+		return
+
+	var panel_position := settings_viewport.global_position
+	panel_position.y = camera.global_position.y + _settings_panel_y_offset
+	settings_viewport.global_position = panel_position
 
 func _on_setting_changed(section: String, key: String) -> void:
 	if section != "comfort":
@@ -118,6 +129,7 @@ func _apply_movement_mode() -> void:
 
 func _on_settings_pressed():
 	_place_in_front_of_player(settings_viewport, SETTINGS_PANEL_DISTANCE)
+	_settings_panel_y_offset = settings_viewport.global_position.y - camera.global_position.y
 	settings_viewport.show()
 	menu_function.close_menu()
 
@@ -132,3 +144,7 @@ func _place_in_front_of_player(node: Node3D, distance: float) -> void:
 
 func _on_settings_back_pressed():
 	_on_menu_closed(true)
+
+
+func _on_player_height_changed(_new_height: float) -> void:
+	player_body.calibrate_player_height()

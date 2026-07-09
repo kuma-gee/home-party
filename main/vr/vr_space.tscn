@@ -294,7 +294,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.02, 0.05, -0.1)
 menu_scene = ExtResource("11_h8p7v")
 
 [node name="MovementDirect" parent="SubViewport/XRPlayer/LeftHand" unique_id=2129223259 instance=ExtResource("21_movdi")]
-max_speed = 2.2
 strafe = true
 
 [node name="HandArea" type="Area3D" parent="SubViewport/XRPlayer/LeftHand" unique_id=168408834]

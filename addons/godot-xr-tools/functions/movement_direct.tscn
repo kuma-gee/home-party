@@ -4,3 +4,4 @@
 
 [node name="MovementDirect" type="Node3D" groups=["movement_providers"]]
 script = ExtResource("1")
+max_speed = 4.5
