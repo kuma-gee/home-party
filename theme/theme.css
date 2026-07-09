@@ -82,7 +82,7 @@ VBoxContainer, HBoxContainer {
   gap: var(--default-separation);
 }
 
-PanelContainer {
+PanelContainer, TabContainer:panel {
   background: var(--background-color);
   border-radius: var(--default-border-radius);
 }

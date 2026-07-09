@@ -3,10 +3,13 @@
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="1"]
 [ext_resource type="Script" uid="uid://d3ogxlny0nr0t" path="res://main/vr/settings_panel.gd" id="2"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oyph5"]
+
 [sub_resource type="ButtonGroup" id="ButtonGroup_movement_mode"]
 
-[node name="SettingsPanelUI" type="PanelContainer" unique_id=1579951085]
+[node name="SettingsPanelUI" type="Control" unique_id=219640508]
 process_mode = 2
+layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -21,48 +24,43 @@ grow_vertical = 2
 theme = ExtResource("1")
 script = ExtResource("2")
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1306751962]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=79193691]
-layout_mode = 2
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=79193691]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 784.0
+offset_bottom = 584.0
+grow_horizontal = 2
+grow_vertical = 2
 alignment = 1
 
-[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1380676572]
+[node name="TitleLabel" type="Label" parent="VBoxContainer" unique_id=1380676572]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Settings"
 horizontal_alignment = 1
 
-[node name="Separator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1564678174]
-visible = false
-layout_mode = 2
-
-[node name="TabContainer" type="TabContainer" parent="MarginContainer/VBoxContainer" unique_id=-474793101]
+[node name="TabContainer" type="TabContainer" parent="VBoxContainer" unique_id=-474793101]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_styles/tab_selected = SubResource("StyleBoxFlat_oyph5")
 current_tab = 0
 
-[node name="General" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer" unique_id=-1341081694]
+[node name="Audio" type="VBoxContainer" parent="VBoxContainer/TabContainer" unique_id=-1341081694]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="AudioSectionLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/General" unique_id=61863835]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"LabelSmall"
-text = "-- Audio --"
-
-[node name="MasterRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer/General" unique_id=70556105]
+[node name="MasterRow" type="HBoxContainer" parent="VBoxContainer/TabContainer/Audio" unique_id=70556105]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="MasterLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/General/MasterRow" unique_id=553984713]
+[node name="MasterLabel" type="Label" parent="VBoxContainer/TabContainer/Audio/MasterRow" unique_id=553984713]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Master"
 
-[node name="MasterSlider" type="HSlider" parent="MarginContainer/VBoxContainer/TabContainer/General/MasterRow" unique_id=2104158850]
+[node name="MasterSlider" type="HSlider" parent="VBoxContainer/TabContainer/Audio/MasterRow" unique_id=2104158850]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -71,23 +69,23 @@ max_value = 1.0
 step = 0.01
 value = 0.5
 
-[node name="MasterValue" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/General/MasterRow" unique_id=2039771091]
+[node name="MasterValue" type="Label" parent="VBoxContainer/TabContainer/Audio/MasterRow" unique_id=2039771091]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 text = "100%"
 horizontal_alignment = 2
 
-[node name="SFXRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer/General" unique_id=1891422065]
+[node name="SFXRow" type="HBoxContainer" parent="VBoxContainer/TabContainer/Audio" unique_id=1891422065]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="SFXLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/General/SFXRow" unique_id=28063631]
+[node name="SFXLabel" type="Label" parent="VBoxContainer/TabContainer/Audio/SFXRow" unique_id=28063631]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "SFX"
 
-[node name="SFXSlider" type="HSlider" parent="MarginContainer/VBoxContainer/TabContainer/General/SFXRow" unique_id=610628515]
+[node name="SFXSlider" type="HSlider" parent="VBoxContainer/TabContainer/Audio/SFXRow" unique_id=610628515]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -96,23 +94,23 @@ max_value = 1.0
 step = 0.01
 value = 1.0
 
-[node name="SFXValue" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/General/SFXRow" unique_id=353362270]
+[node name="SFXValue" type="Label" parent="VBoxContainer/TabContainer/Audio/SFXRow" unique_id=353362270]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 text = "100%"
 horizontal_alignment = 2
 
-[node name="MusicRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer/General" unique_id=807557624]
+[node name="MusicRow" type="HBoxContainer" parent="VBoxContainer/TabContainer/Audio" unique_id=807557624]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="MusicLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/General/MusicRow" unique_id=2101120114]
+[node name="MusicLabel" type="Label" parent="VBoxContainer/TabContainer/Audio/MusicRow" unique_id=2101120114]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Music"
 
-[node name="MusicSlider" type="HSlider" parent="MarginContainer/VBoxContainer/TabContainer/General/MusicRow" unique_id=243806721]
+[node name="MusicSlider" type="HSlider" parent="VBoxContainer/TabContainer/Audio/MusicRow" unique_id=243806721]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -121,51 +119,51 @@ max_value = 1.0
 step = 0.01
 value = 1.0
 
-[node name="MusicValue" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/General/MusicRow" unique_id=2140036743]
+[node name="MusicValue" type="Label" parent="VBoxContainer/TabContainer/Audio/MusicRow" unique_id=2140036743]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 text = "100%"
 horizontal_alignment = 2
 
-[node name="GraphicsSectionLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/General" unique_id=1806890050]
+[node name="Graphics" type="VBoxContainer" parent="VBoxContainer/TabContainer" unique_id=1806890050]
+visible = false
 layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"LabelSmall"
-text = "-- Graphics --"
+metadata/_tab_index = 1
 
-[node name="AntiAliasingRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer/General" unique_id=1433646824]
+[node name="AntiAliasingRow" type="HBoxContainer" parent="VBoxContainer/TabContainer/Graphics" unique_id=1433646824]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="AntiAliasingLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/General/AntiAliasingRow" unique_id=1309694459]
+[node name="AntiAliasingLabel" type="Label" parent="VBoxContainer/TabContainer/Graphics/AntiAliasingRow" unique_id=1309694459]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Anti-Aliasing"
 
-[node name="AntiAliasingToggle" type="CheckBox" parent="MarginContainer/VBoxContainer/TabContainer/General/AntiAliasingRow" unique_id=380647483]
+[node name="AntiAliasingToggle" type="CheckBox" parent="VBoxContainer/TabContainer/Graphics/AntiAliasingRow" unique_id=380647483]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 button_pressed = true
 text = "FXAA"
 
-[node name="MSAARow" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer/General" unique_id=900000001]
+[node name="MSAARow" type="HBoxContainer" parent="VBoxContainer/TabContainer/Graphics" unique_id=900000001]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="MSAALabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/General/MSAARow" unique_id=900000002]
+[node name="MSAALabel" type="Label" parent="VBoxContainer/TabContainer/Graphics/MSAARow" unique_id=900000002]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "MSAA"
 
-[node name="MSAAOption" type="OptionButton" parent="MarginContainer/VBoxContainer/TabContainer/General/MSAARow" unique_id=900000003]
+[node name="MSAAOption" type="OptionButton" parent="VBoxContainer/TabContainer/Graphics/MSAARow" unique_id=900000003]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-item_count = 4
 selected = 0
+item_count = 4
 popup/item_0/text = "Off"
+popup/item_0/id = 0
 popup/item_1/text = "2x"
 popup/item_1/id = 1
 popup/item_2/text = "4x"
@@ -173,59 +171,60 @@ popup/item_2/id = 2
 popup/item_3/text = "8x"
 popup/item_3/id = 3
 
-[node name="ShadowQualityRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer/General" unique_id=900000004]
+[node name="ShadowQualityRow" type="HBoxContainer" parent="VBoxContainer/TabContainer/Graphics" unique_id=900000004]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="ShadowQualityLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/General/ShadowQualityRow" unique_id=900000005]
+[node name="ShadowQualityLabel" type="Label" parent="VBoxContainer/TabContainer/Graphics/ShadowQualityRow" unique_id=900000005]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Shadow Quality"
 
-[node name="ShadowQualityOption" type="OptionButton" parent="MarginContainer/VBoxContainer/TabContainer/General/ShadowQualityRow" unique_id=900000006]
+[node name="ShadowQualityOption" type="OptionButton" parent="VBoxContainer/TabContainer/Graphics/ShadowQualityRow" unique_id=900000006]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-item_count = 3
 selected = 1
+item_count = 3
 popup/item_0/text = "Low"
+popup/item_0/id = 0
 popup/item_1/text = "Medium"
 popup/item_1/id = 1
 popup/item_2/text = "High"
 popup/item_2/id = 2
 
-[node name="VSyncRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer/General" unique_id=900000007]
+[node name="VSyncRow" type="HBoxContainer" parent="VBoxContainer/TabContainer/Graphics" unique_id=900000007]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="VSyncLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/General/VSyncRow" unique_id=900000008]
+[node name="VSyncLabel" type="Label" parent="VBoxContainer/TabContainer/Graphics/VSyncRow" unique_id=900000008]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "VSync"
 
-[node name="VSyncToggle" type="CheckBox" parent="MarginContainer/VBoxContainer/TabContainer/General/VSyncRow" unique_id=900000009]
+[node name="VSyncToggle" type="CheckBox" parent="VBoxContainer/TabContainer/Graphics/VSyncRow" unique_id=900000009]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 button_pressed = true
 text = "On"
 
-[node name="Comfort" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer" unique_id=-474793100]
+[node name="Comfort" type="VBoxContainer" parent="VBoxContainer/TabContainer" unique_id=-474793100]
 visible = false
 layout_mode = 2
-metadata/_tab_index = 1
+metadata/_tab_index = 2
 
-[node name="ComfortSectionLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Comfort" unique_id=-474793099]
+[node name="ComfortSectionLabel" type="Label" parent="VBoxContainer/TabContainer/Comfort" unique_id=-474793099]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"LabelSmall"
 text = "-- Movement --"
 
-[node name="MovementModeRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer/Comfort" unique_id=-474793098]
+[node name="MovementModeRow" type="HBoxContainer" parent="VBoxContainer/TabContainer/Comfort" unique_id=-474793098]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="SmoothMovementButton" type="CheckBox" parent="MarginContainer/VBoxContainer/TabContainer/Comfort/MovementModeRow" unique_id=-474793097]
+[node name="SmoothMovementButton" type="CheckBox" parent="VBoxContainer/TabContainer/Comfort/MovementModeRow" unique_id=-474793097]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -233,60 +232,60 @@ button_pressed = true
 button_group = SubResource("ButtonGroup_movement_mode")
 text = "Smooth"
 
-[node name="TeleportMovementButton" type="CheckBox" parent="MarginContainer/VBoxContainer/TabContainer/Comfort/MovementModeRow" unique_id=-474793096]
+[node name="TeleportMovementButton" type="CheckBox" parent="VBoxContainer/TabContainer/Comfort/MovementModeRow" unique_id=-474793096]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 button_group = SubResource("ButtonGroup_movement_mode")
 text = "Teleport"
 
-[node name="VignetteRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer/Comfort" unique_id=-474793095]
+[node name="VignetteRow" type="HBoxContainer" parent="VBoxContainer/TabContainer/Comfort" unique_id=-474793095]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="VignetteLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Comfort/VignetteRow" unique_id=-474793094]
+[node name="VignetteLabel" type="Label" parent="VBoxContainer/TabContainer/Comfort/VignetteRow" unique_id=-474793094]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Vignette on Move/Teleport"
 
-[node name="VignetteToggle" type="CheckBox" parent="MarginContainer/VBoxContainer/TabContainer/Comfort/VignetteRow" unique_id=-474793093]
+[node name="VignetteToggle" type="CheckBox" parent="VBoxContainer/TabContainer/Comfort/VignetteRow" unique_id=-474793093]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "On"
 
-[node name="SnapTurnRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer/Comfort" unique_id=-474793092]
+[node name="SnapTurnRow" type="HBoxContainer" parent="VBoxContainer/TabContainer/Comfort" unique_id=-474793092]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="SnapTurnLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Comfort/SnapTurnRow" unique_id=-474793091]
+[node name="SnapTurnLabel" type="Label" parent="VBoxContainer/TabContainer/Comfort/SnapTurnRow" unique_id=-474793091]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Snap Turn"
 
-[node name="SnapTurnToggle" type="CheckBox" parent="MarginContainer/VBoxContainer/TabContainer/Comfort/SnapTurnRow" unique_id=-474793090]
+[node name="SnapTurnToggle" type="CheckBox" parent="VBoxContainer/TabContainer/Comfort/SnapTurnRow" unique_id=-474793090]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 button_pressed = true
 text = "On"
 
-[node name="PlayerSectionLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Comfort" unique_id=-474793089]
+[node name="PlayerSectionLabel" type="Label" parent="VBoxContainer/TabContainer/Comfort" unique_id=-474793089]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"LabelSmall"
 text = "-- Player --"
 
-[node name="PlayerHeightRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer/Comfort" unique_id=-474793088]
+[node name="PlayerHeightRow" type="HBoxContainer" parent="VBoxContainer/TabContainer/Comfort" unique_id=-474793088]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="PlayerHeightLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Comfort/PlayerHeightRow" unique_id=-474793087]
+[node name="PlayerHeightLabel" type="Label" parent="VBoxContainer/TabContainer/Comfort/PlayerHeightRow" unique_id=-474793087]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Player Height"
 
-[node name="PlayerHeightSlider" type="HSlider" parent="MarginContainer/VBoxContainer/TabContainer/Comfort/PlayerHeightRow" unique_id=-474793086]
+[node name="PlayerHeightSlider" type="HSlider" parent="VBoxContainer/TabContainer/Comfort/PlayerHeightRow" unique_id=-474793086]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -296,33 +295,36 @@ max_value = 2.5
 step = 0.05
 value = 1.85
 
-[node name="PlayerHeightValue" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Comfort/PlayerHeightRow" unique_id=-474793085]
+[node name="PlayerHeightValue" type="Label" parent="VBoxContainer/TabContainer/Comfort/PlayerHeightRow" unique_id=-474793085]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 text = "1.85m"
 horizontal_alignment = 2
 
-[node name="SeatedModeRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer/Comfort" unique_id=-474793084]
+[node name="SeatedModeRow" type="HBoxContainer" parent="VBoxContainer/TabContainer/Comfort" unique_id=-474793084]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="SeatedModeLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Comfort/SeatedModeRow" unique_id=-474793083]
+[node name="SeatedModeLabel" type="Label" parent="VBoxContainer/TabContainer/Comfort/SeatedModeRow" unique_id=-474793083]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Seated Mode"
 
-[node name="SeatedModeToggle" type="CheckBox" parent="MarginContainer/VBoxContainer/TabContainer/Comfort/SeatedModeRow" unique_id=-474793082]
+[node name="SeatedModeToggle" type="CheckBox" parent="VBoxContainer/TabContainer/Comfort/SeatedModeRow" unique_id=-474793082]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Off"
 
-[node name="Separator2" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=486264688]
-layout_mode = 2
-
-[node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1176788838]
+[node name="BackButton" type="Button" parent="." unique_id=1176788838]
 unique_name_in_owner = true
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -114.0
+offset_bottom = 59.0
+grow_horizontal = 0
 size_flags_horizontal = 3
 text = "Close"
