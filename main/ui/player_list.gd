@@ -3,6 +3,9 @@ extends VBoxContainer
 
 signal player_created(uuid)
 signal player_removed(uuid)
+## Emitted when a uuid that previously disconnected (player_removed) becomes active again.
+## Only fires for players whose node was kept around (remove_on_disconnect == false).
+signal player_reconnected(uuid)
 signal ready_changed()
 
 const COLORS = [
@@ -32,6 +35,8 @@ var _refresh_generation := 0
 
 ## UUIDs added here are never evicted by _refresh_list (used for AI players).
 var persistent_uuids: Array[String] = []
+## uuids currently disconnected (node kept around, dimmed) - used to detect reconnects.
+var _disconnected_uuids: Dictionary = {}
 ## Extra players not tracked by PlayerManager (e.g. AI). Added to get_player_count().
 var extra_player_count: int = 0
 
@@ -57,6 +62,9 @@ func _refresh_list() -> void:
 		if existing:
 			existing.update_data(player_data)
 			existing.move_in()
+			if _disconnected_uuids.has(player_data.client_id):
+				_disconnected_uuids.erase(player_data.client_id)
+				player_reconnected.emit(player_data.client_id)
 		else:
 			var new_node = player_scene.instantiate() as JoinedPlayer
 			new_node.ready_updated.connect(func(): ready_changed.emit())
@@ -77,6 +85,7 @@ func _refresh_list() -> void:
 				child.leave()
 			else:
 				child.move_out()
+				_disconnected_uuids[child.uuid] = true
 			player_removed.emit(child.uuid)
 
 func update_selection(game: GameResource) -> void:

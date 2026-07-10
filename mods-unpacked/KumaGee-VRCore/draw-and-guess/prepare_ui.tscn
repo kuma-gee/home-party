@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://cwunyyy4bgppe" path="res://mods-unpacked/KumaGee-VRCore/draw-and-guess/prepare_ui_vr.gd" id="1_1fw84"]
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="1_cclwa"]
 [ext_resource type="Script" uid="uid://54ff6uyo8677" path="res://main/utils/time_label.gd" id="3_myubm"]
-[ext_resource type="PackedScene" uid="uid://d3m1bp3cu88eg" path="res://main/ui/leaderboard.tscn" id="4_1113u"]
 
 [node name="PrepareUI" type="Control" unique_id=1689120374]
 layout_mode = 3
@@ -26,12 +25,6 @@ theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
-
-[node name="Leaderboard" parent="MarginContainer" unique_id=1000000001 instance=ExtResource("4_1113u")]
-unique_name_in_owner = true
-visible = false
-custom_minimum_size = Vector2(1000, 700)
-layout_mode = 2
 
 [node name="Prepare" type="VBoxContainer" parent="MarginContainer" unique_id=2124314594]
 unique_name_in_owner = true
@@ -93,6 +86,7 @@ layout_mode = 2
 text = "Start Timer"
 
 [node name="ResultButtons" type="HBoxContainer" parent="MarginContainer/InGame" unique_id=2000000402]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 16
@@ -101,13 +95,13 @@ theme_override_constants/separation = 16
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-text = "✓"
+text = "Correct"
 
 [node name="WrongButton" type="Button" parent="MarginContainer/InGame/ResultButtons" unique_id=2000000404]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-text = "✗"
+text = "Wrong"
 
 [node name="StopGameButton" type="Button" parent="MarginContainer/InGame" unique_id=2000000405]
 unique_name_in_owner = true

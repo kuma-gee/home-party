@@ -12,6 +12,7 @@ var _spawn_index := 0
 func _ready() -> void:
 	player_list.player_created.connect(_on_player_created)
 	player_list.player_removed.connect(_on_player_removed)
+	player_list.player_reconnected.connect(_on_player_reconnected)
 
 
 func _get_spawn_points() -> Array[Marker3D]:
@@ -44,10 +45,17 @@ func _on_player_created(uuid: String) -> void:
 	_pets[uuid] = pet
 
 
+## Player disconnected - keep the pet, just mark it as away so it can be restored on rejoin.
 func _on_player_removed(uuid: String) -> void:
 	if _pets.has(uuid):
-		_pets[uuid].queue_free()
-		_pets.erase(uuid)
+		_pets[uuid].set_disconnected(true)
+
+
+func _on_player_reconnected(uuid: String) -> void:
+	if _pets.has(uuid):
+		_pets[uuid].set_disconnected(false)
+	else:
+		_on_player_created(uuid)
 
 
 func get_pet(uuid: String) -> DrawGuessPet:
@@ -72,6 +80,8 @@ func spawn_for_ai(idx: int, uuid: String, color: Color) -> void:
 	_pets[uuid] = pet
 
 
-## Remove a pet by UUID (used when an AI player is destroyed).
+## Fully remove a pet by UUID (used when an AI player is destroyed).
 func remove_pet(uuid: String) -> void:
-	_on_player_removed(uuid)
+	if _pets.has(uuid):
+		_pets[uuid].queue_free()
+		_pets.erase(uuid)
