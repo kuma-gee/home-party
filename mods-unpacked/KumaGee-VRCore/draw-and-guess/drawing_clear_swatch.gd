@@ -3,8 +3,7 @@ extends Area3D
 
 signal cleared()
 
-const HOLD_DURATION := 3.0
-
+@export var HOLD_DURATION := 2.0
 @export var progress_ring: ColorRect
 
 var _hold_progress := 0.0

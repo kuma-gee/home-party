@@ -2,6 +2,7 @@ extends BaseGame
 
 @export var vr_scene: XRToolsViewport2DIn3D
 @export var instructions_vr_scene: XRToolsViewport2DIn3D
+@export var camera_view: Node3D
 
 @export var timer_label: Label
 @export var progress_label: Label
@@ -16,7 +17,6 @@ extends BaseGame
 
 var logger := KumaLog.new("DrawAndGuess")
 var prepare_scene: DrawPrepareScene
-var instructions_scene: DrawPrepareInstructions
 var freestyle_mode := false
 
 const DRAW_PLAYER_UI_SCENE := preload("res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_player_ui.tscn")
@@ -52,15 +52,15 @@ func _on_prepare_phase():
 	prepare_scene = vr_scene.get_scene_instance()
 	prepare_scene.skipped.connect(func(): round_manager.skip_round())
 	prepare_scene.continued.connect(func(): round_manager.continue_after_reveal())
+	prepare_scene.ready_clicked.connect(_on_vr_ready_pressed)
 	prepare_scene.freestyle_timer_started.connect(_on_freestyle_timer_started)
 	prepare_scene.freestyle_correct.connect(func(): _on_freestyle_result(true))
 	prepare_scene.freestyle_wrong.connect(func(): _on_freestyle_result(false))
 	prepare_scene.freestyle_stopped.connect(_end_game)
 	prepare_scene.round_timer = round_manager.round_timer
 
-	instructions_scene = instructions_vr_scene.get_scene_instance()
-	instructions_scene.ready_clicked.connect(_on_vr_ready_pressed)
 	instructions_vr_scene.visible = true
+	camera_view.hide()
 
 	ai_manager.on_prepare_phase_entered()
 	_update_ui()
@@ -172,10 +172,10 @@ func _on_player_guessed(guess: String, player_ui: DrawPlayerUI) -> void:
 func _update_ui() -> void:
 	if prepare_label:
 		prepare_label.text = "Freestyle mode!" if _is_freestyle_available() else "Submit your words!"
-	if not instructions_scene:
+	if not prepare_scene:
 		return
 	var active_players = PlayerManager.get_active_players().map(func(x): return player_list.find_existing_node(x.uuid))
-	instructions_scene.update(active_players, word_manager.size(), word_manager.max_words_per_player(), _is_freestyle_available())
+	prepare_scene.update_prepare_status(active_players, word_manager.size(), word_manager.max_words_per_player(), _is_freestyle_available())
 
 func _on_vr_ready_pressed() -> void:
 	if _is_freestyle_available():
@@ -194,6 +194,8 @@ func _on_round_skipped(word: String) -> void:
 
 func _on_game_phase() -> void:
 	instructions_vr_scene.visible = false
+	#camera_view.show()
+	
 	if freestyle_mode:
 		logger.info("Starting freestyle mode")
 		_on_clients_changed()

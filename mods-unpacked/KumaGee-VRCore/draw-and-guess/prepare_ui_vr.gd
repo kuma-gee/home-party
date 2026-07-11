@@ -3,6 +3,7 @@ extends Control
 
 signal skipped()
 signal continued()
+signal ready_clicked()
 signal freestyle_timer_started()
 signal freestyle_correct()
 signal freestyle_wrong()
@@ -15,6 +16,8 @@ signal freestyle_stopped()
 @onready var round_label: Label = %Round
 @onready var word_label: Label = %Word
 @onready var time: Label = %Time
+@onready var status_label: Label = %StatusLabel
+@onready var ready_button: Button = %ReadyButton
 @onready var start_timer_button: Button = %StartTimerButton
 @onready var result_buttons: HBoxContainer = %ResultButtons
 @onready var correct_button: Button = %CorrectButton
@@ -31,11 +34,28 @@ var _is_freestyle := false
 
 func _ready() -> void:
 	skip_button.pressed.connect(_on_skip_button_pressed)
+	ready_button.pressed.connect(func(): ready_clicked.emit())
 	start_timer_button.pressed.connect(func(): freestyle_timer_started.emit())
 	correct_button.pressed.connect(func(): freestyle_correct.emit())
 	wrong_button.pressed.connect(func(): freestyle_wrong.emit())
 	stop_game_button.pressed.connect(func(): freestyle_stopped.emit())
 	_show_container(prepare)
+
+func update_prepare_status(list: Array, total_words := 0, max_words_per_player := 1, freestyle_available := false) -> void:
+	if freestyle_available:
+		status_label.text = "Freestyle mode\n1 mobile player connected"
+		ready_button.disabled = false
+		return
+
+	var active_client_count := 0
+	for child in list:
+		if child is DrawPlayerUI and child.is_ready:
+			active_client_count += 1
+
+	var total_players := list.size()
+	var max_words: int = total_players * max_words_per_player
+	status_label.text = "%d words\n%d / %d players ready" % [total_words, max_words, active_client_count, total_players]
+	ready_button.disabled = active_client_count < total_players or total_words <= 0
 
 func _on_skip_button_pressed() -> void:
 	if _is_revealing:

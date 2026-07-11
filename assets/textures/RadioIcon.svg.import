@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://buys8bfgi5och"
-path="res://.godot/imported/slider_handle.png-c7851e36bb6255b00322387841a8a408.ctex"
+uid="uid://cr3mvblyal1xf"
+path="res://.godot/imported/RadioIcon.svg-a7ebb7dabb2230871860eac084f646a9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/slider_handle.png"
-dest_files=["res://.godot/imported/slider_handle.png-c7851e36bb6255b00322387841a8a408.ctex"]
+source_file="res://assets/textures/RadioIcon.svg"
+dest_files=["res://.godot/imported/RadioIcon.svg-a7ebb7dabb2230871860eac084f646a9.ctex"]
 
 [params]
 
@@ -38,3 +38,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

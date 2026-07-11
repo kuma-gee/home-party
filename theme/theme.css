@@ -139,10 +139,21 @@ PanelContainer.Primary {
   background: var(--primary-color);
 }
 
+CheckBox {
+  --icons-checked: url(res://assets/textures/CheckboxIconChecked.svg);
+  --icons-unchecked: url(res://assets/textures/CheckboxIcon.svg); 
+  --icons-radio-checked: url(res://assets/textures/RadioIconChecked.svg);
+  --icons-radio-unchecked: url(res://assets/textures/RadioIcon.svg); 
+}
+
+OptionButton {
+  --icons-arrow: url(res://assets/textures/OptionArrow.svg); 
+}
+
 HSlider {
-  --icons-grabber: url(res://assets/slider_handle.png);
-  --icons-grabber-highlight: url(res://assets/slider_handle.png);
-  --icons-grabber-disabled: url(res://assets/slider_handle.png);
+  --icons-grabber: url(res://assets/textures/slider_handle.png);
+  --icons-grabber-highlight: url(res://assets/textures/slider_handle.png);
+  --icons-grabber-disabled: url(res://assets/textures/slider_handle.png);
 }
 
 HSlider:slider {
