@@ -222,6 +222,9 @@ tree_root = SubResource("AnimationNodeBlendTree_hivac")
 [node name="AnimationTree" parent="XRPlayer/SubViewport/XRPlayer/RightHand/RightHand" parent_id_path=PackedInt32Array(10000004, 40282269) index="1"]
 tree_root = SubResource("AnimationNodeBlendTree_v4ufc")
 
+[node name="PauseMenu" parent="XRPlayer/CanvasLayer" parent_id_path=PackedInt32Array(10000004, 2119231864) index="0" unique_id=856227726]
+visible = false
+
 [node name="Screen" parent="XRPlayer/Viewport2Din3D" parent_id_path=PackedInt32Array(10000004, 1418763861) index="1" unique_id=1761931612]
 mesh = SubResource("QuadMesh_b8tmo")
 surface_material_override/0 = SubResource("StandardMaterial3D_8qcdu")
@@ -232,28 +235,31 @@ shape = SubResource("BoxShape3D_ormv7")
 [node name="Control" parent="CanvasLayer" parent_id_path=PackedInt32Array(10000005) index="0" unique_id=871214352]
 theme = ExtResource("4_dxago")
 
-[node name="PrepareUI" parent="CanvasLayer/Control" index="0" unique_id=10000006]
-visible = false
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control/PrepareUI" parent_id_path=PackedInt32Array(10000006) index="0" unique_id=129955658]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.627451)
 
-[node name="Label" type="Label" parent="CanvasLayer/Control/PrepareUI" index="0" unique_id=663899514]
+[node name="Label" type="Label" parent="CanvasLayer/Control/PrepareUI" parent_id_path=PackedInt32Array(10000006) index="1" unique_id=663899514]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -26.5
-offset_right = 20.0
-offset_bottom = 26.5
+offset_left = -227.5
+offset_top = -200.0
+offset_right = 227.5
+offset_bottom = -147.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Submit your words!"
+text = "Submit at least one word"
 
-[node name="GameUI" parent="CanvasLayer/Control" index="1" unique_id=10000007]
-visible = true
-
-[node name="TimerLabel" type="Label" parent="CanvasLayer/Control/GameUI" index="0" unique_id=141086734 node_paths=PackedStringArray("timer")]
+[node name="TimerLabel" type="Label" parent="CanvasLayer/Control/GameUI" parent_id_path=PackedInt32Array(10000007) index="0" unique_id=141086734 node_paths=PackedStringArray("timer")]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -273,7 +279,7 @@ vertical_alignment = 1
 script = ExtResource("5_w6s61")
 timer = NodePath("../../../../RoundManager/RoundTimer")
 
-[node name="ProgressLabel" type="Label" parent="CanvasLayer/Control/GameUI" index="1" unique_id=1544877901]
+[node name="ProgressLabel" type="Label" parent="CanvasLayer/Control/GameUI" parent_id_path=PackedInt32Array(10000007) index="1" unique_id=1544877901]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -291,7 +297,7 @@ text = "Word 1 of 5"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RevealLabel" type="Label" parent="CanvasLayer/Control/GameUI" index="2" unique_id=1752240741]
+[node name="RevealLabel" type="Label" parent="CanvasLayer/Control/GameUI" parent_id_path=PackedInt32Array(10000007) index="2" unique_id=1752240741]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -401,7 +407,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_w6s61")
 surface_material_override/0 = ExtResource("10_rodjl")
 
 [node name="Roof" parent="BaseSceneContent/draw_room" index="14" unique_id=648360692]
-layers = 262144
+layers = 262145
 cast_shadow = 0
 
 [node name="Roof2" type="MeshInstance3D" parent="BaseSceneContent/draw_room/Roof" index="0" unique_id=115964336]
@@ -410,7 +416,7 @@ mesh = SubResource("ArrayMesh_b785c")
 skeleton = NodePath("")
 
 [node name="FrontWall" parent="BaseSceneContent/draw_room" index="15" unique_id=1579428791]
-layers = 262144
+layers = 262145
 
 [node name="DesktopView" type="MeshInstance3D" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="8" unique_id=727167106]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 3.8365173, 1.8189988, 0)

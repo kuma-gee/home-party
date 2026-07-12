@@ -11,7 +11,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.016675472, 0)
 [node name="Rig_Medium_MovementAdvanced" parent="Root2" unique_id=1350134305 instance=ExtResource("4_leuai")]
 transform = Transform3D(0.049703375, 0, 0.005438139, 0, 0.050000012, 0, -0.005438138, 0, 0.049703404, 0.026352998, 0, 0.016689077)
 
-[node name="Skeleton3D" parent="Root2/Rig_Medium_MovementAdvanced/Rig_Medium" parent_id_path=PackedInt32Array(1350134305, 904971348) index="0" unique_id=584777913]
+[node name="Skeleton3D" parent="Root2/Rig_Medium_MovementAdvanced/Rig_Medium" parent_id_path=PackedInt32Array(1350134305, 191466347) index="0" unique_id=332029369]
 bones/1/position = Vector3(0, 0.39206383, 0)
 bones/1/rotation = Quaternion(-1.1112262e-10, 0.04315775, 2.5724096e-09, 0.99906826)
 bones/2/rotation = Quaternion(-6.9388935e-18, 7.1054274e-15, 4.9303804e-32, 1)
@@ -39,13 +39,13 @@ bones/20/rotation = Quaternion(0.2740081, -6.3812955e-08, 1.927607e-07, 0.961727
 bones/21/rotation = Quaternion(-0.5590394, 0.11451276, -0.008627633, 0.82115)
 bones/22/rotation = Quaternion(-8.934892e-05, 0.9202217, -0.3913977, 2.0290998e-05)
 
-[node name="Mannequin_LegRight" parent="Root2/Rig_Medium_MovementAdvanced/Rig_Medium/Skeleton3D" index="5" unique_id=945743399]
+[node name="Mannequin_LegRight" parent="Root2/Rig_Medium_MovementAdvanced/Rig_Medium/Skeleton3D" index="5" unique_id=1628208724]
 surface_material_override/0 = ExtResource("5_leuai")
 
 [node name="Rig_Medium_MovementAdvanced3" parent="Root2" unique_id=808100577 instance=ExtResource("4_leuai")]
 transform = Transform3D(-0.0008516768, 0, -0.04999276, 0, 0.050000012, 0, 0.049992744, 0, -0.00085168146, -0.020679783, 0, -0.06641993)
 
-[node name="Skeleton3D" parent="Root2/Rig_Medium_MovementAdvanced3/Rig_Medium" parent_id_path=PackedInt32Array(808100577, 904971348) index="0" unique_id=584777913]
+[node name="Skeleton3D" parent="Root2/Rig_Medium_MovementAdvanced3/Rig_Medium" parent_id_path=PackedInt32Array(808100577, 191466347) index="0" unique_id=332029369]
 bones/1/position = Vector3(0, 0.39206383, 0)
 bones/1/rotation = Quaternion(-1.1112262e-10, 0.04315775, 2.5724096e-09, 0.99906826)
 bones/2/rotation = Quaternion(-6.9388935e-18, 7.1054274e-15, 4.9303804e-32, 1)
@@ -73,13 +73,13 @@ bones/20/rotation = Quaternion(0.2740081, -6.3812955e-08, 1.927607e-07, 0.961727
 bones/21/rotation = Quaternion(-0.5590394, 0.11451276, -0.008627633, 0.82115)
 bones/22/rotation = Quaternion(-8.934892e-05, 0.9202217, -0.3913977, 2.0290998e-05)
 
-[node name="Mannequin_LegRight" parent="Root2/Rig_Medium_MovementAdvanced3/Rig_Medium/Skeleton3D" index="5" unique_id=945743399]
+[node name="Mannequin_LegRight" parent="Root2/Rig_Medium_MovementAdvanced3/Rig_Medium/Skeleton3D" index="5" unique_id=1628208724]
 surface_material_override/0 = ExtResource("5_leuai")
 
 [node name="Rig_Medium_MovementAdvanced2" parent="Root2" unique_id=300875871 instance=ExtResource("4_leuai")]
 transform = Transform3D(0.037485335, 0, 0.03308851, 0, 0.050000004, 0, -0.033088487, 0, 0.03748535, -0.032878168, 0, 0.057542413)
 
-[node name="Skeleton3D" parent="Root2/Rig_Medium_MovementAdvanced2/Rig_Medium" parent_id_path=PackedInt32Array(300875871, 904971348) index="0" unique_id=584777913]
+[node name="Skeleton3D" parent="Root2/Rig_Medium_MovementAdvanced2/Rig_Medium" parent_id_path=PackedInt32Array(300875871, 191466347) index="0" unique_id=332029369]
 bones/1/position = Vector3(0, 0.39206383, 0)
 bones/1/rotation = Quaternion(-1.1112262e-10, 0.04315775, 2.5724096e-09, 0.99906826)
 bones/2/rotation = Quaternion(-6.9388935e-18, 7.1054274e-15, 4.9303804e-32, 1)
@@ -107,13 +107,13 @@ bones/20/rotation = Quaternion(0.2740081, -6.3812955e-08, 1.927607e-07, 0.961727
 bones/21/rotation = Quaternion(-0.5590394, 0.11451276, -0.008627633, 0.82115)
 bones/22/rotation = Quaternion(-8.934892e-05, 0.9202217, -0.3913977, 2.0290998e-05)
 
-[node name="Mannequin_LegRight" parent="Root2/Rig_Medium_MovementAdvanced2/Rig_Medium/Skeleton3D" index="5" unique_id=945743399]
+[node name="Mannequin_LegRight" parent="Root2/Rig_Medium_MovementAdvanced2/Rig_Medium/Skeleton3D" index="5" unique_id=1628208724]
 surface_material_override/0 = ExtResource("5_leuai")
 
 [node name="Rig_Medium_MovementAdvanced4" parent="Root2" unique_id=1446605382 instance=ExtResource("4_leuai")]
 transform = Transform3D(0.025780318, 0, 0.042841285, 0, 0.050000012, 0, -0.042841267, 0, 0.025780326, 0.04316983, 0, -0.057401404)
 
-[node name="Skeleton3D" parent="Root2/Rig_Medium_MovementAdvanced4/Rig_Medium" parent_id_path=PackedInt32Array(1446605382, 904971348) index="0" unique_id=584777913]
+[node name="Skeleton3D" parent="Root2/Rig_Medium_MovementAdvanced4/Rig_Medium" parent_id_path=PackedInt32Array(1446605382, 191466347) index="0" unique_id=332029369]
 bones/1/position = Vector3(0, 0.39206383, 0)
 bones/1/rotation = Quaternion(-1.1112262e-10, 0.04315775, 2.5724096e-09, 0.99906826)
 bones/2/rotation = Quaternion(-6.9388935e-18, 7.1054274e-15, 4.9303804e-32, 1)
@@ -141,16 +141,16 @@ bones/20/rotation = Quaternion(0.2740081, -6.3812955e-08, 1.927607e-07, 0.961727
 bones/21/rotation = Quaternion(-0.5590394, 0.11451276, -0.008627633, 0.82115)
 bones/22/rotation = Quaternion(-8.934892e-05, 0.9202217, -0.3913977, 2.0290998e-05)
 
-[node name="Mannequin_LegRight" parent="Root2/Rig_Medium_MovementAdvanced4/Rig_Medium/Skeleton3D" index="5" unique_id=945743399]
+[node name="Mannequin_LegRight" parent="Root2/Rig_Medium_MovementAdvanced4/Rig_Medium/Skeleton3D" index="5" unique_id=1628208724]
 surface_material_override/0 = ExtResource("5_leuai")
 
-[node name="AnimationPlayer" parent="Root2/Rig_Medium_MovementAdvanced4" index="1" unique_id=108179574]
+[node name="AnimationPlayer" parent="Root2/Rig_Medium_MovementAdvanced4" index="1" unique_id=1634001752]
 root_node = NodePath("../../Rig_Medium_MovementAdvanced4")
 
 [node name="Rig_Medium_MovementAdvanced5" parent="Root2" unique_id=357629379 instance=ExtResource("4_leuai")]
 transform = Transform3D(0.043551687, 0, -0.024561157, 0, 0.05000001, 0, 0.024561148, 0, 0.0435517, -0.07117589, 0, -0.003744278)
 
-[node name="Skeleton3D" parent="Root2/Rig_Medium_MovementAdvanced5/Rig_Medium" parent_id_path=PackedInt32Array(357629379, 904971348) index="0" unique_id=584777913]
+[node name="Skeleton3D" parent="Root2/Rig_Medium_MovementAdvanced5/Rig_Medium" parent_id_path=PackedInt32Array(357629379, 191466347) index="0" unique_id=332029369]
 bones/1/position = Vector3(0, 0.39206383, 0)
 bones/1/rotation = Quaternion(-1.1112262e-10, 0.04315775, 2.5724096e-09, 0.99906826)
 bones/2/rotation = Quaternion(-6.9388935e-18, 7.1054274e-15, 4.9303804e-32, 1)
@@ -178,16 +178,16 @@ bones/20/rotation = Quaternion(0.2740081, -6.3812955e-08, 1.927607e-07, 0.961727
 bones/21/rotation = Quaternion(-0.5590394, 0.11451276, -0.008627633, 0.82115)
 bones/22/rotation = Quaternion(-8.934892e-05, 0.9202217, -0.3913977, 2.0290998e-05)
 
-[node name="Mannequin_LegRight" parent="Root2/Rig_Medium_MovementAdvanced5/Rig_Medium/Skeleton3D" index="5" unique_id=945743399]
+[node name="Mannequin_LegRight" parent="Root2/Rig_Medium_MovementAdvanced5/Rig_Medium/Skeleton3D" index="5" unique_id=1628208724]
 surface_material_override/0 = ExtResource("5_leuai")
 
-[node name="AnimationPlayer" parent="Root2/Rig_Medium_MovementAdvanced5" index="1" unique_id=108179574]
+[node name="AnimationPlayer" parent="Root2/Rig_Medium_MovementAdvanced5" index="1" unique_id=1634001752]
 root_node = NodePath("../../Rig_Medium_MovementAdvanced5")
 
 [node name="Rig_Medium_MovementAdvanced6" parent="Root2" unique_id=1136767152 instance=ExtResource("4_leuai")]
 transform = Transform3D(0.048256308, 0, 0.013089257, 0, 0.050000012, 0, -0.013089246, 0, 0.048256326, 0.075525254, 0, 0.054740153)
 
-[node name="Skeleton3D" parent="Root2/Rig_Medium_MovementAdvanced6/Rig_Medium" parent_id_path=PackedInt32Array(1136767152, 904971348) index="0" unique_id=584777913]
+[node name="Skeleton3D" parent="Root2/Rig_Medium_MovementAdvanced6/Rig_Medium" parent_id_path=PackedInt32Array(1136767152, 191466347) index="0" unique_id=332029369]
 bones/1/position = Vector3(0, 0.39206383, 0)
 bones/1/rotation = Quaternion(-1.1112262e-10, 0.04315775, 2.5724096e-09, 0.99906826)
 bones/2/rotation = Quaternion(-6.9388935e-18, 7.1054274e-15, 4.9303804e-32, 1)
@@ -215,10 +215,10 @@ bones/20/rotation = Quaternion(0.2740081, -6.3812955e-08, 1.927607e-07, 0.961727
 bones/21/rotation = Quaternion(-0.5590394, 0.11451276, -0.008627633, 0.82115)
 bones/22/rotation = Quaternion(-8.934892e-05, 0.9202217, -0.3913977, 2.0290998e-05)
 
-[node name="Mannequin_LegRight" parent="Root2/Rig_Medium_MovementAdvanced6/Rig_Medium/Skeleton3D" index="5" unique_id=945743399]
+[node name="Mannequin_LegRight" parent="Root2/Rig_Medium_MovementAdvanced6/Rig_Medium/Skeleton3D" index="5" unique_id=1628208724]
 surface_material_override/0 = ExtResource("5_leuai")
 
-[node name="AnimationPlayer" parent="Root2/Rig_Medium_MovementAdvanced6" index="1" unique_id=108179574]
+[node name="AnimationPlayer" parent="Root2/Rig_Medium_MovementAdvanced6" index="1" unique_id=1634001752]
 root_node = NodePath("../../Rig_Medium_MovementAdvanced5")
 
 [editable path="Root2/Rig_Medium_MovementAdvanced"]

@@ -12,7 +12,9 @@
 [ext_resource type="Script" uid="uid://ddetao6ypdnd4" path="res://main/utils/game_loader.gd" id="10_hi2v3"]
 [ext_resource type="Script" uid="uid://c81kikxi6p2y1" path="res://main/game_shelve.gd" id="10_sxu1o"]
 [ext_resource type="PackedScene" uid="uid://ytw4rjtso8pq" path="res://main/vr/game_object.tscn" id="11_4lkid"]
+[ext_resource type="Texture2D" uid="uid://c7kiv0bffjvfq" path="res://assets/living_room/guide/MoveGuide_Left_Teleport.png" id="11_8c1er"]
 [ext_resource type="Script" uid="uid://yfd3eree2thd" path="res://main/ui/game_details.gd" id="11_67j6m"]
+[ext_resource type="Texture2D" uid="uid://je8k42uy2a6x" path="res://assets/living_room/guide/MoveGuide_Right_Turn.png" id="12_76egc"]
 [ext_resource type="PackedScene" uid="uid://btho7coc5b1sq" path="res://main/vr/game_select_zone.tscn" id="14_5dw5n"]
 [ext_resource type="PackedScene" uid="uid://bbgjpxeqensis" path="res://main/room.tscn" id="15_5dw5n"]
 [ext_resource type="PackedScene" uid="uid://dog0p8xr52dec" path="res://main/vr/tv_remote.tscn" id="17_67j6m"]
@@ -165,8 +167,8 @@ grow_horizontal = 0
 layout_mode = 2
 theme_override_constants/separation = 0
 script = ExtResource("4_4lkid")
-remove_on_disconnect = true
 player_scene = ExtResource("5_5dw5n")
+remove_on_disconnect = true
 
 [node name="JoinCode" type="PanelContainer" parent="CanvasLayer/Control" unique_id=1744107384]
 layout_mode = 1
@@ -241,25 +243,64 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("4_5dw5n")
 
-[node name="SelectGameLabel" type="Label" parent="GameDetails/SubViewport/GameDetailsContainer" unique_id=987654321]
+[node name="MarginContainer" type="MarginContainer" parent="GameDetails/SubViewport/GameDetailsContainer" unique_id=1219428014]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -166.0
-offset_top = -28.5
-offset_right = 166.0
-offset_bottom = 28.5
+offset_left = -421.0
+offset_top = -247.0
+offset_right = 421.0
+offset_bottom = 247.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameDetails/SubViewport/GameDetailsContainer/MarginContainer" unique_id=2103108446]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameDetails/SubViewport/GameDetailsContainer/MarginContainer/HBoxContainer" unique_id=333485846]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="GameDetails/SubViewport/GameDetailsContainer/MarginContainer/HBoxContainer/VBoxContainer" unique_id=2128987375]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+texture = ExtResource("11_8c1er")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="GameDetails/SubViewport/GameDetailsContainer/MarginContainer/HBoxContainer/VBoxContainer" unique_id=999944891]
+layout_mode = 2
+text = "Move / Teleport"
+horizontal_alignment = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="GameDetails/SubViewport/GameDetailsContainer/MarginContainer/HBoxContainer" unique_id=1771875651]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="GameDetails/SubViewport/GameDetailsContainer/MarginContainer/HBoxContainer/VBoxContainer2" unique_id=1542116564]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+texture = ExtResource("12_76egc")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="GameDetails/SubViewport/GameDetailsContainer/MarginContainer/HBoxContainer/VBoxContainer2" unique_id=209953121]
+layout_mode = 2
+text = "Turn"
+horizontal_alignment = 1
+
+[node name="SelectGameLabel" type="Label" parent="GameDetails/SubViewport/GameDetailsContainer/MarginContainer" unique_id=987654321]
+visible = false
+layout_mode = 2
 theme_type_variation = &"LabelLarge"
 text = "Select a game"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="GameDetailsVR" parent="GameDetails/SubViewport/GameDetailsContainer" unique_id=1206509251 instance=ExtResource("8_67j6m")]
+visible = false
 layout_mode = 1
 
 [node name="FeedbackFormPickup" parent="." unique_id=1160042001 instance=ExtResource("21_fdbk1")]

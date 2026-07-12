@@ -170,11 +170,18 @@ func _on_player_guessed(guess: String, player_ui: DrawPlayerUI) -> void:
 			pet.on_incorrect_guess(guess)
 
 func _update_ui() -> void:
+	var active_players = PlayerManager.get_active_players().map(func(x): return player_list.find_existing_node(x.uuid))
 	if prepare_label:
-		prepare_label.text = "Freestyle mode!" if _is_freestyle_available() else "Submit your words!"
+		if _is_freestyle_available():
+			prepare_label.text = "Freestyle mode!\n1 mobile player connected"
+		else:
+			var ready_players := 0
+			for child in active_players:
+				if child is DrawPlayerUI and word_manager.is_player_submitted(child.uuid):
+					ready_players += 1
+			prepare_label.text = "Submit at least one word!\n%d / %d players ready" % [ready_players, active_players.size()]
 	if not prepare_scene:
 		return
-	var active_players = PlayerManager.get_active_players().map(func(x): return player_list.find_existing_node(x.uuid))
 	prepare_scene.update_prepare_status(active_players, word_manager.size(), word_manager.max_words_per_player(), _is_freestyle_available())
 
 func _on_vr_ready_pressed() -> void:
@@ -208,7 +215,7 @@ func _on_game_phase() -> void:
 			reveal_label.hide()
 		return
 
-	logger.info("Starting game with %d words in pool" % word_manager.size())
+	logger.info("Star	ting game with %d words in pool" % word_manager.size())
 	_on_clients_changed()
 	scoring.init_player(DrawGuessScoring.VR_PLAYER_ID)
 	ai_manager.on_game_phase_entered()

@@ -8,17 +8,12 @@
 [sub_resource type="SphereShape3D" id="SphereShape3D_5k70s"]
 radius = 0.028358469
 
-[sub_resource type="SphereMesh" id="SphereMesh_5k70s"]
-radius = 0.03
-height = 0.06
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6k6aq"]
-albedo_color = Color(0.796243, 0.796243, 0.796243, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5k70s"]
 
 [node name="EraserTool" unique_id=1045651359 node_paths=PackedStringArray("eraser_mesh") groups=["eraser"] instance=ExtResource("1_pickable")]
 freeze = true
 script = ExtResource("2_script")
-eraser_mesh = NodePath("EraserMesh")
+eraser_mesh = NodePath("CSGSphere3D")
 active_color = Color(0.70980394, 0.12156863, 0.12156863, 1)
 normal_color = Color(0.76862746, 0.76862746, 0.76862746, 1)
 release_mode = 1
@@ -27,13 +22,12 @@ release_mode = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00085062534, 0)
 shape = SubResource("SphereShape3D_5k70s")
 
-[node name="EraserMesh" type="MeshInstance3D" parent="." index="1" unique_id=1694524629]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00085062534, 0)
-mesh = SubResource("SphereMesh_5k70s")
-surface_material_override/0 = SubResource("StandardMaterial3D_6k6aq")
+[node name="CSGSphere3D" type="CSGSphere3D" parent="." index="1" unique_id=1217185430]
+radius = 0.023846185
+radial_segments = 8
+material = SubResource("StandardMaterial3D_5k70s")
 
 [node name="XRToolsHighlightMaterial" type="Node" parent="." index="2" unique_id=2060584167]
 script = ExtResource("3_ycwal")
-highlight_mesh_instance = NodePath("../EraserMesh")
 highlight_material = ExtResource("4_high")
 metadata/_custom_type_script = "uid://cdl5kcr2wvnav"

@@ -5,7 +5,7 @@ extends XRToolsPickable
 signal stroke_erased(stroke: DrawingStroke)
 
 #@export var snap_zone: XRToolsSnapZone
-@export var eraser_mesh: MeshInstance3D
+@export var eraser_mesh: CSGSphere3D
 @export var active_color := Color(1.0, 0.2, 0.2, 1.0)
 @export var normal_color := Color(0.7, 0.7, 0.7, 1.0)
 
@@ -70,7 +70,7 @@ func _set_active_visual(active: bool):
 	if not is_instance_valid(eraser_mesh):
 		return
 	
-	var mat = eraser_mesh.get_surface_override_material(0) as StandardMaterial3D
+	var mat = eraser_mesh.material as StandardMaterial3D
 	mat.albedo_color = active_color if active else normal_color
 
 func _find_strokes_container() -> Node3D:

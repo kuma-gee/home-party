@@ -1,7 +1,9 @@
 [gd_scene format=3 uid="uid://cjd4pq1rt4g7v"]
 
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="2"]
-[ext_resource type="Texture2D" uid="uid://dppjsb1nftth5" path="res://icon.svg" id="3_cfy43"]
+[ext_resource type="Texture2D" uid="uid://beok7cnwgiji0" path="res://assets/drawing/guide/DrawGuide_01_draw.png" id="2_hqqvo"]
+[ext_resource type="Texture2D" uid="uid://i454ipxj2y7a" path="res://assets/drawing/guide/DrawGuide_02_erase.png" id="3_v55kb"]
+[ext_resource type="Texture2D" uid="uid://cov2oghkbh270" path="res://assets/drawing/guide/DrawGuide_03_erase_all.png" id="4_ugkoo"]
 
 [node name="PrepareInstructions" type="PanelContainer" unique_id=879230891]
 anchors_preset = 15
@@ -21,12 +23,18 @@ theme_override_constants/margin_bottom = 32
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=926703167]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_constants/separation = 24
 
 [node name="Title" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1915275072]
 layout_mode = 2
 theme = ExtResource("2")
+theme_type_variation = &"LabelLarge"
 text = "Draw & Guess"
+horizontal_alignment = 1
+
+[node name="Title2" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1523015360]
+layout_mode = 2
+theme = ExtResource("2")
+text = "Players see your VR view"
 horizontal_alignment = 1
 
 [node name="GridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer" unique_id=1932757347]
@@ -37,7 +45,7 @@ columns = 2
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/GridContainer" unique_id=1149372901]
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
-texture = ExtResource("3_cfy43")
+texture = ExtResource("2_hqqvo")
 expand_mode = 4
 stretch_mode = 5
 
@@ -45,14 +53,15 @@ stretch_mode = 5
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("2")
-text = "Pick up brush to draw"
+text = "Pick up brush and hold
+trigger to draw"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="TextureRect2" type="TextureRect" parent="MarginContainer/VBoxContainer/GridContainer" unique_id=1902899398]
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
-texture = ExtResource("3_cfy43")
+texture = ExtResource("3_v55kb")
 expand_mode = 4
 stretch_mode = 5
 
@@ -60,14 +69,15 @@ stretch_mode = 5
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("2")
-text = "Use eraser to erase a stroke"
+text = "Use eraser by holding
+trigger to erase"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="TextureRect3" type="TextureRect" parent="MarginContainer/VBoxContainer/GridContainer" unique_id=1754728992]
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
-texture = ExtResource("3_cfy43")
+texture = ExtResource("4_ugkoo")
 expand_mode = 4
 stretch_mode = 5
 
@@ -75,6 +85,7 @@ stretch_mode = 5
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("2")
-text = "Pick up brush to draw"
+text = "Put brush inside eraser
+to Erase all"
 horizontal_alignment = 1
 vertical_alignment = 1

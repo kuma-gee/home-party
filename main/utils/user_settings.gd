@@ -18,7 +18,7 @@ var _vsync: bool = true
 
 # Comfort
 enum MovementMode { SMOOTH, TELEPORT }
-var _movement_mode: MovementMode = MovementMode.SMOOTH
+var _movement_mode: MovementMode = MovementMode.TELEPORT
 var _vignette_enabled: bool = false
 var _seated_mode: bool = false
 
@@ -214,7 +214,7 @@ func load_settings() -> void:
 		0, _SHADOW_QUALITY_VALUES.size() - 1
 	) as ShadowQuality
 	_vsync = config.get_value("graphics", "vsync", true)
-	_movement_mode = config.get_value("comfort", "movement_mode", MovementMode.SMOOTH) as MovementMode
+	_movement_mode = config.get_value("comfort", "movement_mode", MovementMode.TELEPORT) as MovementMode
 	_vignette_enabled = config.get_value("comfort", "vignette_enabled", false)
 	_seated_mode = config.get_value("comfort", "seated_mode", false)
 
