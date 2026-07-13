@@ -17,11 +17,13 @@ signal back_to_home()
 @export var teleport_function: XRToolsFunctionTeleport
 @export var vignette: XRToolsVignette
 @export var player_body: XRToolsPlayerBody
+@export var show_pause_overlay := true
 
 const SETTINGS_PANEL_DISTANCE := 0.8
 const SEATED_HEIGHT_OVERRIDE := 1.0
 
 var was_paused := false
+var _pause_active := false
 var _settings_panel_instance: SettingsPanel = null
 var _locomotion_enabled := true
 var _settings_panel_y_offset := 0.0
@@ -44,6 +46,21 @@ func _ready() -> void:
 	_apply_movement_mode()
 	_apply_vignette_enabled()
 	_apply_seated_mode()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not (event is InputEventKey):
+		return
+
+	if not event.pressed or event.echo or event.keycode != KEY_ESCAPE:
+		return
+
+	if settings_viewport.visible:
+		_on_menu_closed(true)
+	else:
+		_open_settings_menu()
+
+	get_viewport().set_input_as_handled()
 
 
 func _process(_delta: float) -> void:
@@ -87,10 +104,19 @@ func _connect_menu(menu: VRMenuPanel):
 		settings_viewport.hide()
 		return
 	
-	overlay_mesh.show_overlay()
-	pause_menu.show()
+	_show_pause_menu()
+
+
+func _show_pause_menu() -> void:
+	if _pause_active:
+		return
+
+	_pause_active = true
 	was_paused = get_tree().paused
-	get_tree().paused = true
+	if show_pause_overlay:
+		overlay_mesh.show_overlay()
+		pause_menu.show()
+		get_tree().paused = true
 
 func reset_space(offset: Vector3 = Vector3.ZERO):
 	offset.y = 0
@@ -100,10 +126,12 @@ func _on_menu_closed(from_settings := false):
 	if settings_viewport.visible and not from_settings:
 		return
 	
-	pause_menu.hide()
-	get_tree().paused = was_paused
-	if not get_tree().paused:
-		overlay_mesh.hide_overlay()
+	_pause_active = false
+	if show_pause_overlay:
+		pause_menu.hide()
+		get_tree().paused = was_paused
+		if not get_tree().paused:
+			overlay_mesh.hide_overlay()
 	settings_viewport.hide()
 
 func activate():
@@ -128,6 +156,11 @@ func _apply_movement_mode() -> void:
 	teleport_function.enabled = mode == UserSettings.MovementMode.TELEPORT
 
 func _on_settings_pressed():
+	_open_settings_menu()
+
+
+func _open_settings_menu() -> void:
+	_show_pause_menu()
 	_place_in_front_of_player(settings_viewport, SETTINGS_PANEL_DISTANCE)
 	_settings_panel_y_offset = settings_viewport.global_position.y - camera.global_position.y
 	settings_viewport.show()

@@ -4,6 +4,9 @@ extends Control
 signal back_pressed
 signal player_height_changed(new_height: float)
 
+const KEYBOARD_TAB_CHANGE_PREVIOUS := -1
+const KEYBOARD_TAB_CHANGE_NEXT := 1
+
 @onready var _master_slider: HSlider = %MasterSlider
 @onready var _master_value_label: Label = %MasterValue
 @onready var _sfx_slider: HSlider = %SFXSlider
@@ -22,6 +25,7 @@ signal player_height_changed(new_height: float)
 @onready var _player_height_value_label: Label = %PlayerHeightValue
 @onready var _seated_mode_toggle: CheckBox = %SeatedModeToggle
 @onready var _back_button: Button = %BackButton
+@onready var _tab_container: TabContainer = $VBoxContainer/TabContainer
 
 
 func _ready() -> void:
@@ -68,6 +72,34 @@ func _ready() -> void:
 	_player_height_slider.drag_ended.connect(_on_player_height_drag_ended)
 	_seated_mode_toggle.toggled.connect(_on_seated_mode_toggled)
 	_back_button.pressed.connect(back_pressed.emit)
+	_tab_container.tab_changed.connect(_on_tab_changed)
+	visibility_changed.connect(_on_visibility_changed)
+
+	if visible:
+		_focus_first_control(true)
+
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if not visible or not (event is InputEventKey):
+		return
+
+	if not event.pressed or event.echo:
+		return
+
+	if event.ctrl_pressed and event.keycode == KEY_TAB:
+		var direction := KEYBOARD_TAB_CHANGE_PREVIOUS if event.shift_pressed else KEYBOARD_TAB_CHANGE_NEXT
+		_change_tab(direction)
+		get_viewport().set_input_as_handled()
+		return
+
+	if event.keycode == KEY_TAB:
+		_move_focus(-1 if event.shift_pressed else 1)
+		get_viewport().set_input_as_handled()
+		return
+
+	if event.keycode == KEY_ESCAPE:
+		back_pressed.emit()
+		get_viewport().set_input_as_handled()
 
 
 # ------------------------------------------------------------------------------
@@ -161,3 +193,70 @@ func _on_seated_mode_toggled(enabled: bool) -> void:
 
 func _update_seated_mode_label(enabled: bool) -> void:
 	_seated_mode_toggle.text = "On" if enabled else "Off"
+
+
+func _on_visibility_changed() -> void:
+	if visible:
+		call_deferred("_focus_first_control", true)
+
+
+func _on_tab_changed(_tab: int) -> void:
+	if visible:
+		call_deferred("_focus_first_control", true)
+
+
+func _change_tab(direction: int) -> void:
+	var tab_count := _tab_container.get_tab_count()
+	if tab_count <= 0:
+		return
+
+	var next_tab := posmod(_tab_container.current_tab + direction, tab_count)
+	_tab_container.current_tab = next_tab
+
+
+func _move_focus(direction: int) -> void:
+	var focusable_controls := _get_focusable_controls()
+	if focusable_controls.is_empty():
+		return
+
+	var focused_control := get_viewport().gui_get_focus_owner()
+	var focused_index := focusable_controls.find(focused_control)
+	if focused_index == -1:
+		focusable_controls[0].grab_focus()
+		return
+
+	var next_index := posmod(focused_index + direction, focusable_controls.size())
+	focusable_controls[next_index].grab_focus()
+
+
+func _focus_first_control(force: bool = false) -> void:
+	var focusable_controls := _get_focusable_controls()
+	if focusable_controls.is_empty():
+		return
+
+	var focused_control := get_viewport().gui_get_focus_owner()
+	if not force and focused_control in focusable_controls:
+		return
+
+	focusable_controls[0].grab_focus()
+
+
+func _get_focusable_controls() -> Array[Control]:
+	var focusable_controls: Array[Control] = []
+	_collect_focusable_controls(_tab_container.get_current_tab_control(), focusable_controls)
+	if _back_button.visible:
+		focusable_controls.append(_back_button)
+	return focusable_controls
+
+
+func _collect_focusable_controls(node: Node, focusable_controls: Array[Control]) -> void:
+	if node == null:
+		return
+
+	if node is Control:
+		var control := node as Control
+		if control.visible and control.focus_mode != Control.FOCUS_NONE:
+			focusable_controls.append(control)
+
+	for child in node.get_children():
+		_collect_focusable_controls(child, focusable_controls)

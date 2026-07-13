@@ -6,7 +6,7 @@
 [sub_resource type="ButtonGroup" id="ButtonGroup_movement_mode"]
 
 [node name="SettingsPanelUI" type="Control" unique_id=219640508]
-process_mode = 2
+process_mode = 3
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5

@@ -118,6 +118,11 @@ func _end_round_early() -> void:
 	round_timer.stop()
 	_on_round_timeout()
 
+func force_reveal() -> void:
+	if freestyle_mode or phase != Phase.DRAWING:
+		return
+	_end_round_early()
+
 func start_round_timer() -> void:
 	round_timer.start()
 

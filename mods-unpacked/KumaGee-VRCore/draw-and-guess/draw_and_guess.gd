@@ -45,6 +45,8 @@ func _unhandled_input(event: InputEvent) -> void:
 func _debug_advance() -> void:
 	if not is_game_phase:
 		_on_vr_ready_pressed()
+	elif round_manager.phase == DrawGuessRoundManager.Phase.DRAWING:
+		round_manager.force_reveal()
 	else:
 		_end_game()
 
