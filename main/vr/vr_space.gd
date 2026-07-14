@@ -17,23 +17,27 @@ signal back_to_home()
 @export var teleport_function: XRToolsFunctionTeleport
 @export var vignette: XRToolsVignette
 @export var player_body: XRToolsPlayerBody
+@export var debug_camera: Camera3D
 @export var show_pause_overlay := true
 
 const SETTINGS_PANEL_DISTANCE := 0.8
 const SEATED_HEIGHT_OVERRIDE := 1.0
+const DESKTOP_FALLBACK_PATH := ^"SubViewport/XRPlayer/DesktopVRFallback"
 
 var was_paused := false
 var _pause_active := false
 var _settings_panel_instance: SettingsPanel = null
 var _locomotion_enabled := true
 var _settings_panel_y_offset := 0.0
+var _previous_camera: Camera3D = null
+
+@onready var _desktop_vr_fallback: DesktopVRFallback = get_node_or_null(DESKTOP_FALLBACK_PATH)
 
 func _ready() -> void:
 	menu_function.menu_opened.connect(_connect_menu)
 	menu_function.menu_closed.connect(_on_menu_closed)
 	reset_area.body_entered.connect(func(_b): reset_space())
 	pause_menu.hide()
-
 	if initial_transform:
 		origin.transform = initial_transform.transform
 
@@ -49,6 +53,15 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if _handle_debug_camera_input(event):
+		get_viewport().set_input_as_handled()
+		return
+
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F1:
+		_toggle_debug_camera()
+		get_viewport().set_input_as_handled()
+		return
+
 	if not (event is InputEventKey):
 		return
 
@@ -61,6 +74,23 @@ func _unhandled_input(event: InputEvent) -> void:
 		_open_settings_menu()
 
 	get_viewport().set_input_as_handled()
+
+
+func _handle_debug_camera_input(event: InputEvent) -> bool:
+	if not debug_camera.current or _desktop_vr_fallback == null:
+		return false
+
+	if event is InputEventMouseButton:
+		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+			_desktop_vr_fallback.capture_mouse()
+			return true
+		return false
+
+	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+		_desktop_vr_fallback.apply_mouse_motion(event.relative)
+		return true
+
+	return false
 
 
 func _process(_delta: float) -> void:
@@ -137,6 +167,41 @@ func _on_menu_closed(from_settings := false):
 func activate():
 	origin.current = true
 	camera.current = true
+
+
+func _toggle_debug_camera() -> void:
+	if debug_camera == null:
+		push_warning("DebugVRView camera missing; debug camera toggle disabled")
+		return
+
+	if debug_camera.current:
+		var restore_camera := _previous_camera if is_instance_valid(_previous_camera) else _find_desktop_camera()
+		if restore_camera != null:
+			restore_camera.make_current()
+		_previous_camera = null
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		return
+
+	var current_camera := get_viewport().get_camera_3d()
+	if current_camera != null and current_camera != debug_camera and current_camera != camera:
+		_previous_camera = current_camera
+	else:
+		_previous_camera = _find_desktop_camera()
+
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	debug_camera.make_current()
+
+
+func _find_desktop_camera() -> Camera3D:
+	var scene := get_tree().current_scene
+	if scene == null:
+		return null
+
+	for child in scene.get_children():
+		if child is Camera3D and child != debug_camera and child != camera:
+			return child
+
+	return null
 
 ## Toggle player-driven movement (walking + teleport) for games that
 ## don't want free player locomotion (e.g. fixed-position defense games).

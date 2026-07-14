@@ -3,10 +3,8 @@ extends XRToolsSceneBase
 const MOVE_GUIDE_LEFT_SMOOTH := preload("res://assets/living_room/guide/MoveGuide_Left_Smooth.png")
 const MOVE_GUIDE_LEFT_TELEPORT := preload("res://assets/living_room/guide/MoveGuide_Left_Teleport.png")
 
-@export var debug_vr_view: Camera3D
 @export var move_guide_left: TextureRect
 
-@onready var default_camera: Camera3D = $Camera3D
 @onready var game_shelve: GameShelve = $GameShelve
 @onready var feedback_form_pickup: XRToolsPickable = %FeedbackFormPickup
 @onready var reset_area: Area3D = $GameShelve/ResetArea
@@ -22,23 +20,6 @@ func _ready() -> void:
 	UserSettings.setting_changed.connect(_on_user_setting_changed)
 	_update_move_guide()
 	_update_feedback_form_pickup()
-
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F1:
-		_toggle_debug_camera()
-
-
-func _toggle_debug_camera() -> void:
-	if debug_vr_view == null:
-		push_warning("DebugVRView camera missing; debug camera toggle disabled")
-		return
-
-	if debug_vr_view.current:
-		default_camera.make_current()
-		return
-
-	debug_vr_view.make_current()
 
 
 func _update_feedback_form_pickup() -> void:

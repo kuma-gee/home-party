@@ -213,7 +213,7 @@ fov = 16.0
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="Camera3D" index="0" unique_id=1191617242]
 visible = false
 
-[node name="RemoteTransform3D" type="RemoteTransform3D" parent="XRPlayer/SubViewport/XRPlayer/XRCamera3D" parent_id_path=PackedInt32Array(10000004, 227782039) index="3" unique_id=1238925898]
+[node name="RemoteTransform3D2" type="RemoteTransform3D" parent="XRPlayer/SubViewport/XRPlayer/XRCamera3D" parent_id_path=PackedInt32Array(10000004, 227782039) index="3" unique_id=1238925898]
 remote_path = NodePath("../../../../../BaseSceneContent/SubViewport/Camera3D")
 
 [node name="AnimationTree" parent="XRPlayer/SubViewport/XRPlayer/LeftHand/LeftHand" parent_id_path=PackedInt32Array(10000004, 801242371) index="1" unique_id=1971929839]
