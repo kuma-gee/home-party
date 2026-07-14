@@ -30,10 +30,16 @@ var _settings_panel_instance: SettingsPanel = null
 var _locomotion_enabled := true
 var _settings_panel_y_offset := 0.0
 var _previous_camera: Camera3D = null
+var _desktop_canvas: CanvasLayer = null
+var _desktop_canvas_was_visible := true
+var _pause_canvas: CanvasLayer = null
+var _pause_canvas_was_visible := true
 
 @onready var _desktop_vr_fallback: DesktopVRFallback = get_node_or_null(DESKTOP_FALLBACK_PATH)
 
 func _ready() -> void:
+	_desktop_canvas = _get_base_game_desktop_canvas()
+	_pause_canvas = _get_pause_canvas()
 	menu_function.menu_opened.connect(_connect_menu)
 	menu_function.menu_closed.connect(_on_menu_closed)
 	reset_area.body_entered.connect(func(_b): reset_space())
@@ -180,6 +186,8 @@ func _toggle_debug_camera() -> void:
 			restore_camera.make_current()
 		_previous_camera = null
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		_set_desktop_canvas_enabled(true)
+		_set_pause_canvas_enabled(true)
 		return
 
 	var current_camera := get_viewport().get_camera_3d()
@@ -189,6 +197,8 @@ func _toggle_debug_camera() -> void:
 		_previous_camera = _find_desktop_camera()
 
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	_set_desktop_canvas_enabled(false)
+	_set_pause_canvas_enabled(false)
 	debug_camera.make_current()
 
 
@@ -202,6 +212,49 @@ func _find_desktop_camera() -> Camera3D:
 			return child
 
 	return null
+
+
+func _get_base_game_desktop_canvas() -> CanvasLayer:
+	var base_game := get_parent() as BaseGame
+	if base_game == null:
+		return null
+
+	return base_game.desktop_canvas
+
+
+func _set_desktop_canvas_enabled(enabled: bool) -> void:
+	if _desktop_canvas == null:
+		_desktop_canvas = _get_base_game_desktop_canvas()
+	if _desktop_canvas == null:
+		return
+
+	if enabled:
+		_desktop_canvas.visible = _desktop_canvas_was_visible
+		return
+
+	_desktop_canvas_was_visible = _desktop_canvas.visible
+	_desktop_canvas.hide()
+
+
+func _get_pause_canvas() -> CanvasLayer:
+	if pause_menu == null:
+		return null
+
+	return pause_menu.get_parent() as CanvasLayer
+
+
+func _set_pause_canvas_enabled(enabled: bool) -> void:
+	if _pause_canvas == null:
+		_pause_canvas = _get_pause_canvas()
+	if _pause_canvas == null:
+		return
+
+	if enabled:
+		_pause_canvas.visible = _pause_canvas_was_visible
+		return
+
+	_pause_canvas_was_visible = _pause_canvas.visible
+	_pause_canvas.hide()
 
 ## Toggle player-driven movement (walking + teleport) for games that
 ## don't want free player locomotion (e.g. fixed-position defense games).

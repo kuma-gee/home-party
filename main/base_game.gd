@@ -13,6 +13,7 @@ signal gameover_phase()
 ## it via set_scene). Games that skip a VR gameover screen can leave this unset.
 @export var vr_screen: XRToolsViewport2DIn3D
 @export var gameover_scene: PackedScene = preload("res://main/ui/gameover_screen.tscn")
+@export var desktop_canvas: CanvasLayer
 
 @onready var game_ui: Control = %GameUI
 @onready var prepare_ui: Control = %PrepareUI
