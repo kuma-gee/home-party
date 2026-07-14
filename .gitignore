@@ -15,3 +15,7 @@ mods-unpacked/**/assets/*
 # E2E test output
 test-results/
 node_modules/
+
+# Local Python virtual environments
+.venv/
+.opencode/mcp/.venv/

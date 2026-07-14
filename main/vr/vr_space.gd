@@ -207,6 +207,8 @@ func _find_desktop_camera() -> Camera3D:
 ## don't want free player locomotion (e.g. fixed-position defense games).
 func set_locomotion_enabled(value: bool) -> void:
 	_locomotion_enabled = value
+	if _desktop_vr_fallback != null:
+		_desktop_vr_fallback.locomotion_enabled = value
 	_apply_movement_mode()
 
 ## Movement mode is exclusive: only smooth (direct) OR teleport is active,

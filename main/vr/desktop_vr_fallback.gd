@@ -18,6 +18,8 @@ const RANGED_COLLIDER_ROTATION := Basis(Vector3.RIGHT, PI / 2.0)
 @export var pause_menu: Control
 @export var settings_viewport: XRToolsViewport2DIn3D
 
+var locomotion_enabled := true
+
 var _pending_yaw := 0.0
 var _pitch := 0.0
 var _is_crouching := false
@@ -88,6 +90,9 @@ func release_mouse_capture() -> void:
 
 
 func apply_mouse_motion(relative: Vector2) -> void:
+	if not locomotion_enabled:
+		return
+
 	_pending_yaw += relative.x * mouse_sensitivity
 	_pitch = clamp(
 		_pitch - relative.y * mouse_sensitivity,
@@ -99,6 +104,11 @@ func apply_mouse_motion(relative: Vector2) -> void:
 
 
 func physics_movement(_delta: float, player_body: XRToolsPlayerBody, _disabled: bool):
+	if not locomotion_enabled:
+		player_body.override_player_height(self)
+		_pending_yaw = 0.0
+		return
+
 	if _should_block_input():
 		player_body.override_player_height(self)
 		return
