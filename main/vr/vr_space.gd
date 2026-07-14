@@ -58,13 +58,13 @@ func _ready() -> void:
 	_apply_seated_mode()
 
 
-func _input(event: InputEvent) -> void:
-	if not _is_escape_key(event):
-		return
+#func _input(event: InputEvent) -> void:
+	#if not _is_escape_key(event):
+		#return
 
-	if debug_camera != null and debug_camera.current and settings_viewport.visible:
-		_on_menu_closed(true)
-		get_viewport().set_input_as_handled()
+	#if debug_camera != null and debug_camera.current and settings_viewport.visible:
+		#_on_menu_closed(true)
+		#get_viewport().set_input_as_handled()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -77,7 +77,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		return
 
-	if not _is_escape_key(event):
+	if not _is_escape_key(event) or not event.is_pressed():
 		return
 
 	if settings_viewport.visible:
@@ -306,6 +306,10 @@ func _place_in_front_of_player(node: Node3D, distance: float) -> void:
 	node.rotate_object_local(Vector3.UP, PI)
 
 func _on_settings_back_pressed():
+	_on_menu_closed(true)
+
+
+func close_settings_menu() -> void:
 	_on_menu_closed(true)
 
 

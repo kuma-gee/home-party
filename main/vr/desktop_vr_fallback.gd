@@ -17,7 +17,7 @@ const RANGED_COLLIDER_ROTATION := Basis(Vector3.RIGHT, PI / 2.0)
 @export_range(0.0, 89.0, 0.1) var max_pitch_degrees := 80.0
 @export var crouch_height := 1.0
 @export var pause_menu: Control
-@export var settings_viewport: XRToolsViewport2DIn3D
+#@export var settings_viewport: XRToolsViewport2DIn3D
 
 var locomotion_enabled := true
 
@@ -66,6 +66,13 @@ func _process(delta: float) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
+		#if settings_viewport != null and settings_viewport.visible:
+			#var vr_space := _get_vr_space()
+			#if vr_space != null:
+				#vr_space.close_settings_menu()
+				#_mark_input_as_handled()
+				#return
+
 		release_mouse_capture()
 		return
 
@@ -163,8 +170,24 @@ func physics_movement(_delta: float, player_body: XRToolsPlayerBody, _disabled: 
 
 func _should_block_input() -> bool:
 	var pause_open := pause_menu != null and pause_menu.visible
-	var settings_open := settings_viewport != null and settings_viewport.visible
+	var settings_open := false # settings_viewport != null and settings_viewport.visible
 	return XRToolsStartXR.is_xr_active() or pause_open or settings_open
+
+
+func _get_vr_space() -> VRSpace:
+	var node := get_parent()
+	while node != null:
+		if node is VRSpace:
+			return node
+		node = node.get_parent()
+	return null
+
+
+func _mark_input_as_handled() -> void:
+	get_viewport().set_input_as_handled()
+	var root_viewport := get_tree().root
+	if root_viewport != get_viewport():
+		root_viewport.set_input_as_handled()
 
 
 func _update_desktop_hands() -> void:
