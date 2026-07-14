@@ -13,6 +13,7 @@ const RANGED_COLLIDER_ROTATION := Basis(Vector3.RIGHT, PI / 2.0)
 @export var order: int = 4
 @export var max_speed: float = 1.0
 @export var mouse_sensitivity: float = 0.0025
+@export var held_object_rotation_sensitivity: float = 0.01
 @export_range(0.0, 89.0, 0.1) var max_pitch_degrees := 80.0
 @export var crouch_height := 1.0
 @export var pause_menu: Control
@@ -28,6 +29,7 @@ var _left_mouse_pressed := false
 var _right_pickup_toggle_requested := false
 var _right_action_requested := false
 var _right_action_pressed := false
+var _right_hand_rotation_offset := Basis.IDENTITY
 
 @onready var _camera: XRCamera3D = XRHelpers.get_xr_camera(self)
 @export var _left_hand: XRController3D
@@ -71,13 +73,21 @@ func _unhandled_input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 			return
 
+		if event.button_index == MOUSE_BUTTON_MIDDLE:
+			capture_mouse()
+			get_viewport().set_input_as_handled()
+			return
+
 		if event.button_index == MOUSE_BUTTON_RIGHT:
 			capture_mouse()
 			get_viewport().set_input_as_handled()
 		return
 
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-		apply_mouse_motion(event.relative)
+		if _should_rotate_held_object():
+			rotate_held_object(event.relative)
+		else:
+			apply_mouse_motion(event.relative)
 		get_viewport().set_input_as_handled()
 
 
@@ -100,6 +110,16 @@ func apply_mouse_motion(relative: Vector2) -> void:
 		deg_to_rad(max_pitch_degrees)
 	)
 	_camera.rotation.x = _pitch
+	_update_desktop_hands()
+
+
+func rotate_held_object(relative: Vector2) -> void:
+	if not locomotion_enabled:
+		return
+
+	var yaw := Basis(Vector3.UP, -relative.x * held_object_rotation_sensitivity)
+	var pitch := Basis(Vector3.RIGHT, -relative.y * held_object_rotation_sensitivity)
+	_right_hand_rotation_offset = (_right_hand_rotation_offset * yaw * pitch).orthonormalized()
 	_update_desktop_hands()
 
 
@@ -150,7 +170,9 @@ func _update_desktop_hands() -> void:
 		_left_hand.global_transform = _camera.global_transform.translated_local(LEFT_HAND_OFFSET)
 
 	if _right_hand != null:
-		_right_hand.global_transform = _camera.global_transform.translated_local(RIGHT_HAND_OFFSET)
+		var right_transform := _camera.global_transform.translated_local(RIGHT_HAND_OFFSET)
+		right_transform.basis *= _right_hand_rotation_offset
+		_right_hand.global_transform = right_transform
 
 
 func _poll_desktop_pickup_input() -> void:
@@ -163,14 +185,26 @@ func _poll_desktop_pickup_input() -> void:
 
 	var left_pressed := Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 	var right_pressed := Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)
+	var middle_pressed := Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE)
 	if left_pressed and not _left_mouse_pressed:
 		_right_pickup_toggle_requested = true
 
-	if (left_pressed and not _left_mouse_pressed) or (right_pressed and not _right_action_requested):
+	if (left_pressed and not _left_mouse_pressed) \
+			or (right_pressed and not _right_action_requested) \
+			or middle_pressed:
 		capture_mouse()
 
 	_left_mouse_pressed = left_pressed
 	_right_action_requested = right_pressed
+
+	if not is_instance_valid(_right_pickup) or not is_instance_valid(_right_pickup.picked_up_object):
+		_right_hand_rotation_offset = Basis.IDENTITY
+
+
+func _should_rotate_held_object() -> bool:
+	return Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE) \
+			and is_instance_valid(_right_pickup) \
+			and is_instance_valid(_right_pickup.picked_up_object)
 
 
 func _process_desktop_pickup(
