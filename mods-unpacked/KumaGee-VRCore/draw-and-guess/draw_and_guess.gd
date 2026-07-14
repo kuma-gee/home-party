@@ -20,6 +20,10 @@ var prepare_scene: DrawPrepareScene
 var freestyle_mode := false
 
 const DRAW_PLAYER_UI_SCENE := preload("res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_player_ui.tscn")
+const ROUND_START_CUE := preload("res://assets/sound/sfx/拍子木1.mp3")
+const ROUND_START_FOLLOWUP_CUE := preload("res://assets/sound/sfx/拍子木2.mp3")
+const CORRECT_GUESS_CUE := preload("res://assets/sound/sfx/成功音.mp3")
+const WRONG_GUESS_CUE := preload("res://assets/sound/sfx/ビープ音4.mp3")
 
 func _ready() -> void:
 	super()
@@ -33,6 +37,9 @@ func _ready() -> void:
 	game_phase.connect(_on_game_phase)
 	prepare_phase.connect(_on_prepare_phase)
 	ai_manager.ai_guessed.connect(_on_player_guessed)
+
+func _play_round_start_cue() -> void:
+	AudioManager.play_sfx(ROUND_START_CUE)
 
 func _unhandled_input(event: InputEvent) -> void:
 	super._unhandled_input(event)
@@ -156,6 +163,7 @@ func _on_player_guessed(guess: String, player_ui: DrawPlayerUI) -> void:
 	
 	if round_manager.player_guessed(player_ui.uuid, guess):
 		logger.info("Correct guess from %s: %s" % [player_ui.uuid, guess])
+		AudioManager.play_sfx(CORRECT_GUESS_CUE)
 		if player_ui.game_client is GameClient:
 			player_ui.game_client.send_text("word_ack;correct")
 		player_ui.mark_guessed_correctly()
@@ -164,6 +172,7 @@ func _on_player_guessed(guess: String, player_ui: DrawPlayerUI) -> void:
 			pet.on_correct_guess(guess)
 	else:
 		logger.debug("Incorrect guess from %s: %s" % [player_ui.uuid, guess])
+		AudioManager.play_sfx(WRONG_GUESS_CUE)
 		if player_ui.game_client is GameClient:
 			player_ui.game_client.send_text("word_ack;incorrect")
 		player_ui.mark_guessed_incorrectly()
@@ -195,6 +204,10 @@ func _on_vr_ready_pressed() -> void:
 	if word_manager.is_empty():
 		word_manager.fill_with_random_words()
 		logger.debug("No submitted words - filled pool with fallback words")
+		_update_ui()
+		if PlayerManager.get_active_players().is_empty():
+			_start_game()
+			return
 	check_all_ready(true)
 
 func _on_round_skipped(word: String) -> void:
@@ -231,6 +244,7 @@ func _start_next_round() -> void:
 	
 	var word = word_manager.pick_random_word()
 	round_manager.start_round(word)
+	_play_round_start_cue()
 	ai_manager.start_game_round(word)
 	
 	logger.info("Round %d/%d: Word assigned" % [round_manager.current_round, round_manager.total_rounds])
@@ -252,6 +266,7 @@ func _start_next_round() -> void:
 
 func _on_round_timed_out(word: String) -> void:
 	logger.info("Round %d timer expired, revealing word: %s" % [round_manager.current_round, word])
+	AudioManager.play_sfx(ROUND_START_FOLLOWUP_CUE)
 	
 	if reveal_label:
 		reveal_label.text = "The word was: %s" % word
@@ -282,6 +297,7 @@ func _on_freestyle_timer_started() -> void:
 	if not freestyle_mode:
 		return
 	round_manager.start_freestyle_round()
+	_play_round_start_cue()
 	prepare_scene.show_freestyle_drawing(round_manager.current_round)
 	if progress_label:
 		progress_label.text = round_manager.get_progress_text()
@@ -298,6 +314,7 @@ func _on_freestyle_timer_started() -> void:
 func _on_freestyle_result(guessed: bool) -> void:
 	if not freestyle_mode:
 		return
+	AudioManager.play_sfx(CORRECT_GUESS_CUE if guessed else WRONG_GUESS_CUE)
 	round_manager.complete_freestyle_round(guessed)
 
 func _on_freestyle_round_ended(guessed: bool) -> void:

@@ -53,8 +53,7 @@ func update_prepare_status(list: Array, total_words := 0, max_words_per_player :
 			active_client_count += 1
 
 	var total_players := list.size()
-	var max_words: int = total_players * max_words_per_player
-	status_label.text = "%d words\n%d / %d players ready" % [total_words, max_words, active_client_count, total_players]
+	status_label.text = "%d words\n%d / %d ready" % [total_words, active_client_count, total_players]
 	ready_button.disabled = active_client_count < total_players or total_words <= 0
 
 func _on_skip_button_pressed() -> void:
