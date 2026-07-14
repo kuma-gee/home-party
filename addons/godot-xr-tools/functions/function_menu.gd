@@ -40,6 +40,9 @@ func is_xr_class(xr_name: String) -> bool:
 	return xr_name == "XRToolsFunctionMenu"
 
 
+func is_enabled() -> bool:
+	return _menu_enabled
+
 func set_menu_enabled(enabled: bool) -> void:
 	_menu_enabled = enabled
 	if not enabled and _menu_instance:

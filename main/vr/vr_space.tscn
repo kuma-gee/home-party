@@ -274,11 +274,18 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, -0.70000005, 0.360556)
 [node name="RightPole" type="Node3D" parent="SubViewport/XRPlayer/XRCamera3D" unique_id=1003337408]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.70000005, 0.360556)
 
-[node name="DesktopVRFallback" type="Node3D" parent="SubViewport/XRPlayer" unique_id=1395047026 groups=["movement_providers"]]
+[node name="DesktopVRFallback" type="Node3D" parent="SubViewport/XRPlayer" unique_id=1395047026 node_paths=PackedStringArray("pause_menu", "settings_viewport", "_left_hand", "_right_hand", "_left_pickup", "_right_pickup") groups=["movement_providers"]]
+process_mode = 3
 script = ExtResource("26_desktop")
+pause_menu = NodePath("../../../CanvasLayer/PauseMenu")
+settings_viewport = NodePath("../../../Viewport2Din3D")
+_left_hand = NodePath("../LeftHand")
+_right_hand = NodePath("../RightHand")
+_left_pickup = NodePath("../LeftHand/FunctionPickup")
+_right_pickup = NodePath("../RightHand/FunctionPickup")
 
 [node name="LeftHand" type="XRController3D" parent="SubViewport/XRPlayer" unique_id=2106749189]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1, -0.28195375)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.22, 1.4200001, -0.45)
 tracker = &"left_hand"
 
 [node name="LeftRotation" type="Node3D" parent="SubViewport/XRPlayer/LeftHand" unique_id=334350325]
@@ -320,7 +327,7 @@ collision_mask = 0
 shape = SubResource("SphereShape3D_icwxr")
 
 [node name="RightHand" type="XRController3D" parent="SubViewport/XRPlayer" unique_id=1667605568]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, -0.28195375)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22, 1.4200001, -0.45)
 tracker = &"right_hand"
 
 [node name="RightRotation" type="Node3D" parent="SubViewport/XRPlayer/RightHand" unique_id=233949792]

@@ -17,8 +17,8 @@
     "godot-debug": {
       "type": "local",
       "command": [
-        "python",
-        ".opencode/mcp/godot-debug.py"
+        "bash",
+        ".opencode/mcp/run-godot-debug.sh"
       ],
       "enabled": true
     }
