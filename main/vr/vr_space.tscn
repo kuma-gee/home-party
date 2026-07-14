@@ -274,7 +274,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, -0.70000005, 0.360556)
 [node name="RightPole" type="Node3D" parent="SubViewport/XRPlayer/XRCamera3D" unique_id=1003337408]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.70000005, 0.360556)
 
-[node name="DesktopVRFallback" type="Node3D" parent="SubViewport/XRPlayer" unique_id=1395047026 node_paths=PackedStringArray("pause_menu", "settings_viewport", "_left_hand", "_right_hand", "_left_pickup", "_right_pickup") groups=["movement_providers"]]
+[node name="DesktopVRFallback" type="Node3D" parent="SubViewport/XRPlayer" unique_id=1395047026 node_paths=PackedStringArray("pause_menu", "settings_viewport", "_left_hand", "_right_hand", "_left_pickup", "_right_pickup", "_left_pointer") groups=["movement_providers"]]
 process_mode = 3
 script = ExtResource("26_desktop")
 pause_menu = NodePath("../../../CanvasLayer/PauseMenu")
@@ -283,6 +283,7 @@ _left_hand = NodePath("../LeftHand")
 _right_hand = NodePath("../RightHand")
 _left_pickup = NodePath("../LeftHand/FunctionPickup")
 _right_pickup = NodePath("../RightHand/FunctionPickup")
+_left_pointer = NodePath("../LeftHand/FunctionPointer")
 
 [node name="LeftHand" type="XRController3D" parent="SubViewport/XRPlayer" unique_id=2106749189]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.22, 1.4200001, -0.45)

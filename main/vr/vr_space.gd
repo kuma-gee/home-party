@@ -58,6 +58,15 @@ func _ready() -> void:
 	_apply_seated_mode()
 
 
+func _input(event: InputEvent) -> void:
+	if not _is_escape_key(event):
+		return
+
+	if debug_camera != null and debug_camera.current and settings_viewport.visible:
+		_on_menu_closed(true)
+		get_viewport().set_input_as_handled()
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if _handle_debug_camera_input(event):
 		get_viewport().set_input_as_handled()
@@ -68,10 +77,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		return
 
-	if not (event is InputEventKey):
-		return
-
-	if not event.pressed or event.echo or event.keycode != KEY_ESCAPE:
+	if not _is_escape_key(event):
 		return
 
 	if settings_viewport.visible:
@@ -80,6 +86,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		_open_settings_menu()
 
 	get_viewport().set_input_as_handled()
+
+
+func _is_escape_key(event: InputEvent) -> bool:
+	return event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE
 
 
 func _handle_debug_camera_input(event: InputEvent) -> bool:

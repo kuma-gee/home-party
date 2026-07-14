@@ -29,6 +29,7 @@ var _left_mouse_pressed := false
 var _right_pickup_toggle_requested := false
 var _right_action_requested := false
 var _right_action_pressed := false
+var _left_pointer_pressed := false
 var _right_hand_rotation_offset := Basis.IDENTITY
 
 @onready var _camera: XRCamera3D = XRHelpers.get_xr_camera(self)
@@ -36,6 +37,7 @@ var _right_hand_rotation_offset := Basis.IDENTITY
 @export var _right_hand: XRController3D
 @export var _left_pickup: XRToolsFunctionPickup
 @export var _right_pickup: XRToolsFunctionPickup
+@export var _left_pointer: XRToolsFunctionPointer
 
 
 func _ready() -> void:
@@ -56,7 +58,10 @@ func _process(delta: float) -> void:
 	if _right_pickup_toggle_requested:
 		_right_pickup_toggle_requested = false
 		_toggle_right_pickup()
-	_set_action_pressed(_right_pickup, _right_action_requested)
+
+	var holding_object := _is_holding_right_object()
+	_set_pointer_pressed(_left_pointer, _left_mouse_pressed and not holding_object)
+	_set_action_pressed(_right_pickup, _right_action_requested and holding_object)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -201,10 +206,13 @@ func _poll_desktop_pickup_input() -> void:
 		_right_hand_rotation_offset = Basis.IDENTITY
 
 
+func _is_holding_right_object() -> bool:
+	return is_instance_valid(_right_pickup) and is_instance_valid(_right_pickup.picked_up_object)
+
+
 func _should_rotate_held_object() -> bool:
 	return Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE) \
-			and is_instance_valid(_right_pickup) \
-			and is_instance_valid(_right_pickup.picked_up_object)
+			and _is_holding_right_object()
 
 
 func _process_desktop_pickup(
@@ -344,3 +352,14 @@ func _set_action_pressed(pickup: XRToolsFunctionPickup, pressed: bool) -> void:
 		pickup._on_button_pressed(pickup.action_button_action)
 	else:
 		pickup._on_button_released(pickup.action_button_action)
+
+
+func _set_pointer_pressed(pointer: XRToolsFunctionPointer, pressed: bool) -> void:
+	if pointer == null or _left_pointer_pressed == pressed:
+		return
+
+	_left_pointer_pressed = pressed
+	if pressed:
+		pointer._button_pressed()
+	else:
+		pointer._button_released()
