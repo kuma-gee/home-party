@@ -137,21 +137,21 @@ nodes/Trigger/node = SubResource("AnimationNodeBlend2_b2vgm")
 nodes/Trigger/position = Vector2(-360, 40)
 node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1"]
 
-[sub_resource type="QuadMesh" id="QuadMesh_6a613"]
+[sub_resource type="QuadMesh" id="QuadMesh_76egc"]
 resource_local_to_scene = true
 size = Vector2(1.5, 1)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_l7e05"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_xa1jr"]
 viewport_path = NodePath("XRPlayer/Viewport2Din3D/Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e52in"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1qpvg"]
 transparency = 1
 cull_mode = 2
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_l7e05")
+albedo_texture = SubResource("ViewportTexture_xa1jr")
 texture_filter = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_7vhnx"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_ayfhd"]
 resource_local_to_scene = true
 size = Vector3(1.5, 1, 0.02)
 
@@ -301,18 +301,21 @@ autowrap_mode = 2
 [node name="XRPlayer" parent="." unique_id=841158329 instance=ExtResource("9_rtmvl")]
 show_pause_overlay = false
 
-[node name="AnimationTree" parent="XRPlayer/SubViewport/XRPlayer/LeftHand/LeftHand" parent_id_path=PackedInt32Array(841158329, 801242371) index="1" unique_id=1971929839]
+[node name="hand_l" parent="XRPlayer/SubViewport/XRPlayer/LeftHand/LeftHand" parent_id_path=PackedInt32Array(841158329, 801242371) index="0" unique_id=28381700]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.01, 0, 0.05)
+
+[node name="AnimationTree" parent="XRPlayer/SubViewport/XRPlayer/LeftHand/LeftHand" parent_id_path=PackedInt32Array(841158329, 801242371) index="1" unique_id=899348105]
 tree_root = SubResource("AnimationNodeBlendTree_3vnjw")
 
-[node name="AnimationTree" parent="XRPlayer/SubViewport/XRPlayer/RightHand/RightHand" parent_id_path=PackedInt32Array(841158329, 40282269) index="1"]
+[node name="AnimationTree" parent="XRPlayer/SubViewport/XRPlayer/RightHand/RightHand" parent_id_path=PackedInt32Array(841158329, 40282269) index="1" unique_id=621397323]
 tree_root = SubResource("AnimationNodeBlendTree_8ujs7")
 
 [node name="Screen" parent="XRPlayer/Viewport2Din3D" parent_id_path=PackedInt32Array(841158329, 1418763861) index="1" unique_id=1761931612]
-mesh = SubResource("QuadMesh_6a613")
-surface_material_override/0 = SubResource("StandardMaterial3D_e52in")
+mesh = SubResource("QuadMesh_76egc")
+surface_material_override/0 = SubResource("StandardMaterial3D_1qpvg")
 
 [node name="CollisionShape3D" parent="XRPlayer/Viewport2Din3D/StaticBody3D" parent_id_path=PackedInt32Array(841158329, 1418763861, 1882660186) index="0" unique_id=507281989]
-shape = SubResource("BoxShape3D_7vhnx")
+shape = SubResource("BoxShape3D_ayfhd")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1355722313]
 transform = Transform3D(-0.7071068, -0.5, 0.49999994, 4.736141e-09, 0.70710677, 0.7071068, -0.70710677, 0.50000006, -0.5, 0.4978035, 3.4107723, -3.112376)
@@ -483,7 +486,7 @@ environment = ExtResource("20_vp77d")
 [editable path="XRPlayer/StartXR"]
 [editable path="XRPlayer/SubViewport/XRPlayer/PlayerBody/Body/player"]
 [editable path="XRPlayer/SubViewport/XRPlayer/LeftHand/LeftHand"]
-[editable path="XRPlayer/SubViewport/XRPlayer/LeftHand/LeftHand/Hand_Nails_low_L"]
+[editable path="XRPlayer/SubViewport/XRPlayer/LeftHand/LeftHand/hand_l"]
 [editable path="XRPlayer/SubViewport/XRPlayer/RightHand/RightHand"]
-[editable path="XRPlayer/SubViewport/XRPlayer/RightHand/RightHand/Hand_Nails_low_R"]
+[editable path="XRPlayer/SubViewport/XRPlayer/RightHand/RightHand/hand_r"]
 [editable path="XRPlayer/Viewport2Din3D"]

@@ -40,7 +40,7 @@ var _right_hand_rotation_offset := Basis.IDENTITY
 
 
 func _ready() -> void:
-	if Editor.is_editor_hint():
+	if Engine.is_editor_hint():
 		return
 
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -48,7 +48,7 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	if Editor.is_editor_hint():
+	if Engine.is_editor_hint():
 		return
 
 	if _should_block_input() and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
@@ -70,7 +70,7 @@ func _process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if Editor.is_editor_hint():
+	if Engine.is_editor_hint():
 		return
 
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:

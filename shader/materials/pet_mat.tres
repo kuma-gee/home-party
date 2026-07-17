@@ -1,0 +1,18 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://bh64obn4u4rlk"]
+
+[ext_resource type="Shader" uid="uid://b82qypctvcmnr" path="res://shader/toon.gdshader" id="1_sscc4"]
+[ext_resource type="Texture2D" uid="uid://c3eg3ktc4d2gu" path="res://assets/characters/cube-pets/Models/GLB format/Textures/colormap.png" id="2_l2mwv"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_sscc4")
+shader_parameter/base_color = Color(1, 1, 1, 1)
+shader_parameter/albedo_texture = ExtResource("2_l2mwv")
+shader_parameter/use_albedo_texture = true
+shader_parameter/shadow_color = Color(0.35, 0.28, 0.22, 1)
+shader_parameter/shadow_threshold = 0.45
+shader_parameter/shadow_smoothness = 0.0
+shader_parameter/ambient_strength = 0.15
+shader_parameter/specular_strength = 0.25
+shader_parameter/specular_threshold = 0.78
+shader_parameter/specular_color = Color(1, 0.95, 0.8, 1)

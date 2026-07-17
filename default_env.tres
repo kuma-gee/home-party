@@ -21,5 +21,5 @@ volumetric_fog_density = 0.06
 volumetric_fog_albedo = Color(1, 0.934, 0.89, 1)
 volumetric_fog_anisotropy = 0.7
 adjustment_enabled = true
-adjustment_contrast = 1.05
+adjustment_contrast = 0.9
 adjustment_saturation = 1.2

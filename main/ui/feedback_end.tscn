@@ -17,8 +17,6 @@ layout_mode = 2
 
 [node name="FeedbackEnd" type="VBoxContainer" parent="MarginContainer" unique_id=605826142]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 theme = ExtResource("1_icbg5")
 theme_override_constants/separation = 18
 
@@ -32,7 +30,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(460, 300)
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "Tap here and use the VR headset keyboard to type feedback..."
+size_flags_vertical = 3
 wrap_mode = 1
 
 [node name="SendButton" type="Button" parent="MarginContainer/FeedbackEnd" unique_id=1388546934]

@@ -73,30 +73,30 @@ omni_attenuation = 0.6
 
 [node name="room" parent="." unique_id=126659612 instance=ExtResource("2_02r63")]
 
-[node name="sofa" parent="room" index="4" unique_id=1175682072]
+[node name="sofa" parent="room" index="4" unique_id=1884691152]
 surface_material_override/0 = ExtResource("3_6tfwr")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="room/Table" parent_id_path=PackedInt32Array(126659612, 1909878505) index="0" unique_id=1220997989]
+[node name="StaticBody3D" type="StaticBody3D" parent="room/Table" parent_id_path=PackedInt32Array(126659612, 2094561800) index="0" unique_id=1220997989]
 collision_layer = 2
 collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="room/Table/StaticBody3D" unique_id=153892589]
 shape = SubResource("ConcavePolygonShape3D_8bwq7")
 
-[node name="window" parent="room" index="6" unique_id=328170741]
+[node name="window" parent="room" index="6" unique_id=1183394014]
 layers = 2
 surface_material_override/1 = SubResource("StandardMaterial3D_pa738")
 
-[node name="Wall_004" parent="room" index="8" unique_id=1306177236]
+[node name="Wall_004" parent="room" index="8" unique_id=1808187950]
 layers = 262144
 
-[node name="Floor" parent="room" index="10" unique_id=1719909620]
+[node name="Floor" parent="room" index="10" unique_id=2003640428]
 surface_material_override/1 = ExtResource("2_6tfwr")
 
-[node name="Top" parent="room" index="11" unique_id=457316849]
+[node name="Top" parent="room" index="11" unique_id=1787258721]
 layers = 262144
 
-[node name="Wall_002" parent="room" index="12" unique_id=972998240]
+[node name="Wall_002" parent="room" index="12" unique_id=904595922]
 layers = 262144
 
 [node name="Furniture" type="StaticBody3D" parent="." unique_id=544776648]
