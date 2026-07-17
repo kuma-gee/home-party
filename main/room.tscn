@@ -31,7 +31,7 @@ radius = 0.24853516
 size = Vector3(0.22131348, 0.091033936, 0.26464844)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_58mu4"]
-size = Vector3(5.146, 0.4, 4.715)
+size = Vector3(5.146, 0.23027344, 4.715)
 
 [node name="Room" type="Node3D" unique_id=1197402855]
 
@@ -51,14 +51,14 @@ shadow_caster_mask = 4294967293
 sky_mode = 1
 
 [node name="WallLeft" type="OmniLight3D" parent="." unique_id=451980228]
-transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, -2.4846563, 2.834041, 0.45751947)
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, -2.4846563, 2.6230228, 0.50105613)
 light_color = Color(1, 0.7529412, 0.67058825, 1)
 light_energy = 0.25
 omni_range = 8.0
 omni_attenuation = 0.4
 
 [node name="WallRight" type="OmniLight3D" parent="." unique_id=475501870]
-transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, -2.4846563, 2.834041, -1.9878385)
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, -2.4846563, 2.570936, -2.0650382)
 light_color = Color(1, 0.7529412, 0.67058825, 1)
 light_energy = 0.25
 omni_range = 8.0
@@ -66,6 +66,7 @@ omni_attenuation = 0.4
 
 [node name="OmniLight3D3" type="OmniLight3D" parent="." unique_id=218674229]
 transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 1.0519817, 3.1563797, -0.6718093)
+visible = false
 light_color = Color(1, 0.7529412, 0.67058825, 1)
 light_energy = 0.2
 omni_range = 4.0
@@ -73,30 +74,31 @@ omni_attenuation = 0.6
 
 [node name="room" parent="." unique_id=126659612 instance=ExtResource("2_02r63")]
 
-[node name="sofa" parent="room" index="4" unique_id=1884691152]
+[node name="sofa" parent="room" index="4" unique_id=516764902]
 surface_material_override/0 = ExtResource("3_6tfwr")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="room/Table" parent_id_path=PackedInt32Array(126659612, 2094561800) index="0" unique_id=1220997989]
+[node name="StaticBody3D" type="StaticBody3D" parent="room/Table" parent_id_path=PackedInt32Array(126659612, 1481062979) index="0" unique_id=1220997989]
 collision_layer = 2
 collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="room/Table/StaticBody3D" unique_id=153892589]
 shape = SubResource("ConcavePolygonShape3D_8bwq7")
 
-[node name="window" parent="room" index="6" unique_id=1183394014]
+[node name="window" parent="room" index="6" unique_id=2099055174]
 layers = 2
 surface_material_override/1 = SubResource("StandardMaterial3D_pa738")
 
-[node name="Wall_004" parent="room" index="8" unique_id=1808187950]
+[node name="Wall_004" parent="room" index="8" unique_id=1134310521]
+transform = Transform3D(1.7881393e-07, 0, 0.99999994, 0, 1, 0, -0.99999994, 0, 1.7881393e-07, -0.5596278, -0.012074232, 1.1613487)
 layers = 262144
 
-[node name="Floor" parent="room" index="10" unique_id=2003640428]
+[node name="Floor" parent="room" index="10" unique_id=867175216]
 surface_material_override/1 = ExtResource("2_6tfwr")
 
-[node name="Top" parent="room" index="11" unique_id=1787258721]
+[node name="Top" parent="room" index="11" unique_id=407816915]
 layers = 262144
 
-[node name="Wall_002" parent="room" index="12" unique_id=904595922]
+[node name="Wall_002" parent="room" index="12" unique_id=2043003015]
 layers = 262144
 
 [node name="Furniture" type="StaticBody3D" parent="." unique_id=544776648]
@@ -139,7 +141,7 @@ transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, -2.8
 shape = SubResource("BoxShape3D_58mu4")
 
 [node name="Walls2" type="CollisionShape3D" parent="Walls" unique_id=1869981966]
-transform = Transform3D(-0.99999994, 5.9604645e-08, 0, -5.9604645e-08, -0.99999994, 0, 0, 0, 1, -0.7269182, -0.022854805, -1.024189)
+transform = Transform3D(-0.99999994, 5.9604645e-08, 0, -5.9604645e-08, -0.99999994, 0, 0, 0, 1, -0.7269182, -0.10771808, -1.024189)
 shape = SubResource("BoxShape3D_58mu4")
 
 [node name="Walls3" type="CollisionShape3D" parent="Walls" unique_id=2089305361]

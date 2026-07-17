@@ -54,7 +54,7 @@ func _process(delta: float) -> void:
 	if _should_block_input() and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
-	if XRToolsStartXR.is_xr_active():
+	if not _is_desktop_fallback_active():
 		return
 
 	_poll_desktop_pickup_input()
@@ -179,7 +179,11 @@ func physics_movement(_delta: float, player_body: XRToolsPlayerBody, _disabled: 
 func _should_block_input() -> bool:
 	var pause_open := pause_menu != null and pause_menu.visible
 	var settings_open := false # settings_viewport != null and settings_viewport.visible
-	return XRToolsStartXR.is_xr_active() or pause_open or settings_open
+	return not _is_desktop_fallback_active() or pause_open or settings_open
+
+
+func _is_desktop_fallback_active() -> bool:
+	return not XRToolsStartXR.is_xr_active() and not get_viewport().use_xr
 
 
 func _get_vr_space() -> VRSpace:

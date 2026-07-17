@@ -12,7 +12,7 @@
 [ext_resource type="Material" uid="uid://dyuaw57o8y3i" path="res://addons/godot-xr-tools/materials/highlight.tres" id="11_dbu0t"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ul6vm"]
-size = Vector3(0.12011719, 0.083984375, 0.0234375)
+size = Vector3(0.12597656, 0.083984375, 0.026367188)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kqex8"]
 albedo_color = Color(0.29954728, 0.2995475, 0.29954743, 1)

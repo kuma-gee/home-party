@@ -137,21 +137,21 @@ nodes/Trigger/node = SubResource("AnimationNodeBlend2_b2vgm")
 nodes/Trigger/position = Vector2(-360, 40)
 node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1"]
 
-[sub_resource type="QuadMesh" id="QuadMesh_76egc"]
+[sub_resource type="QuadMesh" id="QuadMesh_8c1er"]
 resource_local_to_scene = true
 size = Vector2(1.5, 1)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_xa1jr"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_76egc"]
 viewport_path = NodePath("XRPlayer/Viewport2Din3D/Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1qpvg"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xa1jr"]
 transparency = 1
 cull_mode = 2
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_xa1jr")
+albedo_texture = SubResource("ViewportTexture_76egc")
 texture_filter = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_ayfhd"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_1qpvg"]
 resource_local_to_scene = true
 size = Vector3(1.5, 1, 0.02)
 
@@ -301,21 +301,47 @@ autowrap_mode = 2
 [node name="XRPlayer" parent="." unique_id=841158329 instance=ExtResource("9_rtmvl")]
 show_pause_overlay = false
 
+[node name="DebugVRView" parent="XRPlayer" index="0" unique_id=598998519]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+
+[node name="Body" parent="XRPlayer/SubViewport/XRPlayer/PlayerBody" parent_id_path=PackedInt32Array(841158329, 1745649098) index="0" unique_id=1031441429]
+transform = Transform3D(-0.5, 0, -4.371139e-08, 0, 0.5, 0, 4.371139e-08, 0, -0.5, 0, 0, 0.09987366)
+
+[node name="player" parent="XRPlayer/SubViewport/XRPlayer/PlayerBody/Body" index="1" unique_id=319479388]
+visible = false
+
+[node name="Body" parent="XRPlayer/SubViewport/XRPlayer/PlayerBody/Body/player" index="0" unique_id=521389787]
+layers = 1
+surface_material_override/0 = null
+
+[node name="XRCamera3D" parent="XRPlayer/SubViewport/XRPlayer" parent_id_path=PackedInt32Array(841158329, 1404813673) index="1" unique_id=227782039]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+
+[node name="LeftHand" parent="XRPlayer/SubViewport/XRPlayer" parent_id_path=PackedInt32Array(841158329, 1404813673) index="3" unique_id=2106749189]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.22, 1.4200001, -0.45)
+
 [node name="hand_l" parent="XRPlayer/SubViewport/XRPlayer/LeftHand/LeftHand" parent_id_path=PackedInt32Array(841158329, 801242371) index="0" unique_id=28381700]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.01, 0, 0.05)
 
 [node name="AnimationTree" parent="XRPlayer/SubViewport/XRPlayer/LeftHand/LeftHand" parent_id_path=PackedInt32Array(841158329, 801242371) index="1" unique_id=899348105]
+root_node = NodePath("../Hand_Nails_low_L")
 tree_root = SubResource("AnimationNodeBlendTree_3vnjw")
+anim_player = NodePath("../Hand_Nails_low_L/AnimationPlayer")
+
+[node name="RightHand" parent="XRPlayer/SubViewport/XRPlayer" parent_id_path=PackedInt32Array(841158329, 1404813673) index="4" unique_id=1667605568]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22, 1.4200001, -0.45)
 
 [node name="AnimationTree" parent="XRPlayer/SubViewport/XRPlayer/RightHand/RightHand" parent_id_path=PackedInt32Array(841158329, 40282269) index="1" unique_id=621397323]
+root_node = NodePath("../Hand_Nails_low_R")
 tree_root = SubResource("AnimationNodeBlendTree_8ujs7")
+anim_player = NodePath("../Hand_Nails_low_R/AnimationPlayer")
 
 [node name="Screen" parent="XRPlayer/Viewport2Din3D" parent_id_path=PackedInt32Array(841158329, 1418763861) index="1" unique_id=1761931612]
-mesh = SubResource("QuadMesh_76egc")
-surface_material_override/0 = SubResource("StandardMaterial3D_1qpvg")
+mesh = SubResource("QuadMesh_8c1er")
+surface_material_override/0 = SubResource("StandardMaterial3D_xa1jr")
 
 [node name="CollisionShape3D" parent="XRPlayer/Viewport2Din3D/StaticBody3D" parent_id_path=PackedInt32Array(841158329, 1418763861, 1882660186) index="0" unique_id=507281989]
-shape = SubResource("BoxShape3D_ayfhd")
+shape = SubResource("BoxShape3D_1qpvg")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1355722313]
 transform = Transform3D(-0.7071068, -0.5, 0.49999994, 4.736141e-09, 0.70710677, 0.7071068, -0.70710677, 0.50000006, -0.5, 0.4978035, 3.4107723, -3.112376)
@@ -458,7 +484,7 @@ height = 0.01
 sides = 16
 
 [node name="Room" parent="." unique_id=1197402855 instance=ExtResource("15_5dw5n")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.67038333, 0, -1.2246983)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.67310023, 0, -1.2292466)
 
 [node name="PlushieSpawnPoints" type="Node3D" parent="." unique_id=161803398]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.67038333, 0, -1.2246983)
