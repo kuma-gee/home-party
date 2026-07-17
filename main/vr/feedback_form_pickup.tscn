@@ -44,6 +44,7 @@ screen_size = Vector2(0.2, 0.3)
 scene = ExtResource("3_fbui1")
 viewport_size = Vector2(640, 960)
 unshaded = true
+scene_properties_keys = PackedStringArray("feedback_end.gd")
 
 [node name="Viewport" parent="Viewport2Din3D" index="0" unique_id=434808864]
 size = Vector2i(640, 960)

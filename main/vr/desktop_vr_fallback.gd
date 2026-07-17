@@ -1,4 +1,3 @@
-@tool
 class_name DesktopVRFallback
 extends XRToolsMovementProvider
 
@@ -41,11 +40,17 @@ var _right_hand_rotation_offset := Basis.IDENTITY
 
 
 func _ready() -> void:
+	if Editor.is_editor_hint():
+		return
+
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_pitch = _camera.rotation.x
 
 
 func _process(delta: float) -> void:
+	if Editor.is_editor_hint():
+		return
+
 	if _should_block_input() and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
@@ -65,6 +70,9 @@ func _process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if Editor.is_editor_hint():
+		return
+
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
 		#if settings_viewport != null and settings_viewport.visible:
 			#var vr_space := _get_vr_space()
