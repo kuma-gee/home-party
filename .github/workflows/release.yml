@@ -59,7 +59,7 @@ jobs:
           RELEASE_GITHUB: ${{ inputs.release-github }}
   
   build-godot:
-    uses: kuma-gee/actions/.github/workflows/godot-build.yml@main
+    uses: ./.github/workflows/godot-build.yml
     needs: build-info
     if: ${{ needs.build-info.outputs.channels != '[]' }}
     with:
