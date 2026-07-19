@@ -79,8 +79,12 @@ Known core mini-game resources:
 
 Hub supports keyboard debug shortcuts in `main/game_shelve.gd`:
 
-- `Shift+1`..`Shift+9`: select/deselect indexed game from loaded game list.
-- `Shift+F1`: start selected game.
+- `Ctrl+Alt+1`..`Ctrl+Alt+9`: select/deselect indexed game from loaded game list.
+- `Ctrl+Alt+Enter`: start selected game.
+
+Loaded mini-games inherit this debug shortcut from `main/base_game.gd`:
+
+- `Ctrl+Alt+Enter`: advance prepare → game → gameover/debug end.
 
 Prefer MCP `select_game_with_path()` because game order can change.
 

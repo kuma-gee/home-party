@@ -44,11 +44,18 @@ func check_all_ready(vr_ready := false):
 	if player_list.is_all_ready() and vr_ready:
 		_start_game()
 
-## Shift+1 debug hotkey: advances prepare -> game -> gameover without
+## Ctrl+Alt+Enter debug hotkey: advances prepare -> game -> gameover without
 ## waiting on real players. Default just force-starts the game; override
 ## _debug_advance() to also end the game early from the game phase.
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.is_pressed() and event.shift_pressed and event.keycode == KEY_1:
+	if event is InputEventKey and event.is_pressed() and not event.echo:
+		var key := event as InputEventKey
+		if key.ctrl_pressed and key.alt_pressed and not key.shift_pressed and (key.keycode == KEY_ENTER or key.keycode == KEY_KP_ENTER):
+			get_viewport().set_input_as_handled()
+			_debug_advance()
+
+func _debug_start_game() -> void:
+	if not is_game_phase:
 		_debug_advance()
 
 func _debug_advance() -> void:

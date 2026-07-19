@@ -47,7 +47,7 @@ func _debug_advance() -> void:
 	if not is_game_phase:
 		_on_vr_ready([Arrow.Element.FIRE])
 	else:
-		_finish_game("Debug ended (Shift+1)")
+		_finish_game("Debug ended (Ctrl+Alt+Enter)")
 
 ## VR player signals ready with default elements.
 ## Used by E2E tests to simulate VR player readiness without needing

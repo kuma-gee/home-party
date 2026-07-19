@@ -25,9 +25,18 @@ func decrease_ai_count() -> void:
 	set_ai_count(_ai_count - 1)
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("debug_ai_increase"):
+	if not (event is InputEventKey) or not event.is_pressed() or event.echo:
+		return
+
+	var key := event as InputEventKey
+	if not (key.ctrl_pressed and key.alt_pressed) or key.shift_pressed:
+		return
+
+	if key.keycode == KEY_UP:
 		increase_ai_count()
 		KumaLog.new("GameSettings").info("AI count increased to %d" % _ai_count)
-	elif event.is_action_pressed("debug_ai_decrease"):
+		get_viewport().set_input_as_handled()
+	elif key.keycode == KEY_DOWN:
 		decrease_ai_count()
 		KumaLog.new("GameSettings").info("AI count decreased to %d" % _ai_count)
+		get_viewport().set_input_as_handled()

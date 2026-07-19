@@ -31,9 +31,9 @@ func _ready() -> void:
 	_populate()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.is_pressed():
+	if event is InputEventKey and event.is_pressed() and not event.echo:
 		var key = event as InputEventKey
-		if key.shift_pressed:
+		if key.ctrl_pressed and key.alt_pressed and not key.shift_pressed:
 			var code = key.keycode
 			if code >= KEY_1 and code <= KEY_9:
 				var idx = code - KEY_1
@@ -44,7 +44,7 @@ func _unhandled_input(event: InputEvent) -> void:
 							_on_game_selected(null)
 						else:
 							_on_game_selected(g)
-			elif code == KEY_F1:
+			elif code == KEY_ENTER or code == KEY_KP_ENTER:
 				_try_start_selected_game()
 
 func _populate() -> void:

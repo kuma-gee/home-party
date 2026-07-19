@@ -4,11 +4,11 @@ extends Node
 var element := Arrow.Element.NONE
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey:
+	if event is InputEventKey and event.is_pressed() and not event.echo:
 		var key = event as InputEventKey
-		if key.keycode == KEY_0:
-			element = Arrow.Element.NONE
-		elif key.keycode == KEY_1:
+		if not (key.ctrl_pressed and key.alt_pressed and key.shift_pressed):
+			return
+		if key.keycode == KEY_1:
 			element = Arrow.Element.FIRE
 		elif key.keycode == KEY_2:
 			element = Arrow.Element.ICE

@@ -43,11 +43,16 @@ func _play_round_start_cue() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	super._unhandled_input(event)
-	if not is_game_phase:
-		if event.is_action_pressed("debug_ai_increase"):
+	if not is_game_phase and event is InputEventKey and event.is_pressed() and not event.echo:
+		var key := event as InputEventKey
+		if not (key.ctrl_pressed and key.alt_pressed) or key.shift_pressed:
+			return
+		if key.keycode == KEY_UP:
 			ai_manager.increase_ai_count()
-		elif event.is_action_pressed("debug_ai_decrease"):
+			get_viewport().set_input_as_handled()
+		elif key.keycode == KEY_DOWN:
 			ai_manager.decrease_ai_count()
+			get_viewport().set_input_as_handled()
 
 func _debug_advance() -> void:
 	if not is_game_phase:

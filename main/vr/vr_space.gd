@@ -84,10 +84,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		return
 
-	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F1:
-		_toggle_debug_camera()
-		get_viewport().set_input_as_handled()
-		return
+	if event is InputEventKey and event.pressed and not event.echo:
+		var key := event as InputEventKey
+		if key.ctrl_pressed and key.alt_pressed and not key.shift_pressed and key.keycode == KEY_F1:
+			_toggle_debug_camera()
+			get_viewport().set_input_as_handled()
+			return
 
 	if not _is_escape_key(event) or not event.is_pressed():
 		return

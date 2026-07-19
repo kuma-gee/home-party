@@ -62,8 +62,13 @@ func _ready() -> void:
 	ready_button.disabled = true
 	_update()
 
-func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("debug_1"):
+func _input(event: InputEvent) -> void:
+	if not (event is InputEventKey) or not event.is_pressed() or event.echo:
+		return
+
+	var key := event as InputEventKey
+	if key.ctrl_pressed and key.alt_pressed and not key.shift_pressed and (key.keycode == KEY_ENTER or key.keycode == KEY_KP_ENTER):
+		get_viewport().set_input_as_handled()
 		ready_pressed.emit(selected_elements)
 
 func update_ready(ready_count: int, player_count: int) -> void:

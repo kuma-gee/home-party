@@ -299,14 +299,10 @@ show_pause_overlay = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
 
 [node name="Body" parent="XRPlayer/SubViewport/XRPlayer/PlayerBody" parent_id_path=PackedInt32Array(841158329, 1745649098) index="0" unique_id=1031441429]
-transform = Transform3D(-0.5, 0, -4.371139e-08, 0, 0.5, 0, 4.371139e-08, 0, -0.5, 0, 0, 0.09987366)
+transform = Transform3D(-0.5, 0, -4.371139e-08, 0, 0.5, 0, 4.371139e-08, 0, -0.5, 0, 0.32729065, 0.09987366)
 
-[node name="player" parent="XRPlayer/SubViewport/XRPlayer/PlayerBody/Body" index="1" unique_id=319479388]
-visible = false
-
-[node name="Body" parent="XRPlayer/SubViewport/XRPlayer/PlayerBody/Body/player" index="0" unique_id=521389787]
+[node name="Body" parent="XRPlayer/SubViewport/XRPlayer/PlayerBody/Body/player" parent_id_path=PackedInt32Array(841158329, 319479388) index="0" unique_id=521389787]
 layers = 1
-surface_material_override/0 = null
 
 [node name="XRCamera3D" parent="XRPlayer/SubViewport/XRPlayer" parent_id_path=PackedInt32Array(841158329, 1404813673) index="1" unique_id=227782039]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
