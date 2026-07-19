@@ -3,8 +3,11 @@ extends PanelContainer
 @onready var feedback_manager: Node = FeedbackManager
 @onready var feedback_input: TextEdit = %FeedbackInput
 @onready var send_button: Button = %SendButton
+@onready var character_limit_label: Label = %CharacterLimitLabel
 @onready var status_label: Label = %StatusLabel
 @onready var throttle_label: Label = %ThrottleLabel
+
+const MAX_FEEDBACK_LENGTH := 300
 
 var _request_running := false
 
@@ -14,7 +17,8 @@ func _ready() -> void:
 	feedback_manager.request_successful.connect(_on_request_successful)
 	feedback_manager.request_throttled.connect(_on_request_throttled)
 	send_button.pressed.connect(_on_send_button_pressed)
-	feedback_input.text_changed.connect(_update_send_button)
+	feedback_input.text_changed.connect(_on_feedback_input_text_changed)
+	_update_character_limit_label()
 	_update_send_button()
 	_update_throttle_label()
 	_set_status("", false)
@@ -23,6 +27,7 @@ func _process(_delta: float) -> void:
 	_update_throttle_label()
 
 func _on_send_button_pressed() -> void:
+	_limit_feedback_text()
 	var feedback_text := feedback_input.text.strip_edges()
 	if feedback_text.is_empty():
 		_set_status("Please enter feedback before sending.", true)
@@ -43,6 +48,7 @@ func _on_request_failed(reason: int) -> void:
 func _on_request_successful() -> void:
 	_request_running = false
 	feedback_input.clear()
+	_update_character_limit_label()
 	_update_send_button()
 	_set_status("Feedback sent. Thank you!", false)
 	_update_throttle_label()
@@ -51,6 +57,25 @@ func _on_request_throttled(time_left: float) -> void:
 	_update_send_button()
 	_set_status("Please wait %d seconds before sending more feedback." % ceili(time_left), true)
 	_update_throttle_label()
+
+func _on_feedback_input_text_changed() -> void:
+	_limit_feedback_text()
+	_update_character_limit_label()
+	_update_send_button()
+
+func _limit_feedback_text() -> void:
+	if feedback_input.text.length() <= MAX_FEEDBACK_LENGTH:
+		return
+
+	feedback_input.text = feedback_input.text.substr(0, MAX_FEEDBACK_LENGTH)
+	var last_line_index := feedback_input.get_line_count() - 1
+	feedback_input.set_caret_line(last_line_index)
+	feedback_input.set_caret_column(feedback_input.get_line(last_line_index).length())
+
+func _update_character_limit_label() -> void:
+	var character_count := mini(feedback_input.text.length(), MAX_FEEDBACK_LENGTH)
+	character_limit_label.text = "%d/%d characters" % [character_count, MAX_FEEDBACK_LENGTH]
+	character_limit_label.modulate = Color(1.0, 0.35, 0.35) if character_count >= MAX_FEEDBACK_LENGTH else Color.WHITE
 
 func _update_send_button() -> void:
 	var has_text := not feedback_input.text.strip_edges().is_empty()
