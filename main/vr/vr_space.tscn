@@ -21,6 +21,7 @@
 [ext_resource type="PackedScene" uid="uid://bl2nuu3qhlb5k" path="res://addons/godot-xr-tools/functions/movement_direct.tscn" id="21_movdi"]
 [ext_resource type="Script" uid="uid://cjfu28jmrajlo" path="res://addons/godot-xr-tools/overrides/ground_physics_settings.gd" id="22_gps"]
 [ext_resource type="PackedScene" uid="uid://fiul51tsyoop" path="res://addons/godot-xr-tools/functions/function_teleport.tscn" id="23_tele"]
+[ext_resource type="PackedScene" uid="uid://duvfm43b30g8e" path="res://main/ui/feedback_end.tscn" id="23_yufjw"]
 [ext_resource type="PackedScene" uid="uid://cc6ngdqie8o8c" path="res://addons/godot-xr-tools/effects/vignette.tscn" id="24_vignette"]
 [ext_resource type="Script" uid="uid://u1sfybltw8yo" path="res://main/vr/desktop_vr_fallback.gd" id="26_desktop"]
 
@@ -47,25 +48,25 @@ move_traction = 45.0
 [sub_resource type="SphereShape3D" id="SphereShape3D_icwxr"]
 radius = 0.062045835
 
-[sub_resource type="QuadMesh" id="QuadMesh_0wydl"]
+[sub_resource type="QuadMesh" id="QuadMesh_07sco"]
 resource_local_to_scene = true
 size = Vector2(1.5, 1)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_yufjw"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_5ic2p"]
 viewport_path = NodePath("Viewport2Din3D/Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_07sco"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_44s1c"]
 transparency = 1
 cull_mode = 2
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_yufjw")
+albedo_texture = SubResource("ViewportTexture_5ic2p")
 texture_filter = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_5ic2p"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_3703v"]
 resource_local_to_scene = true
 size = Vector3(1.5, 1, 0.02)
 
-[node name="VRSpace" type="Node3D" unique_id=841158329 node_paths=PackedStringArray("origin", "camera", "pause_menu", "overlay_mesh", "menu_function", "reset_area", "settings_viewport", "direct_movement", "teleport_function", "vignette", "player_body", "debug_camera", "desktop_settings_panel")]
+[node name="VRSpace" type="Node3D" unique_id=841158329 node_paths=PackedStringArray("origin", "camera", "pause_menu", "overlay_mesh", "menu_function", "reset_area", "settings_viewport", "direct_movement", "teleport_function", "vignette", "player_body", "debug_camera", "desktop_settings_panel", "desktop_feedback_panel")]
 process_mode = 3
 script = ExtResource("1_2vxk7")
 origin = NodePath("SubViewport/XRPlayer")
@@ -81,6 +82,7 @@ vignette = NodePath("SubViewport/XRPlayer/XRCamera3D/Vignette")
 player_body = NodePath("SubViewport/XRPlayer/PlayerBody")
 debug_camera = NodePath("DebugVRView")
 desktop_settings_panel = NodePath("CanvasLayer/DesktopSettingsPanelUI")
+desktop_feedback_panel = NodePath("CanvasLayer/PanelContainer")
 
 [node name="DebugVRView" type="Camera3D" parent="." unique_id=598998519]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6478393, 0)
@@ -126,7 +128,7 @@ libraries/ = SubResource("AnimationLibrary_vx6d0")
 
 [node name="player" parent="SubViewport/XRPlayer/PlayerBody/Body" unique_id=319479388 instance=ExtResource("18_lisjs")]
 
-[node name="Body" parent="SubViewport/XRPlayer/PlayerBody/Body/player" index="0" unique_id=521389787]
+[node name="Body" parent="SubViewport/XRPlayer/PlayerBody/Body/player" index="0" unique_id=788786033]
 layers = 524288
 surface_material_override/0 = ExtResource("9_0wydl")
 
@@ -248,6 +250,18 @@ text = "Game Paused"
 [node name="DesktopSettingsPanelUI" parent="CanvasLayer" unique_id=1302833739 instance=ExtResource("4_eoj1g")]
 visible = false
 
+[node name="PanelContainer" parent="CanvasLayer" unique_id=675997998 instance=ExtResource("23_yufjw")]
+custom_minimum_size = Vector2(1000, 800)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -246.0
+offset_top = -353.0
+offset_right = 246.0
+offset_bottom = 353.0
+
 [node name="Viewport2Din3D" parent="." unique_id=1418763861 instance=ExtResource("15_f1ooe")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5212524, -1.5732135)
 screen_size = Vector2(1.5, 1)
@@ -260,15 +274,15 @@ scene_properties_keys = PackedStringArray("settings_panel.gd")
 size = Vector2i(900, 600)
 
 [node name="Screen" parent="Viewport2Din3D" index="1" unique_id=1761931612]
-mesh = SubResource("QuadMesh_0wydl")
-surface_material_override/0 = SubResource("StandardMaterial3D_07sco")
+mesh = SubResource("QuadMesh_07sco")
+surface_material_override/0 = SubResource("StandardMaterial3D_44s1c")
 
 [node name="StaticBody3D" parent="Viewport2Din3D" index="2" unique_id=1882660186]
 screen_size = Vector2(1.5, 1)
 viewport_size = Vector2(900, 600)
 
 [node name="CollisionShape3D" parent="Viewport2Din3D/StaticBody3D" index="0" unique_id=507281989]
-shape = SubResource("BoxShape3D_5ic2p")
+shape = SubResource("BoxShape3D_3703v")
 
 [editable path="StartXR"]
 [editable path="SubViewport/XRPlayer/PlayerBody/Body/player"]

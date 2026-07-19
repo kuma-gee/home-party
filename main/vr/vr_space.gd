@@ -19,13 +19,13 @@ signal back_to_home()
 @export var player_body: XRToolsPlayerBody
 @export var debug_camera: Camera3D
 @export var desktop_settings_panel: SettingsPanel
+@export var desktop_feedback_panel: Control
 @export var show_pause_overlay := true
 
 const SETTINGS_PANEL_DISTANCE := 0.8
 const SEATED_HEIGHT_OVERRIDE := 1.0
 const DESKTOP_FALLBACK_PATH := ^"SubViewport/XRPlayer/DesktopVRFallback"
 const DESKTOP_MENU_SCENE := preload("res://main/vr/vr_menu_panel_ui.tscn")
-const FEEDBACK_END_SCENE := preload("res://main/ui/feedback_end.tscn")
 
 var was_paused := false
 var _pause_active := false
@@ -39,7 +39,6 @@ var _pause_canvas: CanvasLayer = null
 var _pause_canvas_was_visible := true
 var _desktop_menu_instance: Control = null
 var _desktop_menu_overlay: ColorRect = null
-var _desktop_feedback_instance: Control = null
 
 @onready var _desktop_vr_fallback: DesktopVRFallback = get_node_or_null(DESKTOP_FALLBACK_PATH)
 
@@ -65,6 +64,8 @@ func _ready() -> void:
 		desktop_settings_panel.player_height_changed.connect(_on_player_height_changed)
 		desktop_settings_panel.tab_selected.connect(_on_desktop_settings_tab_selected)
 		desktop_settings_panel.xr_settings_changed.connect(_on_xr_settings_changed)
+	if desktop_feedback_panel != null:
+		desktop_feedback_panel.hide()
 
 	UserSettings.setting_changed.connect(_on_setting_changed)
 	_apply_movement_mode()
@@ -95,7 +96,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if not _is_escape_key(event) or not event.is_pressed():
 		return
-
+		
 	if settings_viewport.visible:
 		_on_menu_closed(true)
 	elif menu_function.is_menu_open():
@@ -391,9 +392,10 @@ func _setup_desktop_feedback_button(path: NodePath) -> void:
 
 
 func _open_desktop_feedback_form() -> void:
-	if _desktop_feedback_instance != null:
+	if desktop_feedback_panel == null:
 		return
-
+	if desktop_feedback_panel.visible:
+		return
 	if pause_menu == null:
 		return
 
@@ -401,16 +403,16 @@ func _open_desktop_feedback_form() -> void:
 	if menu_parent == null:
 		return
 
-	_desktop_feedback_instance = FEEDBACK_END_SCENE.instantiate() as Control
 	_hide_desktop_menu_panel()
 	_show_desktop_menu_overlay(menu_parent)
-	menu_parent.add_child(_desktop_feedback_instance)
+	desktop_feedback_panel.show()
+	if desktop_feedback_panel.get_parent() == menu_parent:
+		menu_parent.move_child(desktop_feedback_panel, menu_parent.get_child_count() - 1)
 
 
 func _hide_desktop_menu() -> void:
-	if _desktop_feedback_instance != null:
-		_desktop_feedback_instance.queue_free()
-		_desktop_feedback_instance = null
+	if desktop_feedback_panel != null:
+		desktop_feedback_panel.hide()
 
 	if _desktop_menu_overlay != null:
 		_desktop_menu_overlay.queue_free()
