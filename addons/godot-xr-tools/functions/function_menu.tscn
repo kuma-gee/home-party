@@ -10,7 +10,7 @@ viewport_path = NodePath("Sprite3D/SubViewport")
 shader = ExtResource("3_ivmre")
 shader_parameter/radius = 0.90000004275
 shader_parameter/inner_radius = 0.50000002375
-shader_parameter/fill = 0.5870000278825
+shader_parameter/fill = 0.0
 shader_parameter/blur = 0.009999999747
 shader_parameter/bg_color = Color(0, 0, 0, 0)
 shader_parameter/inner_color = Color(0, 0, 0, 0)
@@ -35,6 +35,7 @@ transparent_bg = true
 size = Vector2i(128, 128)
 
 [node name="ColorRect" type="ColorRect" parent="Sprite3D/SubViewport" unique_id=809160844]
+visible = false
 material = SubResource("ShaderMaterial_p2nju")
 anchors_preset = 15
 anchor_right = 1.0

@@ -25,6 +25,7 @@ const SETTINGS_PANEL_DISTANCE := 0.8
 const SEATED_HEIGHT_OVERRIDE := 1.0
 const DESKTOP_FALLBACK_PATH := ^"SubViewport/XRPlayer/DesktopVRFallback"
 const DESKTOP_MENU_SCENE := preload("res://main/vr/vr_menu_panel_ui.tscn")
+const FEEDBACK_END_SCENE := preload("res://main/ui/feedback_end.tscn")
 
 var was_paused := false
 var _pause_active := false
@@ -38,6 +39,7 @@ var _pause_canvas: CanvasLayer = null
 var _pause_canvas_was_visible := true
 var _desktop_menu_instance: Control = null
 var _desktop_menu_overlay: ColorRect = null
+var _desktop_feedback_instance: Control = null
 
 @onready var _desktop_vr_fallback: DesktopVRFallback = get_node_or_null(DESKTOP_FALLBACK_PATH)
 
@@ -342,7 +344,7 @@ func _show_desktop_menu() -> void:
 	_show_desktop_menu_overlay(menu_parent)
 	menu_parent.add_child(_desktop_menu_instance)
 	_connect_desktop_menu_button("MarginContainer/VBoxContainer/ResumeButton", func(): menu_function.close_menu())
-	_connect_desktop_menu_button("MarginContainer/VBoxContainer/ResetSpaceButton", func(): reset_space())
+	_setup_desktop_feedback_button("MarginContainer/VBoxContainer/ResetSpaceButton")
 	_connect_desktop_menu_button("MarginContainer/VBoxContainer/SettingsButton", _on_settings_pressed)
 	_connect_desktop_menu_button("MarginContainer/VBoxContainer/HomeButton", func(): back_to_home.emit())
 
@@ -376,7 +378,40 @@ func _connect_desktop_menu_button(path: NodePath, callback: Callable) -> void:
 		button.pressed.connect(callback)
 
 
+func _setup_desktop_feedback_button(path: NodePath) -> void:
+	if _desktop_menu_instance == null:
+		return
+
+	var button := _desktop_menu_instance.get_node_or_null(path) as Button
+	if button == null:
+		return
+
+	button.text = "Feedback"
+	button.pressed.connect(_open_desktop_feedback_form)
+
+
+func _open_desktop_feedback_form() -> void:
+	if _desktop_feedback_instance != null:
+		return
+
+	if pause_menu == null:
+		return
+
+	var menu_parent := pause_menu.get_parent()
+	if menu_parent == null:
+		return
+
+	_desktop_feedback_instance = FEEDBACK_END_SCENE.instantiate() as Control
+	_hide_desktop_menu_panel()
+	_show_desktop_menu_overlay(menu_parent)
+	menu_parent.add_child(_desktop_feedback_instance)
+
+
 func _hide_desktop_menu() -> void:
+	if _desktop_feedback_instance != null:
+		_desktop_feedback_instance.queue_free()
+		_desktop_feedback_instance = null
+
 	if _desktop_menu_overlay != null:
 		_desktop_menu_overlay.queue_free()
 		_desktop_menu_overlay = null

@@ -6,7 +6,6 @@ const MOVE_GUIDE_LEFT_TELEPORT := preload("res://assets/living_room/guide/MoveGu
 @export var move_guide_left: TextureRect
 
 @onready var game_shelve: GameShelve = $GameShelve
-@onready var feedback_form_pickup: XRToolsPickable = %FeedbackFormPickup
 @onready var reset_area: Area3D = $GameShelve/ResetArea
 
 var starting := false
@@ -19,13 +18,6 @@ func _ready() -> void:
 	reset_area.area_entered.connect(func(_a): game_shelve.reset_objects())
 	UserSettings.setting_changed.connect(_on_user_setting_changed)
 	_update_move_guide()
-	_update_feedback_form_pickup()
-
-
-func _update_feedback_form_pickup() -> void:
-	var should_show := Env.is_demo() and Env.has_played_game()
-	feedback_form_pickup.visible = should_show
-	feedback_form_pickup.enabled = should_show
 
 
 func _on_user_setting_changed(section: String, key: String) -> void:
