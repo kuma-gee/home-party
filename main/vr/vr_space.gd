@@ -24,6 +24,7 @@ signal back_to_home()
 const SETTINGS_PANEL_DISTANCE := 0.8
 const SEATED_HEIGHT_OVERRIDE := 1.0
 const DESKTOP_FALLBACK_PATH := ^"SubViewport/XRPlayer/DesktopVRFallback"
+const DESKTOP_MENU_SCENE := preload("res://main/vr/vr_menu_panel_ui.tscn")
 
 var was_paused := false
 var _pause_active := false
@@ -35,6 +36,8 @@ var _desktop_canvas: CanvasLayer = null
 var _desktop_canvas_was_visible := true
 var _pause_canvas: CanvasLayer = null
 var _pause_canvas_was_visible := true
+var _desktop_menu_instance: Control = null
+var _desktop_menu_overlay: ColorRect = null
 
 @onready var _desktop_vr_fallback: DesktopVRFallback = get_node_or_null(DESKTOP_FALLBACK_PATH)
 
@@ -91,8 +94,10 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if settings_viewport.visible:
 		_on_menu_closed(true)
+	elif menu_function.is_menu_open():
+		menu_function.close_menu()
 	else:
-		_open_settings_menu()
+		_open_menu()
 
 	get_viewport().set_input_as_handled()
 
@@ -154,6 +159,7 @@ func _connect_menu(menu: VRMenuPanel):
 	menu.quit_pressed.connect(func(): back_to_home.emit())
 	menu.reset_space_pressed.connect(func(): reset_space())
 	menu.settings_pressed.connect(_on_settings_pressed)
+	_show_desktop_menu()
 	
 	if settings_viewport.visible:
 		settings_viewport.hide()
@@ -190,6 +196,12 @@ func _on_menu_closed(from_settings := false):
 			overlay_mesh.hide_overlay()
 	settings_viewport.hide()
 	_hide_desktop_settings_panel()
+	_hide_desktop_menu()
+
+
+func _open_menu() -> void:
+	_show_pause_menu()
+	menu_function.open_menu()
 
 func activate():
 	origin.current = true
@@ -306,8 +318,74 @@ func _open_settings_menu() -> void:
 	_place_in_front_of_player(settings_viewport, SETTINGS_PANEL_DISTANCE)
 	_settings_panel_y_offset = settings_viewport.global_position.y - camera.global_position.y
 	settings_viewport.show()
+	if pause_menu != null:
+		_show_desktop_menu_overlay(pause_menu.get_parent())
 	_show_desktop_settings_panel()
+	_hide_desktop_menu_panel()
 	menu_function.close_menu()
+
+
+func _show_desktop_menu() -> void:
+	if pause_menu == null:
+		return
+
+	if _desktop_menu_instance != null:
+		return
+
+	var menu_parent := pause_menu.get_parent()
+	if menu_parent == null:
+		return
+
+	_desktop_menu_instance = DESKTOP_MENU_SCENE.instantiate() as Control
+	_show_desktop_menu_overlay(menu_parent)
+	menu_parent.add_child(_desktop_menu_instance)
+	_connect_desktop_menu_button("MarginContainer/VBoxContainer/ResumeButton", func(): menu_function.close_menu())
+	_connect_desktop_menu_button("MarginContainer/VBoxContainer/ResetSpaceButton", func(): reset_space())
+	_connect_desktop_menu_button("MarginContainer/VBoxContainer/SettingsButton", _on_settings_pressed)
+	_connect_desktop_menu_button("MarginContainer/VBoxContainer/HomeButton", func(): back_to_home.emit())
+
+
+func _show_desktop_menu_overlay(menu_parent: Node) -> void:
+	if menu_parent == null:
+		return
+
+	if _desktop_menu_overlay != null:
+		return
+
+	if pause_menu != null and pause_menu.visible:
+		return
+
+	_desktop_menu_overlay = ColorRect.new()
+	_desktop_menu_overlay.name = "DesktopMenuOverlay"
+	_desktop_menu_overlay.color = Color(0.0, 0.0, 0.0, 0.7)
+	_desktop_menu_overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	_desktop_menu_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	menu_parent.add_child(_desktop_menu_overlay)
+	if desktop_settings_panel != null and desktop_settings_panel.get_parent() == menu_parent:
+		menu_parent.move_child(_desktop_menu_overlay, desktop_settings_panel.get_index())
+
+
+func _connect_desktop_menu_button(path: NodePath, callback: Callable) -> void:
+	if _desktop_menu_instance == null:
+		return
+
+	var button := _desktop_menu_instance.get_node_or_null(path) as Button
+	if button != null:
+		button.pressed.connect(callback)
+
+
+func _hide_desktop_menu() -> void:
+	if _desktop_menu_overlay != null:
+		_desktop_menu_overlay.queue_free()
+		_desktop_menu_overlay = null
+
+	_hide_desktop_menu_panel()
+
+
+func _hide_desktop_menu_panel() -> void:
+	if _desktop_menu_instance != null:
+		_desktop_menu_instance.queue_free()
+		_desktop_menu_instance = null
 
 func _place_in_front_of_player(node: Node3D, distance: float) -> void:
 	var cam_transform := camera.global_transform

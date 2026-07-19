@@ -36,6 +36,14 @@ var _fade_tween: Tween = null
 var _target_transform: Transform3D = Transform3D()
 var _world_scale: float = 1.0
 
+
+func is_menu_open() -> bool:
+	return _menu_instance != null
+
+
+func open_menu() -> void:
+	_open_menu()
+
 func is_xr_class(xr_name: String) -> bool:
 	return xr_name == "XRToolsFunctionMenu"
 
