@@ -13,7 +13,7 @@ var _logger := KumaLog.new("Env")
 var _live := false
 var _enable_steam := true
 var _default_log_level := KumaLog.Level.INFO
-var _has_played_game := false
+var _has_played_game := true
 
 func _ready():
 	var args = _args_dictionary()

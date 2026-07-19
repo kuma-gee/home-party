@@ -1,0 +1,30 @@
+[gd_resource type="AnimationNodeBlendTree" format=3 uid="uid://dljn25m1x1e16"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_cgltf"]
+animation = &"Thumb_L"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_21cbc"]
+animation = &"Grip_L"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2gbl6"]
+animation = &"Open_L"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_76a3m"]
+filter_enabled = true
+filters = ["Armature/Skeleton3D:Little_Distal_L", "Armature/Skeleton3D:Little_Intermediate_L", "Armature/Skeleton3D:Little_Metacarpal_L", "Armature/Skeleton3D:Little_Proximal_L", "Armature/Skeleton3D:Middle_Distal_L", "Armature/Skeleton3D:Middle_Intermediate_L", "Armature/Skeleton3D:Middle_Metacarpal_L", "Armature/Skeleton3D:Middle_Proximal_L", "Armature/Skeleton3D:Ring_Distal_L", "Armature/Skeleton3D:Ring_Intermediate_L", "Armature/Skeleton3D:Ring_Metacarpal_L", "Armature/Skeleton3D:Ring_Proximal_L", "Armature/Skeleton3D:Thumb_Distal_L", "Armature/Skeleton3D:Thumb_Metacarpal_L", "Armature/Skeleton3D:Thumb_Proximal_L", "Armature/Skeleton:Little_Distal_L", "Armature/Skeleton:Little_Intermediate_L", "Armature/Skeleton:Little_Proximal_L", "Armature/Skeleton:Middle_Distal_L", "Armature/Skeleton:Middle_Intermediate_L", "Armature/Skeleton:Middle_Proximal_L", "Armature/Skeleton:Ring_Distal_L", "Armature/Skeleton:Ring_Intermediate_L", "Armature/Skeleton:Ring_Proximal_L", "Armature/Skeleton:Thumb_Distal_L", "Armature/Skeleton:Thumb_Proximal_L"]
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_aymud"]
+
+[resource]
+nodes/output/position = Vector2(1300, 180)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_2gbl6")
+nodes/Animation/position = Vector2(240, 140)
+"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_cgltf")
+"nodes/Animation 2/position" = Vector2(280, 320)
+"nodes/Animation 3/node" = SubResource("AnimationNodeAnimation_21cbc")
+"nodes/Animation 3/position" = Vector2(740, 400)
+nodes/Trigger/node = SubResource("AnimationNodeBlend2_aymud")
+nodes/Trigger/position = Vector2(640, 80)
+nodes/Grip/node = SubResource("AnimationNodeBlend2_76a3m")
+nodes/Grip/position = Vector2(1040, 160)
+node_connections = [&"output", 0, &"Grip", &"Trigger", 0, &"Animation", &"Trigger", 1, &"Animation 2", &"Grip", 0, &"Trigger", &"Grip", 1, &"Animation 3"]

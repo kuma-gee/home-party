@@ -2,53 +2,64 @@
 
 [ext_resource type="PackedScene" uid="uid://cnk04gcs4obug" path="res://assets/characters/hand_r.glb" id="2_lwohl"]
 [ext_resource type="Script" uid="uid://cnwtovj4mqc45" path="res://addons/godot-xr-tools/hands/hand.gd" id="3"]
+[ext_resource type="Animation" uid="uid://18e5dlr4bwmw" path="res://animations/hand_grip_r.tres" id="3_8pdeq"]
 [ext_resource type="Material" uid="uid://b6y3dfp7qow5a" path="res://shader/materials/player_toon.tres" id="3_nai6r"]
+[ext_resource type="Animation" uid="uid://digugo20r30wd" path="res://animations/hand_open_r.tres" id="4_ed6h4"]
+[ext_resource type="AnimationNodeBlendTree" uid="uid://d2llqu5mwpol1" path="res://animations/hand_blend_tree_r.tres" id="4_v046k"]
+[ext_resource type="Script" uid="uid://dvobm6vcfnqe8" path="res://addons/godot-xr-tools/hands/poses/hand_pose_settings.gd" id="5_1ja5n"]
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_nai6r"]
-animation = &"Thumb_R"
+[sub_resource type="Resource" id="Resource_v046k"]
+script = ExtResource("5_1ja5n")
+open_pose = ExtResource("4_ed6h4")
+closed_pose = ExtResource("3_8pdeq")
+metadata/_custom_type_script = "uid://dvobm6vcfnqe8"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_v046k"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8pdeq"]
 animation = &"Grip_R"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fw7qc"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ed6h4"]
+animation = &"Grip_R"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_1ja5n"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hspyh"]
 animation = &"Open_R"
 
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_1ao0x"]
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_sse2s"]
 
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_8pdeq"]
-
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_iuu6p"]
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_1ap8w"]
 nodes/output/position = Vector2(1540, 180)
-nodes/Animation/node = SubResource("AnimationNodeAnimation_fw7qc")
-nodes/Animation/position = Vector2(700, 100)
-"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_nai6r")
-"nodes/Animation 2/position" = Vector2(680, 340)
-"nodes/Animation 3/node" = SubResource("AnimationNodeAnimation_v046k")
-"nodes/Animation 3/position" = Vector2(960, 440)
-nodes/Trigger/node = SubResource("AnimationNodeBlend2_8pdeq")
+nodes/OpenHand/node = SubResource("AnimationNodeAnimation_hspyh")
+nodes/OpenHand/position = Vector2(700, 100)
+nodes/ClosedHand1/node = SubResource("AnimationNodeAnimation_8pdeq")
+nodes/ClosedHand1/position = Vector2(680, 340)
+nodes/ClosedHand2/node = SubResource("AnimationNodeAnimation_ed6h4")
+nodes/ClosedHand2/position = Vector2(960, 440)
+nodes/Trigger/node = SubResource("AnimationNodeBlend2_sse2s")
 nodes/Trigger/position = Vector2(940, 80)
-nodes/Grip/node = SubResource("AnimationNodeBlend2_1ao0x")
+nodes/Grip/node = SubResource("AnimationNodeBlend2_1ja5n")
 nodes/Grip/position = Vector2(1260, 160)
-node_connections = [&"output", 0, &"Grip", &"Trigger", 0, &"Animation", &"Trigger", 1, &"Animation 2", &"Grip", 0, &"Trigger", &"Grip", 1, &"Animation 3"]
+node_connections = [&"output", 0, &"Grip", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2"]
 
 [node name="RightHand" type="Node3D" unique_id=577987083]
 script = ExtResource("3")
+hand_blend_tree = ExtResource("4_v046k")
+default_pose = SubResource("Resource_v046k")
 
 [node name="hand_r" parent="." unique_id=1910410340 instance=ExtResource("2_lwohl")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.01, 0, 0.05)
 
-[node name="Skeleton3D" parent="hand_r/Armature_Hand_R" parent_id_path=PackedInt32Array(1910410340, 23335957) index="0" unique_id=895083275]
-bones/0/rotation = Quaternion(-0.02052386, -0.7068089, 0.7068089, -0.020521056)
-bones/1/rotation = Quaternion(9.087821e-08, -8.341135e-07, -0.029023185, 0.9995788)
-bones/2/rotation = Quaternion(6.746466e-08, 1.696448e-13, -0.029373808, 0.9995686)
-bones/3/rotation = Quaternion(-0.7131381, -0.009560694, -0.05005113, 0.69916916)
+[node name="Skeleton3D" parent="hand_r/Armature_Hand_R" parent_id_path=PackedInt32Array(1910410340, 1168769067) index="0" unique_id=453263584]
+bones/1/rotation = Quaternion(9.087812e-08, -8.341133e-07, -0.029023161, 0.9995788)
+bones/2/rotation = Quaternion(6.746463e-08, 1.1333209e-13, -0.02937379, 0.9995686)
+bones/3/rotation = Quaternion(-0.71313816, -0.009560722, -0.050051097, 0.6991691)
 
-[node name="Hand_R" parent="hand_r/Armature_Hand_R/Skeleton3D" index="0" unique_id=1629648725]
+[node name="Hand_R" parent="hand_r/Armature_Hand_R/Skeleton3D" index="0" unique_id=307682471]
 surface_material_override/0 = ExtResource("3_nai6r")
 
 [node name="AnimationTree" type="AnimationTree" parent="." unique_id=621397323]
 root_node = NodePath("../hand_r")
-tree_root = SubResource("AnimationNodeBlendTree_iuu6p")
+tree_root = SubResource("AnimationNodeBlendTree_1ap8w")
 anim_player = NodePath("../hand_r/AnimationPlayer")
 parameters/Trigger/blend_amount = 0.0
 parameters/Grip/blend_amount = 0.0

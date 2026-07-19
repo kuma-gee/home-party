@@ -33,6 +33,7 @@ size = Vector3(0.2, 0.3, 0.02)
 size = Vector3(0.2, 0.3, 0.005)
 
 [node name="FeedbackFormPickup" unique_id=1160042001 instance=ExtResource("1_pkbl1")]
+release_mode = 1
 second_hand_grab = 1
 
 [node name="CollisionShape3D" parent="." index="0" unique_id=1198871219]

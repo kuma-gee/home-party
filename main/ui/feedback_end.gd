@@ -17,6 +17,7 @@ func _ready() -> void:
 	feedback_input.text_changed.connect(_update_send_button)
 	_update_send_button()
 	_update_throttle_label()
+	_set_status("", false)
 
 func _process(_delta: float) -> void:
 	_update_throttle_label()

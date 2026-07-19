@@ -1,0 +1,26 @@
+[gd_resource type="Animation" format=3 uid="uid://bnee8jdh86qy5"]
+
+[resource]
+resource_name = "Grip_L"
+length = 0.041666668
+tracks/0/type = "rotation_3d"
+tracks/0/imported = true
+tracks/0/enabled = true
+tracks/0/path = NodePath("Armature_Hand_L/Skeleton3D:Hand.001.L")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 1.9182587e-06, 6.595389e-07, 0.61262137, 0.79037666)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = true
+tracks/1/enabled = true
+tracks/1/path = NodePath("Armature_Hand_L/Skeleton3D:Hand.002.L")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 1.72697e-06, 3.326355e-12, 0.7519072, 0.6592689)
+tracks/2/type = "rotation_3d"
+tracks/2/imported = true
+tracks/2/enabled = true
+tracks/2/path = NodePath("Armature_Hand_L/Skeleton3D:Thumb.L")
+tracks/2/interp = 0
+tracks/2/loop_wrap = true
+tracks/2/keys = PackedFloat32Array(0, 1, -0.5460435, 0.45116606, 0.48914638, 0.50894165)
