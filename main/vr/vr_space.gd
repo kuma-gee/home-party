@@ -18,6 +18,7 @@ signal back_to_home()
 @export var vignette: XRToolsVignette
 @export var player_body: XRToolsPlayerBody
 @export var debug_camera: Camera3D
+@export var desktop_settings_panel: SettingsPanel
 @export var show_pause_overlay := true
 
 const SETTINGS_PANEL_DISTANCE := 0.8
@@ -51,6 +52,14 @@ func _ready() -> void:
 	_settings_panel_instance = settings_viewport.get_scene_instance()
 	_settings_panel_instance.back_pressed.connect(_on_settings_back_pressed)
 	_settings_panel_instance.player_height_changed.connect(_on_player_height_changed)
+	_settings_panel_instance.tab_selected.connect(_on_vr_settings_tab_selected)
+	_settings_panel_instance.xr_settings_changed.connect(_on_xr_settings_changed)
+	if desktop_settings_panel != null:
+		desktop_settings_panel.hide()
+		desktop_settings_panel.back_pressed.connect(_on_settings_back_pressed)
+		desktop_settings_panel.player_height_changed.connect(_on_player_height_changed)
+		desktop_settings_panel.tab_selected.connect(_on_desktop_settings_tab_selected)
+		desktop_settings_panel.xr_settings_changed.connect(_on_xr_settings_changed)
 
 	UserSettings.setting_changed.connect(_on_setting_changed)
 	_apply_movement_mode()
@@ -148,6 +157,7 @@ func _connect_menu(menu: VRMenuPanel):
 	
 	if settings_viewport.visible:
 		settings_viewport.hide()
+		_hide_desktop_settings_panel()
 		return
 	
 	_show_pause_menu()
@@ -179,6 +189,7 @@ func _on_menu_closed(from_settings := false):
 		if not get_tree().paused:
 			overlay_mesh.hide_overlay()
 	settings_viewport.hide()
+	_hide_desktop_settings_panel()
 
 func activate():
 	origin.current = true
@@ -291,9 +302,11 @@ func _on_settings_pressed():
 
 func _open_settings_menu() -> void:
 	_show_pause_menu()
+	_settings_panel_instance.refresh_from_settings()
 	_place_in_front_of_player(settings_viewport, SETTINGS_PANEL_DISTANCE)
 	_settings_panel_y_offset = settings_viewport.global_position.y - camera.global_position.y
 	settings_viewport.show()
+	_show_desktop_settings_panel()
 	menu_function.close_menu()
 
 func _place_in_front_of_player(node: Node3D, distance: float) -> void:
@@ -311,6 +324,36 @@ func _on_settings_back_pressed():
 
 func close_settings_menu() -> void:
 	_on_menu_closed(true)
+
+
+func _show_desktop_settings_panel() -> void:
+	if desktop_settings_panel == null:
+		return
+
+	desktop_settings_panel.set_current_tab(_settings_panel_instance.get_current_tab())
+	desktop_settings_panel.show()
+
+
+func _hide_desktop_settings_panel() -> void:
+	if desktop_settings_panel != null:
+		desktop_settings_panel.hide()
+
+
+func _on_vr_settings_tab_selected(tab: int) -> void:
+	if desktop_settings_panel != null:
+		desktop_settings_panel.set_current_tab(tab)
+
+
+func _on_desktop_settings_tab_selected(tab: int) -> void:
+	if _settings_panel_instance != null:
+		_settings_panel_instance.set_current_tab(tab)
+
+
+func _on_xr_settings_changed() -> void:
+	if _settings_panel_instance != null:
+		_settings_panel_instance.refresh_from_settings()
+	if desktop_settings_panel != null:
+		desktop_settings_panel.refresh_from_settings()
 
 
 func _on_player_height_changed(_new_height: float) -> void:

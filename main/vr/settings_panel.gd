@@ -3,6 +3,8 @@ extends Control
 
 signal back_pressed
 signal player_height_changed(new_height: float)
+signal tab_selected(tab: int)
+signal xr_settings_changed
 
 const KEYBOARD_TAB_CHANGE_PREVIOUS := -1
 const KEYBOARD_TAB_CHANGE_NEXT := 1
@@ -27,12 +29,42 @@ const KEYBOARD_TAB_CHANGE_NEXT := 1
 @onready var _back_button: Button = %BackButton
 @onready var _tab_container: TabContainer = $VBoxContainer/TabContainer
 
+var _syncing_from_settings := false
+var _syncing_tab := false
+
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
-	# Initialise from current UserSettings
+	_sync_from_settings()
+
+	# Connect UI signals → UserSettings
+	_master_slider.value_changed.connect(_on_master_changed)
+	_sfx_slider.value_changed.connect(_on_sfx_changed)
+	_music_slider.value_changed.connect(_on_music_changed)
+	_antialiasing_toggle.toggled.connect(_on_antialiasing_toggled)
+	_msaa_option.item_selected.connect(_on_msaa_selected)
+	_shadow_quality_option.item_selected.connect(_on_shadow_quality_selected)
+	_vsync_toggle.toggled.connect(_on_vsync_toggled)
+	_smooth_movement_button.toggled.connect(_on_smooth_movement_toggled)
+	_teleport_movement_button.toggled.connect(_on_teleport_movement_toggled)
+	_vignette_toggle.toggled.connect(_on_vignette_toggled)
+	_snap_turn_toggle.toggled.connect(_on_snap_turn_toggled)
+	_player_height_slider.value_changed.connect(_on_player_height_value_changed)
+	_player_height_slider.drag_ended.connect(_on_player_height_drag_ended)
+	_seated_mode_toggle.toggled.connect(_on_seated_mode_toggled)
+	_back_button.pressed.connect(back_pressed.emit)
+	_tab_container.tab_changed.connect(_on_tab_changed)
+	visibility_changed.connect(_on_visibility_changed)
+	UserSettings.setting_changed.connect(_on_setting_changed)
+
+	if visible:
+		_focus_first_control(true)
+
+
+func _sync_from_settings() -> void:
+	_syncing_from_settings = true
 	_master_slider.value = UserSettings.get_master_volume()
 	_sfx_slider.value = UserSettings.get_sfx_volume()
 	_music_slider.value = UserSettings.get_music_volume()
@@ -55,28 +87,16 @@ func _ready() -> void:
 	_update_sfx_label(_sfx_slider.value)
 	_update_music_label(_music_slider.value)
 	_update_player_height_label(_player_height_slider.value)
+	_syncing_from_settings = false
 
-	# Connect UI signals → UserSettings
-	_master_slider.value_changed.connect(_on_master_changed)
-	_sfx_slider.value_changed.connect(_on_sfx_changed)
-	_music_slider.value_changed.connect(_on_music_changed)
-	_antialiasing_toggle.toggled.connect(_on_antialiasing_toggled)
-	_msaa_option.item_selected.connect(_on_msaa_selected)
-	_shadow_quality_option.item_selected.connect(_on_shadow_quality_selected)
-	_vsync_toggle.toggled.connect(_on_vsync_toggled)
-	_smooth_movement_button.toggled.connect(_on_smooth_movement_toggled)
-	_teleport_movement_button.toggled.connect(_on_teleport_movement_toggled)
-	_vignette_toggle.toggled.connect(_on_vignette_toggled)
-	_snap_turn_toggle.toggled.connect(_on_snap_turn_toggled)
-	_player_height_slider.value_changed.connect(_on_player_height_value_changed)
-	_player_height_slider.drag_ended.connect(_on_player_height_drag_ended)
-	_seated_mode_toggle.toggled.connect(_on_seated_mode_toggled)
-	_back_button.pressed.connect(back_pressed.emit)
-	_tab_container.tab_changed.connect(_on_tab_changed)
-	visibility_changed.connect(_on_visibility_changed)
 
-	if visible:
-		_focus_first_control(true)
+func refresh_from_settings() -> void:
+	_sync_from_settings()
+
+
+func _on_setting_changed(_section: String, _key: String) -> void:
+	if not _syncing_from_settings:
+		_sync_from_settings()
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
@@ -107,6 +127,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
 # ------------------------------------------------------------------------------
 
 func _on_master_changed(value: float) -> void:
+	if _syncing_from_settings:
+		return
 	UserSettings.set_master_volume(value)
 	_update_master_label(value)
 
@@ -116,6 +138,8 @@ func _update_master_label(value: float) -> void:
 
 
 func _on_sfx_changed(value: float) -> void:
+	if _syncing_from_settings:
+		return
 	UserSettings.set_sfx_volume(value)
 	_update_sfx_label(value)
 
@@ -125,6 +149,8 @@ func _update_sfx_label(value: float) -> void:
 
 
 func _on_music_changed(value: float) -> void:
+	if _syncing_from_settings:
+		return
 	UserSettings.set_music_volume(value)
 	_update_music_label(value)
 
@@ -134,51 +160,73 @@ func _update_music_label(value: float) -> void:
 
 
 func _on_antialiasing_toggled(enabled: bool) -> void:
+	if _syncing_from_settings:
+		return
 	UserSettings.set_antialiasing(enabled)
 
 
 func _on_msaa_selected(index: int) -> void:
+	if _syncing_from_settings:
+		return
 	UserSettings.set_msaa_level(index)
 
 
 func _on_shadow_quality_selected(index: int) -> void:
+	if _syncing_from_settings:
+		return
 	UserSettings.set_shadow_quality(index)
 
 
 func _on_vsync_toggled(enabled: bool) -> void:
+	if _syncing_from_settings:
+		return
 	UserSettings.set_vsync(enabled)
 
 
 func _on_smooth_movement_toggled(pressed: bool) -> void:
+	if _syncing_from_settings:
+		return
 	if pressed:
 		UserSettings.set_movement_mode(UserSettings.MovementMode.SMOOTH)
 
 
 func _on_teleport_movement_toggled(pressed: bool) -> void:
+	if _syncing_from_settings:
+		return
 	if pressed:
 		UserSettings.set_movement_mode(UserSettings.MovementMode.TELEPORT)
 
 
 func _on_vignette_toggled(enabled: bool) -> void:
+	if _syncing_from_settings:
+		return
 	UserSettings.set_vignette_enabled(enabled)
 
 
 func _on_snap_turn_toggled(enabled: bool) -> void:
+	if _syncing_from_settings:
+		return
 	XRToolsUserSettings.snap_turning = enabled
 	XRToolsUserSettings.save()
+	xr_settings_changed.emit()
 
 
 func _on_player_height_value_changed(value: float) -> void:
+	if _syncing_from_settings:
+		return
 	_update_player_height_label(value)
 
 
 func _on_player_height_drag_ended(value_changed: bool) -> void:
+	if _syncing_from_settings:
+		return
 	if not value_changed:
 		return
 
 	var value := _player_height_slider.value
 	XRToolsUserSettings.player_height = value
 	XRToolsUserSettings.save()
+	xr_settings_changed.emit()
 	player_height_changed.emit(value)
 
 
@@ -187,6 +235,8 @@ func _update_player_height_label(value: float) -> void:
 
 
 func _on_seated_mode_toggled(enabled: bool) -> void:
+	if _syncing_from_settings:
+		return
 	UserSettings.set_seated_mode(enabled)
 	_update_seated_mode_label(enabled)
 
@@ -197,12 +247,28 @@ func _update_seated_mode_label(enabled: bool) -> void:
 
 func _on_visibility_changed() -> void:
 	if visible:
+		_sync_from_settings()
 		call_deferred("_focus_first_control", true)
 
 
 func _on_tab_changed(_tab: int) -> void:
+	if not _syncing_tab:
+		tab_selected.emit(_tab)
 	if visible:
 		call_deferred("_focus_first_control", true)
+
+
+func set_current_tab(tab: int) -> void:
+	if _tab_container.current_tab == tab:
+		return
+
+	_syncing_tab = true
+	_tab_container.current_tab = clampi(tab, 0, _tab_container.get_tab_count() - 1)
+	_syncing_tab = false
+
+
+func get_current_tab() -> int:
+	return _tab_container.current_tab
 
 
 func _change_tab(direction: int) -> void:

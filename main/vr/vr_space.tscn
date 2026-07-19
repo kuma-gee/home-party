@@ -65,7 +65,7 @@ texture_filter = 1
 resource_local_to_scene = true
 size = Vector3(1.5, 1, 0.02)
 
-[node name="VRSpace" type="Node3D" unique_id=841158329 node_paths=PackedStringArray("origin", "camera", "pause_menu", "overlay_mesh", "menu_function", "reset_area", "settings_viewport", "direct_movement", "teleport_function", "vignette", "player_body", "debug_camera")]
+[node name="VRSpace" type="Node3D" unique_id=841158329 node_paths=PackedStringArray("origin", "camera", "pause_menu", "overlay_mesh", "menu_function", "reset_area", "settings_viewport", "direct_movement", "teleport_function", "vignette", "player_body", "debug_camera", "desktop_settings_panel")]
 process_mode = 3
 script = ExtResource("1_2vxk7")
 origin = NodePath("SubViewport/XRPlayer")
@@ -80,6 +80,7 @@ teleport_function = NodePath("SubViewport/XRPlayer/LeftHand/FunctionTeleport")
 vignette = NodePath("SubViewport/XRPlayer/XRCamera3D/Vignette")
 player_body = NodePath("SubViewport/XRPlayer/PlayerBody")
 debug_camera = NodePath("DebugVRView")
+desktop_settings_panel = NodePath("CanvasLayer/DesktopSettingsPanelUI")
 
 [node name="DebugVRView" type="Camera3D" parent="." unique_id=598998519]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6478393, 0)
@@ -243,6 +244,9 @@ layout_mode = 2
 [node name="Label" type="Label" parent="CanvasLayer/PauseMenu/CenterContainer/VBoxContainer" unique_id=1419257685]
 layout_mode = 2
 text = "Game Paused"
+
+[node name="DesktopSettingsPanelUI" parent="CanvasLayer" unique_id=1302833739 instance=ExtResource("4_eoj1g")]
+visible = false
 
 [node name="Viewport2Din3D" parent="." unique_id=1418763861 instance=ExtResource("15_f1ooe")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5212524, -1.5732135)
