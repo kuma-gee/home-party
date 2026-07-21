@@ -163,6 +163,7 @@ HSlider {
   --icons-grabber: url(res://assets/textures/slider_handle.png);
   --icons-grabber-highlight: url(res://assets/textures/slider_handle.png);
   --icons-grabber-disabled: url(res://assets/textures/slider_handle.png);
+  --icons-tick: url(res://assets/textures/Tick.png);
 }
 
 HSlider:slider {

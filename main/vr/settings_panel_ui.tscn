@@ -2,7 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="1"]
 [ext_resource type="Script" uid="uid://d3ogxlny0nr0t" path="res://main/vr/settings_panel.gd" id="2"]
-[ext_resource type="PackedScene" path="res://main/vr/labeled_step_slider.tscn" id="3_labeled"]
+[ext_resource type="PackedScene" uid="uid://ewxvdn7nojma" path="res://main/vr/labeled_step_slider.tscn" id="3_labeled"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_movement_mode"]
 
@@ -245,13 +245,13 @@ size_flags_vertical = 1
 min_value = 1.0
 max_value = 2.5
 step = 0.05
-value = 1.85
+value = 1.65
 
 [node name="PlayerHeightValue" type="Label" parent="VBoxContainer/TabContainer/Comfort/GridContainer/PlayerHeightRow" unique_id=-474793085]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
-text = "1.85m"
+text = "1.65m"
 horizontal_alignment = 2
 
 [node name="SeatedModeLabel" type="Label" parent="VBoxContainer/TabContainer/Comfort/GridContainer" unique_id=-474793083]
