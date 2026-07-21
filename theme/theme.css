@@ -83,6 +83,15 @@ Label.Error {
   font-size: var(--text-large);
 }
 
+Label.SliderInactive {
+  color: var(--secondary-color);
+  font-size: var(--text-small);
+}
+
+Label.SliderActive {
+  font-size: var(--text-small);
+}
+
 GridContainer {
   --const-h-separation: 32;
   --const-v-separation: 16;

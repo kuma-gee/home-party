@@ -2,6 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="1"]
 [ext_resource type="Script" uid="uid://d3ogxlny0nr0t" path="res://main/vr/settings_panel.gd" id="2"]
+[ext_resource type="PackedScene" path="res://main/vr/labeled_step_slider.tscn" id="3_labeled"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_movement_mode"]
 
@@ -42,7 +43,7 @@ horizontal_alignment = 1
 [node name="TabContainer" type="TabContainer" parent="VBoxContainer" unique_id=-474793101]
 layout_mode = 2
 size_flags_vertical = 3
-current_tab = 2
+current_tab = 1
 
 [node name="Audio" type="MarginContainer" parent="VBoxContainer/TabContainer" unique_id=1339163691]
 visible = false
@@ -117,7 +118,6 @@ text = "100%"
 horizontal_alignment = 2
 
 [node name="Graphics" type="MarginContainer" parent="VBoxContainer/TabContainer" unique_id=2061686983]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
@@ -142,38 +142,23 @@ layout_mode = 2
 size_flags_horizontal = 0
 text = "MSAA"
 
-[node name="MSAAOption" type="OptionButton" parent="VBoxContainer/TabContainer/Graphics/GridContainer" unique_id=900000003]
+[node name="MSAAControl" parent="VBoxContainer/TabContainer/Graphics/GridContainer" unique_id=900000003 instance=ExtResource("3_labeled")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-selected = 0
-item_count = 4
-popup/item_0/text = "Off"
-popup/item_0/id = 0
-popup/item_1/text = "2x"
-popup/item_1/id = 1
-popup/item_2/text = "4x"
-popup/item_2/id = 2
-popup/item_3/text = "8x"
-popup/item_3/id = 3
+option_texts = PackedStringArray("Off", "2x", "4x", "8x")
 
 [node name="ShadowQualityLabel" type="Label" parent="VBoxContainer/TabContainer/Graphics/GridContainer" unique_id=900000005]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Shadow Quality"
 
-[node name="ShadowQualityOption" type="OptionButton" parent="VBoxContainer/TabContainer/Graphics/GridContainer" unique_id=900000006]
+[node name="ShadowQualityControl" parent="VBoxContainer/TabContainer/Graphics/GridContainer" unique_id=900000006 instance=ExtResource("3_labeled")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-selected = 1
-item_count = 3
-popup/item_0/text = "Low"
-popup/item_0/id = 0
-popup/item_1/text = "Medium"
-popup/item_1/id = 1
-popup/item_2/text = "High"
-popup/item_2/id = 2
+option_texts = PackedStringArray("Low", "Medium", "High")
+value = 1
 
 [node name="VSyncLabel" type="Label" parent="VBoxContainer/TabContainer/Graphics/GridContainer" unique_id=900000008]
 layout_mode = 2
@@ -188,6 +173,7 @@ button_pressed = true
 text = "On"
 
 [node name="Comfort" type="MarginContainer" parent="VBoxContainer/TabContainer" unique_id=1677750438]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 

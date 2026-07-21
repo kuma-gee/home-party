@@ -16,8 +16,8 @@ const KEYBOARD_TAB_CHANGE_NEXT := 1
 @onready var _music_slider: HSlider = %MusicSlider
 @onready var _music_value_label: Label = %MusicValue
 @onready var _antialiasing_toggle: CheckBox = %AntiAliasingToggle
-@onready var _msaa_option: OptionButton = %MSAAOption
-@onready var _shadow_quality_option: OptionButton = %ShadowQualityOption
+@onready var _msaa_slider = %MSAAControl
+@onready var _shadow_quality_slider = %ShadowQualityControl
 @onready var _vsync_toggle: CheckBox = %VSyncToggle
 @onready var _smooth_movement_button: CheckBox = %SmoothMovementButton
 @onready var _teleport_movement_button: CheckBox = %TeleportMovementButton
@@ -44,8 +44,8 @@ func _ready() -> void:
 	_sfx_slider.value_changed.connect(_on_sfx_changed)
 	_music_slider.value_changed.connect(_on_music_changed)
 	_antialiasing_toggle.toggled.connect(_on_antialiasing_toggled)
-	_msaa_option.item_selected.connect(_on_msaa_selected)
-	_shadow_quality_option.item_selected.connect(_on_shadow_quality_selected)
+	_msaa_slider.value_changed.connect(_on_msaa_changed)
+	_shadow_quality_slider.value_changed.connect(_on_shadow_quality_changed)
 	_vsync_toggle.toggled.connect(_on_vsync_toggled)
 	_smooth_movement_button.toggled.connect(_on_smooth_movement_toggled)
 	_teleport_movement_button.toggled.connect(_on_teleport_movement_toggled)
@@ -69,8 +69,8 @@ func _sync_from_settings() -> void:
 	_sfx_slider.value = UserSettings.get_sfx_volume()
 	_music_slider.value = UserSettings.get_music_volume()
 	_antialiasing_toggle.button_pressed = UserSettings.get_antialiasing()
-	_msaa_option.selected = UserSettings.get_msaa_level()
-	_shadow_quality_option.selected = UserSettings.get_shadow_quality()
+	_msaa_slider.value = UserSettings.get_msaa_level()
+	_shadow_quality_slider.value = UserSettings.get_shadow_quality()
 	_vsync_toggle.button_pressed = UserSettings.get_vsync()
 	if UserSettings.get_movement_mode() == UserSettings.MovementMode.TELEPORT:
 		_teleport_movement_button.button_pressed = true
@@ -165,16 +165,16 @@ func _on_antialiasing_toggled(enabled: bool) -> void:
 	UserSettings.set_antialiasing(enabled)
 
 
-func _on_msaa_selected(index: int) -> void:
+func _on_msaa_changed(value: int) -> void:
 	if _syncing_from_settings:
 		return
-	UserSettings.set_msaa_level(index)
+	UserSettings.set_msaa_level(value)
 
 
-func _on_shadow_quality_selected(index: int) -> void:
+func _on_shadow_quality_changed(value: int) -> void:
 	if _syncing_from_settings:
 		return
-	UserSettings.set_shadow_quality(index)
+	UserSettings.set_shadow_quality(value)
 
 
 func _on_vsync_toggled(enabled: bool) -> void:
