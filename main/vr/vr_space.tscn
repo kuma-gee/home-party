@@ -48,21 +48,21 @@ move_traction = 45.0
 [sub_resource type="SphereShape3D" id="SphereShape3D_icwxr"]
 radius = 0.062045835
 
-[sub_resource type="QuadMesh" id="QuadMesh_07sco"]
+[sub_resource type="QuadMesh" id="QuadMesh_yufjw"]
 resource_local_to_scene = true
 size = Vector2(1.5, 1)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_5ic2p"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_07sco"]
 viewport_path = NodePath("Viewport2Din3D/Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_44s1c"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5ic2p"]
 transparency = 1
 cull_mode = 2
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_5ic2p")
+albedo_texture = SubResource("ViewportTexture_07sco")
 texture_filter = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_3703v"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_44s1c"]
 resource_local_to_scene = true
 size = Vector3(1.5, 1, 0.02)
 
@@ -121,14 +121,14 @@ push_rigid_bodies = false
 physics = SubResource("XRToolsGroundPhysicsSettings_snappy")
 
 [node name="Body" type="Node3D" parent="SubViewport/XRPlayer/PlayerBody" unique_id=1031441429]
-transform = Transform3D(-0.5, 0, -7.54979e-08, 0, 0.5, 0, 7.54979e-08, 0, -0.5, 0, 0.32729065, 0.09987366)
+transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 0, 0.32729065, 0.09987366)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="SubViewport/XRPlayer/PlayerBody/Body" unique_id=1424517050]
 libraries/ = SubResource("AnimationLibrary_vx6d0")
 
 [node name="player" parent="SubViewport/XRPlayer/PlayerBody/Body" unique_id=319479388 instance=ExtResource("18_lisjs")]
 
-[node name="Body" parent="SubViewport/XRPlayer/PlayerBody/Body/player" index="0" unique_id=788786033]
+[node name="Body" parent="SubViewport/XRPlayer/PlayerBody/Body/player" index="0" unique_id=465540190]
 layers = 524288
 surface_material_override/0 = ExtResource("9_0wydl")
 
@@ -274,15 +274,15 @@ scene_properties_keys = PackedStringArray("settings_panel.gd")
 size = Vector2i(900, 600)
 
 [node name="Screen" parent="Viewport2Din3D" index="1" unique_id=1761931612]
-mesh = SubResource("QuadMesh_07sco")
-surface_material_override/0 = SubResource("StandardMaterial3D_44s1c")
+mesh = SubResource("QuadMesh_yufjw")
+surface_material_override/0 = SubResource("StandardMaterial3D_5ic2p")
 
 [node name="StaticBody3D" parent="Viewport2Din3D" index="2" unique_id=1882660186]
 screen_size = Vector2(1.5, 1)
 viewport_size = Vector2(900, 600)
 
 [node name="CollisionShape3D" parent="Viewport2Din3D/StaticBody3D" index="0" unique_id=507281989]
-shape = SubResource("BoxShape3D_3703v")
+shape = SubResource("BoxShape3D_44s1c")
 
 [editable path="StartXR"]
 [editable path="SubViewport/XRPlayer/PlayerBody/Body/player"]

@@ -3,10 +3,10 @@
 [ext_resource type="Script" uid="uid://cnwtovj4mqc45" path="res://addons/godot-xr-tools/hands/hand.gd" id="3"]
 [ext_resource type="Material" uid="uid://b6y3dfp7qow5a" path="res://shader/materials/player_toon.tres" id="3_7stdl"]
 [ext_resource type="Script" uid="uid://dvobm6vcfnqe8" path="res://addons/godot-xr-tools/hands/poses/hand_pose_settings.gd" id="3_21cbc"]
-[ext_resource type="Animation" uid="uid://bv1t3wwklq0ql" path="res://animations/hand_grip_l.tres" id="3_76a3m"]
+[ext_resource type="Animation" uid="uid://bnee8jdh86qy5" path="res://animations/hand_grip_l.tres" id="3_76a3m"]
 [ext_resource type="PackedScene" uid="uid://d1jdpxa24os64" path="res://assets/characters/hand_l.glb" id="4_2gbl6"]
-[ext_resource type="Animation" uid="uid://d2tc0d0m3xwba" path="res://animations/hand_open_l.tres" id="4_aymud"]
-[ext_resource type="AnimationNodeBlendTree" uid="uid://dljn25m1x1e16" path="res://animations/hand_blend_tree_l.tres" id="4_cgltf"]
+[ext_resource type="Animation" uid="uid://5gd4vj6g03nw" path="res://animations/hand_open_l.tres" id="4_aymud"]
+[ext_resource type="AnimationNodeBlendTree" uid="uid://dljn25m1x1e16" path="res://animations/hand_blend_tree_l.tres" id="8_aymud"]
 
 [sub_resource type="Resource" id="Resource_q726h"]
 script = ExtResource("3_21cbc")
@@ -14,57 +14,31 @@ open_pose = ExtResource("4_aymud")
 closed_pose = ExtResource("3_76a3m")
 metadata/_custom_type_script = "uid://dvobm6vcfnqe8"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_cgltf"]
-animation = &"Thumb_L"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_21cbc"]
-animation = &"Grip_L"
-
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_76a3m"]
-filter_enabled = true
-filters = ["Armature/Skeleton3D:Little_Distal_L", "Armature/Skeleton3D:Little_Intermediate_L", "Armature/Skeleton3D:Little_Metacarpal_L", "Armature/Skeleton3D:Little_Proximal_L", "Armature/Skeleton3D:Middle_Distal_L", "Armature/Skeleton3D:Middle_Intermediate_L", "Armature/Skeleton3D:Middle_Metacarpal_L", "Armature/Skeleton3D:Middle_Proximal_L", "Armature/Skeleton3D:Ring_Distal_L", "Armature/Skeleton3D:Ring_Intermediate_L", "Armature/Skeleton3D:Ring_Metacarpal_L", "Armature/Skeleton3D:Ring_Proximal_L", "Armature/Skeleton3D:Thumb_Distal_L", "Armature/Skeleton3D:Thumb_Metacarpal_L", "Armature/Skeleton3D:Thumb_Proximal_L", "Armature/Skeleton:Little_Distal_L", "Armature/Skeleton:Little_Intermediate_L", "Armature/Skeleton:Little_Proximal_L", "Armature/Skeleton:Middle_Distal_L", "Armature/Skeleton:Middle_Intermediate_L", "Armature/Skeleton:Middle_Proximal_L", "Armature/Skeleton:Ring_Distal_L", "Armature/Skeleton:Ring_Intermediate_L", "Armature/Skeleton:Ring_Proximal_L", "Armature/Skeleton:Thumb_Distal_L", "Armature/Skeleton:Thumb_Proximal_L"]
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2gbl6"]
-animation = &"Open_L"
-
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_aymud"]
-
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_i7hcx"]
-graph_offset = Vector2(-94, 18)
-nodes/output/position = Vector2(1300, 180)
-nodes/OpenHand/node = SubResource("AnimationNodeAnimation_2gbl6")
-nodes/OpenHand/position = Vector2(240, 140)
-nodes/ClosedHand1/node = SubResource("AnimationNodeAnimation_cgltf")
-nodes/ClosedHand1/position = Vector2(280, 320)
-nodes/ClosedHand2/node = SubResource("AnimationNodeAnimation_21cbc")
-nodes/ClosedHand2/position = Vector2(740, 400)
-nodes/Trigger/node = SubResource("AnimationNodeBlend2_aymud")
-nodes/Trigger/position = Vector2(640, 80)
-nodes/Grip/node = SubResource("AnimationNodeBlend2_76a3m")
-nodes/Grip/position = Vector2(1040, 160)
-node_connections = [&"output", 0, &"Grip", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2"]
-
 [node name="LeftHand" type="Node3D" unique_id=801242371]
 script = ExtResource("3")
-hand_blend_tree = ExtResource("4_cgltf")
 default_pose = SubResource("Resource_q726h")
 
-[node name="hand_l" parent="." unique_id=28381700 instance=ExtResource("4_2gbl6")]
+[node name="HandRoot" type="Node3D" parent="." unique_id=1460814938]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.01, 0, 0.05)
 
-[node name="Skeleton3D" parent="hand_l/Armature_Hand_L" parent_id_path=PackedInt32Array(28381700, 1784238570) index="0" unique_id=960132627]
-bones/1/rotation = Quaternion(9.087803e-08, 8.341135e-07, 0.029023135, 0.9995788)
-bones/2/rotation = Quaternion(6.746472e-08, 9.326271e-16, 0.029373823, 0.9995686)
-bones/3/rotation = Quaternion(-0.7131381, 0.00956083, 0.05005107, 0.69916916)
+[node name="Hand" type="Node3D" parent="HandRoot" unique_id=166861357]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -0.01, 0, -0.05)
 
-[node name="Hand_L" parent="hand_l/Armature_Hand_L/Skeleton3D" index="0" unique_id=551449943]
+[node name="hand_l" parent="HandRoot/Hand" unique_id=28381700 instance=ExtResource("4_2gbl6")]
+
+[node name="Skeleton3D" parent="HandRoot/Hand/hand_l/Armature_Hand_L" parent_id_path=PackedInt32Array(28381700, 1927413153) index="0" unique_id=419091882]
+bones/1/rotation = Quaternion(1.5102673e-07, 8.253456e-07, 0.10131328, 0.9948546)
+bones/2/rotation = Quaternion(6.728765e-08, -4.8841517e-09, 0.10166231, 0.99481905)
+bones/3/rotation = Quaternion(-0.7082937, 0.08353077, 0.12235237, 0.6901975)
+
+[node name="Hand_L" parent="HandRoot/Hand/hand_l/Armature_Hand_L/Skeleton3D" index="0" unique_id=882999712]
 surface_material_override/0 = ExtResource("3_7stdl")
 
 [node name="AnimationTree" type="AnimationTree" parent="." unique_id=899348105]
-root_node = NodePath("../hand_l")
-tree_root = SubResource("AnimationNodeBlendTree_i7hcx")
-anim_player = NodePath("../hand_l/AnimationPlayer")
+root_node = NodePath("../HandRoot/Hand/hand_l")
+tree_root = ExtResource("8_aymud")
+anim_player = NodePath("../HandRoot/Hand/hand_l/AnimationPlayer")
 parameters/Trigger/blend_amount = 0.0
 parameters/Grip/blend_amount = 0.0
 
-[editable path="hand_l"]
+[editable path="HandRoot/Hand/hand_l"]

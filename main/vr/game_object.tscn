@@ -5,8 +5,6 @@
 [ext_resource type="Script" uid="uid://b37bxflp231tn" path="res://main/vr/game_select_area.gd" id="2_r842p"]
 [ext_resource type="PackedScene" uid="uid://dv3k4nwcqsxou" path="res://assets/living_room/cassette.glb" id="3_ul6vm"]
 [ext_resource type="Shader" uid="uid://d1cis0r7gi5pm" path="res://shader/outline_3d.gdshader" id="4_vkcnx"]
-[ext_resource type="PackedScene" uid="uid://c25yxb0vt53vc" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_left.tscn" id="5_vkcnx"]
-[ext_resource type="PackedScene" uid="uid://ctw7nbntd5pcj" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_right.tscn" id="6_ul6vm"]
 [ext_resource type="Script" uid="uid://cdl5kcr2wvnav" path="res://addons/godot-xr-tools/objects/highlight/highlight_material.gd" id="10_nnut3"]
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="11_6yqel"]
 [ext_resource type="Material" uid="uid://dyuaw57o8y3i" path="res://addons/godot-xr-tools/materials/highlight.tres" id="11_dbu0t"]
@@ -125,15 +123,7 @@ theme_type_variation = &"LabelError"
 text = "Not available in demo"
 horizontal_alignment = 1
 
-[node name="GrabPointHandLeft" parent="." index="6" unique_id=373562343 instance=ExtResource("5_vkcnx")]
-transform = Transform3D(0.9316151, 0, -0.36344638, -0.16361497, 0.8929397, -0.4193911, 0.3245357, 0.45017636, 0.8318761, -0.029784683, 0.06942275, -0.061956365)
-visible = true
-
-[node name="GrabPointHandRight" parent="." index="7" unique_id=233978263 instance=ExtResource("6_ul6vm")]
-transform = Transform3D(0.95738006, 0, 0.28883135, 0.13002504, 0.8929397, -0.43098986, -0.25790897, 0.45017636, 0.85488266, 0.033594396, 0.06942275, -0.061956365)
-visible = true
-
-[node name="XRToolsHighlightMaterial" type="Node" parent="." index="8" unique_id=970509488]
+[node name="XRToolsHighlightMaterial" type="Node" parent="." index="6" unique_id=970509488]
 script = ExtResource("10_nnut3")
 highlight_mesh_instance = NodePath("../cassette/Cassette")
 highlight_material = ExtResource("11_dbu0t")

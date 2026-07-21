@@ -17,12 +17,6 @@ extends XRToolsHandPalmOffset
 ## Signal emitted when the hand scale changes
 signal hand_scale_changed(scale)
 
-## Blend tree to use
-@export var hand_blend_tree : AnimationNodeBlendTree: set = set_hand_blend_tree
-
-## Override the hand material
-@export var hand_material_override : Material: set = set_hand_material_override
-
 ## Default hand pose
 @export var default_pose : XRToolsHandPoseSettings: set = set_default_pose
 
@@ -40,9 +34,6 @@ var _initial_transform : Transform3D
 
 ## Current hand transform (from controller) - after scale
 var _transform : Transform3D
-
-## Hand mesh
-var _hand_mesh : MeshInstance3D
 
 ## Hand animation player
 var _animation_player : AnimationPlayer
@@ -119,14 +110,10 @@ func _ready() -> void:
 		top_level = true
 		process_physics_priority = -70
 
-	# Find the relevant hand nodes
-	_hand_mesh = _find_child(self, "MeshInstance3D")
 	_animation_player = _find_child(self, "AnimationPlayer")
 	_animation_tree = _find_child(self, "AnimationTree")
 
 	# Apply all updates
-	_update_hand_blend_tree()
-	_update_hand_material_override()
 	_update_pose()
 	_update_target()
 
@@ -250,21 +237,6 @@ func _validate_property(property):
 		super._validate_property(property)
 
 
-## Set the blend tree
-func set_hand_blend_tree(blend_tree : AnimationNodeBlendTree) -> void:
-	hand_blend_tree = blend_tree
-	if is_inside_tree():
-		_update_hand_blend_tree()
-		_update_pose()
-
-
-## Set the hand material override
-func set_hand_material_override(material : Material) -> void:
-	hand_material_override = material
-	if is_inside_tree():
-		_update_hand_material_override()
-
-
 ## Set the default open-hand pose
 func set_default_pose(pose : XRToolsHandPoseSettings) -> void:
 	default_pose = pose
@@ -332,20 +304,6 @@ func remove_target_override(target : Node3D) -> void:
 	# Update the pose
 	if modified:
 		_update_target()
-
-
-func _update_hand_blend_tree() -> void:
-	# As we're going to make modifications to our animation tree, we need to do
-	# a deep copy, simply setting resource local to scene does not seem to be enough
-	if _animation_tree and hand_blend_tree:
-		_tree_root = hand_blend_tree.duplicate(true)
-		_animation_tree.tree_root = _tree_root
-
-
-func _update_hand_material_override() -> void:
-	if _hand_mesh:
-		_hand_mesh.material_override = hand_material_override
-
 
 func _update_pose() -> void:
 	# Skip if no blend tree
