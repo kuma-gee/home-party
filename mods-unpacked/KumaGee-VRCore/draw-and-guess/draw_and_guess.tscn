@@ -199,7 +199,7 @@ timer_label = NodePath("CanvasLayer/Control/GameUI/TimerLabel")
 progress_label = NodePath("CanvasLayer/Control/GameUI/ProgressLabel")
 reveal_label = NodePath("CanvasLayer/Control/GameUI/RevealLabel")
 prepare_label = NodePath("CanvasLayer/Control/PrepareUI/Label")
-vr_screen = NodePath("BaseSceneContent/draw_room/Plane_006/Viewport2Din3D2")
+vr_screen = NodePath("BaseSceneContent/InstructionsViewport")
 bgm_audio = ExtResource("3_rtgeu")
 
 [node name="WorldEnvironment" parent="." index="0" unique_id=10000001]
