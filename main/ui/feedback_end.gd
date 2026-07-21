@@ -10,6 +10,7 @@ extends PanelContainer
 const MAX_FEEDBACK_LENGTH := 300
 
 var _request_running := false
+var _show_throttle_label := false
 
 func _ready() -> void:
 	feedback_manager.request_running.connect(_on_request_running)
@@ -47,15 +48,16 @@ func _on_request_failed(reason: int) -> void:
 
 func _on_request_successful() -> void:
 	_request_running = false
+	_show_throttle_label = false
 	feedback_input.clear()
 	_update_character_limit_label()
 	_update_send_button()
 	_set_status("Feedback sent. Thank you!", false)
 	_update_throttle_label()
 
-func _on_request_throttled(time_left: float) -> void:
+func _on_request_throttled(_time_left: float) -> void:
+	_show_throttle_label = true
 	_update_send_button()
-	_set_status("Please wait %d seconds before sending more feedback." % ceili(time_left), true)
 	_update_throttle_label()
 
 func _on_feedback_input_text_changed() -> void:
@@ -79,22 +81,26 @@ func _update_character_limit_label() -> void:
 
 func _update_send_button() -> void:
 	var has_text := not feedback_input.text.strip_edges().is_empty()
-	var throttled: bool = float(feedback_manager.get_time_until_next_feedback()) > 0.0
-	send_button.disabled = not has_text or throttled or _request_running
+	send_button.disabled = not has_text or _request_running
 
 func _update_throttle_label() -> void:
 	var time_left: float = float(feedback_manager.get_time_until_next_feedback())
-	if time_left > 0.0:
+	if _show_throttle_label and time_left > 0.0:
 		throttle_label.text = "Next feedback available in %d seconds." % ceili(time_left)
 		throttle_label.show()
+		status_label.hide()
 	else:
+		_show_throttle_label = false
 		throttle_label.hide()
 	_update_send_button()
 
 func _set_status(message: String, is_error: bool) -> void:
 	status_label.text = message
 	status_label.modulate = Color(1.0, 0.35, 0.35) if is_error else Color.WHITE
-	status_label.show()
+	if throttle_label.visible:
+		status_label.hide()
+	else:
+		status_label.show()
 
 func _get_error_message(reason: int) -> String:
 	match reason:
