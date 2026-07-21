@@ -135,7 +135,7 @@ func _enter_tree():
 			TYPE_FLOAT,
 			PROPERTY_HINT_RANGE,
 			"1.0,2.5,0.05",
-			1.85)
+			1.5)
 
 	# Register our autoload user settings object
 	add_autoload_singleton(

@@ -139,14 +139,14 @@ static func set_default_snap_turning(p_default : bool) -> void:
 
 ## Get our player standard height.
 static func get_player_standard_height() -> float:
-	var standard_height = 1.85
+	var standard_height = 1.5
 
 	if ProjectSettings.has_setting("godot_xr_tools/player/standard_height"):
 		standard_height = ProjectSettings.get_setting("godot_xr_tools/player/standard_height")
 
 	if !(standard_height >= 1.0 and standard_height <= 2.5):
 		# out of bounds? reset to default
-		standard_height = 1.85
+		standard_height = 1.5
 
 	return standard_height
 

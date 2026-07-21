@@ -29,7 +29,7 @@ enum WebXRPrimary {
 @export_group("Player")
 
 ## User setting for player height
-@export var player_height : float = 1.85: set = set_player_height
+@export var player_height : float = 1.5: set = set_player_height
 
 @export_group("WebXR")
 
