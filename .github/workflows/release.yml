@@ -4,6 +4,9 @@
 name: Steam Releases
 
 on:
+  push:
+    tags:
+      - 'v*'
   workflow_dispatch:
     inputs:
       demo:
@@ -33,27 +36,73 @@ jobs:
     outputs:
       steam_id: ${{ steps.build-data.outputs.steam_id }}
       channels: ${{ steps.build-data.outputs.channels }}
+      demo: ${{ steps.build-data.outputs.demo }}
+      release_steam: ${{ steps.build-data.outputs.release_steam }}
+      release_github: ${{ steps.build-data.outputs.release_github }}
+      release_itch: ${{ steps.build-data.outputs.release_itch }}
     steps:
       - id: build-data
         run: |
           STEAM_ID=${STEAM_APP:-430}
           IS_DEMO=${DEMO:-false}
+          IS_RC=false
+          IS_TAG_RELEASE=false
+          RELEASE_STEAM=${RELEASE_STEAM:-false}
+          RELEASE_GITHUB=${RELEASE_GITHUB:-false}
+          RELEASE_ITCH=${RELEASE_ITCH:-false}
           CHANNELS='"windows", "linux"'
 
-          if [ $RELEASE_STEAM = false ] && [ $RELEASE_GITHUB = false ]; then
+          if [ "$REF_TYPE" = "tag" ] && [[ "$REF" == v* ]]; then
+            IS_TAG_RELEASE=true
+          fi
+
+          if [[ "$REF" == *"-demo"* ]]; then
+            IS_DEMO=true
+          fi
+
+          if [[ "$REF" == *"-rc"* ]]; then
+            IS_RC=true
+          fi
+
+          if [ "$IS_TAG_RELEASE" = true ]; then
+            RELEASE_GITHUB=true
+
+            if [ "$IS_RC" = false ]; then
+              RELEASE_STEAM=true
+
+              if [ "$IS_DEMO" = true ]; then
+                RELEASE_ITCH=true
+              fi
+            fi
+          fi
+
+          if [ "$IS_DEMO" = false ]; then
+            RELEASE_ITCH=false
+          fi
+
+          if [ "$RELEASE_STEAM" = false ] && [ "$RELEASE_GITHUB" = false ] && [ "$RELEASE_ITCH" = false ]; then
             CHANNELS=''
           fi
 
-          if [ $IS_DEMO = true ] || [[ "$REF" =~ "-demo" ]]; then
+          if [ "$IS_DEMO" = true ]; then
             STEAM_ID=$STEAM_DEMO_APP
           fi
 
           echo "::debug::Steam App ID: $STEAM_ID"
+          echo "::debug::Demo release: $IS_DEMO"
+          echo "::debug::GitHub release: $RELEASE_GITHUB"
+          echo "::debug::Steam release: $RELEASE_STEAM"
+          echo "::debug::Itch release: $RELEASE_ITCH"
           echo "steam_id=$STEAM_ID" >> $GITHUB_OUTPUT
           echo "channels=[$CHANNELS]" >> $GITHUB_OUTPUT
+          echo "demo=$IS_DEMO" >> $GITHUB_OUTPUT
+          echo "release_steam=$RELEASE_STEAM" >> $GITHUB_OUTPUT
+          echo "release_github=$RELEASE_GITHUB" >> $GITHUB_OUTPUT
+          echo "release_itch=$RELEASE_ITCH" >> $GITHUB_OUTPUT
         env:
           DEMO: ${{ inputs.demo }}
           REF: ${{ github.ref_name }}
+          REF_TYPE: ${{ github.ref_type }}
           RELEASE_ITCH: ${{ inputs.release-itch }}
           RELEASE_STEAM: ${{ inputs.release-steam }}
           RELEASE_GITHUB: ${{ inputs.release-github }}
@@ -72,7 +121,7 @@ jobs:
   release-itch:
     uses: kuma-gee/actions/.github/workflows/itch-release.yml@main
     needs: [build-godot, build-info]
-    if: ${{ inputs.release-itch }}
+    if: ${{ needs.build-info.outputs.release_itch == 'true' }}
     with:
       channels: ${{ needs.build-info.outputs.channels }}
       game: ${{ needs.build-godot.outputs.game }}
@@ -84,7 +133,7 @@ jobs:
   release-steam:
     uses: kuma-gee/actions/.github/workflows/steam-release.yml@main
     needs: [build-godot, build-info]
-    if: ${{ inputs.release-steam }}
+    if: ${{ needs.build-info.outputs.release_steam == 'true' }}
     with:
       steam-app: ${{ fromJSON(needs.build-info.outputs.steam_id) }}
       branch: beta
@@ -95,10 +144,10 @@ jobs:
 
   release-github:
     uses: kuma-gee/actions/.github/workflows/github-release.yml@main
-    needs: build-godot
-    if: ${{ inputs.release-github }}
+    needs: [build-godot, build-info]
+    if: ${{ needs.build-info.outputs.release_github == 'true' }}
     with:
-      demo: ${{ inputs.demo }}
+      demo: ${{ needs.build-info.outputs.demo == 'true' }}
     secrets:
       discord-webhook: ${{ secrets.DISCORD_RELEASE_HOOK }}
       password: ${{ needs.build-godot.outputs.password }}
