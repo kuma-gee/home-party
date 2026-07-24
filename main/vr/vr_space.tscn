@@ -170,6 +170,7 @@ transform = Transform3D(-0.18208116, -0.2986347, 0.19407158, 0.19473405, -0.2659
 [node name="LeftHand" parent="SubViewport/XRPlayer/LeftHand" unique_id=801242371 instance=ExtResource("7_2gosq")]
 
 [node name="FunctionPickup" parent="SubViewport/XRPlayer/LeftHand" unique_id=1917759440 instance=ExtResource("15_eoj1g")]
+grab_distance = 0.1
 
 [node name="FunctionPointer" parent="SubViewport/XRPlayer/LeftHand" unique_id=65982049 instance=ExtResource("9_wg2ng")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.02, 0.05, -0.1)
@@ -215,6 +216,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.02, 0.05, -0.1)
 show_laser = 2
 
 [node name="FunctionPickup" parent="SubViewport/XRPlayer/RightHand" unique_id=1142172700 instance=ExtResource("15_eoj1g")]
+grab_distance = 0.1
 
 [node name="MovementTurn" parent="SubViewport/XRPlayer/RightHand" unique_id=2129223258 instance=ExtResource("20_tic4c")]
 
