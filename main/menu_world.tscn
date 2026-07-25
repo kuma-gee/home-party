@@ -142,11 +142,18 @@ gravity = Vector3(0, 0, 0)
 alpha_curve = SubResource("CurveTexture_rtmvl")
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_3vjtu"]
-radius = 0.05
+radius = 0.02
 
-[node name="MenuWorld" type="Node3D" unique_id=1335721879 node_paths=PackedStringArray("move_guide_left", "xr_player")]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8c1er"]
+albedo_color = Color(0.84, 0.2016, 0.2016, 1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_76egc"]
+viewport_path = NodePath("GameShelve/ResetArea/Sprite3D/SubViewport")
+
+[node name="MenuWorld" type="Node3D" unique_id=1335721879 node_paths=PackedStringArray("move_guide_left", "remote", "xr_player")]
 script = ExtResource("1_uouel")
 move_guide_left = NodePath("GameDetails/SubViewport/GameDetailsContainer/MarginContainer/MoveGuide/VBoxContainer/TextureRect")
+remote = NodePath("GameShelve/TVRemote")
 xr_player = NodePath("XRPlayer")
 bgm_audio = ExtResource("2_rtmvl")
 
@@ -404,23 +411,49 @@ process_material = SubResource("ParticleProcessMaterial_67j6m")
 draw_pass_1 = ExtResource("17_rtmvl")
 
 [node name="ResetArea" type="Area3D" parent="GameShelve" unique_id=877294309]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.40895444, -0.15490109, -0.17915854)
+transform = Transform3D(0.75, 0, 0, 0, 0.75, 0, 0, 0, 0.75, -0.2920333, -0.0687145, -0.09310489)
 collision_layer = 0
 collision_mask = 131072
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="GameShelve/ResetArea" unique_id=2082130484]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.007589042, 0)
 shape = SubResource("SphereShape3D_3vjtu")
 
 [node name="CSGCylinder3D" type="CSGCylinder3D" parent="GameShelve/ResetArea" unique_id=1496447791]
+visible = false
 radius = 0.04
 height = 0.01
 sides = 16
 
 [node name="CSGCylinder3D2" type="CSGCylinder3D" parent="GameShelve/ResetArea" unique_id=624118567]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.008480608, 0)
-radius = 0.02
-height = 0.01
+radius = 0.015
+height = 0.005
 sides = 16
+material = SubResource("StandardMaterial3D_8c1er")
+
+[node name="Sprite3D" type="Sprite3D" parent="GameShelve/ResetArea" unique_id=1081358341]
+transform = Transform3D(-2.1855697e-09, 0.050000004, 2.1855695e-09, 0, -2.1855695e-09, 0.050000004, 0.050000004, 2.1855697e-09, 9.553427e-17, -0.028139055, 0.007435322, 0)
+texture = SubResource("ViewportTexture_76egc")
+
+[node name="SubViewport" type="SubViewport" parent="GameShelve/ResetArea/Sprite3D" unique_id=18395036]
+transparent_bg = true
+size = Vector2i(128, 128)
+
+[node name="Label" type="Label" parent="GameShelve/ResetArea/Sprite3D/SubViewport" unique_id=1168013891]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -51.0
+offset_top = -26.5
+offset_right = 51.0
+offset_bottom = 26.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_5dw5n")
+text = "Reset"
 
 [node name="Room" parent="." unique_id=1197402855 instance=ExtResource("15_5dw5n")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.67310023, 0, -1.2292466)

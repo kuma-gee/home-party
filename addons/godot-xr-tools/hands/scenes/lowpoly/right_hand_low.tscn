@@ -22,7 +22,7 @@ default_pose = SubResource("Resource_v046k")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.01, 0, 0.05)
 
 [node name="Hand" type="Node3D" parent="HandRoot" unique_id=8164701]
-transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0.01, 0, -0.05)
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0.01, 0, 0)
 
 [node name="hand_r" parent="HandRoot/Hand" unique_id=1910410340 instance=ExtResource("2_lwohl")]
 
