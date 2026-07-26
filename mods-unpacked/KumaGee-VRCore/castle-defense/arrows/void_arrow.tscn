@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://vhr7xs86yr2e" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/death_area.gd" id="3_q453o"]
 [ext_resource type="AudioStream" uid="uid://bu3ipscc5u2wp" path="res://assets/sound/sfx/blackhole.wav" id="4_q453o"]
 [ext_resource type="AudioStream" uid="uid://loo44sygplej" path="res://assets/sound/sfx/blackhole_start.wav" id="5_6w5aw"]
-[ext_resource type="Script" uid="uid://b4woodkg2nup8" path="res://main/utils/randomized_sfx.gd" id="5_q453o"]
+[ext_resource type="Script" uid="uid://b4woodkg2nup8" path="res://main/utils/randomized_sfx_3d.gd" id="5_q453o"]
 
 [sub_resource type="Gradient" id="Gradient_oisn5"]
 offsets = PackedFloat32Array(0.314578, 1)

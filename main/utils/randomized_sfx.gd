@@ -1,6 +1,6 @@
 @tool
 class_name RandomizedSfx
-extends AudioStreamPlayer3D
+extends AudioStreamPlayer
 
 const GROUP = "AudioSFX"
 

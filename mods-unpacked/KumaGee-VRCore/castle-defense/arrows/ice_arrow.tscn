@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://dvbrpi2xb72fg" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/freeze_area.gd" id="8_e0gft"]
 [ext_resource type="Texture2D" uid="uid://hih5af7npy3f" path="res://assets/particles/T_VFX_exp_dissapear.png" id="8_j8plv"]
 [ext_resource type="AudioStream" uid="uid://b5gr2dm707lfd" path="res://assets/sound/sfx/吹雪.mp3" id="9_0wuco"]
-[ext_resource type="Script" uid="uid://b4woodkg2nup8" path="res://main/utils/randomized_sfx.gd" id="9_j8plv"]
+[ext_resource type="Script" uid="uid://b4woodkg2nup8" path="res://main/utils/randomized_sfx_3d.gd" id="9_j8plv"]
 
 [sub_resource type="Animation" id="Animation_xdjkm"]
 length = 0.001

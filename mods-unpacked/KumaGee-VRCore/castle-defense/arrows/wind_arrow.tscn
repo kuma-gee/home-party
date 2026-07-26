@@ -9,7 +9,7 @@
 [ext_resource type="Script" uid="uid://7cief0kwceod" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/pull_area.gd" id="7_0g788"]
 [ext_resource type="Script" uid="uid://d07c57v65yavj" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/arrows/move_direction.gd" id="8_v7lbj"]
 [ext_resource type="AudioStream" uid="uid://cxj28x7f6w3da" path="res://assets/sound/sfx/風が吹く4.mp3" id="9_d7k0l"]
-[ext_resource type="Script" uid="uid://b4woodkg2nup8" path="res://main/utils/randomized_sfx.gd" id="10_rfhuq"]
+[ext_resource type="Script" uid="uid://b4woodkg2nup8" path="res://main/utils/randomized_sfx_3d.gd" id="10_rfhuq"]
 
 [sub_resource type="Gradient" id="Gradient_eve0y"]
 offsets = PackedFloat32Array(0, 0.218868, 0.449057, 1)

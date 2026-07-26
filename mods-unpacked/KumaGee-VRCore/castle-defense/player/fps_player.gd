@@ -39,7 +39,7 @@ enum Skill {
 @export var min_respawn_time := 2.0
 @export var max_respawn_time := 6.0
 @export var explosion_respawn_time := 2.0
-@export var death_sound: RandomizedSfx
+@export var death_sound: RandomizedSfx3D
 
 @export_category("Animation")
 @export var animation: AnimationPlayer

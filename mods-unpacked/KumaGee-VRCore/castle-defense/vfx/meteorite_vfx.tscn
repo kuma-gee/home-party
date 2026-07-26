@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://dbm5r0ya35uqy" path="res://assets/particles/explosion_decal_emission.png" id="5_decal_em"]
 [ext_resource type="Texture2D" uid="uid://dpy74naxllt47" path="res://assets/particles/flare_01.png" id="6_flare"]
 [ext_resource type="Texture2D" uid="uid://cgdn50ov3xhsh" path="res://assets/particles/T_VFX_RoundSmoke71.png" id="8_smoke"]
-[ext_resource type="Script" uid="uid://b4woodkg2nup8" path="res://main/utils/randomized_sfx.gd" id="9_rnd_sfx"]
+[ext_resource type="Script" uid="uid://b4woodkg2nup8" path="res://main/utils/randomized_sfx_3d.gd" id="9_rnd_sfx"]
 [ext_resource type="AudioStream" uid="uid://dxta3ng0pxsil" path="res://assets/sound/sfx/爆発3.mp3" id="10_explosion"]
 [ext_resource type="Script" uid="uid://nmkuynkxepqw" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/vfx/meteorite_vfx.gd" id="12_script"]
 

@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://ce37fcn8ptva0" path="res://assets/particles/course/Circle.png" id="3_circle"]
 [ext_resource type="Texture2D" uid="uid://dbm5r0ya35uqy" path="res://assets/particles/explosion_decal_emission.png" id="4_decal"]
 [ext_resource type="Texture2D" uid="uid://dpy74naxllt47" path="res://assets/particles/flare_01.png" id="6_flare"]
-[ext_resource type="Script" uid="uid://b4woodkg2nup8" path="res://main/utils/randomized_sfx.gd" id="7_rnd_sfx"]
+[ext_resource type="Script" uid="uid://b4woodkg2nup8" path="res://main/utils/randomized_sfx_3d.gd" id="7_rnd_sfx"]
 [ext_resource type="AudioStream" uid="uid://dxta3ng0pxsil" path="res://assets/sound/sfx/爆発3.mp3" id="8_explosion"]
 
 [sub_resource type="StandardMaterial3D" id="mat_ground_dust"]
