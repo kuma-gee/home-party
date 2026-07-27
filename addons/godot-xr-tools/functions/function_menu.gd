@@ -32,9 +32,10 @@ var _hold_timer: float = 0.0:
 
 var _menu_enabled: bool = true
 var _menu_instance: Node3D = null
-var _fade_tween: Tween = null
 var _target_transform: Transform3D = Transform3D()
 var _world_scale: float = 1.0
+
+var _scale_animator: ScaleAnimator
 
 
 func is_menu_open() -> bool:
@@ -62,6 +63,12 @@ func _ready() -> void:
 	
 	if Engine.is_editor_hint():
 		return
+	
+	_scale_animator = ScaleAnimator.new()
+	_scale_animator.fade_duration = fade_duration
+	_scale_animator.start_scale = 0.01
+	_scale_animator.end_scale = menu_scale
+	add_child(_scale_animator)
 	
 	_world_scale = XRServer.world_scale
 	
@@ -126,16 +133,10 @@ func _open_menu() -> void:
 	
 	_update_menu_transform()
 	_menu_anchor.transform = _target_transform
-	_menu_instance.scale = Vector3(0.01, 0.01, 0.01)
-	
-	if _fade_tween:
-		_fade_tween.kill()
 	
 	set_pointer(false)
-	_fade_tween = create_tween().set_parallel()
-	_fade_tween.set_trans(Tween.TRANS_BACK)
-	_fade_tween.set_ease(Tween.EASE_OUT)
-	_fade_tween.tween_property(_menu_instance, "scale", Vector3.ONE * menu_scale, fade_duration)
+	
+	_scale_animator.scale_in(_menu_instance)
 	
 	menu_opened.emit(_menu_instance)
 
@@ -148,19 +149,13 @@ func close_menu() -> void:
 	if not _menu_instance:
 		return
 	
-	if _fade_tween:
-		_fade_tween.kill()
-	
-	_fade_tween = create_tween().set_parallel()
-	_fade_tween.set_trans(Tween.TRANS_BACK)
-	_fade_tween.set_ease(Tween.EASE_IN)
-	_fade_tween.tween_property(_menu_instance, "scale", Vector3(0.01, 0.01, 0.01), fade_duration)
-	_fade_tween.tween_callback(func(): _menu_instance.hide()).set_delay(fade_duration)
-	_fade_tween.finished.connect(_on_menu_close_finished)
+	_scale_animator.finished.connect(_on_menu_anim_out_done, CONNECT_ONE_SHOT)
+	_scale_animator.scale_out()
 	
 	menu_closed.emit()
 
-func _on_menu_close_finished() -> void:
+
+func _on_menu_anim_out_done() -> void:
 	if _menu_instance:
 		_menu_instance.queue_free()
 		_menu_instance = null

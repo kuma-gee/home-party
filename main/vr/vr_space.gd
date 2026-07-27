@@ -26,6 +26,7 @@ const SETTINGS_PANEL_DISTANCE := 0.8
 const SEATED_HEIGHT_OVERRIDE := 1.0
 const DESKTOP_FALLBACK_PATH := ^"SubViewport/XRPlayer/DesktopVRFallback"
 const DESKTOP_MENU_SCENE := preload("res://main/vr/vr_menu_panel_ui.tscn")
+const SCALE_FADE_DURATION := 0.15
 
 var was_paused := false
 var _pause_active := false
@@ -42,6 +43,13 @@ var _desktop_menu_overlay: ColorRect = null
 
 @onready var _desktop_vr_fallback: DesktopVRFallback = get_node_or_null(DESKTOP_FALLBACK_PATH)
 
+# Scale-animator instances for UI panels
+var _settings_viewport_anim: ScaleAnimator
+var _desktop_menu_anim: ScaleAnimator
+var _settings_panel_anim: ScaleAnimator
+var _feedback_panel_anim: ScaleAnimator
+
+
 func _ready() -> void:
 	_desktop_canvas = _get_base_game_desktop_canvas()
 	_pause_canvas = _get_pause_canvas()
@@ -51,6 +59,13 @@ func _ready() -> void:
 	pause_menu.hide()
 	if initial_transform:
 		origin.transform = initial_transform.transform
+
+	# Setup scale animators
+	_settings_viewport_anim = _make_anim(settings_viewport)
+	if desktop_settings_panel != null:
+		_settings_panel_anim = _make_anim(desktop_settings_panel)
+	if desktop_feedback_panel != null:
+		_feedback_panel_anim = _make_anim(desktop_feedback_panel)
 
 	settings_viewport.hide()
 	_settings_panel_instance = settings_viewport.get_scene_instance()
@@ -71,6 +86,14 @@ func _ready() -> void:
 	_apply_movement_mode()
 	_apply_vignette_enabled()
 	_apply_seated_mode()
+
+
+## Helper: create a ScaleAnimator child attached to [target] for reuse.
+func _make_anim(target: Node) -> ScaleAnimator:
+	var a := ScaleAnimator.new()
+	a.fade_duration = SCALE_FADE_DURATION
+	target.add_child(a)
+	return a
 
 
 #func _input(event: InputEvent) -> void:
@@ -193,15 +216,25 @@ func _on_menu_closed(from_settings := false):
 	if settings_viewport.visible and not from_settings:
 		return
 	
+	if from_settings and settings_viewport.visible:
+		_settings_viewport_anim.scale_out()
+		_settings_viewport_anim.finished.connect(_on_settings_anim_out_done, CONNECT_ONE_SHOT)
+	else:
+		settings_viewport.hide()
+	
 	_pause_active = false
 	if show_pause_overlay:
 		pause_menu.hide()
 		get_tree().paused = was_paused
 		if not get_tree().paused:
 			overlay_mesh.hide_overlay()
-	settings_viewport.hide()
+	
 	_hide_desktop_settings_panel()
 	_hide_desktop_menu()
+
+
+func _on_settings_anim_out_done() -> void:
+	settings_viewport.hide()
 
 
 func _open_menu() -> void:
@@ -322,11 +355,17 @@ func _open_settings_menu() -> void:
 	_settings_panel_instance.refresh_from_settings()
 	_place_in_front_of_player(settings_viewport, SETTINGS_PANEL_DISTANCE)
 	_settings_panel_y_offset = settings_viewport.global_position.y - camera.global_position.y
+	
 	settings_viewport.show()
+	_settings_viewport_anim.scale_in(settings_viewport)
+	
 	if pause_menu != null:
 		_show_desktop_menu_overlay(pause_menu.get_parent())
 	_show_desktop_settings_panel()
-	_hide_desktop_menu_panel()
+	if _desktop_menu_instance != null:
+		_desktop_menu_instance.queue_free()
+		_desktop_menu_instance = null
+		_desktop_menu_anim = null
 	menu_function.close_menu()
 
 
@@ -342,6 +381,8 @@ func _show_desktop_menu() -> void:
 		return
 
 	_desktop_menu_instance = DESKTOP_MENU_SCENE.instantiate() as Control
+	_desktop_menu_anim = _make_anim(_desktop_menu_instance)
+	_desktop_menu_anim.scale_in(_desktop_menu_instance)
 	_show_desktop_menu_overlay(menu_parent)
 	menu_parent.add_child(_desktop_menu_instance)
 	_connect_desktop_menu_button("MarginContainer/VBoxContainer/ResumeButton", func(): menu_function.close_menu())
@@ -403,28 +444,44 @@ func _open_desktop_feedback_form() -> void:
 	if menu_parent == null:
 		return
 
-	_hide_desktop_menu_panel()
+	if _desktop_menu_instance != null:
+		_desktop_menu_instance.queue_free()
+		_desktop_menu_instance = null
+		_desktop_menu_anim = null
 	_show_desktop_menu_overlay(menu_parent)
 	desktop_feedback_panel.show()
+	if _feedback_panel_anim:
+		_feedback_panel_anim.scale_in(desktop_feedback_panel)
 	if desktop_feedback_panel.get_parent() == menu_parent:
 		menu_parent.move_child(desktop_feedback_panel, menu_parent.get_child_count() - 1)
 
 
 func _hide_desktop_menu() -> void:
 	if desktop_feedback_panel != null:
-		desktop_feedback_panel.hide()
+		if _feedback_panel_anim and desktop_feedback_panel.visible:
+			_feedback_panel_anim.finished.connect(_hide_desktop_feedback_panel, CONNECT_ONE_SHOT)
+			_feedback_panel_anim.scale_out()
+		else:
+			desktop_feedback_panel.hide()
 
 	if _desktop_menu_overlay != null:
 		_desktop_menu_overlay.queue_free()
 		_desktop_menu_overlay = null
 
-	_hide_desktop_menu_panel()
+	if _desktop_menu_instance != null:
+		_desktop_menu_anim.finished.connect(_free_desktop_menu_panel, CONNECT_ONE_SHOT)
+		_desktop_menu_anim.scale_out()
 
 
-func _hide_desktop_menu_panel() -> void:
+func _free_desktop_menu_panel() -> void:
 	if _desktop_menu_instance != null:
 		_desktop_menu_instance.queue_free()
 		_desktop_menu_instance = null
+		_desktop_menu_anim = null
+
+
+func _hide_desktop_feedback_panel() -> void:
+	desktop_feedback_panel.hide()
 
 func _place_in_front_of_player(node: Node3D, distance: float) -> void:
 	var cam_transform := camera.global_transform
@@ -449,11 +506,23 @@ func _show_desktop_settings_panel() -> void:
 
 	desktop_settings_panel.set_current_tab(_settings_panel_instance.get_current_tab())
 	desktop_settings_panel.show()
+	if _settings_panel_anim:
+		_settings_panel_anim.scale_in(desktop_settings_panel)
 
 
 func _hide_desktop_settings_panel() -> void:
-	if desktop_settings_panel != null:
+	if desktop_settings_panel == null:
+		return
+
+	if _settings_panel_anim and desktop_settings_panel.visible:
+		_settings_panel_anim.finished.connect(_do_hide_desktop_settings_panel, CONNECT_ONE_SHOT)
+		_settings_panel_anim.scale_out()
+	else:
 		desktop_settings_panel.hide()
+
+
+func _do_hide_desktop_settings_panel() -> void:
+	desktop_settings_panel.hide()
 
 
 func _on_vr_settings_tab_selected(tab: int) -> void:
