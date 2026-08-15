@@ -2,6 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="1_icbg5"]
 [ext_resource type="Script" uid="uid://biyi2lm44qdna" path="res://main/ui/feedback_end.gd" id="2_jd0g5"]
+[ext_resource type="Script" path="res://main/utils/button_sfx.gd" id="3_sfx"]
 
 [node name="PanelContainer" type="PanelContainer" unique_id=675997998]
 anchors_preset = 15
@@ -45,6 +46,9 @@ custom_minimum_size = Vector2(140, 72)
 layout_mode = 2
 size_flags_vertical = 4
 text = "Send"
+
+[node name="ButtonSFX" type="Node" parent="MarginContainer/FeedbackEnd/SendButton"]
+script = ExtResource("3_sfx")
 
 [node name="StatusLabel" type="Label" parent="MarginContainer/FeedbackEnd" unique_id=545521989]
 unique_name_in_owner = true

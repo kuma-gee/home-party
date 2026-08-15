@@ -18,6 +18,7 @@ extends BaseGame
 var logger := KumaLog.new("DrawAndGuess")
 var prepare_scene: DrawPrepareScene
 var freestyle_mode := false
+var _game_settings_ai_prev := 0
 
 const DRAW_PLAYER_UI_SCENE := preload("res://mods-unpacked/KumaGee-VRCore/draw-and-guess/draw_player_ui.tscn")
 const ROUND_START_CUE := preload("res://assets/sound/sfx/拍子木1.mp3")
@@ -43,16 +44,6 @@ func _play_round_start_cue() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	super._unhandled_input(event)
-	if not is_game_phase and event is InputEventKey and event.is_pressed() and not event.echo:
-		var key := event as InputEventKey
-		if not (key.ctrl_pressed and key.alt_pressed) or key.shift_pressed:
-			return
-		if key.keycode == KEY_UP:
-			ai_manager.increase_ai_count()
-			get_viewport().set_input_as_handled()
-		elif key.keycode == KEY_DOWN:
-			ai_manager.decrease_ai_count()
-			get_viewport().set_input_as_handled()
 
 func _debug_advance() -> void:
 	if not is_game_phase:
@@ -61,6 +52,16 @@ func _debug_advance() -> void:
 		round_manager.force_reveal()
 	else:
 		_end_game()
+
+func _on_game_settings_ai_count_changed(new_count: int) -> void:
+	if not ai_manager:
+		return
+	while _game_settings_ai_prev < new_count:
+		ai_manager.increase_ai_count()
+		_game_settings_ai_prev += 1
+	while _game_settings_ai_prev > new_count:
+		ai_manager.decrease_ai_count()
+		_game_settings_ai_prev -= 1
 
 func _on_prepare_phase():
 	prepare_scene = vr_scene.get_scene_instance()
@@ -77,6 +78,12 @@ func _on_prepare_phase():
 	camera_view.hide()
 
 	ai_manager.on_prepare_phase_entered()
+	
+	# Sync AI count with global GameSettings (autoload that handles Ctrl+Alt+Up/Down)
+	_game_settings_ai_prev = GameSettings.get_ai_count()
+	if not GameSettings.ai_count_changed.is_connected(_on_game_settings_ai_count_changed):
+		GameSettings.ai_count_changed.connect(_on_game_settings_ai_count_changed)
+	
 	_update_ui()
 	_on_clients_changed()
 	
@@ -220,6 +227,10 @@ func _on_round_skipped(word: String) -> void:
 	_start_next_round()
 
 func _on_game_phase() -> void:
+	# Stop listening to global AI count — fixed from here on
+	if GameSettings.ai_count_changed.is_connected(_on_game_settings_ai_count_changed):
+		GameSettings.ai_count_changed.disconnect(_on_game_settings_ai_count_changed)
+	
 	instructions_vr_scene.visible = false
 	#camera_view.show()
 	
@@ -235,7 +246,7 @@ func _on_game_phase() -> void:
 			reveal_label.hide()
 		return
 
-	logger.info("Star	ting game with %d words in pool" % word_manager.size())
+	logger.info("Starting game with %d words in pool" % word_manager.size())
 	_on_clients_changed()
 	scoring.init_player(DrawGuessScoring.VR_PLAYER_ID)
 	ai_manager.on_game_phase_entered()
@@ -331,6 +342,10 @@ func _on_freestyle_round_ended(guessed: bool) -> void:
 		progress_label.text = "Freestyle word %d done" % round_manager.current_round
 
 func _end_game() -> void:
+	# Stop listening to global AI count
+	if GameSettings.ai_count_changed.is_connected(_on_game_settings_ai_count_changed):
+		GameSettings.ai_count_changed.disconnect(_on_game_settings_ai_count_changed)
+	
 	round_manager.finish_game()
 	ai_manager.stop_guessing()
 	logger.info("Game ended - all words used")

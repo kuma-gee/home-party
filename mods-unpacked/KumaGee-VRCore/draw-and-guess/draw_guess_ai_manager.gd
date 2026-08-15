@@ -94,6 +94,14 @@ func get_ai_count() -> int:
 	return _ai_players.size()
 
 
+## Set absolute AI count from external source (e.g. GameSettings autoload).
+## Safe to call from any phase — no‑ops when not in prepare phase.
+func set_ai_count(count: int) -> void:
+	if not _is_prepare_phase:
+		return
+	_set_ai_count(count)
+
+
 func _set_ai_count(count: int) -> void:
 	var new_count := clampi(count, 0, MAX_AI_COUNT)
 	while _ai_players.size() > new_count:

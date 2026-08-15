@@ -12,6 +12,7 @@ script = ExtResource("2_gqj60")
 
 [node name="Sprite3D" type="Sprite3D" parent="." index="7" unique_id=940499816]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.77584463, 0)
+layers = 262144
 billboard = 2
 texture = SubResource("ViewportTexture_40q2y")
 
@@ -32,6 +33,7 @@ theme = ExtResource("4_6t06n")
 layout_mode = 2
 
 [node name="StatusContainer" type="CenterContainer" parent="Sprite3D/SubViewport/CenterContainer/VBoxContainer" index="0" unique_id=1971211667]
+visible = false
 layout_mode = 2
 
 [node name="CorrectIcon" type="Label" parent="Sprite3D/SubViewport/CenterContainer/VBoxContainer/StatusContainer" index="0" unique_id=2090105779]
@@ -56,6 +58,7 @@ vertical_alignment = 1
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
+text = "Test"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2

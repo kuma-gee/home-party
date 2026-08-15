@@ -3,6 +3,7 @@
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="1_7htws"]
 [ext_resource type="Script" uid="uid://84vm3ojuip7r" path="res://main/ui/gameover_screen.gd" id="2_qcyic"]
 [ext_resource type="PackedScene" uid="uid://d3m1bp3cu88eg" path="res://main/ui/leaderboard.tscn" id="4_lb"]
+[ext_resource type="Script" path="res://main/utils/button_sfx.gd" id="5_sfx"]
 
 [node name="GameoverPanel" type="Panel" unique_id=658525110 node_paths=PackedStringArray("leaderboard", "menu_button", "restart_button")]
 anchors_preset = 15
@@ -47,3 +48,9 @@ text = "Main Menu"
 [node name="RestartButton" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=1165322932]
 layout_mode = 2
 text = "Restart"
+
+[node name="ButtonSFX" type="Node" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/MenuButton"]
+script = ExtResource("5_sfx")
+
+[node name="ButtonSFX" type="Node" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/RestartButton"]
+script = ExtResource("5_sfx")

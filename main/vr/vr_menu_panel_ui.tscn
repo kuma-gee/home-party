@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dvk7xk7j4deph"]
 
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="1"]
+[ext_resource type="Script" uid="uid://diibmtcn63ffv" path="res://main/utils/button_sfx.gd" id="2_sfx"]
 
 [node name="VRMenuPanelUI" type="PanelContainer" unique_id=660897823]
 anchors_preset = 8
@@ -29,17 +30,29 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Resume"
 
+[node name="ButtonSFX" type="Node" parent="MarginContainer/VBoxContainer/ResumeButton" unique_id=1902762415]
+script = ExtResource("2_sfx")
+
 [node name="ResetSpaceButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=999627699]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Reset Space"
+
+[node name="ButtonSFX" type="Node" parent="MarginContainer/VBoxContainer/ResetSpaceButton" unique_id=905505530]
+script = ExtResource("2_sfx")
 
 [node name="SettingsButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=443354833]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Settings"
 
+[node name="ButtonSFX" type="Node" parent="MarginContainer/VBoxContainer/SettingsButton" unique_id=1499672881]
+script = ExtResource("2_sfx")
+
 [node name="HomeButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=490496935]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Back to Home"
+
+[node name="ButtonSFX" type="Node" parent="MarginContainer/VBoxContainer/HomeButton" unique_id=1911347365]
+script = ExtResource("2_sfx")

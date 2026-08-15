@@ -3,6 +3,7 @@
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="1"]
 [ext_resource type="Script" uid="uid://d3ogxlny0nr0t" path="res://main/vr/settings_panel.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://ewxvdn7nojma" path="res://main/vr/labeled_step_slider.tscn" id="3_labeled"]
+[ext_resource type="Script" path="res://main/utils/button_sfx.gd" id="4_sfx"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_movement_mode"]
 
@@ -284,3 +285,27 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"ButtonSmall"
 text = "Close"
+
+[node name="ButtonSFX" type="Node" parent="MarginContainer/BackButton"]
+script = ExtResource("4_sfx")
+
+[node name="ButtonSFX" type="Node" parent="VBoxContainer/TabContainer/Graphics/GridContainer/AntiAliasingToggle"]
+script = ExtResource("4_sfx")
+
+[node name="ButtonSFX" type="Node" parent="VBoxContainer/TabContainer/Graphics/GridContainer/VSyncToggle"]
+script = ExtResource("4_sfx")
+
+[node name="ButtonSFX" type="Node" parent="VBoxContainer/TabContainer/Comfort/GridContainer/MovementModeRow/SmoothMovementButton"]
+script = ExtResource("4_sfx")
+
+[node name="ButtonSFX" type="Node" parent="VBoxContainer/TabContainer/Comfort/GridContainer/MovementModeRow/TeleportMovementButton"]
+script = ExtResource("4_sfx")
+
+[node name="ButtonSFX" type="Node" parent="VBoxContainer/TabContainer/Comfort/GridContainer/VignetteToggle"]
+script = ExtResource("4_sfx")
+
+[node name="ButtonSFX" type="Node" parent="VBoxContainer/TabContainer/Comfort/GridContainer/SnapTurnToggle"]
+script = ExtResource("4_sfx")
+
+[node name="ButtonSFX" type="Node" parent="VBoxContainer/TabContainer/Comfort/GridContainer/SeatedModeToggle"]
+script = ExtResource("4_sfx")
