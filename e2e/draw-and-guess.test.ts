@@ -218,7 +218,7 @@ test.describe('Draw & Guess', () => {
       expect(finalProps.phase).toBe(3);
       expect(finalProps.current_round).toBe(3);
 
-      // ---- Assertion 9: Scores exist for all 4 players (VR + 3 mobile) ----
+      // ---- Assertion 9: Scores exist for all 3 mobile players ----
       const scoringPath = `${roundMgrPath}/Scoring`;
       const scoresResult = await mcp.callMethod(scoringPath, 'get_scores', []);
       const scores = scoresResult.result as Array<{
@@ -227,12 +227,7 @@ test.describe('Draw & Guess', () => {
         rounds_guessed_correctly: number;
       }>;
       expect(scores).toBeDefined();
-      expect(scores.length).toBe(4);
-
-      // VR player scored points
-      const vrScore = scores.find((s) => s.uuid === 'vr_player');
-      expect(vrScore).toBeDefined();
-      expect(vrScore!.total_points).toBeGreaterThan(0);
+      expect(scores.length).toBe(3);
 
       // Each mobile player scored points and guessed all 3 rounds
       for (const uuid of PLAYER_UUIDS) {
@@ -260,10 +255,10 @@ test.describe('Draw & Guess', () => {
       const titleProps = await mcp.getProperties(titleLabelPath);
       expect(titleProps.text).toBe('Game Over!');
 
-      // RankingsGrid should contain 20 cells (1 header row + 4 entry rows × 4 columns)
+      // RankingsGrid should contain 16 cells (1 header row + 3 entry rows × 4 columns)
       const gridPath = `${leaderboardPath}/ScrollContainer/RankingsGrid`;
       const gridCount = await mcp.callMethod(gridPath, 'get_child_count', []);
-      expect(gridCount.result).toBe(20);
+      expect(gridCount.result).toBe(16);
     } finally {
       // Close the extra browser contexts (not the main page's context)
       await context3.close();

@@ -13,7 +13,6 @@ var current_word: String = ""
 var current_round: int = 0
 var total_rounds: int = 0
 var guessed_players: Array[String] = []
-var first_guess_elapsed: float = -1.0
 var freestyle_mode := false
 
 @onready var round_timer: Timer = %RoundTimer
@@ -48,7 +47,6 @@ func start_freestyle_game() -> void:
 	current_round = 0
 	current_word = ""
 	guessed_players.clear()
-	first_guess_elapsed = -1.0
 	round_timer.stop()
 
 func start_freestyle_round() -> void:
@@ -58,7 +56,6 @@ func start_freestyle_round() -> void:
 	current_word = ""
 	phase = Phase.DRAWING
 	guessed_players.clear()
-	first_guess_elapsed = -1.0
 	round_timer.start()
 
 func complete_freestyle_round(guessed: bool) -> void:
@@ -73,7 +70,6 @@ func start_round(word: String) -> void:
 	current_word = word
 	phase = Phase.DRAWING
 	guessed_players.clear()
-	first_guess_elapsed = -1.0
 
 func end_round() -> void:
 	phase = Phase.REVEALING
@@ -85,13 +81,11 @@ func finish_game() -> void:
 	round_timer.stop()
 	phase = Phase.FINISHED
 
-func player_guessed(uuid: String, word: String, elapsed: float = get_elapsed_time()) -> bool:
+func player_guessed(uuid: String, word: String) -> bool:
 	if current_word.to_lower() != word.strip_edges().to_lower():
 		return false
 	
 	guessed_players.append(uuid)
-	if first_guess_elapsed < 0.0:
-		first_guess_elapsed = elapsed
 	var guess_index = guessed_players.size() - 1
 	
 	var pts = scoring.award_mobile_points(uuid, guess_index)
@@ -143,8 +137,5 @@ func _on_round_timeout() -> void:
 		freestyle_round_ended.emit(false)
 		return
 
-	var total_mobile = _count_mobile_players()
-	scoring.award_vr_points(guessed_players.size(), total_mobile, first_guess_elapsed)
-	
 	end_round()
 	timed_out.emit(current_word)

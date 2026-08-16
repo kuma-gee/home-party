@@ -248,7 +248,6 @@ func _on_game_phase() -> void:
 
 	logger.info("Starting game with %d words in pool" % word_manager.size())
 	_on_clients_changed()
-	scoring.init_player(DrawGuessScoring.VR_PLAYER_ID)
 	ai_manager.on_game_phase_entered()
 	round_manager.start_game(word_manager.size())
 	_start_next_round()

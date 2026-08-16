@@ -1,7 +1,6 @@
 class_name Leaderboard
 extends Control
 
-const VR_PLAYER_ID := "vr_player"
 const WINNER_COLOR := Color(1.0, 0.84, 0.0)
 
 @onready var title_label: Label = $TitleLabel
@@ -85,8 +84,6 @@ func _get_display_name(entry: Dictionary) -> String:
 		return str(entry.get("name", "P??"))
 
 	var uuid := str(entry.get("uuid", ""))
-	if uuid == VR_PLAYER_ID:
-		return "VR"
 	if not uuid.is_empty():
 		return _get_player_name(uuid)
 	return "P??"

@@ -63,24 +63,6 @@ The panel shows:
 - Word progress indicator (e.g., "Word 3 of 7")
 - Skip button, to skip the current word
 
-### VR Scoring
-
-The VR player earns points based on how well they communicated the word:
-
-| Players who guessed | Points |
-|--------------------|--------|
-| All players        | 5      |
-| 75%+ of players    | 4      |
-| 50–74% of players  | 3      |
-| 25–49% of players  | 2      |
-| 1–24% of players   | 1      |
-| Nobody guessed     | 0      |
-
-**Speed bonus**: If the first guess comes in under 15 seconds, the VR player gets **+1 bonus point**.
-
-**Design Intent**: Rewards the VR player for being clear and creative, not for being
-obscure. The speed bonus encourages drawing recognizable forms quickly.
-
 ## Mobile Players
 
 ### Pre-Game: Word Submission
@@ -150,8 +132,7 @@ always a reason to keep trying even if you're behind.
 
 After all words are drawn, a final leaderboard is displayed:
 
-- **Ranked list** of all players by total score
-- **VR player** is included in the rankings
+- **Ranked list** of mobile players by total score
 - **Breakdown** shows each player's total points and how many rounds they guessed correctly
 - **Highlight** the winner with a celebration animation
 
