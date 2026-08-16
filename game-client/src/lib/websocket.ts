@@ -98,7 +98,7 @@ export class WebSocketClient {
   onDisconnected?: () => void;
   onError?: (error: Event) => void;
   onMessage?: (message: Message) => void;
-  onIdReceived?: (id: number) => void;
+  onIdReceived?: (id: number, number: number) => void;
   onInputLayoutReceived?: (layout: string) => void;
   onBlocked?: () => void;
   onJoinAvailable?: () => void;
@@ -183,8 +183,8 @@ export class WebSocketClient {
       case MessageType.Id:
         var msg = message as IdMessage;
         this.peerId = msg.id;
-        console.log(`Received peer ID: ${this.peerId}`);
-        this.onIdReceived?.(this.peerId);
+        console.log(`Received peer ID: ${this.peerId}, number: ${msg.number}`);
+        this.onIdReceived?.(this.peerId, msg.number);
 
         // Get or generate client UUID
         let clientId = localStorage.getItem("clientId");

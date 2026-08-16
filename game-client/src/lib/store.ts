@@ -4,6 +4,7 @@ import { WebSocketClient, type Message } from './websocket';
 export interface ConnectionState {
 	connected: boolean;
 	peerId: number | null;
+	playerNumber: number | null;
 	serverIp: string | null;
 	error: string | null;
 	inputLayout: string;
@@ -20,6 +21,7 @@ function createConnectionStore() {
 	const { subscribe, set, update } = writable<ConnectionState>({
 		connected: false,
 		peerId: null,
+		playerNumber: null,
 		serverIp: null,
 		error: null,
 		inputLayout: 'joystick',
@@ -68,8 +70,8 @@ function createConnectionStore() {
 				update(state => ({ ...state, error: 'Connection error occurred' }));
 			};
 
-			client.onIdReceived = (id: number) => {
-				update(state => ({ ...state, peerId: id }));
+			client.onIdReceived = (id: number, number: number) => {
+				update(state => ({ ...state, peerId: id, playerNumber: number }));
 			};
 
 			client.onInputLayoutReceived = (layout: string) => {
@@ -112,6 +114,7 @@ function createConnectionStore() {
 			set({
 				connected: false,
 				peerId: null,
+				playerNumber: null,
 				serverIp: null,
 				error: null,
 				inputLayout: 'joystick',
@@ -161,6 +164,11 @@ export const isConnected = derived(
 export const peerId = derived(
 	connectionStore,
 	$connectionStore => $connectionStore.peerId
+);
+
+export const playerNumber = derived(
+	connectionStore,
+	$connectionStore => $connectionStore.playerNumber
 );
 
 export const inputLayout = derived(

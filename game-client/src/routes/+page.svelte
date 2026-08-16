@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-	import { connectionStore, isConnected, inputLayout, webrtcDataChannelOpen, reconnecting, reconnectAttempts, blocked } from '../lib/store';
+	import { connectionStore, isConnected, inputLayout, webrtcDataChannelOpen, reconnecting, reconnectAttempts, blocked, playerNumber } from '../lib/store';
 	import JoystickLayout from '../lib/layouts/JoystickLayout.svelte';
 	import WordInputLayout from '../lib/layouts/WordInputLayout.svelte';
 
@@ -9,6 +9,18 @@
 	let errorMessage = $state('');
 	let isFullscreen = $state(false);
 	let showFullscreenButton = $state(false);
+
+	// Player colors matching main/ui/player_list.gd COLORS
+	const playerColors = [
+		'#ff0000',
+		'#1c72e8',
+		'#26ff00',
+		'#fff540',
+		'#6600ff',
+		'#ff9e03',
+		'#00eeff',
+		'#e645ff'
+	];
 
 	async function requestFullscreen() {
 		try {
@@ -133,10 +145,13 @@
 	{:else}
 		{#if $webrtcDataChannelOpen}
 			<div class="status-corner">
-				<button onclick={handleDisconnect} class="disconnect-icon" title="Disconnect">✕</button>
+				{#if $playerNumber !== null}
+					<span class="player-number" style:background={playerColors[$playerNumber % playerColors.length]}>P{$playerNumber + 1}</span>
+				{/if}
 				{#if showFullscreenButton}
 					<button onclick={requestFullscreen} class="fullscreen-icon" title="Enter Fullscreen">⛶</button>
 				{/if}
+				<button onclick={handleDisconnect} class="disconnect-icon" title="Disconnect">✕</button>
 			</div>
 
 		{#if $inputLayout == 'guess'}
@@ -349,6 +364,15 @@
 		align-items: center;
 		gap: 0.5rem;
 		z-index: 100;
+	}
+
+	.player-number {
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: #fff;
+		border-radius: 0.5rem;
+		padding: 0.25rem 0.6rem;
+		line-height: 1;
 	}
 
 	.disconnect-icon {
