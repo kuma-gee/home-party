@@ -112,7 +112,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if event is InputEventKey and event.pressed and not event.echo:
 		var key := event as InputEventKey
-		if key.ctrl_pressed and key.alt_pressed and not key.shift_pressed and key.keycode == KEY_F1:
+		if key.keycode == KEY_F10 and not key.ctrl_pressed and not key.alt_pressed and not key.shift_pressed:
 			_toggle_debug_camera()
 			get_viewport().set_input_as_handled()
 			return
@@ -218,7 +218,8 @@ func _on_menu_closed(from_settings := false):
 	
 	if from_settings and settings_viewport.visible:
 		_settings_viewport_anim.scale_out()
-		_settings_viewport_anim.finished.connect(_on_settings_anim_out_done, CONNECT_ONE_SHOT)
+		if not _settings_viewport_anim.finished.is_connected(_on_settings_anim_out_done):
+			_settings_viewport_anim.finished.connect(_on_settings_anim_out_done, CONNECT_ONE_SHOT)
 	else:
 		settings_viewport.hide()
 	
@@ -459,7 +460,8 @@ func _open_desktop_feedback_form() -> void:
 func _hide_desktop_menu() -> void:
 	if desktop_feedback_panel != null:
 		if _feedback_panel_anim and desktop_feedback_panel.visible:
-			_feedback_panel_anim.finished.connect(_hide_desktop_feedback_panel, CONNECT_ONE_SHOT)
+			if not _feedback_panel_anim.finished.is_connected(_hide_desktop_feedback_panel):
+				_feedback_panel_anim.finished.connect(_hide_desktop_feedback_panel, CONNECT_ONE_SHOT)
 			_feedback_panel_anim.scale_out()
 		else:
 			desktop_feedback_panel.hide()
@@ -469,7 +471,8 @@ func _hide_desktop_menu() -> void:
 		_desktop_menu_overlay = null
 
 	if _desktop_menu_instance != null:
-		_desktop_menu_anim.finished.connect(_free_desktop_menu_panel, CONNECT_ONE_SHOT)
+		if not _desktop_menu_anim.finished.is_connected(_free_desktop_menu_panel):
+			_desktop_menu_anim.finished.connect(_free_desktop_menu_panel, CONNECT_ONE_SHOT)
 		_desktop_menu_anim.scale_out()
 
 
@@ -515,7 +518,8 @@ func _hide_desktop_settings_panel() -> void:
 		return
 
 	if _settings_panel_anim and desktop_settings_panel.visible:
-		_settings_panel_anim.finished.connect(_do_hide_desktop_settings_panel, CONNECT_ONE_SHOT)
+		if not _settings_panel_anim.finished.is_connected(_do_hide_desktop_settings_panel):
+			_settings_panel_anim.finished.connect(_do_hide_desktop_settings_panel, CONNECT_ONE_SHOT)
 		_settings_panel_anim.scale_out()
 	else:
 		desktop_settings_panel.hide()
