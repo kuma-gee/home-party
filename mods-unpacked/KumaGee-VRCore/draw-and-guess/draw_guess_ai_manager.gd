@@ -67,7 +67,7 @@ func on_game_phase_entered() -> void:
 func start_game_round(word: String) -> void:
 	_current_round_word = word
 	for ai in _ai_players:
-		if not round_manager.has_guessed(ai.uuid):
+		if not round_manager.has_guessed(ai.uuid) and not round_manager.is_word_owner(ai.uuid):
 			_schedule_guess(ai)
 
 
@@ -197,6 +197,8 @@ func _on_guess_timer(ai: DrawAIPlayer) -> void:
 	if not _is_game_phase:
 		return
 	if round_manager.has_guessed(ai.uuid):
+		return
+	if round_manager.is_word_owner(ai.uuid):
 		return
 	if round_manager.phase != DrawGuessRoundManager.Phase.DRAWING:
 		return

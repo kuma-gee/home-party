@@ -10,7 +10,9 @@ const FALLBACK_WORDS: Array[String] = [
 	"bicycle", "dragon", "umbrella", "robot", "volcano", "pirate",
 ]
 
-var word_pool: Array[String] = []
+## Each entry tracks { word: String, owner: String } so a player can be
+## prevented from scoring on their own submitted word.
+var word_pool: Array[Dictionary] = []
 var submitted_players: Array[String] = []
 var submitted_counts: Dictionary = {}
 
@@ -24,9 +26,9 @@ func submit_word(word: String, player_uuid: String) -> SubmitResult:
 	regex.compile("^[a-zA-Z0-9]+$")
 	if not regex.search(trimmed):
 		return SubmitResult.INVALID
-	if trimmed.to_lower() in word_pool.map(func(w): return w.to_lower()):
+	if trimmed.to_lower() in word_pool.map(func(e): return e.word.to_lower()):
 		return SubmitResult.DUPLICATE
-	word_pool.append(trimmed)
+	word_pool.append({ "word": trimmed, "owner": player_uuid })
 	if not is_player_submitted(player_uuid):
 		submitted_players.append(player_uuid)
 	submitted_counts[player_uuid] = get_player_submission_count(player_uuid) + 1
@@ -44,11 +46,11 @@ func max_words_per_player() -> int:
 func submitted_player_count() -> int:
 	return submitted_counts.size()
 
-func pick_random_word() -> String:
+func pick_random_word() -> Dictionary:
 	var idx = randi() % word_pool.size()
-	var w = word_pool[idx]
+	var entry = word_pool[idx]
 	word_pool.remove_at(idx)
-	return w
+	return entry
 
 func size() -> int:
 	return word_pool.size()
@@ -62,4 +64,4 @@ func fill_with_random_words(count := 4) -> void:
 	var choices := FALLBACK_WORDS.duplicate()
 	choices.shuffle()
 	for i in mini(count, choices.size()):
-		word_pool.append(choices[i])
+		word_pool.append({ "word": choices[i], "owner": "" })

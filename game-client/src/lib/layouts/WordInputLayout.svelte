@@ -6,7 +6,7 @@
 	let submitted = $state(false);
 	let submittedCount = $state(0);
 	let maxSubmissions = $state(3);
-	let mode = $state<'submit' | 'guess' | 'freestyle'>('submit');
+	let mode = $state<'submit' | 'guess' | 'freestyle' | 'own'>('submit');
 	let feedback = $state<'correct' | 'incorrect' | null>(null);
 	let message = $state('');
 	let feedbackTimer: number | null = null;
@@ -45,6 +45,11 @@
 			} else if (msg.text === 'word_ack;freestyle') {
 				mode = 'freestyle';
 				submitted = false;
+				feedback = null;
+				message = '';
+				inputText = '';
+			} else if (msg.text === 'word_ack;own') {
+				mode = 'own';
 				feedback = null;
 				message = '';
 				inputText = '';
@@ -116,6 +121,12 @@
 				<div class="checkmark-icon">🎨</div>
 				<h2>Freestyle Mode</h2>
 				<p>Guess out loud. VR player controls timer and result.</p>
+			</div>
+		{:else if mode === 'own'}
+			<div class="submitted-state">
+				<div class="checkmark-icon">✓</div>
+				<h2>Your Word</h2>
+				<p>You submitted this word — sit this one out!</p>
 			</div>
 		{:else}
 		<div class="form-container">

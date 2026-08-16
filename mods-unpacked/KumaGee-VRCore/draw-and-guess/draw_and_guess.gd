@@ -170,6 +170,11 @@ func _on_player_guessed(guess: String, player_ui: DrawPlayerUI) -> void:
 	if round_manager.phase == DrawGuessRoundManager.Phase.REVEALING:
 		return
 	
+	if round_manager.is_word_owner(player_ui.uuid):
+		if player_ui.game_client is GameClient:
+			player_ui.game_client.send_text("word_ack;own")
+		return
+	
 	if round_manager.has_guessed(player_ui.uuid):
 		return
 	
@@ -257,10 +262,10 @@ func _start_next_round() -> void:
 		_end_game()
 		return
 	
-	var word = word_manager.pick_random_word()
-	round_manager.start_round(word)
+	var entry = word_manager.pick_random_word()
+	round_manager.start_round(entry.word, entry.owner)
 	_play_round_start_cue()
-	ai_manager.start_game_round(word)
+	ai_manager.start_game_round(entry.word)
 	
 	logger.info("Round %d/%d: Word assigned" % [round_manager.current_round, round_manager.total_rounds])
 	prepare_scene.start_new_game(round_manager.current_word, round_manager.current_round, round_manager.total_rounds)
@@ -272,6 +277,8 @@ func _start_next_round() -> void:
 	for child in player_list.get_children():
 		if child is DrawPlayerUI:
 			child.reset_for_round()
+			if round_manager.is_word_owner(child.uuid) and child.game_client is GameClient:
+				child.game_client.send_text("word_ack;own")
 	
 	for pet in pet_spawner.get_children():
 		if pet is DrawGuessPet:

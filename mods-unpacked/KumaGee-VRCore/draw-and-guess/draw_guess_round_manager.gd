@@ -10,6 +10,8 @@ signal freestyle_round_ended(guessed: bool)
 
 var phase: Phase = Phase.PRE_GAME
 var current_word: String = ""
+## UUID of the player who submitted current_word ("" for fallback words).
+var current_word_owner: String = ""
 var current_round: int = 0
 var total_rounds: int = 0
 var guessed_players: Array[String] = []
@@ -24,10 +26,10 @@ var logger := KumaLog.new("DrawRoundManager")
 func _ready() -> void:
 	round_timer.timeout.connect(_on_round_timeout)
 
-func _count_mobile_players() -> int:
+func _count_eligible_guessers() -> int:
 	var count := 0
 	for child in player_list.get_children():
-		if child is DrawPlayerUI:
+		if child is DrawPlayerUI and child.uuid != current_word_owner:
 			count += 1
 	return count
 
@@ -46,6 +48,7 @@ func start_freestyle_game() -> void:
 	total_rounds = 0
 	current_round = 0
 	current_word = ""
+	current_word_owner = ""
 	guessed_players.clear()
 	round_timer.stop()
 
@@ -54,6 +57,7 @@ func start_freestyle_round() -> void:
 		return
 	current_round += 1
 	current_word = ""
+	current_word_owner = ""
 	phase = Phase.DRAWING
 	guessed_players.clear()
 	round_timer.start()
@@ -65,9 +69,10 @@ func complete_freestyle_round(guessed: bool) -> void:
 	phase = Phase.FREESTYLE_WAITING
 	freestyle_round_ended.emit(guessed)
 
-func start_round(word: String) -> void:
+func start_round(word: String, owner := "") -> void:
 	current_round += 1
 	current_word = word
+	current_word_owner = owner
 	phase = Phase.DRAWING
 	guessed_players.clear()
 
@@ -81,7 +86,12 @@ func finish_game() -> void:
 	round_timer.stop()
 	phase = Phase.FINISHED
 
+func is_word_owner(uuid: String) -> bool:
+	return uuid == current_word_owner
+
 func player_guessed(uuid: String, word: String) -> bool:
+	if is_word_owner(uuid):
+		return false
 	if current_word.to_lower() != word.strip_edges().to_lower():
 		return false
 	
@@ -97,8 +107,8 @@ func has_guessed(uuid: String) -> bool:
 	return uuid in guessed_players
 
 func _check_all_guessed() -> void:
-	var total_mobile: int = _count_mobile_players()
-	if total_mobile > 0 and guessed_players.size() >= total_mobile:
+	var total_eligible: int = _count_eligible_guessers()
+	if total_eligible > 0 and guessed_players.size() >= total_eligible:
 		_end_round_early()
 
 func skip_round() -> void:

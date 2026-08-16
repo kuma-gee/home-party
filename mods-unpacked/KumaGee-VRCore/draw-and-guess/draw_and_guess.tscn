@@ -108,21 +108,21 @@ nodes/Trigger/node = SubResource("AnimationNodeBlend2_7tjas")
 nodes/Trigger/position = Vector2(-360, 40)
 node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1"]
 
-[sub_resource type="QuadMesh" id="QuadMesh_b8tmo"]
+[sub_resource type="QuadMesh" id="QuadMesh_0vhit"]
 resource_local_to_scene = true
 size = Vector2(1.5, 1)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_cwaon"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_54r4u"]
 viewport_path = NodePath("XRPlayer/Viewport2Din3D/Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8qcdu"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vl1bf"]
 transparency = 1
 cull_mode = 2
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_cwaon")
+albedo_texture = SubResource("ViewportTexture_54r4u")
 texture_filter = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_ormv7"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_jnkvf"]
 resource_local_to_scene = true
 size = Vector3(1.5, 1, 0.02)
 
@@ -214,21 +214,24 @@ fov = 16.0
 [node name="RemoteTransform3D2" type="RemoteTransform3D" parent="XRPlayer/SubViewport/XRPlayer/XRCamera3D" parent_id_path=PackedInt32Array(10000004, 227782039) index="3" unique_id=1238925898]
 remote_path = NodePath("../../../../../BaseSceneContent/SubViewport/Camera3D")
 
-[node name="AnimationTree" parent="XRPlayer/SubViewport/XRPlayer/LeftHand/LeftHand" parent_id_path=PackedInt32Array(10000004, 801242371) index="1" unique_id=1971929839]
+[node name="HandRoot" parent="XRPlayer/SubViewport/XRPlayer/LeftHand/LeftHand" parent_id_path=PackedInt32Array(10000004, 801242371) index="0" unique_id=1460814938]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.01, 0, 0.05)
+
+[node name="AnimationTree" parent="XRPlayer/SubViewport/XRPlayer/LeftHand/LeftHand" parent_id_path=PackedInt32Array(10000004, 801242371) index="1" unique_id=899348105]
 tree_root = SubResource("AnimationNodeBlendTree_hivac")
 
-[node name="AnimationTree" parent="XRPlayer/SubViewport/XRPlayer/RightHand/RightHand" parent_id_path=PackedInt32Array(10000004, 40282269) index="1"]
+[node name="AnimationTree" parent="XRPlayer/SubViewport/XRPlayer/RightHand/RightHand" parent_id_path=PackedInt32Array(10000004, 40282269) index="1" unique_id=621397323]
 tree_root = SubResource("AnimationNodeBlendTree_v4ufc")
 
 [node name="PauseMenu" parent="XRPlayer/CanvasLayer" parent_id_path=PackedInt32Array(10000004, 2119231864) index="0" unique_id=856227726]
 visible = false
 
 [node name="Screen" parent="XRPlayer/Viewport2Din3D" parent_id_path=PackedInt32Array(10000004, 1418763861) index="1" unique_id=1761931612]
-mesh = SubResource("QuadMesh_b8tmo")
-surface_material_override/0 = SubResource("StandardMaterial3D_8qcdu")
+mesh = SubResource("QuadMesh_0vhit")
+surface_material_override/0 = SubResource("StandardMaterial3D_vl1bf")
 
 [node name="CollisionShape3D" parent="XRPlayer/Viewport2Din3D/StaticBody3D" parent_id_path=PackedInt32Array(10000004, 1418763861, 1882660186) index="0" unique_id=507281989]
-shape = SubResource("BoxShape3D_ormv7")
+shape = SubResource("BoxShape3D_jnkvf")
 
 [node name="Control" parent="CanvasLayer" parent_id_path=PackedInt32Array(10000005) index="0" unique_id=871214352]
 theme = ExtResource("4_dxago")
@@ -433,7 +436,7 @@ viewport_size = Vector2(800, 800)
 size = Vector2i(1920, 1080)
 
 [node name="Camera3D" type="Camera3D" parent="BaseSceneContent/SubViewport" index="0" unique_id=636069811]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6478393, 0)
 cull_mask = 786431
 
 [node name="PetSpawnPoints" type="Marker3D" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="11" unique_id=982374651]
@@ -499,8 +502,8 @@ scoring = NodePath("../RoundManager/Scoring")
 [editable path="XRPlayer/StartXR"]
 [editable path="XRPlayer/SubViewport/XRPlayer/PlayerBody/Body/player"]
 [editable path="XRPlayer/SubViewport/XRPlayer/LeftHand/LeftHand"]
-[editable path="XRPlayer/SubViewport/XRPlayer/LeftHand/LeftHand/Hand_Nails_low_L"]
+[editable path="XRPlayer/SubViewport/XRPlayer/LeftHand/LeftHand/HandRoot/Hand/hand_l"]
 [editable path="XRPlayer/SubViewport/XRPlayer/RightHand/RightHand"]
-[editable path="XRPlayer/SubViewport/XRPlayer/RightHand/RightHand/Hand_Nails_low_R"]
+[editable path="XRPlayer/SubViewport/XRPlayer/RightHand/RightHand/HandRoot/Hand/hand_r"]
 [editable path="XRPlayer/Viewport2Din3D"]
 [editable path="BaseSceneContent/draw_room"]
