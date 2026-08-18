@@ -4,6 +4,7 @@ extends Control
 signal skipped()
 signal continued()
 signal ready_clicked()
+signal pool_clicked()
 signal freestyle_timer_started()
 signal freestyle_correct()
 signal freestyle_wrong()
@@ -18,6 +19,7 @@ signal freestyle_stopped()
 @onready var time: Label = %Time
 @onready var status_label: Label = %StatusLabel
 @onready var ready_button: Button = %ReadyButton
+@onready var pool_button: Button = %PoolButton
 @onready var start_timer_button: Button = %StartTimerButton
 @onready var result_buttons: HBoxContainer = %ResultButtons
 @onready var correct_button: Button = %CorrectButton
@@ -35,6 +37,7 @@ var _is_freestyle := false
 func _ready() -> void:
 	skip_button.pressed.connect(_on_skip_button_pressed)
 	ready_button.pressed.connect(func(): ready_clicked.emit())
+	pool_button.pressed.connect(func(): pool_clicked.emit())
 	start_timer_button.pressed.connect(func(): freestyle_timer_started.emit())
 	correct_button.pressed.connect(func(): freestyle_correct.emit())
 	wrong_button.pressed.connect(func(): freestyle_wrong.emit())

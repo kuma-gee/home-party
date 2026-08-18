@@ -35,6 +35,7 @@ theme_override_constants/separation = 32
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_cclwa")
+theme_type_variation = &"LabelSmall"
 text = "Wait for
 words"
 horizontal_alignment = 1
@@ -49,12 +50,22 @@ text = "10 words
 0 / 0 players"
 horizontal_alignment = 1
 
-[node name="ReadyButton" type="Button" parent="MarginContainer/Prepare" unique_id=2000000407]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Prepare" unique_id=829749863]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="ReadyButton" type="Button" parent="MarginContainer/Prepare/VBoxContainer" unique_id=2000000407]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"ButtonSmall"
 disabled = true
 text = "Start"
+
+[node name="PoolButton" type="Button" parent="MarginContainer/Prepare/VBoxContainer" unique_id=2000000408]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"ButtonSmall"
+text = "Use predefined"
 
 [node name="InGame" type="VBoxContainer" parent="MarginContainer" unique_id=686132541]
 unique_name_in_owner = true

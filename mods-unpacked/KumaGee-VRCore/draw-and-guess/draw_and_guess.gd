@@ -68,6 +68,7 @@ func _on_prepare_phase():
 	prepare_scene.skipped.connect(func(): round_manager.skip_round())
 	prepare_scene.continued.connect(func(): round_manager.continue_after_reveal())
 	prepare_scene.ready_clicked.connect(_on_vr_ready_pressed)
+	prepare_scene.pool_clicked.connect(_on_pool_ready_pressed)
 	prepare_scene.freestyle_timer_started.connect(_on_freestyle_timer_started)
 	prepare_scene.freestyle_correct.connect(func(): _on_freestyle_result(true))
 	prepare_scene.freestyle_wrong.connect(func(): _on_freestyle_result(false))
@@ -226,6 +227,13 @@ func _on_vr_ready_pressed() -> void:
 			_start_game()
 			return
 	check_all_ready(true)
+
+func _on_pool_ready_pressed() -> void:
+	var word_count := maxi(player_list.get_player_count() * 2, 4)
+	word_manager.fill_with_predefined_words(word_count)
+	logger.info("Starting game with %d predefined words" % word_manager.size())
+	_update_ui()
+	_start_game()
 
 func _on_round_skipped(word: String) -> void:
 	logger.info("VR player skipped word: %s" % word)

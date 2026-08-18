@@ -10,6 +10,21 @@ const FALLBACK_WORDS: Array[String] = [
 	"bicycle", "dragon", "umbrella", "robot", "volcano", "pirate",
 ]
 
+## Built-in English word pool used when the host chooses to skip player
+## submissions and start directly with predefined words.
+const PREDEFINED_WORDS: Array[String] = [
+	"apple", "airplane", "balloon", "banana", "bicycle",
+	"bird", "boat", "book", "butterfly", "cake",
+	"camel", "car", "castle", "cat", "chair",
+	"clock", "cloud", "crab", "crown", "cup",
+	"dog", "dragon", "elephant", "fish", "flower",
+	"ghost", "guitar", "hat", "heart", "helicopter",
+	"house", "key", "kite", "lamp", "lion",
+	"moon", "mountain", "mushroom", "owl", "penguin",
+	"pizza", "rainbow", "rocket", "snake", "snowman",
+	"spider", "star", "sun", "tree", "umbrella",
+]
+
 ## Each entry tracks { word: String, owner: String } so a player can be
 ## prevented from scoring on their own submitted word.
 var word_pool: Array[Dictionary] = []
@@ -62,6 +77,15 @@ func is_empty() -> bool:
 ## waiting on submissions (e.g. solo/debug testing).
 func fill_with_random_words(count := 4) -> void:
 	var choices := FALLBACK_WORDS.duplicate()
+	choices.shuffle()
+	for i in mini(count, choices.size()):
+		word_pool.append({ "word": choices[i], "owner": "" })
+
+## Replaces the word pool with `count` randomly picked words from the built-in
+## predefined word list so the game can start without player submissions.
+func fill_with_predefined_words(count: int) -> void:
+	word_pool.clear()
+	var choices := PREDEFINED_WORDS.duplicate()
 	choices.shuffle()
 	for i in mini(count, choices.size()):
 		word_pool.append({ "word": choices[i], "owner": "" })
