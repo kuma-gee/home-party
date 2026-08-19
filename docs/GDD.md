@@ -7,10 +7,14 @@ through a simple local website.
 ## Games
 
 - [Castle Defense](./CASTLE_DEFENSE.md)
-- [Café Chaos](./CAFE_CHAOS.md)
-- [Draw & Guess](./DRAW_AND_GUESS.md)
-- [Hide & Seek](./HIDE_AND_SEEK.md)
 - [Vortex Volley](./VORTEX_VOLLEY.md)
+- [Ghost Hunter](./GHOST_HUNTER.md)
+
+- [Draw & Guess](./DRAW_AND_GUESS.md)
+- [Café Chaos](./CAFE_CHAOS.md)
+- [Parcel Post](./PARCEL_POST.md)
+
+- [Hide & Seek](./HIDE_AND_SEEK.md)
 
 ## Home World
 
