@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://wb300ui05p3o"]
+
+[ext_resource type="PackedScene" uid="uid://bisl1jfnf3opn" path="res://main/base_scene.tscn" id="1_ras7d"]
+[ext_resource type="PackedScene" uid="uid://du1le6031m7h6" path="res://assets/cafe/Cafe Essentials Vol.2 – Starter Pack (Free)/Exports/GLB/Furniture_Counter_01.glb" id="2_tcj6o"]
+[ext_resource type="PackedScene" uid="uid://m8mtsn7valtb" path="res://assets/cafe/Cafe Essentials Vol.2 – Starter Pack (Free)/Exports/GLB/Prop_CafeJar_02_Coffee.glb" id="2_xv4jl"]
+[ext_resource type="PackedScene" uid="uid://bn3an814rlny5" path="res://assets/cafe/Cafe Essentials Vol.2 – Starter Pack (Free)/Exports/GLB/Drink_Cup_02_Coffee.glb" id="3_600ji"]
+[ext_resource type="PackedScene" uid="uid://b0mxknn22tarm" path="res://assets/cafe/Cafe Essentials Vol.2 – Starter Pack (Free)/Exports/GLB/Machine_Espresso_01.glb" id="3_tl27t"]
+[ext_resource type="PackedScene" uid="uid://6qy2ge7r1d4l" path="res://assets/cafe/CafeVol1/FBX/SweetShop_MenuFrame_02.fbx" id="8_0dynr"]
+[ext_resource type="PackedScene" uid="uid://jlf54xukl7iw" path="res://mods-unpacked/KumaGee-VRCore/cafe_chaos/table.tscn" id="9_mbgdb"]
+
+[node name="CafeChaos" unique_id=10015973 instance=ExtResource("1_ras7d")]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="0" unique_id=1360939291]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.361702, -0.08660889, -1.8582077)
+size = Vector3(6.9211426, 0.17, 5)
+
+[node name="Prop_CafeJar_02_Coffee2" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="1" unique_id=1312087699 instance=ExtResource("2_xv4jl")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.78219557, 0.8450928, -0.14972305)
+
+[node name="Drink_Cup_02_Coffee2" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="2" unique_id=1838225917 instance=ExtResource("3_600ji")]
+transform = Transform3D(-2.1855694e-08, 0, 0.5, 0, 0.5, 0, -0.5, 0, -2.1855694e-08, -0.6967263, 0.9141846, 0.33441925)
+
+[node name="Machine_Espresso_012" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="3" unique_id=498716531 instance=ExtResource("3_tl27t")]
+transform = Transform3D(-2.1855694e-08, 0, 0.5, 0, 0.5, 0, -0.5, 0, -2.1855694e-08, -0.7733865, 0.8366699, 0.33441925)
+
+[node name="Furniture_Counter_012" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="4" unique_id=15737147 instance=ExtResource("2_tcj6o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.5, 0.45042944, 0, -0.6698507)
+
+[node name="Furniture_Counter_013" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="5" unique_id=586506546 instance=ExtResource("2_tcj6o")]
+transform = Transform3D(-3.4969112e-08, 0, 0.5, 0, 1, 0, -0.8, 0, -2.1855694e-08, -0.8104067, -0.0017089844, -0.15705225)
+
+[node name="SweetShop_MenuFrame_02" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="6" unique_id=1073741117 instance=ExtResource("8_0dynr")]
+transform = Transform3D(0, 0, 0.49999997, 0, 0.5, 0, -0.49999997, 0, 0, -1.0691094, 1.119751, -1.0057297)
+
+[node name="Table3" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="7" unique_id=241754186 instance=ExtResource("9_mbgdb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.7978106, 0, -0.53643596)
+
+[node name="Table2" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="8" unique_id=1587938654 instance=ExtResource("9_mbgdb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.814932, 0, -3.8582077)
+
+[node name="Furniture_Chair_013" parent="BaseSceneContent/Table2" index="1" unique_id=635918220]
+visible = false
+
+[node name="Furniture_Chair_015" parent="BaseSceneContent/Table2" index="2" unique_id=1744256241]
+visible = false
+
+[node name="Table5" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="9" unique_id=1078758231 instance=ExtResource("9_mbgdb")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.68526936, 0, -3.8582077)
+
+[node name="Furniture_Chair_013" parent="BaseSceneContent/Table5" index="1" unique_id=635918220]
+visible = false
+
+[node name="Furniture_Chair_015" parent="BaseSceneContent/Table5" index="2" unique_id=1744256241]
+visible = false
+
+[node name="Furniture_Chair_016" parent="BaseSceneContent/Table5" index="4" unique_id=887802641]
+visible = false
+
+[node name="Table4" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="10" unique_id=766545288 instance=ExtResource("9_mbgdb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.814932, 0, -2.5192509)
+
+[node name="Furniture_Chair_013" parent="BaseSceneContent/Table4" index="1" unique_id=635918220]
+visible = false
+
+[node name="Furniture_Chair_015" parent="BaseSceneContent/Table4" index="2" unique_id=1744256241]
+visible = false
+
+[editable path="BaseSceneContent/Table2"]
+[editable path="BaseSceneContent/Table5"]
+[editable path="BaseSceneContent/Table4"]
