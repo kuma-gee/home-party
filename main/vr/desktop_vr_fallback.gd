@@ -183,13 +183,7 @@ func _should_block_input() -> bool:
 
 
 func _is_desktop_fallback_active() -> bool:
-	# The SubViewport this node lives in is the XR viewport, and StartXR sets
-	# its use_xr=true as soon as the OpenXR interface is registered — before any
-	# session starts. Relying on use_xr therefore makes the fallback look
-	# inactive on every machine with OpenXR enabled, even with no headset,
-	# which blocks mouse capture and yaw (breaking the debug camera).
-	# is_xr_active() only flips true once a session actually gains focus.
-	return not XRToolsStartXR.is_xr_active()
+	return not XRToolsStartXR.is_xr_active() and not get_viewport().use_xr
 
 
 func _get_vr_space() -> VRSpace:
