@@ -114,7 +114,7 @@ jobs:
     with:
       channels: ${{ needs.build-info.outputs.channels }}
       steam-app: ${{ fromJSON(needs.build-info.outputs.steam_id) }}
-      godot-version: 4.6
+      godot-version: 4.7
       template-repo: ${{ github.repository }}
     secrets: inherit
 
