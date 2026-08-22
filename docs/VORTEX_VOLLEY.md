@@ -1,16 +1,20 @@
 # Vortex Volley
 
-Mobile players launch glowing orbs from the outer ring toward the center of a
-circular arena. The VR player stands at the center and deflects incoming orbs back
-outward with their hands. The VR player wins by surviving the full round timer or
-eliminating all mobile players. Mobile players compete to be the last one standing.
+Mobile players launch glowing orbs from the outer wall toward the center of an
+octagonal arena. The VR player stands at the center and deflects incoming orbs back
+outward with their hands, protecting a vulnerable **core** at the center. Every orb
+that slips past the VR player damages the core. The VR player wins by keeping the
+core alive for the full round timer or by eliminating all mobile players. Mobile
+players win by destroying the core before the timer runs out, and compete among
+themselves to be the last one standing.
 
-- **VR Win:** Timer expires with mobile players alive, OR all mobile players eliminated
-- **Mobile Win:** Last mobile player with lives remaining when round ends
+- **VR Win:** Core survives the timer, OR all mobile players eliminated
+- **Mobile Win:** Core health reaches 0 before the timer runs out
+- **Core Health:** See [Arena](#arena)
 - **Lives:** 3 per mobile player
 - **Recommended Players:** 2–6 (1 VR + 1–5 mobile)
 - **Round Style:** Fast asymmetric arena match
-- **Round Duration:** 90 seconds
+- **Round Duration:** 3 minutes (180 seconds)
 
 ## Target Audience
 
@@ -20,13 +24,13 @@ the game within one round of watching.
 
 ## Design Pillars
 
-1. **Simple party readability** — The entire game is visible in one circular arena:
-   orbs, paddles, player zones, lives, and the VR defender at center.
+1. **Simple party readability** — The entire game is visible in one octagonal arena:
+   orbs, paddles, player zones, lives, the core, and the VR defender at center.
 2. **Asymmetric tension** — Mobile players choose when to attack but risk getting
    hit by their own reflected orb. The VR player reacts to pressure from all sides.
 3. **Escalating chaos** — Orb speed increases with every successful VR block,
    making the arena progressively harder for everyone.
-4. **Short rounds** — Three lives and a 90-second timer keep matches fast and
+4. **Short rounds** — Three lives and a 3-minute timer keep matches fast and
    easy to replay.
 5. **Every player has stakes** — VR player has a clear win condition. Mobile players
    compete against each other AND the VR defender simultaneously.
@@ -35,21 +39,22 @@ the game within one round of watching.
 
 ### VR Player (Defender)
 
-You stand at the center of a glowing vortex. Orbs fly at you from all directions.
-You swing your hands to block them, sending each one rocketing back where it came
-from. Early on it's manageable — one orb at a time, plenty of time to react. Then
-the tempo climbs. Two orbs. Three. You're spinning, reading trajectories, choosing
-which threats to prioritize. The satisfaction comes from the physical rhythm: block,
-block, redirect, block. When you survive a heavy barrage, you feel like a martial
-arts master. When a fast orb slips past you, it's because you were overwhelmed, not
-because the game cheated.
+You stand at the center of a glowing vortex, guarding the vulnerable core at your
+feet. Orbs fly at you from all directions. You swing your hands to block them,
+sending each one rocketing back where it came from. Early on it's manageable — one
+orb at a time, plenty of time to react. Then the tempo climbs. Two orbs. Three.
+You're spinning, reading trajectories, choosing which threats to prioritize. The
+satisfaction comes from the physical rhythm: block, block, redirect, block. When
+you survive a heavy barrage, you feel like a martial arts master. When a fast orb
+slips past you and cracks the core, it's because you were overwhelmed, not because
+the game cheated.
 
 **Peak moment:** 60+ seconds in, 4–5 orbs active, you're barely keeping up, every
 block is instinctive, the crowd is shouting.
 
 ### Mobile Player (Attacker)
 
-You control a paddle on the outer ring. You tap to launch an orb at the VR defender.
+You control a paddle on the outer wall. You press A/B to launch an orb at the center core.
 Here's the catch: when the VR player blocks your orb, it reflects in whatever
 direction they aimed — and it might come flying at YOU or at someone else. You
 launch, then immediately slide your paddle to a safe position in case the orb comes
@@ -65,18 +70,30 @@ been dominating, that player loses a life, the crowd erupts.
 
 ## Arena
 
-The match takes place in a circular vortex arena.
+The match takes place in an **octagonal** vortex arena with eight equal sides.
 
 | Element | Value |
 |---------|-------|
-| Arena radius | 4.5m |
+| Arena shape | Regular octagon, 8 equal sides |
+| Arena radius (apothem) | 4.5m to each side midpoint (vertices at ~4.87m) |
 | Wall height | 2.5m |
 | Orb height | 0.9m (fixed) |
 | Center platform radius | 1.2m |
+| Core (center object) | Sits on the center platform, protected by the VR player |
+| Core health | 20 (MVP default — tune during playtesting) |
 
-Mobile player zones are evenly distributed around the outer ring. Each player owns
-one fixed angular slice of the arena. Their paddle can slide left and right within
-that slice, but cannot cross into another player's zone.
+Each of the eight sides is a potential player slot. With fewer than eight mobile
+players, empty slots are closed up and the players are distributed evenly around
+the octagon so they face each other as directly as possible:
+
+- **2 players** → opposite sides (180° apart)
+- **3 players** → spread ~120° apart (sides 0, 3, 5)
+- **4 players** → every other side (90° apart)
+- **5–7 players** → spread as evenly as the 8 sides allow
+- **8 players** → every side filled
+
+Each player owns one side of the octagon. Their paddle slides along the wall
+within that side and cannot cross into another player's zone.
 
 ## Orb Physics
 
@@ -92,9 +109,10 @@ realism.
 ## VR Player — Defender
 
 The VR player stands on the center platform and uses their hands to block incoming
-orbs. Every blocked orb is reflected back toward the outer ring. The VR player's
-goal is to survive the full 90-second timer while eliminating as many mobile
-players as possible through strategic reflections.
+orbs, protecting the core at the center. Every blocked orb is reflected back toward
+the outer wall. The VR player's goal is to keep the core alive for the full
+3-minute timer while eliminating as many mobile players as possible through
+strategic reflections.
 
 ### Controls
 
@@ -158,24 +176,28 @@ decision: concentrate pressure (reflect) or multiply it (slice). Slicing late in
 round floods the arena with orbs without pushing the speed cap higher, creating a
 different kind of pressure than escalating speed.
 
-### VR Win Conditions
+### Win Conditions
 
 | Condition | Result |
 |-----------|--------|
-| Timer expires with ≥1 mobile player alive | VR wins (survived the siege) |
+| Timer expires with the core alive | VR wins (survived the siege) |
 | All mobile players eliminated before timer | VR wins (total defense) |
+| Core health reaches 0 | Mobile players win (core destroyed) |
 
-### Center Hit (VR Miss)
+### Center Hit (Core Damage)
 
 If an orb reaches the center platform without being blocked:
 
-1. The orb is destroyed on contact with the center floor.
-2. No mobile player loses a life (the orb didn't reflect to any zone).
-3. A replacement orb spawns at the launching mobile player's paddle once their
+1. The orb is destroyed on contact with the core.
+2. The core loses 1 health per orb.
+3. No mobile player loses a life (the orb didn't reflect to any zone).
+4. A replacement orb spawns at the launching mobile player's paddle once their
    orb supply is empty, after 1.5s.
 
-The VR player is incentivized to block everything — missed orbs are wasted
-elimination opportunities.
+When the core's health reaches 0, the mobile players win immediately.
+
+The VR player is incentivized to block everything — every missed orb chips away at
+the core, and a destroyed core ends the round.
 
 ## Mobile Players — Attackers
 
@@ -185,20 +207,22 @@ other mobile players.
 
 ### Controls
 
-Uses the generic phone joystick layout.
+Uses the generic phone joystick layout. The phone is controller-only — no game
+info is shown on it; all state is displayed on the shared desktop screen.
 
 | Action | Input |
 |--------|-------|
 | Move paddle left/right inside zone | Joystick horizontal axis |
-| Launch orb | Tap anywhere on screen |
+| Launch orb | Press A or B button |
 
 ### Paddle Behavior
 
-- Each paddle starts centered in its assigned zone.
-- Paddle movement speed: **1.8 radians/second** (covers full zone width in ~1.0s).
+- Each paddle starts centered on its assigned side.
+- Paddle movement speed: **1.8 radians/second** around the center (moves the
+  paddle along its side).
 - Paddle width: **1.3m**.
-- Paddle travel is clamped to 80% of the player's zone half-arc, leaving gaps near
-  zone borders.
+- Paddle travel is clamped to 80% of the side's half-length, leaving gaps near
+  the octagon corners.
 - A paddle glows when an orb is ready to launch.
 - A paddle flashes red when the player loses a life.
 
@@ -206,7 +230,7 @@ Uses the generic phone joystick layout.
 
 - Each mobile player has an **orb supply**, starting with **1 orb**. Power-ups can
   add more orbs to the supply.
-- Tapping launches one orb from the paddle's current position toward the center.
+- Pressing A or B launches one orb from the paddle's current position toward the center.
 - Launch speed: **5.0m/s**.
 - A player may have multiple orbs in flight at once (up to their supply).
 - **Respawn:** When a player's supply is empty (all orbs resolved or destroyed), a
@@ -248,7 +272,7 @@ temporary advantage.
 ### Pickup Mechanics
 
 - Power-ups float on the orb plane (0.9m height) inside the arena, between the
-  center platform and the outer ring.
+  center platform and the outer wall.
 - A mobile player picks up a power-up by launching an orb that collides with it.
 - The colliding orb is destroyed on impact; the power-up activates immediately for
   that player.
@@ -301,11 +325,11 @@ Speed resets to base (5.0m/s) only when a new round starts.
 1. **Ready:** Orb sits at mobile player's paddle, glowing. Player can launch.
    Multiple ready orbs are possible with an expanded supply.
 2. **Incoming:** Orb travels toward center. VR player can block.
-3. **Reflected:** VR blocked it. Orb travels back toward outer ring at increased speed.
+3. **Reflected:** VR blocked it. Orb travels back toward outer wall at increased speed.
 4. **Resolved:** Orb either hits a paddle (life lost) or passes through zone (safe).
    Orb destroyed. When the player's supply is empty, the respawn timer starts.
 
-If VR misses (orb hits center): orb destroyed, respawn timer starts.
+If VR misses (orb hits core): orb destroyed, core loses 1 health, respawn timer starts.
 
 ## Round Flow
 
@@ -314,19 +338,20 @@ If VR misses (orb hits center): orb destroyed, respawn timer starts.
 - Mobile players sync into the match.
 - Each player receives 3 lives and 1 orb in their supply.
 - Zones are assigned evenly around the arena.
-- **Mobile onboarding:** Phone screen shows zone color, paddle position, and
-  "Swipe to move paddle — Tap to launch" instruction overlay.
+- **Mobile onboarding:** The phone shows only the joystick and A/B buttons.
+  Control instructions ("Swipe to move paddle — press A/B to launch") are shown
+  on the shared desktop screen.
 - **VR onboarding:** VR headset shows "Block orbs with your hands — Reflect them
   back at players" with animated hand demonstration.
 - Shared screen shows **Get Ready!** with player names and zone colors.
 - Round auto-starts after 5 seconds.
 
-### 2. Play Phase (90 seconds)
+### 2. Play Phase (3 minutes)
 
 - Timer begins. All mobile players have orbs ready.
-- Mobile players tap to launch orbs at the center.
+- Mobile players press A/B to launch orbs at the center.
 - VR player blocks and reflects incoming orbs.
-- Reflected orbs return to outer ring — players dodge or get hit.
+- Reflected orbs return to outer wall — players dodge or get hit.
 - Orb speed escalates with each VR block.
 - Lives are lost, players are eliminated.
 
@@ -334,27 +359,33 @@ If VR misses (orb hits center): orb destroyed, respawn timer starts.
 
 - A mobile player is eliminated when lives reach 0.
 - Eliminated player's paddle disappears. All of their orbs are removed permanently.
-- Eliminated players see "Eliminated" on phone and can watch on shared screen.
+- Eliminated players' phones show only the joystick and buttons (no launch
+  input); they watch the rest of the match on the shared screen.
 - Round continues until timer expires or all mobile players eliminated.
 
 ### 4. Game End
 
-- **Timer expires:** VR wins. Mobile players ranked by elimination order.
+- **Timer expires (core alive):** VR wins. Mobile players ranked by elimination order.
 - **All mobile eliminated:** VR wins. Leaderboard shows elimination order.
+- **Core destroyed:** Mobile players win. Leaderboard shows elimination order.
 - Leaderboard displayed on shared screen for 10 seconds.
 
 ## Win Conditions
 
 **VR Player wins if:**
-- 90-second timer expires with ≥1 mobile player alive, OR
-- All mobile players eliminated before timer
+- The core survives the full 3-minute timer, OR
+- All mobile players are eliminated before the timer
 
-**Mobile Player wins if:**
-- They are the last mobile player alive when round ends
+**Mobile Players win if:**
+- The core's health reaches 0 before the timer runs out
+
+**Individual mobile ranking:** Determined by elimination order — the last mobile
+player standing ranks highest.
 
 **Tiebreaker (mobile):** Most lives remaining → longest survival time.
 
-**Leaderboard:** Shows elimination order and winner.
+**Leaderboard:** Shows the winning side, elimination order, and (for mobile wins)
+damage dealt.
 
 ## Shared Screen and HUD
 
@@ -362,20 +393,16 @@ The shared desktop view shows the 3D arena and a lightweight HUD.
 
 | Element | Description |
 |---------|-------------|
-| Timer | Countdown from 90 seconds, prominent center-top |
+| Timer | Countdown from 3 minutes, prominent center-top |
+| Core health | Bar showing the core's remaining health |
 | State label | Waiting, Get Ready, GO, or Round Over |
 | Lives list | Player name + zone color + heart icons |
 | Speed indicator | Orb speed bar, fills as escalation increases |
 | Leaderboard | Shown after round ends (elimination order) |
 
-Mobile phones show:
-
-| Phase | Display |
-|-------|---------|
-| Prepare | Zone color, paddle preview, control instructions |
-| Play | Joystick, launch button, lives remaining, "Orb Ready" / "Cooldown" state |
-| Eliminated | "Eliminated" text, spectate prompt |
-| Game End | Winner announcement, elimination order |
+Mobile phones are controller-only across all phases: the joystick moves the
+paddle and the A/B buttons launch. No game state, lives, or scores are shown on
+the phone — all of that is displayed on the shared desktop screen.
 
 ## Presentation
 
