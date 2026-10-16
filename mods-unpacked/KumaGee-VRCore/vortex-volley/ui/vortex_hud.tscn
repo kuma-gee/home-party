@@ -33,6 +33,17 @@ theme_type_variation = &"LabelLarge"
 text = "Waiting..."
 horizontal_alignment = 1
 
+[node name="TimerBadge" type="PanelContainer" parent="TopBar"]
+custom_minimum_size = Vector2(120, 60)
+layout_mode = 2
+
+[node name="TimerLabel" type="Label" parent="TopBar/TimerBadge"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"LabelLarge"
+text = "3:00"
+horizontal_alignment = 1
+
 [node name="LivesPanel" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 1
@@ -47,3 +58,43 @@ grow_horizontal = 0
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 8
+
+[node name="StatsPanel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -220.0
+offset_top = 410.0
+offset_bottom = 560.0
+grow_horizontal = 0
+
+[node name="StatsContainer" type="VBoxContainer" parent="StatsPanel"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="CoreHealthLabel" type="Label" parent="StatsPanel/StatsContainer"]
+layout_mode = 2
+theme_type_variation = &"LabelSmall"
+text = "Core Health"
+
+[node name="CoreHealthBar" type="ProgressBar" parent="StatsPanel/StatsContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+max_value = 20.0
+value = 20.0
+show_percentage = false
+
+[node name="SpeedLabel" type="Label" parent="StatsPanel/StatsContainer"]
+layout_mode = 2
+theme_type_variation = &"LabelSmall"
+text = "Orb Speed"
+
+[node name="SpeedBar" type="ProgressBar" parent="StatsPanel/StatsContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+max_value = 10.0
+value = 5.0
+show_percentage = false

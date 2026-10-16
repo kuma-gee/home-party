@@ -1,20 +1,158 @@
-[gd_scene format=3 uid="uid://vv1a2b3c4d5e6"]
+[gd_scene format=3 uid="uid://ckyw31h3bdrmd"]
 
 [ext_resource type="PackedScene" uid="uid://bisl1jfnf3opn" path="res://main/base_scene.tscn" id="1_base"]
-[ext_resource type="Script" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_volley.gd" id="2_game"]
+[ext_resource type="Script" uid="uid://cww5q0og4prbo" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_volley.gd" id="2_game"]
+[ext_resource type="Script" uid="uid://dk8vx2cnpq4f" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/striker_hand.gd" id="3_btxwl"]
+[ext_resource type="PackedScene" uid="uid://ckb1hqosh2ycj" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/deflector_player.tscn" id="3_deflector"]
 [ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_volley_player_ui.tscn" id="3_plui"]
-[ext_resource type="PackedScene" uid="uid://vvdef1a2b3c4d" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/deflector_player.tscn" id="3_deflector"]
-[ext_resource type="PackedScene" uid="uid://vvorb1a2b3c4d" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/game_orb.tscn" id="4_orb"]
-[ext_resource type="PackedScene" uid="uid://vvhud1a2b3c4d" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/ui/vortex_hud.tscn" id="5_hud"]
+[ext_resource type="PackedScene" uid="uid://cknfdqosh2ycj" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/game_orb.tscn" id="4_orb"]
+[ext_resource type="PackedScene" uid="uid://ckgifqosh2ycj" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/ui/vortex_hud.tscn" id="5_hud"]
+[ext_resource type="PackedScene" uid="uid://ckbcs4f08bpkb" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/core.tscn" id="6_core"]
+[ext_resource type="Script" uid="uid://b81ejb5dg6iag" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_arena.gd" id="7_arena"]
+[ext_resource type="PackedScene" uid="uid://xq5fibkk6ul" path="res://assets/vortex/arena.glb" id="8_ymkxq"]
 
-[node name="VortexVolley" instance=ExtResource("1_base")]
+[sub_resource type="SphereShape3D" id="SphereShape3D_btxwl"]
+radius = 0.3
+
+[sub_resource type="QuadMesh" id="QuadMesh_u27j1"]
+resource_local_to_scene = true
+size = Vector2(1.5, 1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_btxwl"]
+viewport_path = NodePath("XRPlayer/Viewport2Din3D/Viewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h3hju"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_btxwl")
+texture_filter = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_v4ly5"]
+resource_local_to_scene = true
+size = Vector3(1.5, 1, 0.02)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vn0a6"]
+size = Vector3(6.4697266, 5.696289, 0.24633789)
+
+[node name="VortexVolley" unique_id=459618458 instance=ExtResource("1_base")]
 script = ExtResource("2_game")
-deflector_scene = ExtResource("3_deflector")
-orb_scene = ExtResource("4_orb")
 
-[node name="VortexHUD" parent="CanvasLayer/Control/GameUI" parent_id_path=PackedInt32Array(10000007) index="0" instance=ExtResource("5_hud")]
+[node name="MainLight" parent="." index="1" unique_id=10000002]
+transform = Transform3D(0.8530403, -0.2639843, -0.45014954, 0.5218451, 0.43152502, 0.7358423, 0, -0.8626114, 0.5058671, 0, 5.456269, 0)
+
+[node name="SecondaryLight" parent="." index="2" unique_id=1307450421]
+transform = Transform3D(0.86602545, -0.43301296, 0.24999958, -0.41315672, -0.3381305, 0.8455586, -0.28160536, -0.8355642, -0.4717319, 0, 5, 0)
+visible = false
+
+[node name="Camera3D" parent="." index="3" unique_id=10000003]
+transform = Transform3D(1, 0, 0, 0, 0.3303125, 0.9438717, 0, -0.9438717, 0.3303125, 0, 40.0734, 13.356503)
+
+[node name="Area3D" type="Area3D" parent="XRPlayer/SubViewport/XRPlayer/LeftHand" parent_id_path=PackedInt32Array(10000004, 2106749189) index="0" unique_id=1539354222]
+script = ExtResource("3_btxwl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XRPlayer/SubViewport/XRPlayer/LeftHand/Area3D" index="0" unique_id=1903016119]
+shape = SubResource("SphereShape3D_btxwl")
+
+[node name="Area3D2" type="Area3D" parent="XRPlayer/SubViewport/XRPlayer/RightHand" parent_id_path=PackedInt32Array(10000004, 1667605568) index="1" unique_id=757949664]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.44, 0, 0)
+script = ExtResource("3_btxwl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XRPlayer/SubViewport/XRPlayer/RightHand/Area3D2" index="0" unique_id=1740322899]
+shape = SubResource("SphereShape3D_btxwl")
+
+[node name="Screen" parent="XRPlayer/Viewport2Din3D" parent_id_path=PackedInt32Array(10000004, 1418763861) index="1" unique_id=1761931612]
+mesh = SubResource("QuadMesh_u27j1")
+surface_material_override/0 = SubResource("StandardMaterial3D_h3hju")
+
+[node name="CollisionShape3D" parent="XRPlayer/Viewport2Din3D/StaticBody3D" parent_id_path=PackedInt32Array(10000004, 1418763861, 1882660186) index="0" unique_id=507281989]
+shape = SubResource("BoxShape3D_v4ly5")
+
+[node name="VortexHUD" parent="CanvasLayer/Control/GameUI" parent_id_path=PackedInt32Array(10000007) index="0" unique_id=1082078638 instance=ExtResource("5_hud")]
 unique_name_in_owner = true
 layout_mode = 1
 
 [node name="PlayerList" parent="CanvasLayer/Control/MarginContainer" parent_id_path=PackedInt32Array(10000008) index="0" unique_id=10000009]
 player_scene = ExtResource("3_plui")
+
+[node name="VortexCore" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="0" unique_id=50000002 instance=ExtResource("6_core")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2754123, 0)
+
+[node name="arena" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="1" unique_id=39630964 instance=ExtResource("8_ymkxq")]
+
+[node name="Spawn" type="Node3D" parent="BaseSceneContent/arena" index="2" unique_id=1317417802]
+
+[node name="Marker3D" type="Marker3D" parent="BaseSceneContent/arena/Spawn" index="0" unique_id=247195199]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0996399, -8.1052475)
+
+[node name="DeflectorPlayer" parent="BaseSceneContent/arena/Spawn/Marker3D" index="0" unique_id=1239165641 instance=ExtResource("3_deflector")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="BaseSceneContent/arena/Spawn/Marker3D" index="1" unique_id=1119818925]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BaseSceneContent/arena/Spawn/Marker3D/StaticBody3D" index="0" unique_id=40040907]
+shape = SubResource("BoxShape3D_vn0a6")
+
+[node name="Spawn2" type="Node3D" parent="BaseSceneContent/arena" index="3" unique_id=518139861]
+transform = Transform3D(0.70710677, 0, -0.70710677, 0, 1, 0, 0.70710677, 0, 0.70710677, 0, 0, 0)
+
+[node name="Marker3D" type="Marker3D" parent="BaseSceneContent/arena/Spawn2" index="0" unique_id=1358257010]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0996399, -8.1052475)
+
+[node name="DeflectorPlayer" parent="BaseSceneContent/arena/Spawn2/Marker3D" index="0" unique_id=1600373306 instance=ExtResource("3_deflector")]
+
+[node name="Spawn3" type="Node3D" parent="BaseSceneContent/arena" index="4" unique_id=913598263]
+transform = Transform3D(0, 0, -0.99999994, 0, 1, 0, 0.99999994, 0, 0, 0, 0, 0)
+
+[node name="Marker3D" type="Marker3D" parent="BaseSceneContent/arena/Spawn3" index="0" unique_id=179547936]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0996399, -8.1052475)
+
+[node name="DeflectorPlayer" parent="BaseSceneContent/arena/Spawn3/Marker3D" index="0" unique_id=1469562420 instance=ExtResource("3_deflector")]
+
+[node name="Spawn4" type="Node3D" parent="BaseSceneContent/arena" index="5" unique_id=1820552601]
+transform = Transform3D(-0.70710665, 0, -0.70710665, 0, 1, 0, 0.70710665, 0, -0.70710665, 0, 0, 0)
+
+[node name="Marker3D" type="Marker3D" parent="BaseSceneContent/arena/Spawn4" index="0" unique_id=1185444600]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0996399, -8.1052475)
+
+[node name="DeflectorPlayer" parent="BaseSceneContent/arena/Spawn4/Marker3D" index="0" unique_id=1631147722 instance=ExtResource("3_deflector")]
+
+[node name="Spawn5" type="Node3D" parent="BaseSceneContent/arena" index="6" unique_id=1420577459]
+transform = Transform3D(-0.9999997, 0, 0, 0, 1, 0, 0, 0, -0.9999997, 0, 0, 0)
+
+[node name="Marker3D" type="Marker3D" parent="BaseSceneContent/arena/Spawn5" index="0" unique_id=1574296106]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0996399, -8.1052475)
+
+[node name="DeflectorPlayer" parent="BaseSceneContent/arena/Spawn5/Marker3D" index="0" unique_id=811881708 instance=ExtResource("3_deflector")]
+
+[node name="Spawn6" type="Node3D" parent="BaseSceneContent/arena" index="7" unique_id=1630115361]
+transform = Transform3D(-0.7071065, 0, 0.7071065, 0, 1, 0, -0.7071065, 0, -0.7071065, 0, 0, 0)
+
+[node name="Marker3D" type="Marker3D" parent="BaseSceneContent/arena/Spawn6" index="0" unique_id=462291218]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0996399, -8.1052475)
+
+[node name="DeflectorPlayer" parent="BaseSceneContent/arena/Spawn6/Marker3D" index="0" unique_id=458818703 instance=ExtResource("3_deflector")]
+
+[node name="Spawn7" type="Node3D" parent="BaseSceneContent/arena" index="8" unique_id=1949150408]
+transform = Transform3D(0, 0, 0.9999995, 0, 1, 0, -0.9999995, 0, 0, 0, 0, 0)
+
+[node name="Marker3D" type="Marker3D" parent="BaseSceneContent/arena/Spawn7" index="0" unique_id=1924442591]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0996399, -8.1052475)
+
+[node name="DeflectorPlayer" parent="BaseSceneContent/arena/Spawn7/Marker3D" index="0" unique_id=663291819 instance=ExtResource("3_deflector")]
+
+[node name="Spawn8" type="Node3D" parent="BaseSceneContent/arena" index="9" unique_id=769948839]
+transform = Transform3D(0.7071064, 0, 0.7071064, 0, 1, 0, -0.7071064, 0, 0.7071064, 0, 0, 0)
+
+[node name="Marker3D" type="Marker3D" parent="BaseSceneContent/arena/Spawn8" index="0" unique_id=103333402]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0996399, -8.1052475)
+
+[node name="DeflectorPlayer" parent="BaseSceneContent/arena/Spawn8/Marker3D" index="0" unique_id=1287326300 instance=ExtResource("3_deflector")]
+
+[node name="VortexArena" type="Node3D" parent="." index="7" unique_id=50000001]
+script = ExtResource("7_arena")
+orb_scene = ExtResource("4_orb")
+
+[editable path="XRPlayer"]
+[editable path="XRPlayer/StartXR"]
+[editable path="XRPlayer/SubViewport/XRPlayer/PlayerBody/Body/player"]
+[editable path="XRPlayer/Viewport2Din3D"]

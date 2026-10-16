@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("1_script")
 name = "Vortex Volley"
-description = "Mobile players guard the outer ring as deflector paddles while the VR player stands in the center, batting the orb back with their hands. Last deflector alive wins."
+description = "Mobile players launch orbs from the outer wall toward the center core. The VR player blocks and reflects orbs back outward to defend the core. Last side standing wins."
 scene = ExtResource("2_scene")
 icon = ExtResource("3_icon")
 min_recommended_players = 2

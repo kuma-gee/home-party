@@ -1,69 +1,295 @@
 class_name VortexArena
 extends Node3D
 
-const RADIUS: float = 4.5
-const HEIGHT: float = 2.5
+signal round_ended(scores: Array[Dictionary])
+signal lives_updated(data: Array[Dictionary])
+signal speed_updated(speed: float)
+signal core_health_updated(hp: int)
+signal time_updated(remaining: float)
+
+const ARENA_RADIUS: float = 4.5
+const VORTEX_DEFLECTOR_GROUP: StringName = &"vortex_deflector"
+const ORB_SPEED_BASE: float = 5.0
+const ORB_SPEED_MAX: float = 10.0
+const ORB_SPEED_STEP: float = 0.5
+const REFLECT_SPEED_BONUS: float = 1.5
+const START_LIVES: int = 3
+const RESPAWN_DELAY: float = 1.5
+const ROUND_TIME: float = 180.0
+
+enum Phase { WAITING, PLAYING, ENDED }
+
+@export var orb_scene: PackedScene
+
+var phase: Phase = Phase.WAITING
+var deflectors: Array[DeflectorPlayer] = []
+## All pre-placed paddles in the arena, sorted by angle around the core (slot 0..7).
+var slot_deflectors: Array[DeflectorPlayer] = []
+var active_orbs: Array[GameOrb] = []
+var core: VortexCore
+var time_remaining: float = ROUND_TIME
+
+var _speed: float = ORB_SPEED_BASE
+var _elimination_order: Array[DeflectorPlayer] = []
 
 func _ready() -> void:
-	_build_floor()
-	_build_wall()
-	_build_center_platform()
+	_collect_slot_deflectors()
+	PlayerManager.clients_changed.connect(_on_clients_changed)
 
-func _build_floor() -> void:
-	var mi := MeshInstance3D.new()
-	var mesh := CylinderMesh.new()
-	mesh.top_radius = RADIUS
-	mesh.bottom_radius = RADIUS
-	mesh.height = 0.1
-	mesh.radial_segments = 48
-	mi.mesh = mesh
-	var mat := StandardMaterial3D.new()
-	mat.albedo_color = Color(0.07, 0.04, 0.12)
-	mat.roughness = 0.9
-	mi.material_override = mat
-	mi.position.y = -0.05
-	add_child(mi)
+func _process(delta: float) -> void:
+	if phase != Phase.PLAYING:
+		return
+	time_remaining -= delta
+	time_updated.emit(time_remaining)
+	if time_remaining <= 0.0:
+		time_remaining = 0.0
+		_end_round()
+		return
+	_prune_orbs()
 
-	var sb := StaticBody3D.new()
-	var col := CollisionShape3D.new()
-	var shape := BoxShape3D.new()
-	shape.size = Vector3(RADIUS * 2.2, 0.1, RADIUS * 2.2)
-	col.shape = shape
-	sb.add_child(col)
-	add_child(sb)
+func start_round() -> void:
+	phase = Phase.PLAYING
+	_speed = ORB_SPEED_BASE
+	time_remaining = ROUND_TIME
+	_elimination_order.clear()
+	if core:
+		if not core.core_health_changed.is_connected(_on_core_health_changed):
+			core.core_health_changed.connect(_on_core_health_changed)
+		if not core.core_destroyed.is_connected(_end_round):
+			core.core_destroyed.connect(_end_round)
+		core.reset()
+		core_health_updated.emit(core.health)
+	speed_updated.emit(_speed)
+	_sync_deflectors()
+	for d in deflectors:
+		d.lives = START_LIVES
+		d.orb_supply = 1
+		d.revive()
+	lives_updated.emit(_build_lives_data())
 
-func _build_wall() -> void:
-	var mi := MeshInstance3D.new()
-	var mesh := CylinderMesh.new()
-	mesh.top_radius = RADIUS
-	mesh.bottom_radius = RADIUS
-	mesh.height = HEIGHT
-	mesh.radial_segments = 48
-	mi.mesh = mesh
-	var mat := StandardMaterial3D.new()
-	mat.albedo_color = Color(0.12, 0.12, 0.35, 0.25)
-	mat.emission_enabled = true
-	mat.emission = Color(0.2, 0.2, 0.65)
-	mat.emission_energy_multiplier = 0.5
-	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	mat.cull_mode = BaseMaterial3D.CULL_FRONT
-	mi.material_override = mat
-	mi.position.y = HEIGHT * 0.5
-	add_child(mi)
+func reset() -> void:
+	phase = Phase.WAITING
+	_speed = ORB_SPEED_BASE
+	time_remaining = ROUND_TIME
+	_elimination_order.clear()
+	for orb in active_orbs:
+		if is_instance_valid(orb):
+			orb.queue_free()
+	active_orbs.clear()
 
-func _build_center_platform() -> void:
-	var mi := MeshInstance3D.new()
-	var mesh := CylinderMesh.new()
-	mesh.top_radius = 0.85
-	mesh.bottom_radius = 0.85
-	mesh.height = 0.12
-	mesh.radial_segments = 24
-	mi.mesh = mesh
-	var mat := StandardMaterial3D.new()
-	mat.albedo_color = Color(0.18, 0.08, 0.28)
-	mat.emission_enabled = true
-	mat.emission = Color(0.45, 0.2, 0.65)
-	mat.emission_energy_multiplier = 0.45
-	mi.material_override = mat
-	mi.position.y = 0.06
-	add_child(mi)
+func request_launch(player: DeflectorPlayer) -> bool:
+	if phase != Phase.PLAYING or not is_instance_valid(player):
+		return false
+	if player.orb_supply <= 0 or player._eliminated:
+		return false
+	player.orb_supply -= 1
+	_spawn_orb_from_paddle(player)
+	return true
+
+func on_orb_blocked(orb: GameOrb, reflect_dir: Vector3) -> void:
+	if phase != Phase.PLAYING or not is_instance_valid(orb):
+		return
+	if not active_orbs.has(orb):
+		return
+	var reflect_speed := orb.velocity.length() + REFLECT_SPEED_BONUS
+	reflect_speed = minf(reflect_speed, ORB_SPEED_MAX)
+	orb.velocity = reflect_dir.normalized() * reflect_speed
+	_set_speed(minf(_speed + ORB_SPEED_STEP, ORB_SPEED_MAX))
+
+func force_end_round() -> void:
+	_end_round()
+
+func _spawn_orb_from_paddle(paddle: DeflectorPlayer) -> void:
+	if not orb_scene or not is_instance_valid(paddle):
+		return
+	var orb := orb_scene.instantiate() as GameOrb
+	if not orb:
+		return
+	add_child(orb)
+	orb.global_position = paddle.global_position
+	orb.global_position.y = GameOrb.ORB_HEIGHT
+	orb.owner_player = paddle
+	# The orb spawns at its own paddle; let it pass through its own paddle on launch.
+	orb.add_collision_exception_with(paddle)
+	orb.hit_core.connect(_on_orb_hit_core)
+	var dir := Vector3(-paddle.global_position.x, 0.0, -paddle.global_position.z)
+	orb.launch(dir.normalized(), _speed)
+	active_orbs.append(orb)
+
+## Called when an orb entered a paddle's goal area → it passed that paddle (pong).
+func on_orb_passed(player: DeflectorPlayer, orb: GameOrb) -> void:
+	if phase != Phase.PLAYING or not is_instance_valid(orb) or orb.is_resolved():
+		return
+	player.lives -= 1
+	player.flash_hit()
+	lives_updated.emit(_build_lives_data())
+	if player.lives <= 0:
+		_eliminate_player(player)
+	orb.resolve()
+	active_orbs.erase(orb)
+	if _get_alive_count() == 0:
+		_end_round()
+
+func _on_orb_hit_core(orb: GameOrb) -> void:
+	if phase != Phase.PLAYING or not is_instance_valid(orb) or orb.is_resolved():
+		return
+	var launcher := orb.owner_player
+	orb.resolve()
+	active_orbs.erase(orb)
+	if is_instance_valid(launcher) and not launcher._eliminated:
+		get_tree().create_timer(RESPAWN_DELAY).timeout.connect(
+			func(): _respawn_orb_for(launcher), CONNECT_ONE_SHOT)
+
+func _on_core_health_changed(hp: int, _max_hp: int) -> void:
+	core_health_updated.emit(hp)
+
+func _eliminate_player(player: DeflectorPlayer) -> void:
+	if player._eliminated:
+		return
+	player.eliminate()
+	_elimination_order.append(player)
+	var to_remove: Array[GameOrb] = []
+	for orb in active_orbs:
+		if is_instance_valid(orb) and orb.owner_player == player:
+			to_remove.append(orb)
+	for orb in to_remove:
+		orb.resolve()
+		active_orbs.erase(orb)
+
+func _respawn_orb_for(player: DeflectorPlayer) -> void:
+	if phase != Phase.PLAYING or not is_instance_valid(player):
+		return
+	if player._eliminated:
+		return
+	player.orb_supply = 1
+	player.set_orb_ready()
+
+func _get_alive_count() -> int:
+	var n := 0
+	for d in deflectors:
+		if is_instance_valid(d) and not d._eliminated and d.lives > 0:
+			n += 1
+	return n
+
+func _build_lives_data() -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	for d in deflectors:
+		out.append({"name": d.player_name, "lives": d.lives})
+	return out
+
+func _build_scores() -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	var alive: Array[DeflectorPlayer] = []
+	var eliminated: Array[DeflectorPlayer] = []
+	for d in deflectors:
+		if d._eliminated:
+			eliminated.append(d)
+		else:
+			alive.append(d)
+	var rank := 1
+	alive.sort_custom(func(a, b): return a.lives > b.lives)
+	for d in alive:
+		out.append({
+			"name": d.player_name,
+			"score": deflectors.size() - rank + 1,
+			"lives": d.lives,
+			"survived": true,
+			"rank": rank,
+		})
+		rank += 1
+	for i in range(eliminated.size() - 1, -1, -1):
+		var d := eliminated[i]
+		out.append({
+			"name": d.player_name,
+			"score": deflectors.size() - rank + 1,
+			"lives": 0,
+			"survived": false,
+			"rank": rank,
+		})
+		rank += 1
+	return out
+
+func _end_round() -> void:
+	if phase == Phase.ENDED:
+		return
+	phase = Phase.ENDED
+	for orb in active_orbs:
+		if is_instance_valid(orb):
+			orb.queue_free()
+	active_orbs.clear()
+	round_ended.emit(_build_scores())
+
+func _on_clients_changed() -> void:
+	if phase == Phase.WAITING:
+		_sync_deflectors()
+
+## Finds the pre-placed paddles in the scene and sorts them by their angle
+## around the core so slot index i matches octant i. All start deactivated.
+func _collect_slot_deflectors() -> void:
+	slot_deflectors.clear()
+	for node in get_tree().get_nodes_in_group(VORTEX_DEFLECTOR_GROUP):
+		var d := node as DeflectorPlayer
+		if d and is_instance_valid(d):
+			slot_deflectors.append(d)
+	slot_deflectors.sort_custom(func(a: DeflectorPlayer, b: DeflectorPlayer) -> bool:
+		return _angle_of(a) < _angle_of(b))
+	for d in slot_deflectors:
+		d.set_controller(null, null)
+		d.deactivate()
+
+func _slot_for_player(i: int, player_count: int) -> int:
+	return roundi(float(i) * 8.0 / float(player_count))
+
+## Reassigns paddles to the active players. Unused paddles are released back
+## to the pool and everyone recomputes their slot from scratch, so a player
+## count change redistributes fairly around the ring.
+func _sync_deflectors() -> void:
+	if slot_deflectors.is_empty():
+		return
+	var active := PlayerManager.get_active_players()
+	var n := mini(active.size(), slot_deflectors.size())
+	for d in deflectors.duplicate():
+		_release_deflector(d)
+	for i in n:
+		var d := slot_deflectors[_slot_for_player(i, active.size())]
+		_assign_deflector(d, active[i])
+
+func _assign_deflector(d: DeflectorPlayer, controller: ClientController) -> void:
+	d.set_controller(controller, self)
+	d.player_name = controller.uuid
+	d.lives = START_LIVES
+	d.orb_supply = 1
+	d.base_angle = _angle_of(d)
+	d.arena_radius = _placement_radius(d)
+	d.apply_player_color()
+	d.revive()
+	deflectors.append(d)
+
+func _release_deflector(d: DeflectorPlayer) -> void:
+	d.set_controller(null, null)
+	d.deactivate()
+	deflectors.erase(d)
+
+func _angle_of(d: DeflectorPlayer) -> float:
+	return atan2(d.global_position.z, d.global_position.x)
+
+func _placement_radius(d: DeflectorPlayer) -> float:
+	return Vector2(d.global_position.x, d.global_position.z).length()
+
+func _set_speed(value: float) -> void:
+	_speed = value
+	for orb in active_orbs:
+		if not is_instance_valid(orb) or orb.is_resolved():
+			continue
+		if orb.velocity == Vector3.ZERO:
+			continue
+		orb.velocity = orb.velocity.normalized() * _speed
+	speed_updated.emit(_speed)
+
+func _prune_orbs() -> void:
+	var i := 0
+	while i < active_orbs.size():
+		if not is_instance_valid(active_orbs[i]):
+			active_orbs.remove_at(i)
+		else:
+			i += 1

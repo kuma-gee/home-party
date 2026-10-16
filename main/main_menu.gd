@@ -10,6 +10,8 @@ signal start_game(res: GameResource)
 
 func _ready() -> void:
 	for game in game_loader.list_games():
+		if Env.is_game_hidden(game):
+			continue
 		var btn = game_button.instantiate()
 		btn.game = game
 		game_list.add_child(btn)

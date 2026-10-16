@@ -4,7 +4,9 @@ const APP_ID = 4797040
 
 const CASTLE_DEFENSE = preload("uid://bisblrq6vyivi")
 const DRAW_AND_GUESS = preload("uid://dagresource")
-const demo_games: Array[GameResource] = [CASTLE_DEFENSE, DRAW_AND_GUESS]
+const VORTEX_VOLLEY = preload("uid://vvtres1a2b3c4")
+const demo_games: Array[GameResource] = [CASTLE_DEFENSE, DRAW_AND_GUESS, VORTEX_VOLLEY]
+const hidden_games: Array[GameResource] = []
 
 var log_level := KumaLog.Level.DEBUG
 var version := Build.VERSION
@@ -88,6 +90,16 @@ func is_game_available(game: GameResource) -> bool:
 		if demo_game == game:
 			return true
 		if demo_game and demo_game.resource_path == game.resource_path:
+			return true
+	return false
+
+func is_game_hidden(game: GameResource) -> bool:
+	if not game:
+		return false
+	for hidden_game in hidden_games:
+		if hidden_game == game:
+			return true
+		if hidden_game and hidden_game.resource_path == game.resource_path:
 			return true
 	return false
 

@@ -1,34 +1,27 @@
 class_name VortexVolley
 extends BaseGame
 
-@export var deflector_scene: PackedScene
-@export var orb_scene: PackedScene
-
 @onready var hud: VortexHUD = %VortexHUD
+@onready var core: VortexCore = $VortexCore
+@onready var game_manager: VortexArena = $VortexArena
 
-var game_manager: VortexVolleyGame
-var vr_striker: VRStriker
+const STRIKER_HAND_SCENE: PackedScene = preload("res://mods-unpacked/KumaGee-VRCore/vortex-volley/striker_hand.tscn")
 
 func _ready() -> void:
 	super()
 	prepare_phase.connect(_on_prepare_phase)
 	game_phase.connect(_on_game_phase)
-	_setup_arena()
 	_setup_game_manager()
 	_setup_vr_striker()
 	LobbyServer.send_layout("joystick")
 
-func _setup_arena() -> void:
-	var arena := VortexArena.new()
-	add_child(arena)
-
 func _setup_game_manager() -> void:
-	game_manager = VortexVolleyGame.new()
-	game_manager.deflector_scene = deflector_scene
-	game_manager.orb_scene = orb_scene
-	add_child(game_manager)
+	game_manager.core = core
 	game_manager.round_ended.connect(_on_round_ended)
 	game_manager.lives_updated.connect(_on_lives_updated)
+	game_manager.speed_updated.connect(_on_speed_updated)
+	game_manager.core_health_updated.connect(_on_core_health_updated)
+	game_manager.time_updated.connect(_on_time_updated)
 
 func _setup_vr_striker() -> void:
 	if not xr_player:
@@ -51,11 +44,15 @@ func _setup_vr_striker() -> void:
 			player_body._movement_providers.append(move)
 			player_body._movement_providers.sort_custom(Callable(player_body, "sort_by_order"))
 
-	vr_striker = VRStriker.new()
-	add_child(vr_striker)
-	vr_striker.setup(left, right)
-	if game_manager:
-		vr_striker.orb_hit.connect(game_manager.on_orb_hit_by_vr)
+	_attach_striker_hand(left)
+	_attach_striker_hand(right)
+
+func _attach_striker_hand(controller: XRController3D) -> void:
+	if not controller:
+		return
+	var hand := STRIKER_HAND_SCENE.instantiate() as StrikerHand
+	controller.add_child(hand)
+	hand.orb_hit.connect(game_manager.on_orb_blocked)
 
 func _on_prepare_phase() -> void:
 	if hud:
@@ -83,6 +80,18 @@ func _on_round_ended(scores: Array[Dictionary]) -> void:
 func _on_lives_updated(data: Array[Dictionary]) -> void:
 	if hud:
 		hud.update_lives(data)
+
+func _on_speed_updated(speed: float) -> void:
+	if hud:
+		hud.update_speed(speed)
+
+func _on_core_health_updated(hp: int) -> void:
+	if hud:
+		hud.update_core_health(hp)
+
+func _on_time_updated(remaining: float) -> void:
+	if hud:
+		hud.update_time(remaining)
 
 func _debug_advance() -> void:
 	if is_game_phase and game_manager:

@@ -45,7 +45,8 @@ func _unhandled_input(event: InputEvent) -> void:
 						else:
 							_on_game_selected(g)
 			elif code == KEY_ENTER or code == KEY_KP_ENTER:
-				_try_start_selected_game()
+				if selected_game:
+					started_game.emit(selected_game)
 
 func _populate() -> void:
 	for child in games_root.get_children():
@@ -56,12 +57,17 @@ func _populate() -> void:
 	if game_loader:
 		games = game_loader.list_games()
 
-	var n: int = games.size()
+	var visible_games: Array[GameResource] = []
+	for g in games:
+		if g and not Env.is_game_hidden(g):
+			visible_games.append(g)
+
+	var n: int = visible_games.size()
 	if n == 0:
 		return
 
 	for i in range(n):
-		var g = games[i]
+		var g = visible_games[i]
 		if not g:
 			continue
 

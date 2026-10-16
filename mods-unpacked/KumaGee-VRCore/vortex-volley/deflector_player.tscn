@@ -1,6 +1,51 @@
-[gd_scene format=3 uid="uid://vvdef1a2b3c4d"]
+[gd_scene format=3 uid="uid://ckb1hqosh2ycj"]
 
-[ext_resource type="Script" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/deflector_player.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://c0ljsch81wiqu" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/deflector_player.gd" id="1_script"]
 
-[node name="DeflectorPlayer" type="Node3D"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_paddle"]
+size = Vector3(0.6, 0.25, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_paddle"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 0.6
+
+[sub_resource type="BoxMesh" id="BoxMesh_paddle"]
+size = Vector3(1, 1.5, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_goal"]
+size = Vector3(6.223633, 4.1970215, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_th6ki"]
+size = Vector3(6.4697266, 5.696289, 0.24633789)
+
+[node name="DeflectorPlayer" type="CharacterBody3D" unique_id=1239165641]
+collision_mask = 0
 script = ExtResource("1_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=450000003]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.79422355, 0)
+shape = SubResource("BoxShape3D_paddle")
+
+[node name="Visual" type="MeshInstance3D" parent="." unique_id=450000002]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.50323224, 0)
+material_override = SubResource("StandardMaterial3D_paddle")
+mesh = SubResource("BoxMesh_paddle")
+
+[node name="PaddleGoal" type="Area3D" parent="." unique_id=450000004]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.79422355, -0.55)
+collision_layer = 0
+collision_mask = 1024
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PaddleGoal" unique_id=450000005]
+shape = SubResource("BoxShape3D_goal")
+debug_color = Color(0.9979803, 0, 0.16411495, 0.41960785)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1367615865]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=126100098]
+shape = SubResource("BoxShape3D_th6ki")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="StaticBody3D" unique_id=1522039391]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.63022614, 0)
+size = Vector3(6.4609375, 2.7114258, 0.20507813)
