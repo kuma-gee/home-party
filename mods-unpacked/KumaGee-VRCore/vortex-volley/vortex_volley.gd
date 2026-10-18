@@ -8,10 +8,15 @@ extends BaseGame
 
 const STRIKER_HAND_SCENE: PackedScene = preload("res://mods-unpacked/KumaGee-VRCore/vortex-volley/striker_hand.tscn")
 
+## True once the VR player confirms readiness. Mobile players ready from their
+## phones (A/B); the round starts when everyone is ready.
+var _vr_ready := false
+
 func _ready() -> void:
 	super()
 	prepare_phase.connect(_on_prepare_phase)
 	game_phase.connect(_on_game_phase)
+	player_list.ready_changed.connect(_on_ready_changed)
 	_setup_game_manager()
 	_setup_vr_striker()
 	ai_manager.setup(player_list, game_manager)
@@ -57,18 +62,27 @@ func _attach_striker_hand(controller: XRController3D) -> void:
 	hand.orb_hit.connect(game_manager.on_orb_blocked)
 
 func _on_prepare_phase() -> void:
+	_vr_ready = false
 	if hud:
 		hud.set_state("Get Ready!")
 	if game_manager:
 		game_manager.reset()
 	if ai_manager:
 		ai_manager.on_prepare_phase_entered()
-	_auto_start()
+	_on_ready_changed()
 
-func _auto_start() -> void:
-	await get_tree().create_timer(5.0).timeout
-	if not is_game_phase:
-		_start_game()
+## Call when the VR player confirms readiness (VR HUD ready button / in-world
+## trigger). Starts the round once every mobile player is ready too.
+func on_vr_ready() -> void:
+	if is_game_phase:
+		return
+	_vr_ready = true
+	check_all_ready(_vr_ready)
+
+func _on_ready_changed() -> void:
+	if is_game_phase:
+		return
+	check_all_ready(_vr_ready)
 
 func _on_game_phase() -> void:
 	if ai_manager:

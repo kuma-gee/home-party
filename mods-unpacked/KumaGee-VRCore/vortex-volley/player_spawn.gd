@@ -27,6 +27,10 @@ var eliminated: bool = false
 
 var _manager: VortexArena = null
 var _color: Color = Color.WHITE
+## Cached wall state so `_set_blocker` only animates real transitions. Slots are
+## released/re-assigned on every re-sync, which would otherwise replay "open".
+var _blocker_closed: bool = true
+var _blocker_state_set: bool = false
 
 func _ready() -> void:
 	var pos := marker.global_position
@@ -145,4 +149,8 @@ func _set_paddle_visible(active: bool) -> void:
 func _set_blocker(enabled: bool) -> void:
 	if not animator:
 		return
+	if _blocker_state_set and _blocker_closed == enabled:
+		return
+	_blocker_state_set = true
+	_blocker_closed = enabled
 	animator.play("RESET" if enabled else "open")

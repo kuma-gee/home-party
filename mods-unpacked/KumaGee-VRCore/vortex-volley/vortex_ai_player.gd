@@ -12,3 +12,5 @@ func setup_ai(idx: int, uuid_str: String, color: Color) -> void:
 		if player_icon.icon:
 			player_icon.icon.text = "P%d" % (idx + 1)
 	move_in()
+	# AI is always ready so it never blocks the ready-gated start.
+	set_ready()

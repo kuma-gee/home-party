@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cb68xihwbsnc3"]
+[gd_scene format=3 uid="uid://cb68xihwbsnc3"]
 
 [ext_resource type="PackedScene" uid="uid://ckb1hqosh2ycj" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/deflector_player.tscn" id="1_jeurr"]
 [ext_resource type="PackedScene" uid="uid://rgtou57iyaqc" path="res://assets/vortex/wall.glb" id="1_lpitp"]

@@ -333,18 +333,20 @@ If VR misses (orb hits core): orb destroyed, core loses 1 health, respawn timer 
 
 ## Round Flow
 
-### 1. Prepare Phase (5 seconds)
+### 1. Prepare Phase
 
 - Mobile players sync into the match.
 - Each player receives 3 lives and 1 orb in their supply.
 - Zones are assigned evenly around the arena.
 - **Mobile onboarding:** The phone shows only the joystick and A/B buttons.
   Control instructions ("Swipe to move paddle — press A/B to launch") are shown
-  on the shared desktop screen.
+  on the shared desktop screen. Pressing A/B readies the player.
 - **VR onboarding:** VR headset shows "Block orbs with your hands — Reflect them
   back at players" with animated hand demonstration.
 - Shared screen shows **Get Ready!** with player names and zone colors.
-- Round auto-starts after 5 seconds.
+- The round starts once **every mobile player and the VR player are ready**.
+  Mobile players ready up with A/B on their phone; the VR player readies from
+  the VR prepare HUD.
 
 ### 2. Play Phase (3 minutes)
 

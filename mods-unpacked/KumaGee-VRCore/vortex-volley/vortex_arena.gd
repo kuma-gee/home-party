@@ -258,11 +258,25 @@ func _sync_deflectors() -> void:
 	var active: Array[ClientController] = PlayerManager.get_active_players()
 	active.append_array(ai_controllers)
 	var n := mini(active.size(), slot_deflectors.size())
+	if _assignments_match(active, n):
+		return
 	for d in deflectors.duplicate():
 		_release_deflector(d)
 	for i in n:
 		var d := slot_deflectors[_slot_for_player(i, active.size())]
 		_assign_deflector(d, active[i])
+
+## True when the current slot/controller mapping already equals the one a fresh
+## sync would produce. Avoids release/re-assign churn (which replays the wall
+## animations) when nothing changed, e.g. going from prepare to game phase.
+func _assignments_match(active: Array[ClientController], count: int) -> bool:
+	if deflectors.size() != count:
+		return false
+	for i in count:
+		var expected := slot_deflectors[_slot_for_player(i, active.size())]
+		if deflectors[i] != expected or expected.controller != active[i]:
+			return false
+	return true
 
 func _assign_deflector(d: PlayerSpawn, controller: ClientController) -> void:
 	d.assign(controller, self)
