@@ -1,12 +1,41 @@
 [gd_scene format=3 uid="uid://cknfdqosh2ycj"]
 
 [ext_resource type="Script" uid="uid://b4er8gbccmyp0" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/game_orb.gd" id="1_script"]
+[ext_resource type="Shader" uid="uid://dku0md37r3h08" path="res://shader/gradient_radial_opacity.gdshader" id="2_f6h0o"]
 [ext_resource type="Script" uid="uid://cfqyv12dohlh7" path="res://main/utils/hit_box.gd" id="2_hitbox"]
+[ext_resource type="Texture2D" uid="uid://c6pcyeugsepnp" path="res://assets/particles/T_PerlinNoise_Tiled11_inv.png" id="3_1do1g"]
+[ext_resource type="Texture2D" uid="uid://drxjdw60emo13" path="res://assets/particles/T_Noise_Wf4.png" id="3_ntshl"]
+[ext_resource type="Texture2D" uid="uid://x3el435n0ir6" path="res://assets/particles/T_basic1_vfx.PNG" id="5_wvhn3"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yehmg"]
-emission_enabled = true
-emission = Color(1, 1, 1, 1)
-emission_energy_multiplier = 3.0
+[sub_resource type="Gradient" id="Gradient_f6h0o"]
+offsets = PackedFloat32Array(0, 0.23300971, 0.3527508, 0.5695793)
+colors = PackedColorArray(0, 0, 0, 0, 0.36131388, 0.36131388, 0.36131388, 0.36131388, 0.32618612, 0.32618612, 0.32618612, 0.32618612, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_hmfqu"]
+gradient = SubResource("Gradient_f6h0o")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hmfqu"]
+render_priority = 0
+shader = ExtResource("2_f6h0o")
+shader_parameter/base_color = Color(0, 1, 1, 1)
+shader_parameter/albedo_texture = ExtResource("3_1do1g")
+shader_parameter/opacity_gradient = SubResource("GradientTexture1D_hmfqu")
+shader_parameter/opacity_strength = 1.0
+
+[sub_resource type="Gradient" id="Gradient_hmfqu"]
+offsets = PackedFloat32Array(0, 0.34951457)
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_wvhn3"]
+gradient = SubResource("Gradient_hmfqu")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_f6h0o"]
+render_priority = 0
+shader = ExtResource("2_f6h0o")
+shader_parameter/base_color = Color(0, 1, 1, 1)
+shader_parameter/albedo_texture = ExtResource("3_ntshl")
+shader_parameter/opacity_gradient = SubResource("GradientTexture1D_wvhn3")
+shader_parameter/opacity_strength = 0.30000001425
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_yehmg"]
 radius = 0.12
@@ -14,13 +43,75 @@ radius = 0.12
 [sub_resource type="SphereShape3D" id="SphereShape3D_vgf5p"]
 radius = 0.1
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hmfqu"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_texture = ExtResource("5_wvhn3")
+
+[sub_resource type="Curve" id="Curve_wvhn3"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -3.3756995, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_wvhn3"]
+curve = SubResource("Curve_wvhn3")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hmfqu"]
+particle_flag_align_y = true
+emission_shape = 2
+emission_sphere_radius = 0.1
+direction = Vector3(-1, 0, 0)
+spread = 0.0
+initial_velocity_min = 2.0
+initial_velocity_max = 5.0
+gravity = Vector3(0, 0, 0)
+radial_accel_min = 0.99999774
+radial_accel_max = 1.9999977
+scale_max = 1.5
+scale_curve = SubResource("CurveTexture_wvhn3")
+color = Color(0, 1, 1, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_hmfqu"]
+size = Vector2(0.015, 0.05)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wvhn3"]
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_texture = ExtResource("5_wvhn3")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_wvhn3"]
+particle_flag_align_y = true
+direction = Vector3(-1, 0, 0)
+initial_velocity_min = 0.5
+initial_velocity_max = 1.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.099999994
+scale_max = 0.19999999
+
+[sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_wvhn3"]
+
 [node name="GameOrb" type="CharacterBody3D" unique_id=2095294353]
 collision_layer = 1024
 script = ExtResource("1_script")
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="." unique_id=2090966654]
 radius = 0.1
-material = SubResource("StandardMaterial3D_yehmg")
+radial_segments = 32
+rings = 16
+material = SubResource("ShaderMaterial_hmfqu")
+
+[node name="CSGSphere3D2" type="CSGSphere3D" parent="." unique_id=2095110814]
+visible = false
+radius = 0.13
+radial_segments = 64
+rings = 32
+material = SubResource("ShaderMaterial_f6h0o")
 
 [node name="HitBox" type="Area3D" parent="." unique_id=688294263]
 collision_layer = 0
@@ -32,3 +123,22 @@ shape = SubResource("SphereShape3D_yehmg")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1437528175]
 shape = SubResource("SphereShape3D_vgf5p")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="." unique_id=1203329079]
+visible = false
+material_override = SubResource("StandardMaterial3D_hmfqu")
+amount = 16
+lifetime = 0.3
+explosiveness = 0.4
+process_material = SubResource("ParticleProcessMaterial_hmfqu")
+draw_pass_1 = SubResource("QuadMesh_hmfqu")
+
+[node name="GPUParticles3D2" type="GPUParticles3D" parent="." unique_id=1425910403]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.1651282)
+visible = false
+material_override = SubResource("StandardMaterial3D_wvhn3")
+amount = 16
+lifetime = 0.3
+trail_enabled = true
+process_material = SubResource("ParticleProcessMaterial_wvhn3")
+draw_pass_1 = SubResource("RibbonTrailMesh_wvhn3")

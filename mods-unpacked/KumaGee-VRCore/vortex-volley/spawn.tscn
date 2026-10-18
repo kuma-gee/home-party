@@ -1,0 +1,154 @@
+[gd_scene load_steps=13 format=3 uid="uid://cb68xihwbsnc3"]
+
+[ext_resource type="PackedScene" uid="uid://ckb1hqosh2ycj" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/deflector_player.tscn" id="1_jeurr"]
+[ext_resource type="PackedScene" uid="uid://rgtou57iyaqc" path="res://assets/vortex/wall.glb" id="1_lpitp"]
+[ext_resource type="Shader" uid="uid://yiqj3rfn2g7s" path="res://shader/gradient_box.gdshader" id="3_a1b2f"]
+[ext_resource type="Script" uid="uid://bvx5n2m8k3q4" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/player_spawn.gd" id="4_pspawn"]
+
+[sub_resource type="Gradient" id="Gradient_a1b2f"]
+offsets = PackedFloat32Array(0, 0.85858583, 0.94612795, 1)
+colors = PackedColorArray(0, 0, 0, 0.11764706, 0.69, 0.69, 0.69, 0.47058824, 0.87, 0.87, 0.87, 0.7058824, 1, 1, 1, 0.78431374)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_jn3li"]
+gradient = SubResource("Gradient_a1b2f")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iub2k"]
+render_priority = 0
+shader = ExtResource("3_a1b2f")
+shader_parameter/base_color = Color(1, 0, 0, 1)
+shader_parameter/opacity_gradient = SubResource("GradientTexture1D_jn3li")
+shader_parameter/opacity_strength = 0.30000001425
+shader_parameter/box_half_extents = Vector3(3, 1.6, 0.05)
+shader_parameter/gradient_axis = Vector3(1, 0, 0)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vn0a6"]
+size = Vector3(6.614258, 3.3026123, 0.171875)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lpitp"]
+size = Vector3(0.31867182, 3.3026123, 0.171875)
+
+[sub_resource type="Animation" id="Animation_a1b2f"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Marker3D/wall/Wall:blend_shapes/Open")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Marker3D/FullWall/CollisionShape3D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Marker3D/PlayerArea:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_lpitp"]
+resource_name = "open"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Marker3D/wall/Wall:blend_shapes/Open")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Marker3D/FullWall/CollisionShape3D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Marker3D/PlayerArea:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_a1b2f"]
+_data = {
+&"RESET": SubResource("Animation_a1b2f"),
+&"open": SubResource("Animation_lpitp")
+}
+
+[node name="PlayerSpawn" type="Node3D" unique_id=1846504611]
+script = ExtResource("4_pspawn")
+
+[node name="Marker3D" type="Marker3D" parent="." unique_id=610641721]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7.8322234)
+
+[node name="DeflectorPlayer" parent="Marker3D" unique_id=1239165641 instance=ExtResource("1_jeurr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.040778637)
+
+[node name="wall" parent="Marker3D" unique_id=564946349 instance=ExtResource("1_lpitp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.2191453)
+
+[node name="PlayerArea" type="CSGBox3D" parent="Marker3D" unique_id=652214264]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7939758, -0.232203)
+visible = false
+material_override = SubResource("ShaderMaterial_iub2k")
+size = Vector3(6, 3.2, 0.1)
+
+[node name="FullWall" type="StaticBody3D" parent="Marker3D" unique_id=132258527]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.21914482)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Marker3D/FullWall" unique_id=379853844]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7949109, -0.029614449)
+shape = SubResource("BoxShape3D_vn0a6")
+
+[node name="SideWalls" type="StaticBody3D" parent="Marker3D" unique_id=1490278499]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.21914482)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Marker3D/SideWalls" unique_id=809282236]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1564062, 1.7949109, -0.029614449)
+shape = SubResource("BoxShape3D_lpitp")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Marker3D/SideWalls" unique_id=274787170]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.160474, 1.7949109, -0.029614449)
+shape = SubResource("BoxShape3D_lpitp")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1830338316]
+libraries/ = SubResource("AnimationLibrary_a1b2f")
+
+[editable path="Marker3D/wall"]

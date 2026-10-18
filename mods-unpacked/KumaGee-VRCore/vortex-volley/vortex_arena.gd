@@ -8,7 +8,6 @@ signal core_health_updated(hp: int)
 signal time_updated(remaining: float)
 
 const ARENA_RADIUS: float = 4.5
-const VORTEX_DEFLECTOR_GROUP: StringName = &"vortex_deflector"
 const ORB_SPEED_BASE: float = 5.0
 const ORB_SPEED_MAX: float = 10.0
 const ORB_SPEED_STEP: float = 0.5
@@ -22,15 +21,19 @@ enum Phase { WAITING, PLAYING, ENDED }
 @export var orb_scene: PackedScene
 
 var phase: Phase = Phase.WAITING
-var deflectors: Array[DeflectorPlayer] = []
-## All pre-placed paddles in the arena, sorted by angle around the core (slot 0..7).
-var slot_deflectors: Array[DeflectorPlayer] = []
+## Slots currently assigned to a player (phone or AI).
+var deflectors: Array[PlayerSpawn] = []
+## All pre-placed slots in the arena, sorted by angle around the core (slot 0..7).
+var slot_deflectors: Array[PlayerSpawn] = []
+## AI-controlled players supplied by VortexAIManager. Combined with the real
+## PlayerManager players when assigning slots.
+var ai_controllers: Array[ClientController] = []
 var active_orbs: Array[GameOrb] = []
 var core: VortexCore
 var time_remaining: float = ROUND_TIME
 
 var _speed: float = ORB_SPEED_BASE
-var _elimination_order: Array[DeflectorPlayer] = []
+var _elimination_order: Array[PlayerSpawn] = []
 
 func _ready() -> void:
 	_collect_slot_deflectors()
@@ -77,10 +80,10 @@ func reset() -> void:
 			orb.queue_free()
 	active_orbs.clear()
 
-func request_launch(player: DeflectorPlayer) -> bool:
+func request_launch(player: PlayerSpawn) -> bool:
 	if phase != Phase.PLAYING or not is_instance_valid(player):
 		return false
-	if player.orb_supply <= 0 or player._eliminated:
+	if not player.can_launch():
 		return false
 	player.orb_supply -= 1
 	_spawn_orb_from_paddle(player)
@@ -99,25 +102,32 @@ func on_orb_blocked(orb: GameOrb, reflect_dir: Vector3) -> void:
 func force_end_round() -> void:
 	_end_round()
 
-func _spawn_orb_from_paddle(paddle: DeflectorPlayer) -> void:
+## Replaces the AI controller pool and resyncs paddle assignments. Called by
+## VortexAIManager as AI players are added/removed during the prepare phase.
+func set_ai_controllers(controllers: Array[ClientController]) -> void:
+	ai_controllers = controllers
+	if phase == Phase.WAITING:
+		_sync_deflectors()
+
+func _spawn_orb_from_paddle(paddle: PlayerSpawn) -> void:
 	if not orb_scene or not is_instance_valid(paddle):
 		return
 	var orb := orb_scene.instantiate() as GameOrb
 	if not orb:
 		return
 	add_child(orb)
-	orb.global_position = paddle.global_position
+	orb.global_position = paddle.deflector.global_position
 	orb.global_position.y = GameOrb.ORB_HEIGHT
 	orb.owner_player = paddle
 	# The orb spawns at its own paddle; let it pass through its own paddle on launch.
-	orb.add_collision_exception_with(paddle)
+	orb.add_collision_exception_with(paddle.deflector)
 	orb.hit_core.connect(_on_orb_hit_core)
-	var dir := Vector3(-paddle.global_position.x, 0.0, -paddle.global_position.z)
+	var dir := Vector3(-paddle.deflector.global_position.x, 0.0, -paddle.deflector.global_position.z)
 	orb.launch(dir.normalized(), _speed)
 	active_orbs.append(orb)
 
 ## Called when an orb entered a paddle's goal area → it passed that paddle (pong).
-func on_orb_passed(player: DeflectorPlayer, orb: GameOrb) -> void:
+func on_orb_passed(player: PlayerSpawn, orb: GameOrb) -> void:
 	if phase != Phase.PLAYING or not is_instance_valid(orb) or orb.is_resolved():
 		return
 	player.lives -= 1
@@ -136,15 +146,15 @@ func _on_orb_hit_core(orb: GameOrb) -> void:
 	var launcher := orb.owner_player
 	orb.resolve()
 	active_orbs.erase(orb)
-	if is_instance_valid(launcher) and not launcher._eliminated:
+	if is_instance_valid(launcher) and not launcher.eliminated:
 		get_tree().create_timer(RESPAWN_DELAY).timeout.connect(
 			func(): _respawn_orb_for(launcher), CONNECT_ONE_SHOT)
 
 func _on_core_health_changed(hp: int, _max_hp: int) -> void:
 	core_health_updated.emit(hp)
 
-func _eliminate_player(player: DeflectorPlayer) -> void:
-	if player._eliminated:
+func _eliminate_player(player: PlayerSpawn) -> void:
+	if player.eliminated:
 		return
 	player.eliminate()
 	_elimination_order.append(player)
@@ -156,10 +166,10 @@ func _eliminate_player(player: DeflectorPlayer) -> void:
 		orb.resolve()
 		active_orbs.erase(orb)
 
-func _respawn_orb_for(player: DeflectorPlayer) -> void:
+func _respawn_orb_for(player: PlayerSpawn) -> void:
 	if phase != Phase.PLAYING or not is_instance_valid(player):
 		return
-	if player._eliminated:
+	if player.eliminated:
 		return
 	player.orb_supply = 1
 	player.set_orb_ready()
@@ -167,7 +177,7 @@ func _respawn_orb_for(player: DeflectorPlayer) -> void:
 func _get_alive_count() -> int:
 	var n := 0
 	for d in deflectors:
-		if is_instance_valid(d) and not d._eliminated and d.lives > 0:
+		if is_instance_valid(d) and not d.eliminated and d.lives > 0:
 			n += 1
 	return n
 
@@ -179,10 +189,10 @@ func _build_lives_data() -> Array[Dictionary]:
 
 func _build_scores() -> Array[Dictionary]:
 	var out: Array[Dictionary] = []
-	var alive: Array[DeflectorPlayer] = []
-	var eliminated: Array[DeflectorPlayer] = []
+	var alive: Array[PlayerSpawn] = []
+	var eliminated: Array[PlayerSpawn] = []
 	for d in deflectors:
-		if d._eliminated:
+		if d.eliminated:
 			eliminated.append(d)
 		else:
 			alive.append(d)
@@ -223,30 +233,30 @@ func _on_clients_changed() -> void:
 	if phase == Phase.WAITING:
 		_sync_deflectors()
 
-## Finds the pre-placed paddles in the scene and sorts them by their angle
-## around the core so slot index i matches octant i. All start deactivated.
+## Finds the pre-placed PlayerSpawn slots and sorts them by their angle around
+## the core so slot index i matches octant i. All start released.
 func _collect_slot_deflectors() -> void:
 	slot_deflectors.clear()
-	for node in get_tree().get_nodes_in_group(VORTEX_DEFLECTOR_GROUP):
-		var d := node as DeflectorPlayer
+	for node in get_tree().get_nodes_in_group(PlayerSpawn.SPAWN_GROUP):
+		var d := node as PlayerSpawn
 		if d and is_instance_valid(d):
 			slot_deflectors.append(d)
-	slot_deflectors.sort_custom(func(a: DeflectorPlayer, b: DeflectorPlayer) -> bool:
-		return _angle_of(a) < _angle_of(b))
+	slot_deflectors.sort_custom(func(a: PlayerSpawn, b: PlayerSpawn) -> bool:
+		return a.base_angle < b.base_angle)
 	for d in slot_deflectors:
-		d.set_controller(null, null)
-		d.deactivate()
+		d.release()
 
 func _slot_for_player(i: int, player_count: int) -> int:
 	return roundi(float(i) * 8.0 / float(player_count))
 
-## Reassigns paddles to the active players. Unused paddles are released back
-## to the pool and everyone recomputes their slot from scratch, so a player
-## count change redistributes fairly around the ring.
+## Reassigns slots to the active players. Unused slots are released back to the
+## pool and everyone recomputes their slot from scratch, so a player count change
+## redistributes fairly around the ring.
 func _sync_deflectors() -> void:
 	if slot_deflectors.is_empty():
 		return
-	var active := PlayerManager.get_active_players()
+	var active: Array[ClientController] = PlayerManager.get_active_players()
+	active.append_array(ai_controllers)
 	var n := mini(active.size(), slot_deflectors.size())
 	for d in deflectors.duplicate():
 		_release_deflector(d)
@@ -254,27 +264,13 @@ func _sync_deflectors() -> void:
 		var d := slot_deflectors[_slot_for_player(i, active.size())]
 		_assign_deflector(d, active[i])
 
-func _assign_deflector(d: DeflectorPlayer, controller: ClientController) -> void:
-	d.set_controller(controller, self)
-	d.player_name = controller.uuid
-	d.lives = START_LIVES
-	d.orb_supply = 1
-	d.base_angle = _angle_of(d)
-	d.arena_radius = _placement_radius(d)
-	d.apply_player_color()
-	d.revive()
+func _assign_deflector(d: PlayerSpawn, controller: ClientController) -> void:
+	d.assign(controller, self)
 	deflectors.append(d)
 
-func _release_deflector(d: DeflectorPlayer) -> void:
-	d.set_controller(null, null)
-	d.deactivate()
+func _release_deflector(d: PlayerSpawn) -> void:
+	d.release()
 	deflectors.erase(d)
-
-func _angle_of(d: DeflectorPlayer) -> float:
-	return atan2(d.global_position.z, d.global_position.x)
-
-func _placement_radius(d: DeflectorPlayer) -> float:
-	return Vector2(d.global_position.x, d.global_position.z).length()
 
 func _set_speed(value: float) -> void:
 	_speed = value

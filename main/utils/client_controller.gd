@@ -18,6 +18,11 @@ func get_move() -> Vector2:
 func get_display_data() -> Dictionary:
 	return {"client_id": uuid}
 
+## Palette index used for this controller's color (player icon, paddle tint).
+## AI controllers override this since they have no PlayerManager entry.
+func get_color_idx() -> int:
+	return PlayerManager.get_player_idx(uuid)
+
 func reset():
 	active = false
 

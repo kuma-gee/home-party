@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://c8k1v0r7texa"]
+
+[ext_resource type="PackedScene" uid="uid://f8e1u58jvfd1" path="res://main/ui/joined_player.tscn" id="1_base"]
+[ext_resource type="Script" uid="uid://b6p4t1w9zaip" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_ai_player.gd" id="2_script"]
+
+[node name="VortexAIPlayer" instance=ExtResource("1_base")]
+script = ExtResource("2_script")

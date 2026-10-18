@@ -4,6 +4,7 @@ extends BaseGame
 @onready var hud: VortexHUD = %VortexHUD
 @onready var core: VortexCore = $VortexCore
 @onready var game_manager: VortexArena = $VortexArena
+@onready var ai_manager: VortexAIManager = %AIManager
 
 const STRIKER_HAND_SCENE: PackedScene = preload("res://mods-unpacked/KumaGee-VRCore/vortex-volley/striker_hand.tscn")
 
@@ -13,6 +14,7 @@ func _ready() -> void:
 	game_phase.connect(_on_game_phase)
 	_setup_game_manager()
 	_setup_vr_striker()
+	ai_manager.setup(player_list, game_manager)
 	LobbyServer.send_layout("joystick")
 
 func _setup_game_manager() -> void:
@@ -59,6 +61,8 @@ func _on_prepare_phase() -> void:
 		hud.set_state("Get Ready!")
 	if game_manager:
 		game_manager.reset()
+	if ai_manager:
+		ai_manager.on_prepare_phase_entered()
 	_auto_start()
 
 func _auto_start() -> void:
@@ -67,12 +71,16 @@ func _auto_start() -> void:
 		_start_game()
 
 func _on_game_phase() -> void:
+	if ai_manager:
+		ai_manager.on_game_phase_entered()
 	if game_manager:
 		game_manager.start_round()
 	if hud:
 		hud.set_state("GO!")
 
 func _on_round_ended(scores: Array[Dictionary]) -> void:
+	if ai_manager:
+		ai_manager.stop()
 	if hud:
 		hud.set_state("Round Over!")
 	finish_game("Vortex Volley", func(lb): lb.set_entries(scores))

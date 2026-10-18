@@ -2,7 +2,7 @@ shader_type spatial;
 
 render_mode cull_disabled, unshaded, shadows_disabled, fog_disabled;
 
-uniform float fresnel_power: hint_range(0.0, 1.0, 0.01) = 1.0;
+uniform float fresnel_power: hint_range(0.0, 5.0, 0.01) = 1.0;
 uniform sampler2D gradient_color: source_color;
 uniform sampler2D alpha_gradient: source_color;
 uniform float opacity: hint_range(0.0, 1.0, 0.01) = 1.0;

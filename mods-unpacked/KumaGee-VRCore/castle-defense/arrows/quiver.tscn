@@ -19,7 +19,7 @@ snap_zone = NodePath("SnapZone")
 [node name="Skeleton_Quiver2" parent="." unique_id=1108086051 instance=ExtResource("3_gqs1a")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.12089351, 0)
 
-[node name="Skeleton_Quiver" parent="Skeleton_Quiver2" index="0" unique_id=2137705446]
+[node name="Skeleton_Quiver" parent="Skeleton_Quiver2" index="0" unique_id=1285947174]
 cast_shadow = 0
 surface_material_override/0 = ExtResource("4_t5i08")
 

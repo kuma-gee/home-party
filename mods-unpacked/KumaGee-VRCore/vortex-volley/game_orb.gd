@@ -6,7 +6,7 @@ signal hit_core()
 const ORB_HEIGHT: float = 0.9
 const COLLISION_LAYER: int = 1024  # Physics layer 11; lets paddle goal areas see the orb.
 
-var owner_player: DeflectorPlayer = null
+var owner_player: PlayerSpawn = null
 var _resolved: bool = false
 
 @onready var hitbox: HitBox = $HitBox
