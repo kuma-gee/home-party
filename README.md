@@ -2,6 +2,39 @@
 
 - Do not add any blend files! It causes the import to not include any of the uids
 
+## Phone Controller
+
+Phones connect through the game-client SPA served by Godot's built-in HTTP server.
+
+- Controller URL: `http://<host>:8484/` (`http://localhost:8484/` on the same machine)
+- WebSocket signaling: `ws://<host>:14412`
+
+Port config: `main/utils/http_server.gd` (`@export var port: int = 8484`).
+
+## Debug Keys
+
+All chords use `Ctrl+Alt` with `Shift` **not** held.
+
+### Menu / game shelve (`main/game_shelve.gd`)
+
+- `Ctrl+Alt+1..9` — toggle-select game by index (press again to deselect)
+- `Ctrl+Alt+Enter` / `Ctrl+Alt+KP_Enter` — start the selected game
+
+### In-game phase advance (`main/base_game.gd`)
+
+- `Ctrl+Alt+Enter` — force `prepare -> game`; games may override `_debug_advance()` to also end the game early
+
+### AI players (`main/utils/game_settings.gd`)
+
+- `Ctrl+Alt+Up` — increase AI count
+- `Ctrl+Alt+Down` — decrease AI count
+- Range 0..10, default 0; emits `ai_count_changed`
+
+### Mini-game specific
+
+- Castle Defense `ui/element_select.gd` — `Ctrl+Alt+Enter` advances
+- Castle Defense `arrows/arrow_spawner.gd` — `Ctrl+Alt+Shift+1..6` spawn arrow types
+
 ## Credits
 
 <!-- - [Pirate Kit](https://kenney.nl/assets/pirate-kit) -->
