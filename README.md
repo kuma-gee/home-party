@@ -28,7 +28,7 @@ All chords use `Ctrl+Alt` with `Shift` **not** held.
 
 - `Ctrl+Alt+Up` — increase AI count
 - `Ctrl+Alt+Down` — decrease AI count
-- Range 0..10, default 0; emits `ai_count_changed`
+- Range 0..8, default 0; emits `ai_count_changed`
 
 ### Mini-game specific
 

@@ -12,6 +12,7 @@ const FLASH_DURATION: float = 0.2
 
 @onready var marker: Marker3D = $Marker3D
 @onready var deflector: DeflectorPlayer = $Marker3D/DeflectorPlayer
+@onready var player_area: CSGBox3D = $Marker3D/PlayerArea
 @onready var animator: AnimationPlayer = $AnimationPlayer
 
 ## Slot position around the ring, derived from this node's transform so paddles
@@ -102,13 +103,17 @@ func set_orb_ready() -> void:
 	deflector.paddle_material.emission_energy_multiplier = 1.2
 
 func apply_player_color() -> void:
-	if not controller or not deflector.paddle_material:
+	if not controller:
 		return
 	var idx := controller.get_color_idx()
 	_color = PlayerList.get_color(idx) if idx >= 0 else Color.WHITE
-	deflector.paddle_material.albedo_color = _color
-	deflector.paddle_material.emission = _color
-	deflector.paddle_material.emission_energy_multiplier = 0.6
+	if deflector.paddle_material:
+		deflector.paddle_material.albedo_color = _color
+		deflector.paddle_material.emission = _color
+		deflector.paddle_material.emission_energy_multiplier = 0.6
+	var area_material := player_area.material_override as ShaderMaterial
+	if area_material:
+		area_material.set_shader_parameter("base_color", _color)
 
 # ── Internals ─────────────────────────────────────────────────────────────────
 

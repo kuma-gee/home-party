@@ -3,8 +3,15 @@
 [ext_resource type="Script" uid="uid://c0ljsch81wiqu" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/deflector_player.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://bi6wrdtt7rms8" path="res://assets/vortex/paddle.glb" id="2_sqd7y"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sqd7y"]
+resource_local_to_scene = true
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_paddle"]
 size = Vector3(1.1174316, 0.73413086, 0.16601563)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cll0h"]
+resource_local_to_scene = true
+albedo_color = Color(1, 0, 0, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_paddle"]
 emission_enabled = true
@@ -14,12 +21,11 @@ emission_energy_multiplier = 0.6
 [sub_resource type="BoxMesh" id="BoxMesh_paddle"]
 size = Vector3(1, 1.5, 0.2)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_goal"]
-size = Vector3(6.519, 3.012, 0.3798828)
-
-[node name="DeflectorPlayer" type="CharacterBody3D" unique_id=1239165641]
+[node name="DeflectorPlayer" type="CharacterBody3D" unique_id=1239165641 node_paths=PackedStringArray("paddle")]
 collision_mask = 0
 script = ExtResource("1_script")
+paddle_material = SubResource("StandardMaterial3D_sqd7y")
+paddle = NodePath("paddle/Paddle")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=450000003]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6377445, 0)
@@ -27,18 +33,13 @@ shape = SubResource("BoxShape3D_paddle")
 
 [node name="paddle" parent="." unique_id=484938252 instance=ExtResource("2_sqd7y")]
 
+[node name="Paddle" parent="paddle" index="0" unique_id=104177827]
+material_override = SubResource("StandardMaterial3D_cll0h")
+
 [node name="Visual" type="MeshInstance3D" parent="." unique_id=450000002]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.50323224, 0)
 visible = false
 material_override = SubResource("StandardMaterial3D_paddle")
 mesh = SubResource("BoxMesh_paddle")
 
-[node name="PaddleGoal" type="Area3D" parent="." unique_id=450000004]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6426365, -0.2208491)
-collision_layer = 0
-collision_mask = 1024
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PaddleGoal" unique_id=450000005]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.14297485, -0.10484266)
-shape = SubResource("BoxShape3D_goal")
-debug_color = Color(0.9979803, 0, 0.16411495, 0.41960785)
+[editable path="paddle"]

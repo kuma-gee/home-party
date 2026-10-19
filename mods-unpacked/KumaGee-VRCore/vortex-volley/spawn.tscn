@@ -3,7 +3,11 @@
 [ext_resource type="PackedScene" uid="uid://ckb1hqosh2ycj" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/deflector_player.tscn" id="1_jeurr"]
 [ext_resource type="PackedScene" uid="uid://rgtou57iyaqc" path="res://assets/vortex/wall.glb" id="1_lpitp"]
 [ext_resource type="Shader" uid="uid://yiqj3rfn2g7s" path="res://shader/gradient_box.gdshader" id="3_a1b2f"]
+[ext_resource type="Material" uid="uid://1qnqr5rsknpy" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/material/arena.tres" id="4_iub2k"]
 [ext_resource type="Script" uid="uid://bvx5n2m8k3q4" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/player_spawn.gd" id="4_pspawn"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8jws8"]
+resource_local_to_scene = true
 
 [sub_resource type="Gradient" id="Gradient_a1b2f"]
 offsets = PackedFloat32Array(0, 0.85858583, 0.94612795, 1)
@@ -13,6 +17,7 @@ colors = PackedColorArray(0, 0, 0, 0.11764706, 0.69, 0.69, 0.69, 0.47058824, 0.8
 gradient = SubResource("Gradient_a1b2f")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_iub2k"]
+resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("3_a1b2f")
 shader_parameter/base_color = Color(1, 0, 0, 1)
@@ -20,6 +25,9 @@ shader_parameter/opacity_gradient = SubResource("GradientTexture1D_jn3li")
 shader_parameter/opacity_strength = 0.30000001425
 shader_parameter/box_half_extents = Vector3(3, 1.6, 0.05)
 shader_parameter/gradient_axis = Vector3(1, 0, 0)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cll0h"]
+size = Vector3(6.519, 3.012, 0.3798828)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_vn0a6"]
 size = Vector3(6.614258, 3.3026123, 0.171875)
@@ -118,17 +126,32 @@ script = ExtResource("4_pspawn")
 [node name="Marker3D" type="Marker3D" parent="." unique_id=610641721]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7.8322234)
 
-[node name="DeflectorPlayer" parent="Marker3D" unique_id=1239165641 instance=ExtResource("1_jeurr")]
+[node name="DeflectorPlayer" parent="Marker3D" unique_id=1239165641 node_paths=PackedStringArray("goal_area") instance=ExtResource("1_jeurr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.040778637)
+paddle_material = SubResource("StandardMaterial3D_8jws8")
+goal_area = NodePath("../PaddleGoal")
 
 [node name="wall" parent="Marker3D" unique_id=564946349 instance=ExtResource("1_lpitp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.2191453)
+
+[node name="Wall" parent="Marker3D/wall" index="0" unique_id=1240120279]
+material_override = ExtResource("4_iub2k")
 
 [node name="PlayerArea" type="CSGBox3D" parent="Marker3D" unique_id=652214264]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7939758, -0.232203)
 visible = false
 material_override = SubResource("ShaderMaterial_iub2k")
 size = Vector3(6, 3.2, 0.1)
+
+[node name="PaddleGoal" type="Area3D" parent="Marker3D" unique_id=1751328842]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6426365, -0.4233098)
+collision_layer = 0
+collision_mask = 1024
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Marker3D/PaddleGoal" unique_id=1408702293]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.14297485, -0.10484266)
+shape = SubResource("BoxShape3D_cll0h")
+debug_color = Color(0.9979803, 0, 0.16411495, 0.41960785)
 
 [node name="FullWall" type="StaticBody3D" parent="Marker3D" unique_id=132258527]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.21914482)

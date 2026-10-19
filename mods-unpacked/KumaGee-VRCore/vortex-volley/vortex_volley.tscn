@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://ckgifqosh2ycj" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/ui/vortex_hud.tscn" id="5_hud"]
 [ext_resource type="PackedScene" uid="uid://ckbcs4f08bpkb" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/core.tscn" id="6_core"]
 [ext_resource type="Script" uid="uid://b81ejb5dg6iag" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_arena.gd" id="7_arena"]
+[ext_resource type="Material" uid="uid://1qnqr5rsknpy" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/material/arena.tres" id="8_h3hju"]
 [ext_resource type="PackedScene" uid="uid://cb68xihwbsnc3" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/spawn.tscn" id="8_u27j1"]
 [ext_resource type="PackedScene" uid="uid://xq5fibkk6ul" path="res://assets/vortex/arena.glb" id="8_ymkxq"]
 [ext_resource type="Script" uid="uid://eav2x8m5qaim" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_ai_manager.gd" id="9_aiman"]
@@ -17,21 +18,21 @@
 [sub_resource type="SphereShape3D" id="SphereShape3D_btxwl"]
 radius = 0.3
 
-[sub_resource type="QuadMesh" id="QuadMesh_btxwl"]
+[sub_resource type="QuadMesh" id="QuadMesh_h3hju"]
 resource_local_to_scene = true
 size = Vector2(1.5, 1)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_h3hju"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_v4ly5"]
 viewport_path = NodePath("XRPlayer/Viewport2Din3D/Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v4ly5"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vn0a6"]
 transparency = 1
 cull_mode = 2
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_h3hju")
+albedo_texture = SubResource("ViewportTexture_v4ly5")
 texture_filter = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_vn0a6"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_vwbdk"]
 resource_local_to_scene = true
 size = Vector3(1.5, 1, 0.02)
 
@@ -69,11 +70,11 @@ script = ExtResource("3_btxwl")
 shape = SubResource("SphereShape3D_btxwl")
 
 [node name="Screen" parent="XRPlayer/Viewport2Din3D" parent_id_path=PackedInt32Array(10000004, 1418763861) index="1" unique_id=1761931612]
-mesh = SubResource("QuadMesh_btxwl")
-surface_material_override/0 = SubResource("StandardMaterial3D_v4ly5")
+mesh = SubResource("QuadMesh_h3hju")
+surface_material_override/0 = SubResource("StandardMaterial3D_vn0a6")
 
 [node name="CollisionShape3D" parent="XRPlayer/Viewport2Din3D/StaticBody3D" parent_id_path=PackedInt32Array(10000004, 1418763861, 1882660186) index="0" unique_id=507281989]
-shape = SubResource("BoxShape3D_vn0a6")
+shape = SubResource("BoxShape3D_vwbdk")
 
 [node name="VortexHUD" parent="CanvasLayer/Control/GameUI" parent_id_path=PackedInt32Array(10000007) index="0" unique_id=1082078638 instance=ExtResource("5_hud")]
 unique_name_in_owner = true
@@ -92,12 +93,18 @@ visible = false
 [node name="Arena" parent="BaseSceneContent/arena2" index="0" unique_id=1521166362]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.019744873, 0)
 layers = 262144
+material_override = ExtResource("8_h3hju")
 
 [node name="Platform" parent="BaseSceneContent/arena2" index="1" unique_id=1124976171]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.019744873, 0)
+visible = false
 layers = 262144
+material_override = ExtResource("8_h3hju")
 
 [node name="arena" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="2" unique_id=39630964 instance=ExtResource("8_ymkxq")]
+
+[node name="Arena" parent="BaseSceneContent/arena" index="0" unique_id=1521166362]
+material_override = ExtResource("8_h3hju")
 
 [node name="Spawn" parent="BaseSceneContent/arena" index="1" unique_id=1846504611 instance=ExtResource("8_u27j1")]
 
@@ -122,6 +129,9 @@ transform = Transform3D(0, 0, 0.9999995, 0, 1, 0, -0.9999995, 0, 0, 0, 0, 0)
 [node name="Spawn8" parent="BaseSceneContent/arena" index="8" unique_id=316271000 instance=ExtResource("8_u27j1")]
 transform = Transform3D(0.7071064, 0, 0.7071064, 0, 1, 0, -0.7071064, 0, 0.7071064, 0, 0, 0)
 
+[node name="Platform" parent="BaseSceneContent/arena" index="9" unique_id=1124976171]
+material_override = ExtResource("8_h3hju")
+
 [node name="VortexArena" type="Node3D" parent="." index="7" unique_id=50000001]
 script = ExtResource("7_arena")
 orb_scene = ExtResource("4_orb")
@@ -143,3 +153,4 @@ script = ExtResource("9_aiman")
 [editable path="XRPlayer/SubViewport/XRPlayer/PlayerBody/Body/player"]
 [editable path="XRPlayer/Viewport2Din3D"]
 [editable path="BaseSceneContent/arena2"]
+[editable path="BaseSceneContent/arena"]

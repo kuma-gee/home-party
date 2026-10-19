@@ -3,7 +3,7 @@ extends Node
 signal ai_count_changed(new_count: int)
 
 const MIN_AI_COUNT := 0
-const MAX_AI_COUNT := 10
+const MAX_AI_COUNT := 8
 const DEFAULT_AI_COUNT := 0
 
 var _ai_count: int = DEFAULT_AI_COUNT

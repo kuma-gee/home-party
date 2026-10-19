@@ -1,11 +1,6 @@
 class_name DeflectorPlayer
 extends CharacterBody3D
 
-## Player paddle controls. Reads movement from the assigned controller and slides
-## the physics body (floating motion mode) alongside the arena ring, forwards
-## launch actions and reports orbs entering its goal area. All per-player setup
-## (slot geometry, name, lives, color, wall blocker) lives in PlayerSpawn.
-
 const MOVE_SPEED: float = 1.8
 const CLAMP_FACTOR: float = 0.8
 const PADDLE_RADIUS: float = 4.0
@@ -13,9 +8,9 @@ const PADDLE_RADIUS: float = 4.0
 var controller: ClientController
 var spawn: PlayerSpawn
 
-@onready var goal_area: Area3D = $PaddleGoal
-@onready var visual: MeshInstance3D = $Visual
-@onready var paddle_material: StandardMaterial3D = $Visual.material_override
+@export var paddle_material: StandardMaterial3D
+@export var paddle: MeshInstance3D
+@export var goal_area: Area3D
 
 var _move_input: Vector2 = Vector2.ZERO
 var _active: bool = false
@@ -23,6 +18,7 @@ var _active: bool = false
 func _ready() -> void:
 	motion_mode = CharacterBody3D.MOTION_MODE_FLOATING
 	goal_area.body_entered.connect(_on_goal_body_entered)
+	paddle.material_override = paddle_material
 
 ## Links this paddle to the slot that owns its setup.
 func bind(slot: PlayerSpawn) -> void:

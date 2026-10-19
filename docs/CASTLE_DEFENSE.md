@@ -75,7 +75,7 @@ Respawn time scales linearly with the number of active players, spawning at a fi
 
 If **zero** mobile players are connected, the VR player can practice solo against
 AI-controlled skeletons instead of humans — this is all-or-nothing, AI never fills
-just the empty slots in a partial lobby. AI count is adjustable from 2–10 (default 4)
+just the empty slots in a partial lobby. AI count is adjustable from 2–8 (default 4)
 via +/- buttons on an in-world lobby panel before the match starts. In this mode, Gate
 HP scales off the configured AI count (using the same table below), but respawn time
 does not — AI agents always respawn at the fastest (2s) rate regardless of count,
