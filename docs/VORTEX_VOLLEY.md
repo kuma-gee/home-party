@@ -188,16 +188,18 @@ different kind of pressure than escalating speed.
 
 If an orb reaches the center platform without being blocked:
 
-1. The orb is destroyed on contact with the core.
-2. The core loses 1 health per orb.
-3. No mobile player loses a life (the orb didn't reflect to any zone).
-4. A replacement orb spawns at the launching mobile player's paddle once their
-   orb supply is empty, after 1.5s.
+1. The core loses 1 health on contact.
+2. The orb **bounces off the core and continues** at its current speed. It is not
+   destroyed and no replacement orb is generated.
+3. A per-orb **0.3s damage cooldown** prevents repeated damage while an orb
+   grazes the core.
+4. No mobile player loses a life (the orb didn't exit through any zone).
 
 When the core's health reaches 0, the mobile players win immediately.
 
 The VR player is incentivized to block everything — every missed orb chips away at
-the core, and a destroyed core ends the round.
+the core repeatedly as it bounces around the arena, and a destroyed core ends the
+round.
 
 ## Mobile Players — Attackers
 
@@ -214,6 +216,7 @@ info is shown on it; all state is displayed on the shared desktop screen.
 |--------|-------|
 | Move paddle along side | Joystick direction (projected onto the player's side) |
 | Launch orb | Press A or B button |
+| Aim launch | Paddle movement at the moment of launch (see [Launching](#launching)) |
 
 ### Paddle Behavior
 
@@ -231,14 +234,19 @@ info is shown on it; all state is displayed on the shared desktop screen.
 
 ### Launching
 
-- Each mobile player has an **orb supply**, starting with **1 orb**. Power-ups can
-  add more orbs to the supply.
-- Pressing A or B launches one orb from the paddle's current position toward the center.
+- Each mobile player **always has exactly one orb ready on their paddle**. There is
+  no orb supply or ammo count.
+- Pressing A or B launches the ready orb from the paddle's current position.
 - Launch speed: **5.0m/s**.
-- A player may have multiple orbs in flight at once (up to their supply).
-- **Respawn:** When a player's supply is empty (all orbs resolved or destroyed), a
-  new orb spawns at their paddle after **1.5s**.
-- The orb travels in a straight line from paddle position to center platform.
+- **Aim:** the launch direction is based on paddle movement at the moment of launch.
+  A stationary paddle fires straight at the center; a moving paddle fires up to
+  **30°** toward its direction of travel.
+- The orb travels in a straight line from paddle position toward the center platform.
+- When the orb leaves the arena (see [Orb Trajectories and Collision](#orb-trajectories-and-collision)),
+  a new ready orb appears on the launching player's paddle after **1.5s**. An orb
+  is **never** consumed by hitting the core, a paddle, a wall, or a power-up.
+- Power-ups can create additional orbs directly in play. Those orbs are independent
+  of the paddle orb and never respawn once lost.
 
 ### Orb Trajectories and Collision
 
@@ -247,12 +255,26 @@ paddle position toward the center platform. If the VR player blocks it, the orb
 reflects in the direction determined by the VR player's hand orientation and
 continues across the arena.
 
-**Reflected orbs can hit ANY mobile player in their path**, not just the launcher.
+Orbs behave like Pong balls: they **bounce and keep playing** on every contact
+except one.
 
-- If a reflected orb enters a mobile player's zone and their paddle is in the
-  orb's path: that player loses 1 life, orb destroyed.
-- If the paddle has moved out of the way: orb passes through the zone harmlessly
-  and is destroyed when it reaches the arena wall.
+| Contact | Result |
+|---------|--------|
+| Core | Core loses 1 health (0.3s per-orb damage cooldown), orb bounces off and continues |
+| Mobile paddle | Orb bounces off and continues |
+| Arena wall | Orb bounces and continues |
+| Power-up | Pickup activates, orb continues |
+| VR shield | Orb reflects, continues |
+| Player area (missed paddle) | Orb is lost — see below |
+
+**Reflected orbs can threaten ANY mobile player**, not just the launcher.
+
+- A player loses **1 life** only when an orb **exits the arena through their
+  player area** — i.e. it got past their paddle and out of bounds.
+- That orb is then destroyed. A new ready orb returns to the **launching**
+  player's paddle after 1.5s, regardless of whose area it exited. Ownership never
+  transfers.
+- Hitting a paddle or exiting any other way does not end the orb.
 
 **Design intent:** The VR player is a strategic pinball flipper. They choose where
 reflected orbs go by aiming their blocks. Mobile players are at risk from:
@@ -265,29 +287,33 @@ player can target specific mobile players by timing and aiming their blocks.
 ## Power-Ups
 
 Power-ups float in the arena and are picked up by **mobile players only**, by
-hitting them with an orb. An orb that collides with a power-up is destroyed, and
+hitting them with an orb. An orb that collides with a power-up **keeps flying** and
 the power-up activates for that orb's owner (the mobile player who launched it).
 
-**Tradeoff:** Orbs spent grabbing power-ups do not attack the VR defender and count
-against the player's orb supply. Grabbing a power-up sacrifices an attack for a
-temporary advantage.
+**Tradeoff:** Grabbing a power-up consumes neither the orb nor the player's ready
+orb, but diverting a shot into a power-up means it is not aimed at the core, and the
+orb stays live for the VR player to block or for another player to dodge.
 
 ### Pickup Mechanics
 
 - Power-ups float on the orb plane (0.9m height) inside the arena, between the
   center platform and the outer wall.
-- A mobile player picks up a power-up by launching an orb that collides with it.
-- The colliding orb is destroyed on impact; the power-up activates immediately for
-  that player.
+- A mobile player picks up a power-up when any orb they own collides with it.
+- The colliding orb is **not** destroyed; the power-up activates immediately for
+  that orb's owner.
 - Power-ups despawn after a set lifetime if not picked up.
 
 ### Power-Up Types
 
 | Power-up | Effect | Duration |
 |----------|--------|----------|
-| Extra Orb | +1 orb to supply | Instant |
+| Duplicate | Splits the orb that picked it up into two in place; both continue at the current speed, with the clone diverging **20°** | Instant |
 | Turbo | +2.0m/s to all of the player's active orbs (capped at 10.0m/s) | Instant |
 | Paddle Boost | Paddle movement speed ×1.5 | 10s |
+
+Duplicate creates a normal in-play orb owned by the launcher. It can score core
+damage, be reflected, and hit players like any other orb. If it leaves the arena,
+it is gone permanently — it does not return to the paddle.
 
 ### Spawning
 
@@ -297,9 +323,9 @@ temporary advantage.
   players can aim their next orb.
 
 **Design intent:** Power-ups give mobile players a second decision layer beyond
-launch-and-dodge. Do you spend an orb attacking the VR defender, or divert it to
-grab a power-up? The cost (losing an attack and one orb from supply) keeps
-power-ups from being free value.
+launch-and-dodge. Do you aim at the VR defender, or steer your shot through a
+power-up and multiply or accelerate the orbs already in play? The cost is
+positioning and risk — the orb stays live and can be blocked or lost.
 
 ## Orb Rules
 
@@ -309,8 +335,9 @@ power-ups from being free value.
 | Reflect speed | Incoming + 1.5m/s |
 | Maximum orb speed | 10.0m/s |
 | Speed increase per shield block | +0.5m/s to all active orbs |
-| Orb supply per mobile player | 1 base (power-ups can add more) |
-| Respawn delay after supply empty | 1.5s |
+| Ready orb per mobile player | 1 (always, while alive) |
+| Respawn delay after orb leaves arena | 1.5s |
+| Core damage cooldown per orb | 0.3s |
 
 ### Escalation
 
@@ -325,21 +352,27 @@ Speed resets to base (5.0m/s) only when a new round starts.
 
 ### Orb Lifecycle
 
-1. **Ready:** Orb sits at mobile player's paddle, glowing. Player can launch.
-   Multiple ready orbs are possible with an expanded supply.
+1. **Ready:** One orb sits at the mobile player's paddle, glowing. Player can launch.
+   Exactly one ready orb exists per living mobile player.
 2. **Incoming:** Orb travels toward center. VR player can block.
-3. **Reflected:** VR blocked it. Orb travels back toward outer wall at increased speed.
-4. **Resolved:** Orb either hits a paddle (life lost) or passes through zone (safe).
-   Orb destroyed. When the player's supply is empty, the respawn timer starts.
+3. **Reflected:** VR blocked it. Orb travels back toward the outer wall at
+   increased speed.
+4. **Bouncing:** Orb stays alive through core hits, paddle hits, wall bounces, and
+   power-up pickups. Only leaving the arena ends it.
+5. **Lost:** Orb exits through a player area. That area's player loses 1 life; the
+   orb is destroyed and a new ready orb returns to the **launcher's** paddle after
+   1.5s.
 
-If VR misses (orb hits core): orb destroyed, core loses 1 health, respawn timer starts.
+Hitting the core does **not** destroy the orb — it deals 1 damage and bounces off.
+Power-ups created by Duplicate are separate in-play orbs; they are lost permanently
+and never return to a paddle.
 
 ## Round Flow
 
 ### 1. Prepare Phase
 
 - Mobile players sync into the match.
-- Each player receives 3 lives and 1 orb in their supply.
+- Each player receives 3 lives and one ready orb on their paddle.
 - Zones are assigned evenly around the arena.
 - **Mobile onboarding:** The phone shows only the joystick and A/B buttons.
   Control instructions ("Swipe to move paddle — press A/B to launch") are shown
@@ -435,7 +468,6 @@ the phone — all of that is displayed on the shared desktop screen.
 | Colorblind modes | Deuteranopia, protanopia, tritanopia zone color palettes |
 | One-handed VR | Single-hand block mode (larger hit radius, slower orbs) |
 | Reduced motion | Disable screen shake, reduce particle intensity |
-| Mobile auto-launch | Optional: orbs launch automatically on cooldown (for players with motor difficulty) |
 
 ## Handling Edge Cases
 
@@ -444,8 +476,9 @@ the phone — all of that is displayed on the shared desktop screen.
 If no VR block occurs for 8 seconds:
 
 - Shared screen shows "VR Player — Block the orbs!" prompt.
-- After 12 seconds of inactivity: orbs auto-destroy on center hit (no reflects
-  happen). Mobile players effectively play free-for-all with no risk.
+- After 12 seconds of inactivity: orbs that reach the core are destroyed instead of
+  bouncing (no reflects happen). Mobile players effectively play free-for-all with
+  no risk.
 
 This prevents griefing where VR player refuses to engage.
 

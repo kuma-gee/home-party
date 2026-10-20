@@ -15,6 +15,10 @@ const REFLECT_SPEED_BONUS: float = 1.5
 const START_LIVES: int = 3
 const RESPAWN_DELAY: float = 1.5
 const ROUND_TIME: float = 180.0
+## Max launch angle away from the center line when the paddle is moving at full speed.
+const AIM_MAX_ANGLE: float = deg_to_rad(30.0)
+## Brief spawn grace so an orb does not bounce off the paddle that fired it.
+const LAUNCH_CLEARANCE_TIME: float = 0.3
 
 enum Phase { WAITING, PLAYING, ENDED }
 
@@ -66,8 +70,9 @@ func start_round() -> void:
 	_sync_deflectors()
 	for d in deflectors:
 		d.lives = START_LIVES
-		d.orb_supply = 1
+		d.has_orb = true
 		d.revive()
+		d.set_orb_ready()
 	lives_updated.emit(_build_lives_data())
 
 func reset() -> void:
@@ -85,7 +90,8 @@ func request_launch(player: PlayerSpawn) -> bool:
 		return false
 	if not player.can_launch():
 		return false
-	player.orb_supply -= 1
+	player.has_orb = false
+	player.clear_orb_ready()
 	_spawn_orb_from_paddle(player)
 	return true
 
@@ -119,17 +125,30 @@ func _spawn_orb_from_paddle(paddle: PlayerSpawn) -> void:
 	orb.global_position = paddle.deflector.global_position
 	orb.global_position.y = GameOrb.ORB_HEIGHT
 	orb.owner_player = paddle
-	# The orb spawns at its own paddle; let it pass through its own paddle on launch.
-	orb.add_collision_exception_with(paddle.deflector)
-	orb.hit_core.connect(_on_orb_hit_core)
-	var dir := Vector3(-paddle.deflector.global_position.x, 0.0, -paddle.deflector.global_position.z)
-	orb.launch(dir.normalized(), _speed)
+	if is_instance_valid(paddle.controller):
+		orb.hitbox.attacker_uuid = paddle.controller.uuid
+	# The orb spawns on its own paddle; clear that overlap briefly so it can leave,
+	# then let it collide normally when it comes back.
+	orb.ignore_collision_with(paddle.deflector, LAUNCH_CLEARANCE_TIME)
+	orb.launch(_launch_direction(paddle.deflector), _speed)
 	active_orbs.append(orb)
 
-## Called when an orb entered a paddle's goal area → it passed that paddle (pong).
+## Launch aim: straight at the core when the paddle is still, up to
+## AIM_MAX_ANGLE toward the paddle's movement direction when it is sliding.
+func _launch_direction(paddle: DeflectorPlayer) -> Vector3:
+	var to_center := -paddle.global_position
+	to_center.y = 0.0
+	var tangent := paddle._tangent()
+	var lateral := clampf(paddle.velocity.dot(tangent) / DeflectorPlayer.MOVE_SPEED, -1.0, 1.0)
+	var dir := to_center.normalized() + tangent * lateral * tan(AIM_MAX_ANGLE)
+	return dir.normalized()
+
+## Called when an orb exited the arena through a player's goal area → that player
+## missed it and loses a life. The orb returns to its launcher's paddle.
 func on_orb_passed(player: PlayerSpawn, orb: GameOrb) -> void:
 	if phase != Phase.PLAYING or not is_instance_valid(orb) or orb.is_resolved():
 		return
+	var launcher := orb.owner_player
 	player.lives -= 1
 	player.flash_hit()
 	lives_updated.emit(_build_lives_data())
@@ -137,18 +156,15 @@ func on_orb_passed(player: PlayerSpawn, orb: GameOrb) -> void:
 		_eliminate_player(player)
 	orb.resolve()
 	active_orbs.erase(orb)
+	_schedule_respawn(launcher)
 	if _get_alive_count() == 0:
 		_end_round()
 
-func _on_orb_hit_core(orb: GameOrb) -> void:
-	if phase != Phase.PLAYING or not is_instance_valid(orb) or orb.is_resolved():
+func _schedule_respawn(player: PlayerSpawn) -> void:
+	if not is_instance_valid(player) or player.eliminated or player.has_orb:
 		return
-	var launcher := orb.owner_player
-	orb.resolve()
-	active_orbs.erase(orb)
-	if is_instance_valid(launcher) and not launcher.eliminated:
-		get_tree().create_timer(RESPAWN_DELAY).timeout.connect(
-			func(): _respawn_orb_for(launcher), CONNECT_ONE_SHOT)
+	get_tree().create_timer(RESPAWN_DELAY).timeout.connect(
+		func(): _respawn_orb_for(player), CONNECT_ONE_SHOT)
 
 func _on_core_health_changed(hp: int, _max_hp: int) -> void:
 	core_health_updated.emit(hp)
@@ -169,9 +185,9 @@ func _eliminate_player(player: PlayerSpawn) -> void:
 func _respawn_orb_for(player: PlayerSpawn) -> void:
 	if phase != Phase.PLAYING or not is_instance_valid(player):
 		return
-	if player.eliminated:
+	if player.eliminated or player.has_orb:
 		return
-	player.orb_supply = 1
+	player.has_orb = true
 	player.set_orb_ready()
 
 func _get_alive_count() -> int:

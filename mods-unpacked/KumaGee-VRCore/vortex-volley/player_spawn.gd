@@ -23,7 +23,9 @@ var arena_radius: float = 0.0
 var controller: ClientController = null
 var player_name: String = ""
 var lives: int = START_LIVES
-var orb_supply: int = 0
+## True while a launchable orb rests on this player's paddle. A player always has
+## exactly one once it respawns; launching consumes it until the orb leaves the arena.
+var has_orb: bool = false
 var eliminated: bool = false
 
 var _manager: VortexArena = null
@@ -49,7 +51,7 @@ func assign(player: ClientController, manager: VortexArena) -> void:
 	_manager = manager
 	player_name = player.uuid
 	lives = START_LIVES
-	orb_supply = 1
+	has_orb = true
 	eliminated = false
 	if player is VortexAIController:
 		(player as VortexAIController).bind_spawn(self, manager)
@@ -61,10 +63,11 @@ func release() -> void:
 	_disconnect_controller()
 	_manager = null
 	eliminated = false
+	has_orb = false
 	_deactivate_paddle()
 
 func can_launch() -> bool:
-	return orb_supply > 0 and not eliminated
+	return has_orb and not eliminated
 
 func request_launch() -> void:
 	if _manager:
@@ -81,6 +84,7 @@ func eliminate() -> void:
 	if eliminated:
 		return
 	eliminated = true
+	has_orb = false
 	_deactivate_paddle()
 
 func revive() -> void:
@@ -101,6 +105,11 @@ func set_orb_ready() -> void:
 	if eliminated or not deflector.paddle_material:
 		return
 	deflector.paddle_material.emission_energy_multiplier = 1.2
+
+func clear_orb_ready() -> void:
+	if not deflector.paddle_material:
+		return
+	deflector.paddle_material.emission_energy_multiplier = 0.6
 
 func apply_player_color() -> void:
 	if not controller:
