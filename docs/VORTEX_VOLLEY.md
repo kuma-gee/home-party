@@ -471,17 +471,6 @@ the phone — all of that is displayed on the shared desktop screen.
 
 ## Handling Edge Cases
 
-### VR Player Inactivity
-
-If no VR block occurs for 8 seconds:
-
-- Shared screen shows "VR Player — Block the orbs!" prompt.
-- After 12 seconds of inactivity: orbs that reach the core are destroyed instead of
-  bouncing (no reflects happen). Mobile players effectively play free-for-all with
-  no risk.
-
-This prevents griefing where VR player refuses to engage.
-
 ### 2-Player Configuration (1 VR + 1 Mobile)
 
 - Mobile player gets 5 lives instead of 3.
