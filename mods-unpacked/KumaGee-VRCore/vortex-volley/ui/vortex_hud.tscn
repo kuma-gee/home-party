@@ -1,9 +1,9 @@
-[gd_scene format=3 uid="uid://vvhud1a2b3c4d"]
+[gd_scene format=3 uid="uid://ckgifqosh2ycj"]
 
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="1_theme"]
-[ext_resource type="Script" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/ui/vortex_hud.gd" id="2_script"]
+[ext_resource type="Script" uid="uid://b8ijb2lqu2r2l" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/ui/vortex_hud.gd" id="2_script"]
 
-[node name="VortexHUD" type="Control"]
+[node name="VortexHUD" type="Control" unique_id=2104539427]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,88 +13,44 @@ grow_vertical = 2
 theme = ExtResource("1_theme")
 script = ExtResource("2_script")
 
-[node name="TopBar" type="HBoxContainer" parent="."]
+[node name="TopBar" type="HBoxContainer" parent="." unique_id=699773008]
 layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
+offset_right = 120.0
 offset_bottom = 80.0
-grow_horizontal = 2
 theme_override_constants/separation = 40
 alignment = 1
 
-[node name="StateBadge" type="PanelContainer" parent="TopBar"]
-custom_minimum_size = Vector2(220, 60)
-layout_mode = 2
+[node name="StatsPanel" type="PanelContainer" parent="." unique_id=1094895714]
+layout_mode = 1
+offset_right = 408.0
+offset_bottom = 150.0
 
-[node name="StateLabel" type="Label" parent="TopBar/StateBadge"]
-unique_name_in_owner = true
+[node name="StatsContainer" type="VBoxContainer" parent="StatsPanel" unique_id=632221535]
 layout_mode = 2
-theme_type_variation = &"LabelLarge"
-text = "Waiting..."
-horizontal_alignment = 1
+theme_override_constants/separation = 12
 
-[node name="TimerBadge" type="PanelContainer" parent="TopBar"]
+[node name="TimerBadge" type="PanelContainer" parent="StatsPanel/StatsContainer" unique_id=383778026]
 custom_minimum_size = Vector2(120, 60)
 layout_mode = 2
+size_flags_horizontal = 0
 
-[node name="TimerLabel" type="Label" parent="TopBar/TimerBadge"]
+[node name="TimerLabel" type="Label" parent="StatsPanel/StatsContainer/TimerBadge" unique_id=1731695988]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"LabelLarge"
 text = "3:00"
 horizontal_alignment = 1
 
-[node name="LivesPanel" type="PanelContainer" parent="."]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -220.0
-offset_top = 90.0
-offset_bottom = 400.0
-grow_horizontal = 0
-
-[node name="LivesContainer" type="VBoxContainer" parent="LivesPanel"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="StatsPanel" type="PanelContainer" parent="."]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -220.0
-offset_top = 410.0
-offset_bottom = 560.0
-grow_horizontal = 0
-
-[node name="StatsContainer" type="VBoxContainer" parent="StatsPanel"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="CoreHealthLabel" type="Label" parent="StatsPanel/StatsContainer"]
+[node name="CoreHealthLabel" type="Label" parent="StatsPanel/StatsContainer" unique_id=493273611]
+visible = false
 layout_mode = 2
 theme_type_variation = &"LabelSmall"
 text = "Core Health"
 
-[node name="CoreHealthBar" type="ProgressBar" parent="StatsPanel/StatsContainer"]
+[node name="CoreHealthBar" type="ProgressBar" parent="StatsPanel/StatsContainer" unique_id=775319542]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 24)
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 max_value = 20.0
 value = 20.0
-show_percentage = false
-
-[node name="SpeedLabel" type="Label" parent="StatsPanel/StatsContainer"]
-layout_mode = 2
-theme_type_variation = &"LabelSmall"
-text = "Orb Speed"
-
-[node name="SpeedBar" type="ProgressBar" parent="StatsPanel/StatsContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 24)
-layout_mode = 2
-max_value = 10.0
-value = 5.0
 show_percentage = false

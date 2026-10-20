@@ -2,8 +2,8 @@ class_name VortexVolley
 extends BaseGame
 
 @onready var hud: VortexHUD = %VortexHUD
-@onready var core: VortexCore = $VortexCore
-@onready var game_manager: VortexArena = $VortexArena
+@onready var core: VortexCore = %VortexCore
+@onready var game_manager: VortexArena = %VortexArena
 @onready var ai_manager: VortexAIManager = %AIManager
 
 const STRIKER_HAND_SCENE: PackedScene = preload("res://mods-unpacked/KumaGee-VRCore/vortex-volley/striker_hand.tscn")
@@ -100,8 +100,10 @@ func _on_round_ended(scores: Array[Dictionary]) -> void:
 	finish_game("Vortex Volley", func(lb): lb.set_entries(scores))
 
 func _on_lives_updated(data: Array[Dictionary]) -> void:
-	if hud:
-		hud.update_lives(data)
+	for entry in data:
+		var player_ui := player_list.find_existing_node(str(entry.get("uuid", ""))) as VortexVolleyPlayerUI
+		if player_ui:
+			player_ui.set_lives(int(entry.get("lives", 0)))
 
 func _on_speed_updated(speed: float) -> void:
 	if hud:

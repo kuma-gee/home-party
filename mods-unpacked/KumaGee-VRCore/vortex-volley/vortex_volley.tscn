@@ -55,7 +55,7 @@ transform = Transform3D(0.8530403, -0.2639843, -0.45014954, 0.5218451, 0.4315250
 transform = Transform3D(0.86602545, -0.43301296, 0.24999958, -0.41315672, -0.3381305, 0.8455586, -0.28160536, -0.8355642, -0.4717319, 0, 5, 0)
 
 [node name="Camera3D" parent="." index="3" unique_id=10000003]
-transform = Transform3D(1, 0, 0, 0, 0.38751563, 0.92186314, 0, -0.92186314, 0.38751563, 0, 37.018, 15.292)
+transform = Transform3D(1, 0, 0, 0, 0.38751563, 0.92186314, 0, -0.92186314, 0.38751563, 0, 37.017944, 15.291992)
 current = true
 
 [node name="Area3D" type="Area3D" parent="XRPlayer/SubViewport/XRPlayer/LeftHand" parent_id_path=PackedInt32Array(10000004, 2106749189) index="0" unique_id=1539354222]
@@ -81,7 +81,10 @@ shape = SubResource("BoxShape3D_jdii5")
 [node name="Control" parent="CanvasLayer" parent_id_path=PackedInt32Array(10000005) index="0" unique_id=871214352]
 theme = ExtResource("4_vn0a6")
 
-[node name="PlayerReadyUI" parent="CanvasLayer/Control/PrepareUI" parent_id_path=PackedInt32Array(10000006) index="0" unique_id=179113001 node_paths=PackedStringArray("player_list") instance=ExtResource("4_v4ly5")]
+[node name="PrepareUI" parent="CanvasLayer/Control" index="0" unique_id=10000006]
+visible = false
+
+[node name="PlayerReadyUI" parent="CanvasLayer/Control/PrepareUI" index="0" unique_id=179113001 node_paths=PackedStringArray("player_list") instance=ExtResource("4_v4ly5")]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -94,7 +97,10 @@ offset_bottom = -297.0
 grow_vertical = 0
 player_list = NodePath("../../MarginContainer/PlayerList")
 
-[node name="VortexHUD" parent="CanvasLayer/Control/GameUI" parent_id_path=PackedInt32Array(10000007) index="0" unique_id=1082078638 instance=ExtResource("5_hud")]
+[node name="GameUI" parent="CanvasLayer/Control" index="1" unique_id=10000007]
+visible = true
+
+[node name="VortexHUD" parent="CanvasLayer/Control/GameUI" index="0" unique_id=1082078638 instance=ExtResource("5_hud")]
 unique_name_in_owner = true
 layout_mode = 1
 
@@ -102,6 +108,7 @@ layout_mode = 1
 player_scene = ExtResource("3_plui")
 
 [node name="VortexCore" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="0" unique_id=50000002 instance=ExtResource("6_core")]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2754123, 0)
 
 [node name="arena2" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="1" unique_id=92398370 instance=ExtResource("8_ymkxq")]
@@ -151,18 +158,16 @@ transform = Transform3D(0.7071064, 0, 0.7071064, 0, 1, 0, -0.7071064, 0, 0.70710
 material_override = ExtResource("8_h3hju")
 
 [node name="VortexArena" type="Node3D" parent="." index="7" unique_id=50000001]
+unique_name_in_owner = true
 script = ExtResource("7_arena")
 orb_scene = ExtResource("4_orb")
 
-[node name="GameOrb" parent="." index="8" unique_id=2095294353 instance=ExtResource("4_orb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2961578, 1.3452148, -2.6990662)
-
-[node name="StaticBody3D" type="StaticBody3D" parent="." index="9" unique_id=1854907950]
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="8" unique_id=1854907950]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0" unique_id=1155731278]
 shape = SubResource("CylinderShape3D_u27j1")
 
-[node name="AIManager" type="Node" parent="." index="10" unique_id=50000003]
+[node name="AIManager" type="Node" parent="." index="9" unique_id=50000003]
 unique_name_in_owner = true
 script = ExtResource("9_aiman")
 

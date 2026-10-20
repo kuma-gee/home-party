@@ -40,4 +40,4 @@ func is_resolved() -> bool:
 
 func _on_hitbox_area_entered(area: Area3D) -> void:
 	if area is HurtBox and not _resolved:
-		hit_core.emit()
+		hit_core.emit(self)

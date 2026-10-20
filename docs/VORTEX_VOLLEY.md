@@ -212,12 +212,15 @@ info is shown on it; all state is displayed on the shared desktop screen.
 
 | Action | Input |
 |--------|-------|
-| Move paddle left/right inside zone | Joystick horizontal axis |
+| Move paddle along side | Joystick direction (projected onto the player's side) |
 | Launch orb | Press A or B button |
 
 ### Paddle Behavior
 
 - Each paddle starts centered on its assigned side.
+- Joystick direction is interpreted in shared-screen space and projected onto
+  the player's side tangent, so the paddle moves in the direction the player
+  pushes as they see it.
 - Paddle movement speed: **1.8 radians/second** around the center (moves the
   paddle along its side).
 - Paddle width: **1.3m**.

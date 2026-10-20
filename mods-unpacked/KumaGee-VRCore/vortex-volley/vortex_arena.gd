@@ -184,7 +184,8 @@ func _get_alive_count() -> int:
 func _build_lives_data() -> Array[Dictionary]:
 	var out: Array[Dictionary] = []
 	for d in deflectors:
-		out.append({"name": d.player_name, "lives": d.lives})
+		if is_instance_valid(d.controller):
+			out.append({"uuid": d.controller.uuid, "lives": d.lives})
 	return out
 
 func _build_scores() -> Array[Dictionary]:

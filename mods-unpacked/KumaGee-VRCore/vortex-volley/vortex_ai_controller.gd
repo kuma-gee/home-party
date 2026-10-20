@@ -58,7 +58,8 @@ func _process(delta: float) -> void:
 		secondary_action_pressed.emit()
 
 ## Steering input toward the nearest moving orb so the paddle stays in its path
-## (blocking returns). Returns Vector2(input_x, 0) in the paddle's tangent space.
+## (blocking returns). Returns input in screen space aligned with the paddle's
+## tangent, matching DeflectorPlayer's movement mapping.
 func get_move() -> Vector2:
 	if not is_instance_valid(spawn) or not arena:
 		return Vector2.ZERO
@@ -68,7 +69,8 @@ func get_move() -> Vector2:
 	var offset := (paddle.global_position - side_center).dot(tangent)
 	var target := _target_offset(tangent, side_center)
 	var delta := target - offset
-	return Vector2(clampf(delta * MOVE_GAIN, -MAX_MOVE, MAX_MOVE), 0.0)
+	var amount := clampf(delta * MOVE_GAIN, -MAX_MOVE, MAX_MOVE)
+	return paddle._tangent_2d() * amount
 
 func _target_offset(tangent: Vector3, side_center: Vector3) -> float:
 	var best_orb: GameOrb = null

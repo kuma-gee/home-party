@@ -61,16 +61,23 @@ func _physics_process(_delta: float) -> void:
 		return
 	var input := controller.get_move() if controller else _move_input
 	var tangent := _tangent()
+	# Joystick input is screen-relative (right = +X, down = +Z). Project it onto
+	# this side's tangent so the paddle moves in the direction the player pushes.
+	var input_x := input.dot(_tangent_2d())
 	var side_half_length := spawn.arena_radius * tan(TAU / 16.0)
 	var max_offset := side_half_length * CLAMP_FACTOR
 	var offset := (global_position - _side_center()).dot(tangent)
-	if (input.x > 0.0 and offset >= max_offset) or (input.x < 0.0 and offset <= -max_offset):
-		input.x = 0.0
-	velocity = tangent * input.x * MOVE_SPEED
+	if (input_x > 0.0 and offset >= max_offset) or (input_x < 0.0 and offset <= -max_offset):
+		input_x = 0.0
+	velocity = tangent * input_x * MOVE_SPEED
 	move_and_slide()
 
 func _tangent() -> Vector3:
 	return Vector3(-sin(spawn.base_angle), 0.0, cos(spawn.base_angle))
+
+## Side tangent expressed in screen space, matching DeflectorPlayer's input mapping.
+func _tangent_2d() -> Vector2:
+	return Vector2(-sin(spawn.base_angle), cos(spawn.base_angle))
 
 func _side_center() -> Vector3:
 	return Vector3(

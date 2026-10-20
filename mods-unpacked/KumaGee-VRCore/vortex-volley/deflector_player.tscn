@@ -7,21 +7,14 @@
 resource_local_to_scene = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_paddle"]
-size = Vector3(1.1174316, 0.73413086, 0.16601563)
+size = Vector3(1.1174316, 0.73413086, 0.21777344)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cll0h"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vm444"]
 resource_local_to_scene = true
 albedo_color = Color(1, 0, 0, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_paddle"]
-emission_enabled = true
-emission = Color(1, 1, 1, 1)
-emission_energy_multiplier = 0.6
-
-[sub_resource type="BoxMesh" id="BoxMesh_paddle"]
-size = Vector3(1, 1.5, 0.2)
-
 [node name="DeflectorPlayer" type="CharacterBody3D" unique_id=1239165641 node_paths=PackedStringArray("paddle")]
+collision_layer = 524288
 collision_mask = 0
 script = ExtResource("1_script")
 paddle_material = SubResource("StandardMaterial3D_sqd7y")
@@ -34,12 +27,6 @@ shape = SubResource("BoxShape3D_paddle")
 [node name="paddle" parent="." unique_id=484938252 instance=ExtResource("2_sqd7y")]
 
 [node name="Paddle" parent="paddle" index="0" unique_id=104177827]
-material_override = SubResource("StandardMaterial3D_cll0h")
-
-[node name="Visual" type="MeshInstance3D" parent="." unique_id=450000002]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.50323224, 0)
-visible = false
-material_override = SubResource("StandardMaterial3D_paddle")
-mesh = SubResource("BoxMesh_paddle")
+material_override = SubResource("StandardMaterial3D_vm444")
 
 [editable path="paddle"]
