@@ -3,8 +3,10 @@
 [ext_resource type="PackedScene" uid="uid://bisl1jfnf3opn" path="res://main/base_scene.tscn" id="1_base"]
 [ext_resource type="Script" uid="uid://cww5q0og4prbo" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_volley.gd" id="2_game"]
 [ext_resource type="Script" uid="uid://dk8vx2cnpq4f" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/striker_hand.gd" id="3_btxwl"]
-[ext_resource type="PackedScene" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_volley_player_ui.tscn" id="3_plui"]
+[ext_resource type="PackedScene" uid="uid://b63f0sfdwuq1" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_volley_player_ui.tscn" id="3_plui"]
 [ext_resource type="PackedScene" uid="uid://cknfdqosh2ycj" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/game_orb.tscn" id="4_orb"]
+[ext_resource type="PackedScene" uid="uid://bo1ex5nfcg43l" path="res://main/ui/player_ready_ui.tscn" id="4_v4ly5"]
+[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="4_vn0a6"]
 [ext_resource type="PackedScene" uid="uid://ckgifqosh2ycj" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/ui/vortex_hud.tscn" id="5_hud"]
 [ext_resource type="PackedScene" uid="uid://ckbcs4f08bpkb" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/core.tscn" id="6_core"]
 [ext_resource type="Script" uid="uid://b81ejb5dg6iag" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_arena.gd" id="7_arena"]
@@ -18,21 +20,21 @@
 [sub_resource type="SphereShape3D" id="SphereShape3D_btxwl"]
 radius = 0.3
 
-[sub_resource type="QuadMesh" id="QuadMesh_h3hju"]
+[sub_resource type="QuadMesh" id="QuadMesh_vn0a6"]
 resource_local_to_scene = true
 size = Vector2(1.5, 1)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_v4ly5"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_vwbdk"]
 viewport_path = NodePath("XRPlayer/Viewport2Din3D/Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vn0a6"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k1jr6"]
 transparency = 1
 cull_mode = 2
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_v4ly5")
+albedo_texture = SubResource("ViewportTexture_vwbdk")
 texture_filter = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_vwbdk"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_jdii5"]
 resource_local_to_scene = true
 size = Vector3(1.5, 1, 0.02)
 
@@ -70,11 +72,27 @@ script = ExtResource("3_btxwl")
 shape = SubResource("SphereShape3D_btxwl")
 
 [node name="Screen" parent="XRPlayer/Viewport2Din3D" parent_id_path=PackedInt32Array(10000004, 1418763861) index="1" unique_id=1761931612]
-mesh = SubResource("QuadMesh_h3hju")
-surface_material_override/0 = SubResource("StandardMaterial3D_vn0a6")
+mesh = SubResource("QuadMesh_vn0a6")
+surface_material_override/0 = SubResource("StandardMaterial3D_k1jr6")
 
 [node name="CollisionShape3D" parent="XRPlayer/Viewport2Din3D/StaticBody3D" parent_id_path=PackedInt32Array(10000004, 1418763861, 1882660186) index="0" unique_id=507281989]
-shape = SubResource("BoxShape3D_vwbdk")
+shape = SubResource("BoxShape3D_jdii5")
+
+[node name="Control" parent="CanvasLayer" parent_id_path=PackedInt32Array(10000005) index="0" unique_id=871214352]
+theme = ExtResource("4_vn0a6")
+
+[node name="PlayerReadyUI" parent="CanvasLayer/Control/PrepareUI" parent_id_path=PackedInt32Array(10000006) index="0" unique_id=179113001 node_paths=PackedStringArray("player_list") instance=ExtResource("4_v4ly5")]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+offset_left = -106.5
+offset_top = -358.0
+offset_right = 106.5
+offset_bottom = -297.0
+grow_vertical = 0
+player_list = NodePath("../../MarginContainer/PlayerList")
 
 [node name="VortexHUD" parent="CanvasLayer/Control/GameUI" parent_id_path=PackedInt32Array(10000007) index="0" unique_id=1082078638 instance=ExtResource("5_hud")]
 unique_name_in_owner = true

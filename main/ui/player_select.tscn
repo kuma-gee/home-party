@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bucsqhjr75ini"]
 
 [ext_resource type="Shader" uid="uid://cdfjqx6ei5653" path="res://shader/circle_inner.gdshader" id="1_q00f1"]
-[ext_resource type="Script" uid="uid://w38vewqb218t" path="res://mods-unpacked/KumaGee-VRCore/castle-defense/ui/player_select.gd" id="2_pola4"]
+[ext_resource type="Script" uid="uid://w38vewqb218t" path="res://main/ui/player_select.gd" id="2_pola4"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ynw0o"]
 shader = ExtResource("1_q00f1")
@@ -33,6 +33,7 @@ script = ExtResource("2_pola4")
 icon = NodePath("ColorRect")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1468811843]
+visible = false
 material = SubResource("ShaderMaterial_bbb4l")
 layout_mode = 1
 anchors_preset = 15

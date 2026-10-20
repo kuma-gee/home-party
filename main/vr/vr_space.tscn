@@ -222,6 +222,7 @@ grab_distance = 0.1
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2119231864]
 layer = 100
+visible = false
 
 [node name="PauseMenu" type="ColorRect" parent="CanvasLayer" unique_id=856227726]
 anchors_preset = 15

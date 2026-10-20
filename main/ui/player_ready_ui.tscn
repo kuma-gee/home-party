@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://bo1ex5nfcg43l"]
+
+[ext_resource type="Script" uid="uid://ce51a7cbm8u6g" path="res://main/ui/player_ready_ui.gd" id="1_nuyl8"]
+[ext_resource type="PackedScene" uid="uid://bucsqhjr75ini" path="res://main/ui/player_select.tscn" id="2_qksux"]
+
+[node name="PlayerReadyUI" type="CenterContainer" unique_id=179113001 node_paths=PackedStringArray("skill_select_text", "player_container")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 242.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_nuyl8")
+skill_select_text = NodePath("VBoxContainer/Label")
+player_select = ExtResource("2_qksux")
+player_container = NodePath("VBoxContainer/PlayerContainer")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=135371511]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=1104689536]
+layout_mode = 2
+text = "Ready (0/10)"
+horizontal_alignment = 1
+
+[node name="PlayerContainer" type="HFlowContainer" parent="VBoxContainer" unique_id=228851810]
+layout_mode = 2
+size_flags_vertical = 8
+alignment = 1

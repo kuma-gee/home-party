@@ -15,7 +15,7 @@ func _create_select(uuid: String):
 	select.set_player(player)
 	player_container.add_child(select)
 	
-	var ui = player_list.find_existing_node(player.uuid) as CastlePlayerUI
+	var ui = player_list.find_existing_node(player.uuid) as JoinedPlayer
 	player.active_changed.connect(func(): select.visible = player.active)
 	ui.ready_updated.connect(func():
 		select.set_ready(ui.is_ready)

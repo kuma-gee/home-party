@@ -1,7 +1,7 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://b63f0sfdwuq1"]
 
-[ext_resource type="PackedScene" path="res://main/ui/joined_player.tscn" id="1_base"]
-[ext_resource type="Script" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_volley_player_ui.gd" id="2_script"]
+[ext_resource type="PackedScene" uid="uid://f8e1u58jvfd1" path="res://main/ui/joined_player.tscn" id="1_base"]
+[ext_resource type="Script" uid="uid://droh4cyb4vdeq" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_volley_player_ui.gd" id="2_script"]
 
-[node name="VortexVolleyPlayerUI" instance=ExtResource("1_base")]
+[node name="VortexVolleyPlayerUI" unique_id=415311202 instance=ExtResource("1_base")]
 script = ExtResource("2_script")

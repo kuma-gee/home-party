@@ -10,4 +10,4 @@ func set_player(player: ClientController):
 	color = PlayerList.get_color(PlayerManager.get_player_idx(player.uuid))
 
 func set_ready(is_ready: bool):
-	icon.visible = is_ready
+	visible = is_ready
