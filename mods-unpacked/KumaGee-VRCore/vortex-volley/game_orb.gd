@@ -6,7 +6,12 @@ const COLLISION_LAYER: int = 1024  # Physics layer 11; lets paddle goal areas se
 ## Prevents one grazing pass from dealing damage on every frame inside the core.
 const CORE_HIT_COOLDOWN: float = 0.3
 
-var owner_player: PlayerSpawn = null
+## Launcher of this orb. Its player color tints the orb so player-owned orbs stay
+## visually distinguishable in flight.
+var owner_player: PlayerSpawn = null:
+	set(value):
+		owner_player = value
+		_apply_owner_color()
 var _resolved: bool = false
 var _core_hit_cooldown: float = 0.0
 var _ignored_body: PhysicsBody3D = null
@@ -19,6 +24,18 @@ func _ready() -> void:
 	# Damage is applied by this script so the core hit cooldown can gate it.
 	hitbox.hit_on_enter = false
 	hitbox.area_entered.connect(_on_hitbox_area_entered)
+	_apply_owner_color()
+
+## Tints the orb with its owner's player color.
+func _apply_owner_color() -> void:
+	var mesh := get_node_or_null("CSGSphere3D") as CSGSphere3D
+	if not mesh:
+		return
+	var material := mesh.material as ShaderMaterial
+	if not material:
+		return
+	var color := owner_player.get_player_color() if is_instance_valid(owner_player) else Color.WHITE
+	material.set_shader_parameter("base_color", color)
 
 func _physics_process(delta: float) -> void:
 	if _resolved:

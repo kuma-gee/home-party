@@ -14,6 +14,7 @@ colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
 gradient = SubResource("Gradient_f6h0o")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hmfqu"]
+resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("2_f6h0o")
 shader_parameter/base_color = Color(0, 1, 1, 1)
@@ -28,6 +29,7 @@ colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
 gradient = SubResource("Gradient_hmfqu")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_f6h0o"]
+resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("2_f6h0o")
 shader_parameter/base_color = Color(0, 1, 1, 1)

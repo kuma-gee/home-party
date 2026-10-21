@@ -15,6 +15,7 @@ var spawn: PlayerSpawn
 @export var goal_area: Area3D
 ## Visual-only orb shown while this player has a launchable orb.
 @onready var held_orb: Node3D = $HeldOrb
+@onready var held_orb_mesh: CSGSphere3D = $HeldOrb/Orb
 
 var _move_input: Vector2 = Vector2.ZERO
 var _active: bool = false
@@ -85,6 +86,12 @@ func set_held_orb_visible(shown: bool) -> void:
 	held_orb.visible = shown
 	if shown:
 		_update_held_orb_position()
+
+## Tints the ready orb with the color of this paddle's player.
+func set_held_orb_color(color: Color) -> void:
+	var material := held_orb_mesh.material as ShaderMaterial
+	if material:
+		material.set_shader_parameter("base_color", color)
 
 ## World position of the ready orb: in front of the paddle, toward the core.
 func held_orb_position() -> Vector3:

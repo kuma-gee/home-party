@@ -22,6 +22,7 @@ colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
 gradient = SubResource("Gradient_heldorb")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_heldorb"]
+resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("3_heldorb")
 shader_parameter/base_color = Color(0, 1, 1, 1)

@@ -124,9 +124,14 @@ func apply_player_color() -> void:
 		deflector.paddle_material.albedo_color = _color
 		deflector.paddle_material.emission = _color
 		deflector.paddle_material.emission_energy_multiplier = 0.6
+	deflector.set_held_orb_color(_color)
 	var area_material := player_area.material_override as ShaderMaterial
 	if area_material:
 		area_material.set_shader_parameter("base_color", _color)
+
+## Player color used for the paddle, player area, and orbs launched by this slot.
+func get_player_color() -> Color:
+	return _color
 
 # ── Internals ─────────────────────────────────────────────────────────────────
 
