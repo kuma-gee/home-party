@@ -95,15 +95,18 @@ func request_launch(player: PlayerSpawn) -> bool:
 	_spawn_orb_from_paddle(player)
 	return true
 
-func on_orb_blocked(orb: GameOrb, reflect_dir: Vector3) -> void:
+func on_orb_blocked(orb: GameOrb, reflect_dir: Vector3, active: bool = false) -> void:
 	if phase != Phase.PLAYING or not is_instance_valid(orb):
 		return
 	if not active_orbs.has(orb):
 		return
-	var reflect_speed := orb.velocity.length() + REFLECT_SPEED_BONUS
-	reflect_speed = minf(reflect_speed, ORB_SPEED_MAX)
+	var incoming_speed := orb.velocity.length()
+	if active:
+		_set_speed(minf(_speed + ORB_SPEED_STEP, ORB_SPEED_MAX))
+	var reflect_speed := incoming_speed
+	if active:
+		reflect_speed = minf(incoming_speed + REFLECT_SPEED_BONUS, ORB_SPEED_MAX)
 	orb.velocity = reflect_dir.normalized() * reflect_speed
-	_set_speed(minf(_speed + ORB_SPEED_STEP, ORB_SPEED_MAX))
 
 func force_end_round() -> void:
 	_end_round()

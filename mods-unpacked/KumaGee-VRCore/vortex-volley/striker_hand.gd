@@ -2,9 +2,10 @@ class_name StrikerHand
 extends Area3D
 
 ## Per-hand deflection bumper. Attached to an XRController3D. Detects orbs
-## through physics overlap (Area3D), not manual distance checks.
+## through physics overlap (Area3D), not manual distance checks. Always reflects
+## an overlapping orb; swinging at or above MIN_SWING_SPEED makes the block active.
 
-signal orb_hit(orb: GameOrb, reflect_dir: Vector3)
+signal orb_hit(orb: GameOrb, reflect_dir: Vector3, active: bool)
 
 const MIN_SWING_SPEED: float = 0.3
 const COOLDOWN: float = 0.2
@@ -26,15 +27,16 @@ func _physics_process(delta: float) -> void:
 		return
 	var swing_velocity := (global_position - _prev_position) / delta
 	_prev_position = global_position
-	if _cooldown > 0.0 or swing_velocity.length() < MIN_SWING_SPEED:
+	if _cooldown > 0.0:
 		return
+	var active := swing_velocity.length() >= MIN_SWING_SPEED
 	for body in get_overlapping_bodies():
 		var orb := body as GameOrb
 		if not orb or orb.is_resolved():
 			continue
 		var reflect_dir := _get_palm_direction()
 		if reflect_dir != Vector3.ZERO:
-			orb_hit.emit(orb, reflect_dir)
+			orb_hit.emit(orb, reflect_dir, active)
 			_cooldown = COOLDOWN
 			return
 
