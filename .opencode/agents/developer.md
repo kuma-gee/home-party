@@ -42,8 +42,9 @@ When given a task:
 2. Identify affected files
 3. Plan implementation
 4. Apply changes
-6. Run verification skill
-7. Summarize results
+5. Summarize results
+
+Do NOT verify automatically. Verification runs only via the user-invoked `/verify-feature` command.
 
 ---
 

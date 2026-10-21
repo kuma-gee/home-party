@@ -1,12 +1,9 @@
 ---
-name: create-spec
 description: >-
-  Use when the user describes a change request, feature proposal, bug report, or
-  refactor idea and wants a detailed technical specification and updated
-  documentation. The skill investigates the request, surveys docs and codebase,
-  updates affected documentation, and produces a specification task file in
-  docs/tasks/. Do NOT use for direct code changes or bug fixes — use only when
-  the user asks for a specification to be created before implementation.
+  Turn a change request (feature, bugfix, refactor, design tweak) into a
+  detailed technical specification and updated documentation in docs/tasks/.
+  Use when the user wants a specification created before implementation. Do NOT
+  use for direct code changes or bug fixes.
 ---
 
 # Create Specification
@@ -19,6 +16,13 @@ structured specification. The work has three deliverables:
    implementation
 3. **Open Questions Resolved** — every ambiguity addressed before the spec is
    finalised
+
+## Change request
+
+$ARGUMENTS
+
+If the change request above is empty, stop and ask the user for it before
+proceeding.
 
 ---
 
@@ -191,11 +195,6 @@ start immediately."
 ```
 
 Choose the task number by finding the next available number in `docs/tasks/`.
-
-#### 5c. Offer to begin implementation
-
-Ask the user if they want the changes implemented now. If yes, they can invoke
-the `implement-spec` command with the new task file.
 
 ---
 
