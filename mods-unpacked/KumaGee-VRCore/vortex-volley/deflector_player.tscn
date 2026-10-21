@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c0ljsch81wiqu" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/deflector_player.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://bi6wrdtt7rms8" path="res://assets/vortex/paddle.glb" id="2_sqd7y"]
+[ext_resource type="Shader" uid="uid://dku0md37r3h08" path="res://shader/gradient_radial_opacity.gdshader" id="3_heldorb"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sqd7y"]
 resource_local_to_scene = true
@@ -12,6 +13,20 @@ size = Vector3(1.117, 0.55, 0.218)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vm444"]
 resource_local_to_scene = true
 albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="Gradient" id="Gradient_heldorb"]
+offsets = PackedFloat32Array(0, 0.49190938)
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_heldorb"]
+gradient = SubResource("Gradient_heldorb")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_heldorb"]
+render_priority = 0
+shader = ExtResource("3_heldorb")
+shader_parameter/base_color = Color(0, 1, 1, 1)
+shader_parameter/opacity_gradient = SubResource("GradientTexture1D_heldorb")
+shader_parameter/opacity_strength = 1.0
 
 [node name="DeflectorPlayer" type="CharacterBody3D" unique_id=1239165641 node_paths=PackedStringArray("paddle")]
 collision_layer = 524288
@@ -29,5 +44,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
 [node name="Paddle" parent="paddle" index="0" unique_id=323939978]
 material_override = SubResource("StandardMaterial3D_vm444")
+
+[node name="HeldOrb" type="Node3D" parent="."]
+
+[node name="Orb" type="CSGSphere3D" parent="HeldOrb"]
+radius = 0.2
+radial_segments = 24
+rings = 12
+material = SubResource("ShaderMaterial_heldorb")
 
 [editable path="paddle"]

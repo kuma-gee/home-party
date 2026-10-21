@@ -25,7 +25,10 @@ var player_name: String = ""
 var lives: int = START_LIVES
 ## True while a launchable orb rests on this player's paddle. A player always has
 ## exactly one once it respawns; launching consumes it until the orb leaves the arena.
-var has_orb: bool = false
+var has_orb: bool = false:
+	set(value):
+		has_orb = value
+		_update_held_orb()
 var eliminated: bool = false
 
 var _manager: VortexArena = null
@@ -90,6 +93,7 @@ func eliminate() -> void:
 func revive() -> void:
 	eliminated = false
 	_revive_paddle()
+	_update_held_orb()
 
 ## Brief red flash when this paddle lets an orb through.
 func flash_hit() -> void:
@@ -125,6 +129,10 @@ func apply_player_color() -> void:
 		area_material.set_shader_parameter("base_color", _color)
 
 # ── Internals ─────────────────────────────────────────────────────────────────
+
+func _update_held_orb() -> void:
+	if is_instance_valid(deflector):
+		deflector.set_held_orb_visible(has_orb and not eliminated)
 
 func _connect_controller(player: ClientController) -> void:
 	controller = player

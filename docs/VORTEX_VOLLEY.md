@@ -168,15 +168,17 @@ state is displayed on the shared desktop screen.
 - Width: **1.3m**.
 - Travel is clamped to ±80% of the side's half-length from its center, leaving gaps
   near the octagon corners.
+- Shows the ready orb hovering just in front of it, toward the arena center, while
+  the player can launch. The orb follows the paddle as it moves.
 - Glows when an orb is ready to launch.
 - Flashes red when the player loses a life.
 
 ### Launching
 
-- Each mobile player **always has exactly one ready orb** on their paddle. There is
-  no orb supply or ammo count.
-- Pressing A or B launches the ready orb from the paddle's current position at
-  **5.0m/s**.
+- Each mobile player **always has exactly one ready orb** hovering in front of their
+  paddle. There is no orb supply or ammo count. The ready orb is visual only until
+  launched: it cannot hit the core, paddles, or players.
+- Pressing A or B launches the ready orb from its current position at **5.0m/s**.
 - A stationary paddle fires straight at the center. A moving paddle fires up to
   **30°** toward its direction of travel.
 - The orb travels in a straight line from the paddle toward the center platform.
@@ -235,8 +237,9 @@ Every **active** shield block increases the speed of the other active orbs by
 
 ### Lifecycle
 
-1. **Ready:** One glowing orb sits at the mobile player's paddle. Exactly one exists
-   per living mobile player.
+1. **Ready:** One glowing orb hovers in front of the mobile player's paddle and
+   follows it. It disappears when launched and is visual only — no collision or
+   damage until it leaves the paddle. Exactly one exists per living mobile player.
 2. **In play:** Orb travels, is reflected or sliced, bounces off core/paddles/walls,
    and can trigger power-ups. Only leaving the arena ends it.
 3. **Lost:** Orb exits through a player area. That player loses 1 life; the orb is

@@ -4,6 +4,8 @@ extends CharacterBody3D
 const MOVE_SPEED: float = 1.8
 const CLAMP_FACTOR: float = 0.8
 const PADDLE_RADIUS: float = 4.0
+## How far toward the arena center the ready orb floats in front of the paddle.
+const HELD_ORB_OFFSET: float = 0.4
 
 var controller: ClientController
 var spawn: PlayerSpawn
@@ -11,6 +13,8 @@ var spawn: PlayerSpawn
 @export var paddle_material: StandardMaterial3D
 @export var paddle: MeshInstance3D
 @export var goal_area: Area3D
+## Visual-only orb shown while this player has a launchable orb.
+@onready var held_orb: Node3D = $HeldOrb
 
 var _move_input: Vector2 = Vector2.ZERO
 var _active: bool = false
@@ -19,6 +23,8 @@ func _ready() -> void:
 	motion_mode = CharacterBody3D.MOTION_MODE_FLOATING
 	goal_area.body_entered.connect(_on_goal_body_entered)
 	paddle.material_override = paddle_material
+	held_orb.visible = false
+	_update_held_orb_position()
 
 ## Links this paddle to the slot that owns its setup.
 func bind(slot: PlayerSpawn) -> void:
@@ -57,6 +63,8 @@ func _disconnect_controller_signals() -> void:
 			controller.secondary_action_pressed.disconnect(_on_launch)
 
 func _physics_process(_delta: float) -> void:
+	if held_orb.visible:
+		_update_held_orb_position()
 	if not _active or not spawn:
 		return
 	var input := controller.get_move() if controller else _move_input
@@ -71,6 +79,27 @@ func _physics_process(_delta: float) -> void:
 		input_x = 0.0
 	velocity = tangent * input_x * MOVE_SPEED
 	move_and_slide()
+
+## Shows or hides the visual-only ready orb in front of the paddle.
+func set_held_orb_visible(shown: bool) -> void:
+	held_orb.visible = shown
+	if shown:
+		_update_held_orb_position()
+
+## World position of the ready orb: in front of the paddle, toward the core.
+func held_orb_position() -> Vector3:
+	var to_center := Vector3(-global_position.x, 0.0, -global_position.z)
+	if to_center.length_squared() < 0.0001:
+		to_center = Vector3.FORWARD
+	to_center = to_center.normalized()
+	return Vector3(
+		global_position.x + to_center.x * HELD_ORB_OFFSET,
+		GameOrb.ORB_HEIGHT,
+		global_position.z + to_center.z * HELD_ORB_OFFSET
+	)
+
+func _update_held_orb_position() -> void:
+	held_orb.global_position = held_orb_position()
 
 func _tangent() -> Vector3:
 	return Vector3(-sin(spawn.base_angle), 0.0, cos(spawn.base_angle))

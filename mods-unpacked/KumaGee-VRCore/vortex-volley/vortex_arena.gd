@@ -80,6 +80,8 @@ func reset() -> void:
 	_speed = ORB_SPEED_BASE
 	time_remaining = ROUND_TIME
 	_elimination_order.clear()
+	for d in deflectors:
+		d.has_orb = false
 	for orb in active_orbs:
 		if is_instance_valid(orb):
 			orb.queue_free()
@@ -125,8 +127,7 @@ func _spawn_orb_from_paddle(paddle: PlayerSpawn) -> void:
 	if not orb:
 		return
 	add_child(orb)
-	orb.global_position = paddle.deflector.global_position
-	orb.global_position.y = GameOrb.ORB_HEIGHT
+	orb.global_position = paddle.deflector.held_orb_position()
 	orb.owner_player = paddle
 	if is_instance_valid(paddle.controller):
 		orb.hitbox.attacker_uuid = paddle.controller.uuid
@@ -243,6 +244,8 @@ func _end_round() -> void:
 	if phase == Phase.ENDED:
 		return
 	phase = Phase.ENDED
+	for d in deflectors:
+		d.has_orb = false
 	for orb in active_orbs:
 		if is_instance_valid(orb):
 			orb.queue_free()
