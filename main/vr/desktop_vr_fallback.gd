@@ -54,7 +54,7 @@ func _process(delta: float) -> void:
 	if _should_block_input() and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
-	if not _is_desktop_fallback_active():
+	if not _should_run_desktop_fallback():
 		return
 
 	_poll_desktop_pickup_input()
@@ -82,6 +82,12 @@ func _unhandled_input(event: InputEvent) -> void:
 				#return
 
 		release_mouse_capture()
+		return
+
+	# The debug camera (F10) is driven by VRSpace from the root viewport. Do not
+	# handle mouse events here in that mode, or motion/capture would be applied
+	# twice (once here, once in VRSpace).
+	if _debug_camera_active():
 		return
 
 	if _should_block_input():
@@ -179,11 +185,23 @@ func physics_movement(_delta: float, player_body: XRToolsPlayerBody, _disabled: 
 func _should_block_input() -> bool:
 	var pause_open := pause_menu != null and pause_menu.visible
 	var settings_open := false # settings_viewport != null and settings_viewport.visible
-	return not _is_desktop_fallback_active() or pause_open or settings_open
+	return not _should_run_desktop_fallback() or pause_open or settings_open
+
+
+func _should_run_desktop_fallback() -> bool:
+	return _is_desktop_fallback_active() or _debug_camera_active()
 
 
 func _is_desktop_fallback_active() -> bool:
 	return not XRToolsStartXR.is_xr_active() and not get_viewport().use_xr
+
+
+## True while the debug camera (F10) is the current camera. In that mode the
+## desktop mouse/keyboard drive the XR player even when XR is configured
+## (use_xr=true before a session focuses) or an XR session is already active.
+func _debug_camera_active() -> bool:
+	var vr_space := _get_vr_space()
+	return vr_space != null and vr_space.debug_camera != null and vr_space.debug_camera.current
 
 
 func _get_vr_space() -> VRSpace:
