@@ -18,21 +18,21 @@
 
 [sub_resource type="Environment" id="Environment_lpitp"]
 
-[sub_resource type="QuadMesh" id="QuadMesh_k1jr6"]
+[sub_resource type="QuadMesh" id="QuadMesh_vwbdk"]
 resource_local_to_scene = true
 size = Vector2(1.5, 1)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_jdii5"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_k1jr6"]
 viewport_path = NodePath("XRPlayer/Viewport2Din3D/Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_flg17"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jdii5"]
 transparency = 1
 cull_mode = 2
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_jdii5")
+albedo_texture = SubResource("ViewportTexture_k1jr6")
 texture_filter = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_palq5"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_flg17"]
 resource_local_to_scene = true
 size = Vector3(1.5, 1, 0.02)
 
@@ -59,13 +59,14 @@ current = true
 
 [node name="ResetArea" parent="XRPlayer/SubViewport" parent_id_path=PackedInt32Array(10000004, 1709074553) index="1" unique_id=1712400852]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.4144087, 0)
+collision_mask = 524292
 
 [node name="Screen" parent="XRPlayer/Viewport2Din3D" parent_id_path=PackedInt32Array(10000004, 1418763861) index="1" unique_id=1761931612]
-mesh = SubResource("QuadMesh_k1jr6")
-surface_material_override/0 = SubResource("StandardMaterial3D_flg17")
+mesh = SubResource("QuadMesh_vwbdk")
+surface_material_override/0 = SubResource("StandardMaterial3D_jdii5")
 
 [node name="CollisionShape3D" parent="XRPlayer/Viewport2Din3D/StaticBody3D" parent_id_path=PackedInt32Array(10000004, 1418763861, 1882660186) index="0" unique_id=507281989]
-shape = SubResource("BoxShape3D_palq5")
+shape = SubResource("BoxShape3D_flg17")
 
 [node name="Control" parent="CanvasLayer" parent_id_path=PackedInt32Array(10000005) index="0" unique_id=871214352]
 theme = ExtResource("4_vn0a6")
