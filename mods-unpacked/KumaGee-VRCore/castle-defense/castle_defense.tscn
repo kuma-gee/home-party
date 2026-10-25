@@ -74,21 +74,21 @@ adjustment_brightness = 0.9
 adjustment_contrast = 1.1
 adjustment_saturation = 0.8
 
-[sub_resource type="QuadMesh" id="QuadMesh_kufnw"]
+[sub_resource type="QuadMesh" id="QuadMesh_enrkc"]
 resource_local_to_scene = true
 size = Vector2(1.5, 1)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_v1y0d"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_kufnw"]
 viewport_path = NodePath("XRPlayer/Viewport2Din3D/Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_db7bw"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v1y0d"]
 transparency = 1
 cull_mode = 2
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_v1y0d")
+albedo_texture = SubResource("ViewportTexture_kufnw")
 texture_filter = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_dwc66"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_db7bw"]
 resource_local_to_scene = true
 size = Vector3(1.5, 1, 0.02)
 
@@ -236,15 +236,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.22, 1.4200001, -0.4499998)
 [node name="RightHand" parent="XRPlayer/SubViewport/XRPlayer" index="4" unique_id=1667605568]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22, 1.4200001, -0.4499998)
 
-[node name="CanvasLayer" parent="XRPlayer" parent_id_path=PackedInt32Array(10000004) index="3" unique_id=2119231864]
-visible = false
-
 [node name="Screen" parent="XRPlayer/Viewport2Din3D" parent_id_path=PackedInt32Array(10000004, 1418763861) index="1" unique_id=1761931612]
-mesh = SubResource("QuadMesh_kufnw")
-surface_material_override/0 = SubResource("StandardMaterial3D_db7bw")
+mesh = SubResource("QuadMesh_enrkc")
+surface_material_override/0 = SubResource("StandardMaterial3D_v1y0d")
 
 [node name="CollisionShape3D" parent="XRPlayer/Viewport2Din3D/StaticBody3D" parent_id_path=PackedInt32Array(10000004, 1418763861, 1882660186) index="0" unique_id=507281989]
-shape = SubResource("BoxShape3D_dwc66")
+shape = SubResource("BoxShape3D_db7bw")
 
 [node name="Control" parent="CanvasLayer" parent_id_path=PackedInt32Array(10000005) index="0" unique_id=871214352]
 theme = ExtResource("18_3sspo")
@@ -331,8 +328,16 @@ text = "Take bomb to the gate
 horizontal_alignment = 1
 
 [node name="PlayerReadyUI" parent="CanvasLayer/Control/PrepareUI" parent_id_path=PackedInt32Array(10000006) index="3" unique_id=179113001 node_paths=PackedStringArray("player_list") instance=ExtResource("12_enrkc")]
-layout_mode = 0
-anchors_preset = 0
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+offset_left = -106.5
+offset_top = -351.0
+offset_right = 106.5
+offset_bottom = -290.0
+grow_vertical = 0
 player_list = NodePath("../../MarginContainer/PlayerList")
 
 [node name="GameUI" parent="CanvasLayer/Control" index="1" unique_id=10000007]

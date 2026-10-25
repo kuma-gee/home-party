@@ -96,21 +96,21 @@ shader_parameter/specular_strength = 0.25
 shader_parameter/specular_threshold = 0.78
 shader_parameter/specular_color = Color(1, 0.95, 0.8, 1)
 
-[sub_resource type="QuadMesh" id="QuadMesh_1qpvg"]
+[sub_resource type="QuadMesh" id="QuadMesh_xa1jr"]
 resource_local_to_scene = true
 size = Vector2(1.5, 1)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_ayfhd"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_1qpvg"]
 viewport_path = NodePath("XRPlayer/Viewport2Din3D/Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7trad"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ayfhd"]
 transparency = 1
 cull_mode = 2
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_ayfhd")
+albedo_texture = SubResource("ViewportTexture_1qpvg")
 texture_filter = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_3vnjw"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_7trad"]
 resource_local_to_scene = true
 size = Vector3(1.5, 1, 0.02)
 
@@ -264,7 +264,6 @@ horizontal_alignment = 1
 autowrap_mode = 2
 
 [node name="XRPlayer" parent="." unique_id=841158329 instance=ExtResource("9_rtmvl")]
-show_pause_overlay = false
 
 [node name="DebugVRView" parent="XRPlayer" index="0" unique_id=598998519]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
@@ -288,11 +287,11 @@ offset_right = 500.0
 offset_bottom = 491.0
 
 [node name="Screen" parent="XRPlayer/Viewport2Din3D" parent_id_path=PackedInt32Array(841158329, 1418763861) index="1" unique_id=1761931612]
-mesh = SubResource("QuadMesh_1qpvg")
-surface_material_override/0 = SubResource("StandardMaterial3D_7trad")
+mesh = SubResource("QuadMesh_xa1jr")
+surface_material_override/0 = SubResource("StandardMaterial3D_ayfhd")
 
 [node name="CollisionShape3D" parent="XRPlayer/Viewport2Din3D/StaticBody3D" parent_id_path=PackedInt32Array(841158329, 1418763861, 1882660186) index="0" unique_id=507281989]
-shape = SubResource("BoxShape3D_3vnjw")
+shape = SubResource("BoxShape3D_7trad")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1355722313]
 transform = Transform3D(-0.70710677, -0.5, 0.49999994, 0, 0.7071067, 0.7071068, -0.70710677, 0.5, -0.49999994, 0.4978037, 3.4107723, -3.1123755)

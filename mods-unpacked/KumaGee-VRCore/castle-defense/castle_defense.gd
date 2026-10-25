@@ -124,8 +124,8 @@ func _on_all_players_ready() -> void:
 	_check_all_ready()
 
 func _check_all_ready(start = false) -> void:
-	if is_instance_valid(_element_select):
-		_element_select.update_ready(player_list.get_ready_count(), player_list.get_player_count())
+	if is_instance_valid(_tutorial):
+		_tutorial.update_ready(player_list.get_ready_count(), player_list.get_player_count())
 	if start and player_list.is_all_ready():
 		_start_game()
 

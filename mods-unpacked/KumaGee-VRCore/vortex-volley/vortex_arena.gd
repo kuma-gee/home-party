@@ -12,6 +12,8 @@ const ORB_SPEED_BASE: float = 5.0
 const ORB_SPEED_MAX: float = 10.0
 const ORB_SPEED_STEP: float = 0.5
 const REFLECT_SPEED_BONUS: float = 1.5
+## Each saber slice sends the two resulting orbs this far off the original path.
+const SABER_SPLIT_ANGLE_DEG: float = 20.0
 const START_LIVES: int = 3
 const RESPAWN_DELAY: float = 1.5
 const ROUND_TIME: float = 180.0
@@ -109,6 +111,35 @@ func on_orb_blocked(orb: GameOrb, reflect_dir: Vector3, active: bool = false) ->
 	if active:
 		reflect_speed = minf(incoming_speed + REFLECT_SPEED_BONUS, ORB_SPEED_MAX)
 	orb.velocity = reflect_dir.normalized() * reflect_speed
+
+func on_orb_sliced(orb: GameOrb, _slice_dir: Vector3) -> void:
+	if phase != Phase.PLAYING or not is_instance_valid(orb):
+		return
+	if not active_orbs.has(orb) or orb.is_resolved():
+		return
+	var speed := orb.velocity.length()
+	if speed <= 0.0:
+		return
+	var forward := orb.velocity.normalized()
+	var angle := deg_to_rad(SABER_SPLIT_ANGLE_DEG)
+	orb.launch(forward.rotated(Vector3.UP, angle), speed)
+	_spawn_split_orb(orb, forward.rotated(Vector3.UP, -angle), speed)
+
+## Creates the second orb from a saber slice. It keeps the same owner and speed
+## so both halves can still hit any mobile player.
+func _spawn_split_orb(source: GameOrb, direction: Vector3, speed: float) -> void:
+	if not orb_scene:
+		return
+	var clone := orb_scene.instantiate() as GameOrb
+	if not clone:
+		return
+	add_child(clone)
+	clone.global_position = source.global_position
+	clone.owner_player = source.owner_player
+	if is_instance_valid(source.hitbox) and is_instance_valid(clone.hitbox):
+		clone.hitbox.attacker_uuid = source.hitbox.attacker_uuid
+	clone.launch(direction, speed)
+	active_orbs.append(clone)
 
 func force_end_round() -> void:
 	_end_round()

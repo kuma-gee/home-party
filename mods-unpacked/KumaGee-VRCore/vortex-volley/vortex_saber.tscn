@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://ch31qppa8hkml"]
+
+[ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_0pmwu"]
+[ext_resource type="Script" uid="uid://cdl5kcr2wvnav" path="res://addons/godot-xr-tools/objects/highlight/highlight_material.gd" id="4_4vlhx"]
+[ext_resource type="Material" uid="uid://dyuaw57o8y3i" path="res://addons/godot-xr-tools/materials/highlight.tres" id="5_s5csa"]
+[ext_resource type="Script" uid="uid://c6jsck3gmxffb" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_saber.gd" id="6_saber"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lt0ro"]
+size = Vector3(0.1, 1, 0.05)
+
+[sub_resource type="BoxMesh" id="BoxMesh_j35lm"]
+size = Vector3(0.1, 1, 0.05)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_p7dpd"]
+size = Vector3(0.15, 1.1, 0.1)
+
+[node name="VortexSaber" unique_id=777328390 node_paths=PackedStringArray("hit_area") instance=ExtResource("1_0pmwu")]
+script = ExtResource("6_saber")
+hit_area = NodePath("HitArea")
+
+[node name="CollisionShape3D" parent="." index="0" unique_id=1198871219]
+shape = SubResource("BoxShape3D_lt0ro")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." index="1" unique_id=1575716770]
+mesh = SubResource("BoxMesh_j35lm")
+
+[node name="XRToolsHighlightMaterial" type="Node" parent="." index="2" unique_id=756197531]
+script = ExtResource("4_4vlhx")
+highlight_mesh_instance = NodePath("../MeshInstance3D")
+highlight_material = ExtResource("5_s5csa")
+metadata/_custom_type_script = "uid://cdl5kcr2wvnav"
+
+[node name="HitArea" type="Area3D" parent="." index="3" unique_id=70000003]
+collision_layer = 0
+collision_mask = 1024
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitArea" index="0" unique_id=70000004]
+shape = SubResource("BoxShape3D_p7dpd")

@@ -1,0 +1,351 @@
+[gd_scene format=3 uid="uid://d0luc626pggth"]
+
+[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="1_cn54u"]
+[ext_resource type="Script" uid="uid://b7fxs4df6q3oo" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/ui/vortex_tutorial.gd" id="2_vqwnb"]
+[ext_resource type="Texture2D" uid="uid://dp8fblf8lofsk" path="res://assets/castle-defense/guide/CastleDefenseGuide_01_pick.png" id="3_ltuw8"]
+[ext_resource type="Texture2D" uid="uid://ikmkfn184gm4" path="res://assets/castle-defense/guide/CastleDefenseGuide_02_orb.png" id="4_08kp8"]
+[ext_resource type="Texture2D" uid="uid://cqslpxq524nnm" path="res://assets/castle-defense/guide/CastleDefenseGuide_03_shoot.png" id="5_v08fk"]
+[ext_resource type="Script" uid="uid://bw0ser54522sq" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/ui/vortex_weapon_select.gd" id="6_cn54u"]
+[ext_resource type="Texture2D" uid="uid://dppjsb1nftth5" path="res://icon.svg" id="7_vqwnb"]
+
+[node name="VRTutorial" type="PanelContainer" unique_id=1769673654 node_paths=PackedStringArray("ready_button")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_cn54u")
+script = ExtResource("2_vqwnb")
+ready_button = NodePath("MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer2/ReadyButton")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1043183749]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=232957429]
+layout_mode = 2
+
+[node name="Pages" type="Control" parent="MarginContainer/VBoxContainer" unique_id=397955204]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Page1_Tutorial" type="Control" parent="MarginContainer/VBoxContainer/Pages" unique_id=1464875000]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/VBoxContainer/Pages/Page1_Tutorial" unique_id=1616820542]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Pages/Page1_Tutorial/CenterContainer" unique_id=1629570313]
+layout_mode = 2
+
+[node name="Text" type="Label" parent="MarginContainer/VBoxContainer/Pages/Page1_Tutorial/CenterContainer/VBoxContainer" unique_id=790407522]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+text = "Protect the core for 3 min"
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Pages/Page1_Tutorial/CenterContainer/VBoxContainer" unique_id=1753893070]
+layout_mode = 2
+
+[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Pages/Page1_Tutorial/CenterContainer/VBoxContainer/VBoxContainer" unique_id=192557160]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Step1" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Pages/Page1_Tutorial/CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=467002659]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/Pages/Page1_Tutorial/CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer/Step1" unique_id=465166134]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ltuw8")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Pages/Page1_Tutorial/CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer/Step1" unique_id=1926897013]
+layout_mode = 2
+theme_type_variation = &"LabelSmall"
+text = "Reflect orbs using the shield"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Step2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Pages/Page1_Tutorial/CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=683772830]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/Pages/Page1_Tutorial/CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer/Step2" unique_id=225890391]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("4_08kp8")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Pages/Page1_Tutorial/CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer/Step2" unique_id=553689022]
+layout_mode = 2
+theme_type_variation = &"LabelSmall"
+text = "Slice the orbs using the saber"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Step3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Pages/Page1_Tutorial/CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=1473117443]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/Pages/Page1_Tutorial/CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer/Step3" unique_id=1112359036]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("5_v08fk")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Pages/Page1_Tutorial/CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer/Step3" unique_id=159611637]
+layout_mode = 2
+theme_type_variation = &"LabelSmall"
+text = "Release on top of bow and pull string"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Page2_Prepare" type="Control" parent="MarginContainer/VBoxContainer/Pages" unique_id=294269644]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="WeaponSelect" type="PanelContainer" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare" unique_id=1552823357 node_paths=PackedStringArray("left_shield_button", "left_saber_button", "right_shield_button", "right_saber_button")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_cn54u")
+script = ExtResource("6_cn54u")
+left_shield_button = NodePath("MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer/VBoxContainer/ShieldL")
+left_saber_button = NodePath("MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer/VBoxContainer/SaberL")
+right_shield_button = NodePath("MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer/VBoxContainer2/ShieldR")
+right_saber_button = NodePath("MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer/VBoxContainer2/SaberR")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect" unique_id=383536154]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer" unique_id=1740865298]
+layout_mode = 2
+theme_override_constants/separation = 26
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2" unique_id=1004068923]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=1399165347]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Select Weapons"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=320112958]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer" unique_id=1892149330]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1193369007]
+layout_mode = 2
+theme_type_variation = &"LabelSmall"
+text = "Left Hand"
+horizontal_alignment = 1
+
+[node name="ShieldL" type="TextureButton" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1185119841]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer/VBoxContainer/ShieldL" unique_id=137543471]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer/VBoxContainer/ShieldL/VBoxContainer" unique_id=1027207636]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("7_vqwnb")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer/VBoxContainer/ShieldL/VBoxContainer" unique_id=190996527]
+layout_mode = 2
+theme_type_variation = &"LabelSmall"
+text = "Shield"
+horizontal_alignment = 1
+
+[node name="SaberL" type="TextureButton" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=504585137]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer/VBoxContainer/SaberL" unique_id=1998886209]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer/VBoxContainer/SaberL/VBoxContainer" unique_id=527521424]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("7_vqwnb")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer/VBoxContainer/SaberL/VBoxContainer" unique_id=2078429178]
+layout_mode = 2
+theme_type_variation = &"LabelSmall"
+text = "Saber"
+horizontal_alignment = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer" unique_id=832296759]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer/VBoxContainer2" unique_id=1915793108]
+layout_mode = 2
+theme_type_variation = &"LabelSmall"
+text = "Right Hand"
+horizontal_alignment = 1
+
+[node name="ShieldR" type="TextureButton" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer/VBoxContainer2" unique_id=1034446065]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer/VBoxContainer2/ShieldR" unique_id=1061090157]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer/VBoxContainer2/ShieldR/VBoxContainer" unique_id=1534226114]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("7_vqwnb")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer/VBoxContainer2/ShieldR/VBoxContainer" unique_id=619794170]
+layout_mode = 2
+theme_type_variation = &"LabelSmall"
+text = "Shield"
+horizontal_alignment = 1
+
+[node name="SaberR" type="TextureButton" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer/VBoxContainer2" unique_id=1221672135]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer/VBoxContainer2/SaberR" unique_id=1952136084]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer/VBoxContainer2/SaberR/VBoxContainer" unique_id=411041345]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("7_vqwnb")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer/VBoxContainer2/SaberR/VBoxContainer" unique_id=23866847]
+layout_mode = 2
+theme_type_variation = &"LabelSmall"
+text = "Saber"
+horizontal_alignment = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2" unique_id=1376648956]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 2
+
+[node name="ReadyButton" type="Button" parent="MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer2" unique_id=201042177]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "mobile ready 0/5"
+
+[node name="MarginContainer2" type="MarginContainer" parent="." unique_id=1879504235]
+layout_mode = 2
+size_flags_vertical = 8
+mouse_filter = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="Navigation" type="HBoxContainer" parent="MarginContainer2" unique_id=863350316]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="BackButton" type="Button" parent="MarginContainer2/Navigation" unique_id=2112315533]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Back"
+
+[node name="PageLabel" type="Label" parent="MarginContainer2/Navigation" unique_id=2123897038]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_type_variation = &"LabelSmall"
+text = "1 / 2"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="MarginContainer2/Navigation" unique_id=1075027189]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="NextButton" type="Button" parent="MarginContainer2/Navigation" unique_id=514791119]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Next"
+
+[connection signal="pressed" from="MarginContainer2/Navigation/BackButton" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="MarginContainer2/Navigation/NextButton" to="." method="_on_next_pressed"]

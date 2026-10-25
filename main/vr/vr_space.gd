@@ -203,6 +203,7 @@ func _show_pause_menu() -> void:
 
 	_pause_active = true
 	was_paused = get_tree().paused
+	_set_pause_canvas_visible(true)
 	if show_pause_overlay:
 		overlay_mesh.show_overlay()
 		pause_menu.show()
@@ -232,6 +233,7 @@ func _on_menu_closed(from_settings := false):
 	
 	_hide_desktop_settings_panel()
 	_hide_desktop_menu()
+	_set_pause_canvas_visible(false)
 
 
 func _on_settings_anim_out_done() -> void:
@@ -313,6 +315,13 @@ func _get_pause_canvas() -> CanvasLayer:
 		return null
 
 	return pause_menu.get_parent() as CanvasLayer
+
+
+func _set_pause_canvas_visible(visible: bool) -> void:
+	if _pause_canvas == null:
+		_pause_canvas = _get_pause_canvas()
+	if _pause_canvas != null:
+		_pause_canvas.visible = visible
 
 
 func _set_pause_canvas_enabled(enabled: bool) -> void:

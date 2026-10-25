@@ -6,11 +6,19 @@ extends BaseGame
 @onready var game_manager: VortexArena = %VortexArena
 @onready var ai_manager: VortexAIManager = %AIManager
 
-const STRIKER_HAND_SCENE: PackedScene = preload("res://mods-unpacked/KumaGee-VRCore/vortex-volley/striker_hand.tscn")
+const SHIELD_SCENE: PackedScene = preload("res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_shield.tscn")
+const SABER_SCENE: PackedScene = preload("res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_saber.tscn")
 
 ## True once the VR player confirms readiness. Mobile players ready from their
 ## phones (A/B); the round starts when everyone is ready.
 var _vr_ready := false
+var _tutorial: VortexTutorial
+var _left_controller: XRController3D
+var _right_controller: XRController3D
+var _left_weapon: VortexWeapon
+var _right_weapon: VortexWeapon
+var _left_selection: VortexWeapon.Weapon = VortexWeapon.Weapon.SHIELD
+var _right_selection: VortexWeapon.Weapon = VortexWeapon.Weapon.SABER
 
 func _ready() -> void:
 	super()
@@ -18,7 +26,7 @@ func _ready() -> void:
 	game_phase.connect(_on_game_phase)
 	player_list.ready_changed.connect(_on_ready_changed)
 	_setup_game_manager()
-	_setup_vr_striker()
+	_setup_vr_weapons()
 	ai_manager.setup(player_list, game_manager)
 	LobbyServer.send_layout("joystick")
 
@@ -30,39 +38,78 @@ func _setup_game_manager() -> void:
 	game_manager.core_health_updated.connect(_on_core_health_updated)
 	game_manager.time_updated.connect(_on_time_updated)
 
-func _setup_vr_striker() -> void:
+func _setup_vr_weapons() -> void:
 	if not xr_player:
 		return
-	var left := xr_player.get_node_or_null("SubViewport/XRPlayer/LeftHand") as XRController3D
-	var right := xr_player.get_node_or_null("SubViewport/XRPlayer/RightHand") as XRController3D
+	_left_controller = xr_player.get_node_or_null("SubViewport/XRPlayer/LeftHand") as XRController3D
+	_right_controller = xr_player.get_node_or_null("SubViewport/XRPlayer/RightHand") as XRController3D
 	var player_body := xr_player.get_node_or_null("SubViewport/XRPlayer/PlayerBody") as XRToolsPlayerBody
 
 	if player_body:
 		player_body.collision_layer = 4
 
-	if left:
+	if _left_controller:
 		var move := XRToolsMovementDirect.new()
 		move.max_speed = 1.0
 		move.input_action = "primary"
 		move.order = 10
 		move.add_to_group("movement_providers")
-		left.add_child(move)
+		_left_controller.add_child(move)
 		if player_body:
 			player_body._movement_providers.append(move)
 			player_body._movement_providers.sort_custom(Callable(player_body, "sort_by_order"))
 
-	_attach_striker_hand(left)
-	_attach_striker_hand(right)
+	_apply_weapon_selection()
 
-func _attach_striker_hand(controller: XRController3D) -> void:
+func _on_weapons_changed(left: VortexWeapon.Weapon, right: VortexWeapon.Weapon) -> void:
+	_left_selection = left
+	_right_selection = right
+	_apply_weapon_selection()
+
+func _apply_weapon_selection() -> void:
+	_left_weapon = _sync_hand_weapon(_left_controller, _left_weapon, _left_selection)
+	_right_weapon = _sync_hand_weapon(_right_controller, _right_weapon, _right_selection)
+
+## Ensures [param controller] holds a weapon matching [param kind], swapping the
+## held weapon when the selection changes.
+func _sync_hand_weapon(controller: XRController3D, current: VortexWeapon, kind: VortexWeapon.Weapon) -> VortexWeapon:
+	if is_instance_valid(current) and _weapon_matches(current, kind):
+		return current
+	if is_instance_valid(current):
+		current.drop_and_free()
+	return _spawn_weapon(controller, kind)
+
+func _weapon_matches(weapon: VortexWeapon, kind: VortexWeapon.Weapon) -> bool:
+	if kind == VortexWeapon.Weapon.SHIELD:
+		return weapon is VortexShield
+	return weapon is VortexSaber
+
+## Spawns the weapon for [param kind] and grabs it into [param controller]'s
+## FunctionPickup, then wires its block/slice signals to the arena.
+func _spawn_weapon(controller: XRController3D, kind: VortexWeapon.Weapon) -> VortexWeapon:
 	if not controller:
-		return
-	var hand := STRIKER_HAND_SCENE.instantiate() as StrikerHand
-	controller.add_child(hand)
-	hand.orb_hit.connect(game_manager.on_orb_blocked)
+		return null
+	var scene := SHIELD_SCENE if kind == VortexWeapon.Weapon.SHIELD else SABER_SCENE
+	var weapon := scene.instantiate() as VortexWeapon
+	if not weapon:
+		return null
+	# Stay held without holding grip; weapons are dropped only when swapped.
+	weapon.press_to_hold = false
+	add_child(weapon)
+	weapon.global_position = controller.global_position
+	var pickup := controller.get_node_or_null("FunctionPickup") as XRToolsFunctionPickup
+	if pickup:
+		# Auto-equip via the pickup's grab path so the object is properly held.
+		pickup._pick_up_object(weapon)
+	if not weapon.orb_hit.is_connected(game_manager.on_orb_blocked):
+		weapon.orb_hit.connect(game_manager.on_orb_blocked)
+	if not weapon.orb_sliced.is_connected(game_manager.on_orb_sliced):
+		weapon.orb_sliced.connect(game_manager.on_orb_sliced)
+	return weapon
 
 func _on_prepare_phase() -> void:
 	_vr_ready = false
+	_show_tutorial()
 	if hud:
 		hud.set_state("Get Ready!")
 	if game_manager:
@@ -70,6 +117,27 @@ func _on_prepare_phase() -> void:
 	if ai_manager:
 		ai_manager.on_prepare_phase_entered()
 	_on_ready_changed()
+
+func _show_tutorial() -> void:
+	if not vr_screen:
+		return
+	_tutorial = vr_screen.get_scene_instance() as VortexTutorial
+	if not is_instance_valid(_tutorial):
+		vr_screen.set_scene(vr_screen.scene)
+		_tutorial = vr_screen.get_scene_instance() as VortexTutorial
+	if is_instance_valid(_tutorial):
+		if not _tutorial.ready_pressed.is_connected(on_vr_ready):
+			_tutorial.ready_pressed.connect(on_vr_ready)
+		var weapon_select := _tutorial.weapon_select
+		if is_instance_valid(weapon_select):
+			if not weapon_select.weapons_changed.is_connected(_on_weapons_changed):
+				weapon_select.weapons_changed.connect(_on_weapons_changed)
+			_on_weapons_changed(weapon_select.selected_left, weapon_select.selected_right)
+	vr_screen.show()
+
+func _update_tutorial_ready() -> void:
+	if is_instance_valid(_tutorial):
+		_tutorial.update_ready(player_list.get_ready_count(), player_list.get_player_count())
 
 ## Call when the VR player confirms readiness (VR HUD ready button / in-world
 ## trigger). Starts the round once every mobile player is ready too.
@@ -82,9 +150,13 @@ func on_vr_ready() -> void:
 func _on_ready_changed() -> void:
 	if is_game_phase:
 		return
+	_update_tutorial_ready()
 	check_all_ready(_vr_ready)
 
 func _on_game_phase() -> void:
+	if vr_screen:
+		vr_screen.hide()
+	_apply_weapon_selection()
 	if ai_manager:
 		ai_manager.on_game_phase_entered()
 	if game_manager:

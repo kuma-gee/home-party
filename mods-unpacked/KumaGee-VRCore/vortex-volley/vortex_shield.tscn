@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://vxjyfgrbrv7w"]
+
+[ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_pgqt0"]
+[ext_resource type="Script" uid="uid://cdl5kcr2wvnav" path="res://addons/godot-xr-tools/objects/highlight/highlight_material.gd" id="4_ugf4v"]
+[ext_resource type="Material" uid="uid://dyuaw57o8y3i" path="res://addons/godot-xr-tools/materials/highlight.tres" id="5_gfa33"]
+[ext_resource type="Script" uid="uid://3egv6gea38mc" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_shield.gd" id="6_shield"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_pgqt0"]
+height = 0.05
+radius = 0.3
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_p7dpd"]
+top_radius = 0.3
+bottom_radius = 0.3
+height = 0.05
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_p7dpd"]
+height = 0.1
+radius = 0.35
+
+[node name="VortexShield" unique_id=777328390 node_paths=PackedStringArray("hit_area") instance=ExtResource("1_pgqt0")]
+script = ExtResource("6_shield")
+hit_area = NodePath("HitArea")
+
+[node name="CollisionShape3D" parent="." index="0" unique_id=1198871219]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+shape = SubResource("CylinderShape3D_pgqt0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." index="1" unique_id=1096930391]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+mesh = SubResource("CylinderMesh_p7dpd")
+
+[node name="XRToolsHighlightMaterial" type="Node" parent="." index="2" unique_id=394427191]
+script = ExtResource("4_ugf4v")
+highlight_mesh_instance = NodePath("../MeshInstance3D")
+highlight_material = ExtResource("5_gfa33")
+metadata/_custom_type_script = "uid://cdl5kcr2wvnav"
+
+[node name="HitArea" type="Area3D" parent="." index="3" unique_id=70000001]
+collision_layer = 0
+collision_mask = 1024
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitArea" index="0" unique_id=70000002]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+shape = SubResource("CylinderShape3D_p7dpd")

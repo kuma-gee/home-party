@@ -2,7 +2,6 @@
 
 [ext_resource type="PackedScene" uid="uid://bisl1jfnf3opn" path="res://main/base_scene.tscn" id="1_base"]
 [ext_resource type="Script" uid="uid://cww5q0og4prbo" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_volley.gd" id="2_game"]
-[ext_resource type="Script" uid="uid://dk8vx2cnpq4f" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/striker_hand.gd" id="3_btxwl"]
 [ext_resource type="PackedScene" uid="uid://b63f0sfdwuq1" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_volley_player_ui.tscn" id="3_plui"]
 [ext_resource type="PackedScene" uid="uid://cknfdqosh2ycj" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/game_orb.tscn" id="4_orb"]
 [ext_resource type="PackedScene" uid="uid://bo1ex5nfcg43l" path="res://main/ui/player_ready_ui.tscn" id="4_v4ly5"]
@@ -14,36 +13,36 @@
 [ext_resource type="PackedScene" uid="uid://cb68xihwbsnc3" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/spawn.tscn" id="8_u27j1"]
 [ext_resource type="PackedScene" uid="uid://xq5fibkk6ul" path="res://assets/vortex/arena.glb" id="8_ymkxq"]
 [ext_resource type="Script" uid="uid://eav2x8m5qaim" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_ai_manager.gd" id="9_aiman"]
+[ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="15_k1jr6"]
+[ext_resource type="PackedScene" uid="uid://d0luc626pggth" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/ui/vortex_tutorial.tscn" id="16_jdii5"]
 
 [sub_resource type="Environment" id="Environment_lpitp"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_btxwl"]
-radius = 0.3
-
-[sub_resource type="QuadMesh" id="QuadMesh_vn0a6"]
+[sub_resource type="QuadMesh" id="QuadMesh_k1jr6"]
 resource_local_to_scene = true
 size = Vector2(1.5, 1)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_vwbdk"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_jdii5"]
 viewport_path = NodePath("XRPlayer/Viewport2Din3D/Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k1jr6"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_flg17"]
 transparency = 1
 cull_mode = 2
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_vwbdk")
+albedo_texture = SubResource("ViewportTexture_jdii5")
 texture_filter = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_jdii5"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_palq5"]
 resource_local_to_scene = true
 size = Vector3(1.5, 1, 0.02)
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_u27j1"]
-height = 0.32128906
-radius = 2.0
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_k1jr6"]
+height = 0.16003418
+radius = 1.9208984
 
-[node name="VortexVolley" unique_id=459618458 instance=ExtResource("1_base")]
+[node name="VortexVolley" unique_id=459618458 node_paths=PackedStringArray("vr_screen") instance=ExtResource("1_base")]
 script = ExtResource("2_game")
+vr_screen = NodePath("Viewport2Din3D2")
 
 [node name="WorldEnvironment" parent="." index="0" unique_id=10000001]
 environment = SubResource("Environment_lpitp")
@@ -58,25 +57,15 @@ transform = Transform3D(0.86602545, -0.43301296, 0.24999958, -0.41315672, -0.338
 transform = Transform3D(1, 0, 0, 0, 0.38751563, 0.92186314, 0, -0.92186314, 0.38751563, 0, 37.017944, 15.291992)
 current = true
 
-[node name="Area3D" type="Area3D" parent="XRPlayer/SubViewport/XRPlayer/LeftHand" parent_id_path=PackedInt32Array(10000004, 2106749189) index="0" unique_id=1539354222]
-script = ExtResource("3_btxwl")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="XRPlayer/SubViewport/XRPlayer/LeftHand/Area3D" index="0" unique_id=1903016119]
-shape = SubResource("SphereShape3D_btxwl")
-
-[node name="Area3D2" type="Area3D" parent="XRPlayer/SubViewport/XRPlayer/RightHand" parent_id_path=PackedInt32Array(10000004, 1667605568) index="1" unique_id=757949664]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.44, 0, 0)
-script = ExtResource("3_btxwl")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="XRPlayer/SubViewport/XRPlayer/RightHand/Area3D2" index="0" unique_id=1740322899]
-shape = SubResource("SphereShape3D_btxwl")
+[node name="ResetArea" parent="XRPlayer/SubViewport" parent_id_path=PackedInt32Array(10000004, 1709074553) index="1" unique_id=1712400852]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.4144087, 0)
 
 [node name="Screen" parent="XRPlayer/Viewport2Din3D" parent_id_path=PackedInt32Array(10000004, 1418763861) index="1" unique_id=1761931612]
-mesh = SubResource("QuadMesh_vn0a6")
-surface_material_override/0 = SubResource("StandardMaterial3D_k1jr6")
+mesh = SubResource("QuadMesh_k1jr6")
+surface_material_override/0 = SubResource("StandardMaterial3D_flg17")
 
 [node name="CollisionShape3D" parent="XRPlayer/Viewport2Din3D/StaticBody3D" parent_id_path=PackedInt32Array(10000004, 1418763861, 1882660186) index="0" unique_id=507281989]
-shape = SubResource("BoxShape3D_jdii5")
+shape = SubResource("BoxShape3D_palq5")
 
 [node name="Control" parent="CanvasLayer" parent_id_path=PackedInt32Array(10000005) index="0" unique_id=871214352]
 theme = ExtResource("4_vn0a6")
@@ -162,14 +151,25 @@ unique_name_in_owner = true
 script = ExtResource("7_arena")
 orb_scene = ExtResource("4_orb")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="." index="8" unique_id=1854907950]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0" unique_id=1155731278]
-shape = SubResource("CylinderShape3D_u27j1")
-
-[node name="AIManager" type="Node" parent="." index="9" unique_id=50000003]
+[node name="AIManager" type="Node" parent="." index="8" unique_id=50000003]
 unique_name_in_owner = true
 script = ExtResource("9_aiman")
+
+[node name="Viewport2Din3D2" parent="." index="9" unique_id=1231438571 instance=ExtResource("15_k1jr6")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 2.8944702, 3.447174)
+screen_size = Vector2(4, 3)
+scene = ExtResource("16_jdii5")
+viewport_size = Vector2(720, 560)
+unshaded = true
+scene_properties_keys = PackedStringArray("vortex_tutorial.gd", "vr_tutorial.gd", "ready_button", "ready_text", "waiting_text")
+ready_text = "Ready"
+waiting_text = "Ready (%s/%s)"
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="10" unique_id=845579987]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0" unique_id=813122424]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12860107, 0)
+shape = SubResource("CylinderShape3D_k1jr6")
 
 [editable path="XRPlayer"]
 [editable path="XRPlayer/StartXR"]
