@@ -37,7 +37,7 @@ An **octagonal** vortex arena with eight equal sides.
 | Arena shape | Regular octagon, 8 equal sides |
 | Arena radius (apothem) | 4.5m to each side midpoint (vertices at ~4.87m) |
 | Wall height | 2.5m |
-| Orb height | 0.9m (fixed) |
+| Orb height | 1.3m (fixed) |
 | Center platform radius | 1.2m |
 | Core | Sits on the center platform, protected by the VR player |
 | Core health | 20 (MVP default — tune during playtesting) |
@@ -57,7 +57,7 @@ side and cannot enter another player's zone.
 
 ## Orb Plane
 
-Orbs stay on a fixed horizontal plane at 0.9m. All movement and collision is 2D
+Orbs stay on a fixed horizontal plane at 1.3m. All movement and collision is 2D
 (X/Z only). Vertical shield position during VR blocks is ignored — only the
 shield's horizontal position and facing direction matter.
 
@@ -256,7 +256,7 @@ Power-ups add a second decision layer beyond launch-and-dodge. They are picked u
 
 ### Pickup Mechanics
 
-- Float on the orb plane (0.9m) inside the arena, between the center platform and the
+- Float on the orb plane (1.3m) inside the arena, between the center platform and the
   outer wall.
 - A mobile player picks one up when any orb they own collides with it.
 - The orb keeps flying; the power-up activates immediately for its owner. Neither the

@@ -1,7 +1,7 @@
 class_name GameOrb
 extends CharacterBody3D
 
-const ORB_HEIGHT: float = 0.9
+const ORB_HEIGHT: float = 1.3
 const COLLISION_LAYER: int = 1024  # Physics layer 11; lets paddle goal areas see the orb.
 ## Prevents one grazing pass from dealing damage on every frame inside the core.
 const CORE_HIT_COOLDOWN: float = 0.3
