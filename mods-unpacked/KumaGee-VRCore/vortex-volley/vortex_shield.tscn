@@ -19,6 +19,9 @@ height = 0.1
 radius = 0.35
 
 [node name="VortexShield" unique_id=777328390 node_paths=PackedStringArray("hit_area") instance=ExtResource("1_pgqt0")]
+gravity_scale = 0.0
+linear_damp = 2.0
+angular_damp = 2.0
 script = ExtResource("6_shield")
 hit_area = NodePath("HitArea")
 

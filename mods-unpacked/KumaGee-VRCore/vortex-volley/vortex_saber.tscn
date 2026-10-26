@@ -15,6 +15,9 @@ size = Vector3(0.1, 1, 0.05)
 size = Vector3(0.15, 1.1, 0.1)
 
 [node name="VortexSaber" unique_id=777328390 node_paths=PackedStringArray("hit_area") instance=ExtResource("1_0pmwu")]
+gravity_scale = 0.0
+linear_damp = 2.0
+angular_damp = 2.0
 script = ExtResource("6_saber")
 hit_area = NodePath("HitArea")
 
