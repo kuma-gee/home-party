@@ -105,18 +105,22 @@ orb; only an active swing adds speed and raises the pressure.
 
 ### Saber — Slice
 
-The saber **splits an orb into two** without changing its speed.
+The saber **splits an orb into two** without changing its speed, and each slice
+removes **1 orb health**.
 
+- Orbs start with **3 health**; every slice reduces both resulting halves by 1.
 - Both orbs continue at the orb's current speed (no halving, no reflect boost).
 - The two orbs diverge ±20° from the slice direction.
 - Split orbs can hit **any** mobile player in their path, not just the launcher.
 - Slicing does **not** trigger speed escalation — only active shield blocks do.
+- An orb shrinks one step after each slice. At **0 health** it is destroyed instead
+  of splitting again.
 - **Slice cooldown:** 0.3s per saber; same 0.3m/s minimum swing speed as the shield.
 
 **Design intent:** The shield is the "speed" tool and the saber is the "spread"
 tool. Choosing between them is the VR player's core decision: concentrate pressure
-(reflect) or multiply it (slice). Slicing late in a round floods the arena without
-raising the speed cap, creating a different kind of pressure.
+(reflect) or multiply it (slice). Repeated slices flood the arena with smaller,
+weaker orbs until the family is worn down and destroyed.
 
 ### Feedback
 
@@ -125,7 +129,7 @@ raising the speed cap, creating a different kind of pressure.
 | Successful block | Orb flash + shield trail burst | Sharp impact crack | Short pulse (0.1s) |
 | Missed orb (hits center) | Red pulse on arena floor | Low thud | Long rumble (0.3s) |
 | Player eliminated | Zone shatters visually | Glass break sound | Double pulse |
-| Orb sliced | Orb splits with spark burst | Quick slice whoosh | Sharp pulse (0.1s) |
+| Orb sliced | Orb shrinks and splits with spark burst | Quick slice whoosh | Sharp pulse (0.1s) |
 
 ### Core Damage
 
@@ -196,6 +200,8 @@ state is displayed on the shared desktop screen.
 | Maximum orb speed | 10.0m/s |
 | Speed increase per active shield block | +0.5m/s to other active orbs |
 | Minimum swing speed for boost | 0.3m/s |
+| Orb health | 3 |
+| Health removed per saber slice | 1 |
 | Ready orb per mobile player | 1 (always, while alive) |
 | Respawn delay after orb leaves arena | 1.5s |
 | Core damage cooldown per orb | 0.3s |
@@ -212,7 +218,7 @@ except leaving through a player area.
 | Arena wall | Orb bounces and continues |
 | Power-up | Pickup activates; orb continues |
 | VR shield | Orb reflects and continues |
-| VR saber | Orb splits and continues |
+| VR saber | Orb loses 1 health; splits and continues if health remains |
 | Player area (missed paddle) | Orb is lost — see below |
 
 **Reflected orbs can threaten ANY mobile player**, not just the launcher. A player

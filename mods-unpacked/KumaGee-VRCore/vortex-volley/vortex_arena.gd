@@ -120,13 +120,16 @@ func on_orb_sliced(orb: GameOrb, _slice_dir: Vector3) -> void:
 	var speed := orb.velocity.length()
 	if speed <= 0.0:
 		return
+	if orb.apply_slice_damage():
+		active_orbs.erase(orb)
+		return
 	var forward := orb.velocity.normalized()
 	var angle := deg_to_rad(SABER_SPLIT_ANGLE_DEG)
 	orb.launch(forward.rotated(Vector3.UP, angle), speed)
 	_spawn_split_orb(orb, forward.rotated(Vector3.UP, -angle), speed)
 
-## Creates the second orb from a saber slice. It keeps the same owner and speed
-## so both halves can still hit any mobile player.
+## Creates the second orb from a saber slice. It keeps the same owner, speed, and
+## remaining health so both halves can still hit any mobile player.
 func _spawn_split_orb(source: GameOrb, direction: Vector3, speed: float) -> void:
 	if not orb_scene:
 		return
@@ -136,6 +139,7 @@ func _spawn_split_orb(source: GameOrb, direction: Vector3, speed: float) -> void
 	add_child(clone)
 	clone.global_position = source.global_position
 	clone.owner_player = source.owner_player
+	clone.health = source.health
 	if is_instance_valid(source.hitbox) and is_instance_valid(clone.hitbox):
 		clone.hitbox.attacker_uuid = source.hitbox.attacker_uuid
 	clone.launch(direction, speed)
