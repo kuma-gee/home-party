@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://cww5q0og4prbo" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_volley.gd" id="2_game"]
 [ext_resource type="PackedScene" uid="uid://b63f0sfdwuq1" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_volley_player_ui.tscn" id="3_plui"]
 [ext_resource type="PackedScene" uid="uid://cknfdqosh2ycj" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/game_orb.tscn" id="4_orb"]
+[ext_resource type="PackedScene" uid="uid://c8f3ntp5qz6mb" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_power_up.tscn" id="10_powerup"]
 [ext_resource type="PackedScene" uid="uid://bo1ex5nfcg43l" path="res://main/ui/player_ready_ui.tscn" id="4_v4ly5"]
 [ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="4_vn0a6"]
 [ext_resource type="PackedScene" uid="uid://ckgifqosh2ycj" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/ui/vortex_hud.tscn" id="5_hud"]
@@ -151,18 +152,20 @@ material_override = ExtResource("8_h3hju")
 unique_name_in_owner = true
 script = ExtResource("7_arena")
 orb_scene = ExtResource("4_orb")
+power_up_scene = ExtResource("10_powerup")
 
 [node name="AIManager" type="Node" parent="." index="8" unique_id=50000003]
 unique_name_in_owner = true
 script = ExtResource("9_aiman")
 
-[node name="Viewport2Din3D2" parent="." index="9" unique_id=1231438571 instance=ExtResource("15_k1jr6")]
+[node name="Viewport2Din3D2" parent="." index="9" unique_id=1231438571 node_paths=PackedStringArray("ready_button") instance=ExtResource("15_k1jr6")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 2.8944702, 3.447174)
 screen_size = Vector2(4, 3)
 scene = ExtResource("16_jdii5")
 viewport_size = Vector2(720, 560)
 unshaded = true
 scene_properties_keys = PackedStringArray("vortex_tutorial.gd", "vr_tutorial.gd", "ready_button", "ready_text", "waiting_text")
+ready_button = NodePath("Viewport/VRTutorial/MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer2/ReadyButton")
 ready_text = "Ready"
 waiting_text = "Ready (%s/%s)"
 

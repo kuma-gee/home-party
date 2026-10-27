@@ -21,10 +21,24 @@ const ROUND_TIME: float = 180.0
 const AIM_MAX_ANGLE: float = deg_to_rad(30.0)
 ## Brief spawn grace so an orb does not bounce off the paddle that fired it.
 const LAUNCH_CLEARANCE_TIME: float = 0.3
+## How long a power-up stays collectible before expiring.
+const POWERUP_LIFETIME: float = 12.0
+## How long the spawn position is telegraphed before the power-up is collectible.
+const POWERUP_TELEGRAPH_TIME: float = 1.5
+## Radial band power-ups spawn in. Kept clear of the VR defender (center platform
+## radius 1.2m) and the mobile paddles (DeflectorPlayer.PADDLE_RADIUS = 4.0m) by a
+## 0.6m margin on each side, so a power-up never sits on either.
+const POWERUP_SPAWN_RADIUS_MIN: float = 1.8
+const POWERUP_SPAWN_RADIUS_MAX: float = 3.4
 
 enum Phase { WAITING, PLAYING, ENDED }
 
 @export var orb_scene: PackedScene
+@export var power_up_scene: PackedScene
+## Delay range before the next power-up spawns after the previous one resolves.
+## Randomized per spawn; tune in the inspector.
+@export var powerup_spawn_delay_min: float = 2.0
+@export var powerup_spawn_delay_max: float = 4.0
 
 var phase: Phase = Phase.WAITING
 ## Slots currently assigned to a player (phone or AI).
@@ -40,6 +54,9 @@ var time_remaining: float = ROUND_TIME
 
 var _speed: float = ORB_SPEED_BASE
 var _elimination_order: Array[PlayerSpawn] = []
+## The single active power-up, or null while the next spawn is pending.
+var _power_up: VortexPowerUp = null
+var _power_up_spawn_delay: float = 0.0
 
 func _ready() -> void:
 	_collect_slot_deflectors()
@@ -55,12 +72,15 @@ func _process(delta: float) -> void:
 		_end_round()
 		return
 	_prune_orbs()
+	_tick_power_ups(delta)
 
 func start_round() -> void:
 	phase = Phase.PLAYING
 	_speed = ORB_SPEED_BASE
 	time_remaining = ROUND_TIME
 	_elimination_order.clear()
+	_clear_power_up()
+	_schedule_next_power_up()
 	if core:
 		if not core.core_health_changed.is_connected(_on_core_health_changed):
 			core.core_health_changed.connect(_on_core_health_changed)
@@ -82,6 +102,8 @@ func reset() -> void:
 	_speed = ORB_SPEED_BASE
 	time_remaining = ROUND_TIME
 	_elimination_order.clear()
+	_clear_power_up()
+	_power_up_spawn_delay = 0.0
 	for d in deflectors:
 		d.has_orb = false
 	for orb in active_orbs:
@@ -144,6 +166,78 @@ func _spawn_split_orb(source: GameOrb, direction: Vector3, speed: float) -> void
 		clone.hitbox.attacker_uuid = source.hitbox.attacker_uuid
 	clone.launch(direction, speed)
 	active_orbs.append(clone)
+
+# ── Power-ups ─────────────────────────────────────────────────────────────────
+
+## Spawns the next power-up once the previous one resolved and the delay elapsed.
+## Exactly one is active at a time; the node runs its own telegraph → active →
+## expire lifecycle and reports back through picked_up/expired.
+func _tick_power_ups(delta: float) -> void:
+	if is_instance_valid(_power_up):
+		return
+	_power_up_spawn_delay -= delta
+	if _power_up_spawn_delay <= 0.0:
+		_spawn_power_up()
+
+## Starts the randomized countdown to the next power-up spawn.
+func _schedule_next_power_up() -> void:
+	_power_up_spawn_delay = randf_range(powerup_spawn_delay_min, powerup_spawn_delay_max)
+
+func _spawn_power_up() -> void:
+	if not power_up_scene:
+		return
+	var power_up := power_up_scene.instantiate() as VortexPowerUp
+	if not power_up:
+		return
+	add_child(power_up)
+	power_up.global_position = _random_power_up_position()
+	power_up.telegraph_time = POWERUP_TELEGRAPH_TIME
+	power_up.lifetime = POWERUP_LIFETIME
+	power_up.picked_up.connect(_on_power_up_picked)
+	power_up.expired.connect(_on_power_up_expired)
+	_power_up = power_up
+
+func _random_power_up_position() -> Vector3:
+	var angle := randf() * TAU
+	var radius := randf_range(POWERUP_SPAWN_RADIUS_MIN, POWERUP_SPAWN_RADIUS_MAX)
+	return Vector3(cos(angle) * radius, GameOrb.ORB_HEIGHT, sin(angle) * radius)
+
+## A mobile-owned orb collected the power-up. The orb keeps flying; the effect
+## activates immediately for its owner.
+func _on_power_up_picked(orb: GameOrb) -> void:
+	if phase != Phase.PLAYING:
+		return
+	var power_up := _power_up
+	_clear_power_up()
+	_schedule_next_power_up()
+	if is_instance_valid(power_up) and is_instance_valid(orb) and not orb.is_resolved():
+		_grant_power_up(power_up.type, orb)
+
+func _on_power_up_expired() -> void:
+	_clear_power_up()
+	_schedule_next_power_up()
+
+func _grant_power_up(type: VortexPowerUp.Type, orb: GameOrb) -> void:
+	match type:
+		VortexPowerUp.Type.DUPLICATE:
+			_duplicate_orb(orb)
+
+## Duplicate: splits the collecting orb into two in place at the current speed.
+## The original continues straight; the clone diverges 20°. No escalation.
+func _duplicate_orb(orb: GameOrb) -> void:
+	if not active_orbs.has(orb) or orb.is_resolved():
+		return
+	var speed := orb.velocity.length()
+	if speed <= 0.0:
+		return
+	var forward := orb.velocity.normalized()
+	var angle := deg_to_rad(SABER_SPLIT_ANGLE_DEG)
+	_spawn_split_orb(orb, forward.rotated(Vector3.UP, angle), speed)
+
+func _clear_power_up() -> void:
+	if is_instance_valid(_power_up):
+		_power_up.queue_free()
+	_power_up = null
 
 func force_end_round() -> void:
 	_end_round()
@@ -281,6 +375,7 @@ func _end_round() -> void:
 	phase = Phase.ENDED
 	for d in deflectors:
 		d.has_orb = false
+	_clear_power_up()
 	for orb in active_orbs:
 		if is_instance_valid(orb):
 			orb.queue_free()
