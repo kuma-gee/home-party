@@ -62,6 +62,10 @@ var time_remaining: float = ROUND_TIME
 
 var _speed: float = ORB_SPEED_BASE
 var _elimination_order: Array[PlayerSpawn] = []
+## Active (swung) shield blocks by the VR player this round.
+var _active_shield_blocks: int = 0
+## Core damage dealt per mobile player, keyed by attacker uuid.
+var _core_damage: Dictionary = {}
 ## The single active power-up, or null while the next spawn is pending.
 var _power_up: VortexPowerUp = null
 var _power_up_spawn_delay: float = 0.0
@@ -87,6 +91,8 @@ func start_round() -> void:
 	_speed = ORB_SPEED_BASE
 	time_remaining = ROUND_TIME
 	_elimination_order.clear()
+	_active_shield_blocks = 0
+	_core_damage.clear()
 	_clear_power_up()
 	_schedule_next_power_up()
 	if core:
@@ -110,6 +116,8 @@ func reset() -> void:
 	_speed = ORB_SPEED_BASE
 	time_remaining = ROUND_TIME
 	_elimination_order.clear()
+	_active_shield_blocks = 0
+	_core_damage.clear()
 	_clear_power_up()
 	_power_up_spawn_delay = 0.0
 	for d in deflectors:
@@ -138,6 +146,7 @@ func on_orb_blocked(orb: GameOrb, reflect_dir: Vector3, active: bool = false) ->
 		return
 	var incoming_speed := orb.velocity.length()
 	if active:
+		_active_shield_blocks += 1
 		_set_speed(minf(_speed + ORB_SPEED_STEP, ORB_SPEED_MAX))
 	var reflect_speed := incoming_speed
 	if active:
@@ -178,6 +187,7 @@ func _spawn_split_orb(source: GameOrb, direction: Vector3, speed: float) -> void
 	clone.health = source.health
 	if is_instance_valid(source.hitbox) and is_instance_valid(clone.hitbox):
 		clone.hitbox.attacker_uuid = source.hitbox.attacker_uuid
+	clone.core_hit.connect(_on_orb_core_hit)
 	clone.launch(direction, speed)
 	active_orbs.append(clone)
 
@@ -324,6 +334,7 @@ func _spawn_orb_from_paddle(paddle: PlayerSpawn) -> void:
 	orb.owner_player = paddle
 	if is_instance_valid(paddle.controller):
 		orb.hitbox.attacker_uuid = paddle.controller.uuid
+	orb.core_hit.connect(_on_orb_core_hit)
 	# The orb spawns on its own paddle; clear that overlap briefly so it can leave,
 	# then let it collide normally when it comes back.
 	orb.ignore_collision_with(paddle.deflector, LAUNCH_CLEARANCE_TIME)
@@ -376,6 +387,15 @@ func _has_active_orbs_for(player: PlayerSpawn) -> bool:
 func _on_core_health_changed(hp: int, _max_hp: int) -> void:
 	core_health_updated.emit(hp)
 
+## Records core damage attributed to a mobile player and gives the launcher its
+## replacement orb, since the orb is removed on impact.
+func _on_orb_core_hit(orb: GameOrb, attacker_uuid: String, amount: int) -> void:
+	if attacker_uuid != "":
+		_core_damage[attacker_uuid] = int(_core_damage.get(attacker_uuid, 0)) + amount
+	active_orbs.erase(orb)
+	if is_instance_valid(orb.owner_player):
+		_schedule_respawn(orb.owner_player)
+
 func _eliminate_player(player: PlayerSpawn) -> void:
 	if player.eliminated:
 		return
@@ -415,35 +435,38 @@ func _build_lives_data() -> Array[Dictionary]:
 
 func _build_scores() -> Array[Dictionary]:
 	var out: Array[Dictionary] = []
-	var alive: Array[PlayerSpawn] = []
-	var eliminated: Array[PlayerSpawn] = []
+	out.append({
+		"name": "VR",
+		"score": _vr_score(),
+	})
 	for d in deflectors:
-		if d.eliminated:
-			eliminated.append(d)
-		else:
-			alive.append(d)
-	var rank := 1
-	alive.sort_custom(func(a, b): return a.lives > b.lives)
-	for d in alive:
 		out.append({
-			"name": d.player_name,
-			"score": deflectors.size() - rank + 1,
-			"lives": d.lives,
-			"survived": true,
-			"rank": rank,
+			"name": _player_display_name(d),
+			"score": _mobile_score(d),
 		})
-		rank += 1
-	for i in range(eliminated.size() - 1, -1, -1):
-		var d := eliminated[i]
-		out.append({
-			"name": d.player_name,
-			"score": deflectors.size() - rank + 1,
-			"lives": 0,
-			"survived": false,
-			"rank": rank,
-		})
-		rank += 1
 	return out
+
+## VR score: surviving core health plus a bonus per active (swung) shield block.
+func _vr_score() -> int:
+	var core_health := core.health if is_instance_valid(core) else 0
+	return core_health * 100 + _active_shield_blocks * 10
+
+## Mobile score: lives kept plus a bonus per point of core damage dealt.
+func _mobile_score(d: PlayerSpawn) -> int:
+	if not is_instance_valid(d.controller):
+		return d.lives * 100
+	var damage := int(_core_damage.get(d.controller.uuid, 0))
+	return d.lives * 100 + damage * 10
+
+## Display name for a deflector: `P#` from the controller's color index so real
+## players and AI both map to the same shared palette naming. Never a raw UUID.
+func _player_display_name(d: PlayerSpawn) -> String:
+	if not is_instance_valid(d.controller):
+		return "P??"
+	var idx := d.controller.get_color_idx()
+	if idx < 0:
+		return "P??"
+	return "P%d" % (idx + 1)
 
 func _end_round() -> void:
 	if phase == Phase.ENDED:

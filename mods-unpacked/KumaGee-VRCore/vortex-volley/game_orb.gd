@@ -1,6 +1,11 @@
 class_name GameOrb
 extends CharacterBody3D
 
+## Emitted when this orb reaches the core. [param orb] is this orb so the arena
+## can schedule the launcher's replacement; [param attacker_uuid] is the launcher
+## attributed with the damage; [param amount] is the damage dealt.
+signal core_hit(orb: GameOrb, attacker_uuid: String, amount: int)
+
 const ORB_HEIGHT: float = 1.3
 const COLLISION_LAYER: int = 1024  # Physics layer 11; lets paddle goal areas see the orb.
 ## Prevents one grazing pass from dealing damage on every frame inside the core.
@@ -132,5 +137,6 @@ func _on_hitbox_area_entered(area: Area3D) -> void:
 		return
 	if _core_hit_cooldown <= 0.0:
 		_core_hit_cooldown = CORE_HIT_COOLDOWN
+		core_hit.emit(self, hitbox.attacker_uuid, hitbox.damage)
 		(area as HurtBox).hit(hitbox.damage, hitbox.attacker_uuid)
 	resolve()
