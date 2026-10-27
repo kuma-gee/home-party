@@ -133,15 +133,4 @@ func _on_hitbox_area_entered(area: Area3D) -> void:
 	if _core_hit_cooldown <= 0.0:
 		_core_hit_cooldown = CORE_HIT_COOLDOWN
 		(area as HurtBox).hit(hitbox.damage, hitbox.attacker_uuid)
-	_bounce_off(area.global_position)
-
-## Pong-style bounce off the core; the orb keeps playing at the same speed.
-func _bounce_off(point: Vector3) -> void:
-	var normal := global_position - point
-	normal.y = 0.0
-	if normal.length_squared() < 0.0001:
-		normal = -velocity
-		normal.y = 0.0
-	if normal.length_squared() < 0.0001:
-		return
-	velocity = velocity.bounce(normal.normalized())
+	resolve()
