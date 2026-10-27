@@ -114,6 +114,8 @@ func reset() -> void:
 	_power_up_spawn_delay = 0.0
 	for d in deflectors:
 		d.has_orb = false
+		if is_instance_valid(d.deflector):
+			d.deflector.clear_speed_boost()
 	for orb in active_orbs:
 		if is_instance_valid(orb):
 			orb.queue_free()

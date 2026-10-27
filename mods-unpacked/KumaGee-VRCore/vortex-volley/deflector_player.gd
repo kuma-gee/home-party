@@ -51,13 +51,17 @@ func set_active(active: bool) -> void:
 	if not active:
 		velocity = Vector3.ZERO
 		_move_input = Vector2.ZERO
-		_speed_boost_multiplier = 1.0
-		_speed_boost_time = 0.0
+		clear_speed_boost()
 
 ## Applies a temporary paddle speed multiplier (Paddle Boost power-up).
 func apply_speed_boost(multiplier: float, duration: float) -> void:
 	_speed_boost_multiplier = multiplier
 	_speed_boost_time = duration
+
+## Removes any active Paddle Boost. Called on elimination, release, and new round.
+func clear_speed_boost() -> void:
+	_speed_boost_multiplier = 1.0
+	_speed_boost_time = 0.0
 
 func _connect_controller_signals() -> void:
 	controller.moved.connect(_on_moved)
