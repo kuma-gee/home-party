@@ -108,7 +108,8 @@ orb; only an active swing adds speed and raises the pressure.
 The saber **splits an orb into two** without changing its speed, and each slice
 removes **1 orb health**.
 
-- Orbs start with **3 health**; every slice reduces both resulting halves by 1.
+- Orbs start with **2 health**; every slice reduces both resulting halves by 1.
+  An orb splits once, then the next slice destroys it.
 - Both orbs continue at the orb's current speed (no halving, no reflect boost).
 - The two orbs diverge ±20° from the slice direction.
 - Split orbs can hit **any** mobile player in their path, not just the launcher.
@@ -200,7 +201,7 @@ state is displayed on the shared desktop screen.
 | Maximum orb speed | 10.0m/s |
 | Speed increase per active shield block | +0.5m/s to other active orbs |
 | Minimum swing speed for boost | 0.3m/s |
-| Orb health | 3 |
+| Orb health | 2 |
 | Health removed per saber slice | 1 |
 | Ready orb per mobile player | 1 (always, while alive) |
 | Respawn delay after orb leaves arena | 1.5s |

@@ -30,6 +30,14 @@ const POWERUP_TELEGRAPH_TIME: float = 1.5
 ## 0.6m margin on each side, so a power-up never sits on either.
 const POWERUP_SPAWN_RADIUS_MIN: float = 1.8
 const POWERUP_SPAWN_RADIUS_MAX: float = 3.4
+## Turbo: speed added to the collecting player's active orbs.
+const POWERUP_TURBO_SPEED: float = 2.0
+## Paddle Boost: temporary paddle speed multiplier and its duration.
+const POWERUP_PADDLE_BOOST_MULT: float = 1.5
+const POWERUP_PADDLE_BOOST_DURATION: float = 10.0
+## Duplicate stops spawning at or above this many active orbs; below it the
+## weight scales down linearly as orbs accumulate.
+const POWERUP_DUPLICATE_MAX_ORBS: int = 10
 
 enum Phase { WAITING, PLAYING, ENDED }
 
@@ -142,8 +150,12 @@ func on_orb_sliced(orb: GameOrb, _slice_dir: Vector3) -> void:
 	var speed := orb.velocity.length()
 	if speed <= 0.0:
 		return
+	var launcher := orb.owner_player
 	if orb.apply_slice_damage():
 		active_orbs.erase(orb)
+		# The orb was sliced to death instead of leaving the arena, so return a
+		# ready orb to its launcher or they would be soft-locked with none.
+		_schedule_respawn(launcher)
 		return
 	var forward := orb.velocity.normalized()
 	var angle := deg_to_rad(SABER_SPLIT_ANGLE_DEG)
@@ -189,6 +201,7 @@ func _spawn_power_up() -> void:
 	var power_up := power_up_scene.instantiate() as VortexPowerUp
 	if not power_up:
 		return
+	power_up.type = _pick_power_up_type()
 	add_child(power_up)
 	power_up.global_position = _random_power_up_position()
 	power_up.telegraph_time = POWERUP_TELEGRAPH_TIME
@@ -201,6 +214,29 @@ func _random_power_up_position() -> Vector3:
 	var angle := randf() * TAU
 	var radius := randf_range(POWERUP_SPAWN_RADIUS_MIN, POWERUP_SPAWN_RADIUS_MAX)
 	return Vector3(cos(angle) * radius, GameOrb.ORB_HEIGHT, sin(angle) * radius)
+
+## Counts live orbs currently in play, ignoring freed or resolved entries that
+## have not yet been pruned.
+func _count_active_orbs() -> int:
+	var n := 0
+	for orb in active_orbs:
+		if is_instance_valid(orb) and not orb.is_resolved():
+			n += 1
+	return n
+
+## Weighted random power-up type. Duplicate's weight scales down linearly as
+## active orbs accumulate and hits zero at POWERUP_DUPLICATE_MAX_ORBS; Turbo and
+## Paddle Boost keep a constant weight so the pool never collapses to one type.
+func _pick_power_up_type() -> VortexPowerUp.Type:
+	var duplicate_weight := clampf(
+		1.0 - float(_count_active_orbs()) / float(POWERUP_DUPLICATE_MAX_ORBS), 0.0, 1.0)
+	var total := duplicate_weight + 2.0
+	var roll := randf() * total
+	if roll < duplicate_weight:
+		return VortexPowerUp.Type.DUPLICATE
+	if roll < duplicate_weight + 1.0:
+		return VortexPowerUp.Type.TURBO
+	return VortexPowerUp.Type.PADDLE_BOOST
 
 ## A mobile-owned orb collected the power-up. The orb keeps flying; the effect
 ## activates immediately for its owner.
@@ -221,6 +257,10 @@ func _grant_power_up(type: VortexPowerUp.Type, orb: GameOrb) -> void:
 	match type:
 		VortexPowerUp.Type.DUPLICATE:
 			_duplicate_orb(orb)
+		VortexPowerUp.Type.TURBO:
+			_boost_owner_orbs(orb)
+		VortexPowerUp.Type.PADDLE_BOOST:
+			_boost_owner_paddle(orb)
 
 ## Duplicate: splits the collecting orb into two in place at the current speed.
 ## The original continues straight; the clone diverges 20°. No escalation.
@@ -233,6 +273,28 @@ func _duplicate_orb(orb: GameOrb) -> void:
 	var forward := orb.velocity.normalized()
 	var angle := deg_to_rad(SABER_SPLIT_ANGLE_DEG)
 	_spawn_split_orb(orb, forward.rotated(Vector3.UP, angle), speed)
+
+## Turbo: +2.0 m/s to every active orb owned by the collecting player, capped at
+## ORB_SPEED_MAX. Other players' orbs are untouched.
+func _boost_owner_orbs(orb: GameOrb) -> void:
+	if not is_instance_valid(orb.owner_player):
+		return
+	var owner := orb.owner_player
+	for o in active_orbs:
+		if not is_instance_valid(o) or o.is_resolved() or o.owner_player != owner:
+			continue
+		if o.velocity.length_squared() < 0.0001:
+			continue
+		var speed := minf(o.velocity.length() + POWERUP_TURBO_SPEED, ORB_SPEED_MAX)
+		o.velocity = o.velocity.normalized() * speed
+
+## Paddle Boost: the collecting player's paddle moves faster for a short window.
+func _boost_owner_paddle(orb: GameOrb) -> void:
+	if not is_instance_valid(orb.owner_player):
+		return
+	var deflector := orb.owner_player.deflector
+	if is_instance_valid(deflector):
+		deflector.apply_speed_boost(POWERUP_PADDLE_BOOST_MULT, POWERUP_PADDLE_BOOST_DURATION)
 
 func _clear_power_up() -> void:
 	if is_instance_valid(_power_up):
@@ -296,8 +358,18 @@ func on_orb_passed(player: PlayerSpawn, orb: GameOrb) -> void:
 func _schedule_respawn(player: PlayerSpawn) -> void:
 	if not is_instance_valid(player) or player.eliminated or player.has_orb:
 		return
+	if _has_active_orbs_for(player):
+		return
 	get_tree().create_timer(RESPAWN_DELAY).timeout.connect(
 		func(): _respawn_orb_for(player), CONNECT_ONE_SHOT)
+
+## True when [param player] still owns at least one orb in play. Respawn is
+## delayed until the whole orb family is gone (pong-style re-serve).
+func _has_active_orbs_for(player: PlayerSpawn) -> bool:
+	for orb in active_orbs:
+		if is_instance_valid(orb) and not orb.is_resolved() and orb.owner_player == player:
+			return true
+	return false
 
 func _on_core_health_changed(hp: int, _max_hp: int) -> void:
 	core_health_updated.emit(hp)
@@ -319,6 +391,8 @@ func _respawn_orb_for(player: PlayerSpawn) -> void:
 	if phase != Phase.PLAYING or not is_instance_valid(player):
 		return
 	if player.eliminated or player.has_orb:
+		return
+	if _has_active_orbs_for(player):
 		return
 	player.has_orb = true
 	player.set_orb_ready()

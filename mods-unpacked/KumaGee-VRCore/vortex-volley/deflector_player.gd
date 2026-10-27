@@ -19,6 +19,9 @@ var spawn: PlayerSpawn
 
 var _move_input: Vector2 = Vector2.ZERO
 var _active: bool = false
+## Temporary Paddle Boost state: speed multiplier and remaining duration.
+var _speed_boost_multiplier: float = 1.0
+var _speed_boost_time: float = 0.0
 
 func _ready() -> void:
 	motion_mode = CharacterBody3D.MOTION_MODE_FLOATING
@@ -48,6 +51,13 @@ func set_active(active: bool) -> void:
 	if not active:
 		velocity = Vector3.ZERO
 		_move_input = Vector2.ZERO
+		_speed_boost_multiplier = 1.0
+		_speed_boost_time = 0.0
+
+## Applies a temporary paddle speed multiplier (Paddle Boost power-up).
+func apply_speed_boost(multiplier: float, duration: float) -> void:
+	_speed_boost_multiplier = multiplier
+	_speed_boost_time = duration
 
 func _connect_controller_signals() -> void:
 	controller.moved.connect(_on_moved)
@@ -63,9 +73,13 @@ func _disconnect_controller_signals() -> void:
 		if controller.secondary_action_pressed.is_connected(_on_launch):
 			controller.secondary_action_pressed.disconnect(_on_launch)
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if held_orb.visible:
 		_update_held_orb_position()
+	if _speed_boost_time > 0.0:
+		_speed_boost_time -= delta
+		if _speed_boost_time <= 0.0:
+			_speed_boost_multiplier = 1.0
 	if not _active or not spawn:
 		return
 	var input := controller.get_move() if controller else _move_input
@@ -78,7 +92,7 @@ func _physics_process(_delta: float) -> void:
 	var offset := (global_position - _side_center()).dot(tangent)
 	if (input_x > 0.0 and offset >= max_offset) or (input_x < 0.0 and offset <= -max_offset):
 		input_x = 0.0
-	velocity = tangent * input_x * MOVE_SPEED
+	velocity = tangent * input_x * MOVE_SPEED * _speed_boost_multiplier
 	move_and_slide()
 
 ## Shows or hides the visual-only ready orb in front of the paddle.

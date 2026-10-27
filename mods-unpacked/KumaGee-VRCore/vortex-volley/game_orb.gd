@@ -5,8 +5,9 @@ const ORB_HEIGHT: float = 1.3
 const COLLISION_LAYER: int = 1024  # Physics layer 11; lets paddle goal areas see the orb.
 ## Prevents one grazing pass from dealing damage on every frame inside the core.
 const CORE_HIT_COOLDOWN: float = 0.3
-## Saber slices needed to destroy an orb. Each slice also spawns a smaller clone.
-const MAX_HEALTH: int = 3
+## Saber slices needed to destroy an orb: the first slice splits it, the second
+## destroys it. Each split spawns a smaller clone.
+const MAX_HEALTH: int = 2
 ## Health removed by one saber slice.
 const SLICE_DAMAGE: int = 1
 ## Visual/collision size of an orb at its last point of health.
