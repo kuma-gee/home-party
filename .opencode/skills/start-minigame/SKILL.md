@@ -5,7 +5,7 @@ description: Start a specific mini-game in the running Godot game during tester-
 
 # Start Specific Mini-game
 
-Use this when tester must verify one mini-game, not hub/menu behavior.
+Use this when tester must verify one mini-game
 
 ## Required inputs
 
@@ -74,19 +74,6 @@ Known core mini-game resources:
    ```text
    /root/Staging/Scene/
    ```
-
-## Alternative: debug hotkeys
-
-Hub supports keyboard debug shortcuts in `main/game_shelve.gd`:
-
-- `Ctrl+Alt+1`..`Ctrl+Alt+9`: select/deselect indexed game from loaded game list.
-- `Ctrl+Alt+Enter`: start selected game.
-
-Loaded mini-games inherit this debug shortcut from `main/base_game.gd`:
-
-- `Ctrl+Alt+Enter`: advance prepare → game → gameover/debug end.
-
-Prefer MCP `select_game_with_path()` because game order can change.
 
 ## Starting gameplay phase inside mini-game
 
