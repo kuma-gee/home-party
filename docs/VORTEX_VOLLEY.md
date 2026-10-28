@@ -83,20 +83,20 @@ them in two. Tools can be swapped in settings for left-handed players.
 
 ### Shield — Block and Reflect
 
-When the shield crosses an orb's trajectory, the orb is reflected in the direction
-the shield's front face points at impact.
+When the shield crosses an orb's trajectory, the orb is **always reflected** in the
+direction the shield's front face points at impact — no minimum speed required.
 
 - **Block radius:** 0.35m around the shield's blocking surface (horizontal only)
-- **Swing speed threshold:** 0.3m/s of shield movement at impact
-- **Reflect speed:** Incoming speed + 1.5m/s on an active block; unchanged on a
-  passive block; capped at 10.0m/s
+- **Reflect speed:** Incoming speed + 1.5m/s when the shield is swung at or above
+  0.3m/s (active block); unchanged at current speed when held still or moving
+  slower (passive block); capped at 10.0m/s
 - **Block cooldown:** 0.2s per shield
 - **Reflect angle:** Shield's horizontal facing direction at impact
 
-A block is **active** when the shield moves at or above 0.3m/s at impact. It reflects
-at +1.5m/s and triggers global escalation. A **passive** block — shield held still
-or moving slower than the threshold — still reflects, but at current speed and with
-no escalation. This prevents parking the shield in one spot to farm speed.
+An **active block** — shield moving at or above 0.3m/s at impact — reflects at
++1.5m/s and triggers global escalation. A **passive block** — shield held still
+or moving slower — still reflects, but at current speed with no escalation. This
+prevents parking the shield in one spot to farm speed.
 
 **Design intent:** Blocking should feel like driving a heavy shield into a fast ball.
 The gesture is broad and readable, but reflect direction requires aim, letting
@@ -106,7 +106,8 @@ orb; only an active swing adds speed and raises the pressure.
 ### Saber — Slice
 
 The saber **splits an orb into two** without changing its speed, and each slice
-removes **1 orb health**.
+removes **1 orb health**. Any contact with the saber cuts the orb — no minimum
+swing speed required.
 
 - Orbs start with **2 health**; every slice reduces both resulting halves by 1.
   An orb splits once, then the next slice destroys it.
@@ -116,7 +117,7 @@ removes **1 orb health**.
 - Slicing does **not** trigger speed escalation — only active shield blocks do.
 - An orb shrinks one step after each slice. At **0 health** it is destroyed instead
   of splitting again.
-- **Slice cooldown:** 0.3s per saber; same 0.3m/s minimum swing speed as the shield.
+- **Slice cooldown:** 0.3s per saber.
 
 **Design intent:** The shield is the "speed" tool and the saber is the "spread"
 tool. Choosing between them is the VR player's core decision: concentrate pressure
@@ -137,14 +138,11 @@ weaker orbs until the family is worn down and destroyed.
 If an orb reaches the center platform without being blocked:
 
 1. The core loses 1 health on contact.
-2. The orb bounces off the core and continues at its current speed. It is not
-   destroyed.
-3. A per-orb **0.3s damage cooldown** prevents repeated damage while an orb grazes
-   the core.
+2. The orb is destroyed.
 
 At 0 core health, the mobile players win immediately. The VR player is incentivized
-to block everything: missed orbs keep chipping the core as they bounce around the
-arena.
+to block everything: each missed orb chips the core and forces the attacker to wait
+for a replacement orb.
 
 ## Mobile Players — Attackers
 
@@ -200,12 +198,11 @@ state is displayed on the shared desktop screen.
 | Reflect speed | Incoming + 1.5m/s on an active block; unchanged on a passive block |
 | Maximum orb speed | 10.0m/s |
 | Speed increase per active shield block | +0.5m/s to other active orbs |
-| Minimum swing speed for boost | 0.3m/s |
+| Minimum shield swing speed for boost | 0.3m/s |
 | Orb health | 2 |
 | Health removed per saber slice | 1 |
 | Ready orb per mobile player | 1 (always, while alive) |
 | Respawn delay after orb leaves arena | 1.5s |
-| Core damage cooldown per orb | 0.3s |
 
 ### Collision and Life Loss
 
@@ -214,7 +211,7 @@ except leaving through a player area.
 
 | Contact | Result |
 |---------|--------|
-| Core | Core loses 1 health; orb bounces and continues |
+| Core | Core loses 1 health; orb is destroyed |
 | Mobile paddle | Orb bounces and continues |
 | Arena wall | Orb bounces and continues |
 | Power-up | Pickup activates; orb continues |
@@ -247,8 +244,8 @@ Every **active** shield block increases the speed of the other active orbs by
 1. **Ready:** One glowing orb hovers in front of the mobile player's paddle and
    follows it. It disappears when launched and is visual only — no collision or
    damage until it leaves the paddle. Exactly one exists per living mobile player.
-2. **In play:** Orb travels, is reflected or sliced, bounces off core/paddles/walls,
-   and can trigger power-ups. Only leaving the arena ends it.
+2. **In play:** Orb travels, is reflected or sliced, bounces off paddles/walls,
+   and can trigger power-ups. Only leaving the arena or hitting the core ends it.
 3. **Lost:** Orb exits through a player area. That player loses 1 life; the orb is
    destroyed and the launcher's paddle gets a new ready orb after 1.5s.
 
@@ -296,11 +293,6 @@ the diverted orb stays live and can be blocked or lost.
 - Mobile players sync into the match.
 - Each mobile player receives 3 lives and one ready orb on their paddle.
 - Zones are assigned around the arena.
-- **Mobile onboarding:** The phone shows only the joystick and A/B buttons. Control
-  instructions ("Swipe to move paddle — press A/B to launch") appear on the shared
-  desktop screen. Pressing A/B readies the player.
-- **VR onboarding:** The headset shows "Swing your shield to block and speed up orbs
-  — angle it to reflect them back at players" with an animated shield demonstration.
 - The shared screen shows **Get Ready!** with player names and zone colors.
 - The round starts once **every mobile player and the VR player are ready**. Mobile
   players ready up with A/B; the VR player readies from the VR prepare HUD.
@@ -327,7 +319,7 @@ the diverted orb stays live and can be blocked or lost.
 - **Timer expires with the core alive:** VR wins.
 - **All mobile players eliminated:** VR wins.
 - **Core destroyed:** Mobile players win.
-- Leaderboard displays on the shared screen for 10 seconds.
+- Leaderboard displays on the shared screen.
 
 ## Results and Ranking
 
@@ -346,10 +338,7 @@ The shared desktop view shows the 3D arena and a lightweight HUD.
 |---------|-------------|
 | Timer | Countdown from 3 minutes, prominent center-top |
 | Core health | Bar showing the core's remaining health |
-| State label | Waiting, Get Ready, GO, or Round Over |
-| Lives list | Player name + zone color + heart icons |
-| Speed indicator | Orb speed bar, fills as escalation increases |
-| Leaderboard | Shown after the round ends (elimination order) |
+| Leaderboard | Shown after the round ends |
 
 ## Presentation
 
@@ -369,28 +358,4 @@ The shared desktop view shows the 3D arena and a lightweight HUD.
 - **Crowd reactive:** Cheers on elimination, gasps on close dodges, roar at 60+
   seconds if 3+ players are still alive.
 
-## Accessibility
 
-| Option | Description |
-|--------|-------------|
-| Colorblind modes | Deuteranopia, protanopia, tritanopia zone color palettes |
-| One-handed VR | Shield-only mode with larger block radius and slower orbs |
-| Left-handed tools | Swap shield and saber between hands |
-| Reduced motion | Disable screen shake, reduce particle intensity |
-
-## Edge Cases
-
-### 2-Player Configuration (1 VR + 1 Mobile)
-
-- Mobile player gets 5 lives instead of 3.
-- Round timer reduced to 60 seconds.
-- Orb speed escalation reduced to +0.3m/s per active block.
-- Playable but less chaotic — 3+ mobile players are recommended for the intended
-  party experience.
-
-### All Mobile Players Eliminated Early
-
-If all mobile players are eliminated before 60 seconds:
-
-- A **Quick Rematch** option appears on the shared screen.
-- A new round starts immediately with the same players and fresh lives.
