@@ -10,8 +10,10 @@ signal time_updated(remaining: float)
 const ARENA_RADIUS: float = 4.5
 const ORB_SPEED_BASE: float = 5.0
 const ORB_SPEED_MAX: float = 10.0
-const ORB_SPEED_STEP: float = 0.5
-const REFLECT_SPEED_BONUS: float = 1.5
+## Maximum speed for a boosted orb (Reflect Boost or Turbo can reach this).
+const ORB_SPEED_MAX_BOOSTED: float = 12.0
+## Speed added to an orb on an active shield block (shield moving ≥0.3m/s).
+const REFLECT_BOOST_AMOUNT: float = 2.0
 ## Each saber slice sends the two resulting orbs this far off the original path.
 const SABER_SPLIT_ANGLE_DEG: float = 20.0
 const START_LIVES: int = 3
@@ -60,7 +62,6 @@ var active_orbs: Array[GameOrb] = []
 var core: VortexCore
 var time_remaining: float = ROUND_TIME
 
-var _speed: float = ORB_SPEED_BASE
 var _elimination_order: Array[PlayerSpawn] = []
 ## Active (swung) shield blocks by the VR player this round.
 var _active_shield_blocks: int = 0
@@ -88,7 +89,6 @@ func _process(delta: float) -> void:
 
 func start_round() -> void:
 	phase = Phase.PLAYING
-	_speed = ORB_SPEED_BASE
 	time_remaining = ROUND_TIME
 	_elimination_order.clear()
 	_active_shield_blocks = 0
@@ -102,7 +102,6 @@ func start_round() -> void:
 			core.core_destroyed.connect(_end_round)
 		core.reset()
 		core_health_updated.emit(core.health)
-	speed_updated.emit(_speed)
 	_sync_deflectors()
 	for d in deflectors:
 		d.lives = START_LIVES
@@ -113,7 +112,6 @@ func start_round() -> void:
 
 func reset() -> void:
 	phase = Phase.WAITING
-	_speed = ORB_SPEED_BASE
 	time_remaining = ROUND_TIME
 	_elimination_order.clear()
 	_active_shield_blocks = 0
@@ -144,14 +142,10 @@ func on_orb_blocked(orb: GameOrb, reflect_dir: Vector3, active: bool = false) ->
 		return
 	if not active_orbs.has(orb):
 		return
-	var incoming_speed := orb.velocity.length()
 	if active:
 		_active_shield_blocks += 1
-		_set_speed(minf(_speed + ORB_SPEED_STEP, ORB_SPEED_MAX))
-	var reflect_speed := incoming_speed
-	if active:
-		reflect_speed = minf(incoming_speed + REFLECT_SPEED_BONUS, ORB_SPEED_MAX)
-	orb.velocity = reflect_dir.normalized() * reflect_speed
+		orb.apply_reflect_boost(REFLECT_BOOST_AMOUNT)
+	orb.velocity = reflect_dir.normalized() * orb.velocity.length()
 
 func on_orb_sliced(orb: GameOrb, _slice_dir: Vector3) -> void:
 	if phase != Phase.PLAYING or not is_instance_valid(orb):
@@ -162,6 +156,8 @@ func on_orb_sliced(orb: GameOrb, _slice_dir: Vector3) -> void:
 	if speed <= 0.0:
 		return
 	var launcher := orb.owner_player
+	var was_boosted := orb.is_boosted()
+	var base_speed := orb.get_base_speed() if was_boosted else speed
 	if orb.apply_slice_damage():
 		active_orbs.erase(orb)
 		# The orb was sliced to death instead of leaving the arena, so return a
@@ -170,12 +166,15 @@ func on_orb_sliced(orb: GameOrb, _slice_dir: Vector3) -> void:
 		return
 	var forward := orb.velocity.normalized()
 	var angle := deg_to_rad(SABER_SPLIT_ANGLE_DEG)
+	# Re-launch the original half, preserving its Reflect Boost if it had one.
 	orb.launch(forward.rotated(Vector3.UP, angle), speed)
-	_spawn_split_orb(orb, forward.rotated(Vector3.UP, -angle), speed)
+	if was_boosted:
+		orb.restore_reflect_boost(base_speed)
+	_spawn_split_orb(orb, forward.rotated(Vector3.UP, -angle), speed, was_boosted, base_speed)
 
 ## Creates the second orb from a saber slice. It keeps the same owner, speed, and
 ## remaining health so both halves can still hit any mobile player.
-func _spawn_split_orb(source: GameOrb, direction: Vector3, speed: float) -> void:
+func _spawn_split_orb(source: GameOrb, direction: Vector3, speed: float, was_boosted: bool = false, base_speed: float = 0.0) -> void:
 	if not orb_scene:
 		return
 	var clone := orb_scene.instantiate() as GameOrb
@@ -189,6 +188,10 @@ func _spawn_split_orb(source: GameOrb, direction: Vector3, speed: float) -> void
 		clone.hitbox.attacker_uuid = source.hitbox.attacker_uuid
 	clone.core_hit.connect(_on_orb_core_hit)
 	clone.launch(direction, speed)
+	# Both halves inherit any active Reflect Boost so slicing a fast orb
+	# creates two fast orbs.
+	if was_boosted:
+		clone.restore_reflect_boost(base_speed)
 	active_orbs.append(clone)
 
 # ── Power-ups ─────────────────────────────────────────────────────────────────
@@ -276,6 +279,7 @@ func _grant_power_up(type: VortexPowerUp.Type, orb: GameOrb) -> void:
 
 ## Duplicate: splits the collecting orb into two in place at the current speed.
 ## The original continues straight; the clone diverges 20°. No escalation.
+## Both halves keep any active Reflect Boost, same as a saber slice.
 func _duplicate_orb(orb: GameOrb) -> void:
 	if not active_orbs.has(orb) or orb.is_resolved():
 		return
@@ -284,10 +288,13 @@ func _duplicate_orb(orb: GameOrb) -> void:
 		return
 	var forward := orb.velocity.normalized()
 	var angle := deg_to_rad(SABER_SPLIT_ANGLE_DEG)
-	_spawn_split_orb(orb, forward.rotated(Vector3.UP, angle), speed)
+	var was_boosted := orb.is_boosted()
+	var base_speed := orb.get_base_speed() if was_boosted else speed
+	_spawn_split_orb(orb, forward.rotated(Vector3.UP, angle), speed, was_boosted, base_speed)
 
 ## Turbo: +2.0 m/s to every active orb owned by the collecting player, capped at
-## ORB_SPEED_MAX. Other players' orbs are untouched.
+## ORB_SPEED_MAX_BOOSTED (Turbo is permanent until the orb is lost, unlike Reflect
+## Boost which expires on contact). Other players' orbs are untouched.
 func _boost_owner_orbs(orb: GameOrb) -> void:
 	if not is_instance_valid(orb.owner_player):
 		return
@@ -297,7 +304,7 @@ func _boost_owner_orbs(orb: GameOrb) -> void:
 			continue
 		if o.velocity.length_squared() < 0.0001:
 			continue
-		var speed := minf(o.velocity.length() + POWERUP_TURBO_SPEED, ORB_SPEED_MAX)
+		var speed := minf(o.velocity.length() + POWERUP_TURBO_SPEED, ORB_SPEED_MAX_BOOSTED)
 		o.velocity = o.velocity.normalized() * speed
 
 ## Paddle Boost: the collecting player's paddle moves faster for a short window.
@@ -338,7 +345,7 @@ func _spawn_orb_from_paddle(paddle: PlayerSpawn) -> void:
 	# The orb spawns on its own paddle; clear that overlap briefly so it can leave,
 	# then let it collide normally when it comes back.
 	orb.ignore_collision_with(paddle.deflector, LAUNCH_CLEARANCE_TIME)
-	orb.launch(_launch_direction(paddle.deflector), _speed)
+	orb.launch(_launch_direction(paddle.deflector), ORB_SPEED_BASE)
 	active_orbs.append(orb)
 
 ## Launch aim: straight at the core when the paddle is still, up to
@@ -537,16 +544,6 @@ func _assign_deflector(d: PlayerSpawn, controller: ClientController) -> void:
 func _release_deflector(d: PlayerSpawn) -> void:
 	d.release()
 	deflectors.erase(d)
-
-func _set_speed(value: float) -> void:
-	_speed = value
-	for orb in active_orbs:
-		if not is_instance_valid(orb) or orb.is_resolved():
-			continue
-		if orb.velocity == Vector3.ZERO:
-			continue
-		orb.velocity = orb.velocity.normalized() * _speed
-	speed_updated.emit(_speed)
 
 func _prune_orbs() -> void:
 	var i := 0

@@ -17,6 +17,8 @@ const MAX_HEALTH: int = 2
 const SLICE_DAMAGE: int = 1
 ## Visual/collision size of an orb at its last point of health.
 const MIN_SIZE_FACTOR: float = 0.6
+## Maximum speed a boosted orb can reach (Reflect Boost or Turbo).
+const MAX_BOOSTED_SPEED: float = 12.0
 
 ## Launcher of this orb. Its player color tints the orb so player-owned orbs stay
 ## visually distinguishable in flight.
@@ -34,6 +36,11 @@ var _resolved: bool = false
 var _core_hit_cooldown: float = 0.0
 var _ignored_body: PhysicsBody3D = null
 var _ignore_time: float = 0.0
+## True while this orb carries a temporary Reflect Boost. The boost expires on
+## contact with a wall, paddle, or other surface.
+var _is_boosted: bool = false
+## Orb speed before the Reflect Boost was applied. Restored when the boost expires.
+var _base_speed: float = 0.0
 
 @onready var hitbox: HitBox = $HitBox
 @onready var _sphere: CSGSphere3D = $CSGSphere3D
@@ -59,6 +66,42 @@ func apply_slice_damage() -> bool:
 		return false
 	resolve()
 	return true
+
+## Applies a Reflect Boost: temporarily increases the orb's speed by [param amount].
+## Boosts do not stack — a fresh boost replaces any existing one. The boost
+## expires when the orb hits a wall, paddle, or other surface.
+func apply_reflect_boost(amount: float) -> void:
+	if _resolved or velocity.length_squared() < 0.0001:
+		return
+	if not _is_boosted:
+		_base_speed = velocity.length()
+	_is_boosted = true
+	var new_speed := minf(_base_speed + amount, MAX_BOOSTED_SPEED)
+	velocity = velocity.normalized() * new_speed
+
+## Removes the Reflect Boost, restoring the orb to its pre-boost speed.
+func remove_reflect_boost() -> void:
+	if not _is_boosted:
+		return
+	_is_boosted = false
+	if velocity.length_squared() > 0.0001:
+		velocity = velocity.normalized() * _base_speed
+
+## True while this orb carries an active Reflect Boost.
+func is_boosted() -> bool:
+	return _is_boosted
+
+## Returns the orb's speed before the Reflect Boost was applied.
+func get_base_speed() -> float:
+	return _base_speed
+
+## Restores a previously active Reflect Boost after a state reset (e.g. after a
+## saber slice re-launches the orb). [param base_speed] is the pre-boost speed.
+func restore_reflect_boost(base_speed: float) -> void:
+	if _resolved or velocity.length_squared() < 0.0001:
+		return
+	_base_speed = base_speed
+	_is_boosted = true
 
 ## Shrinks the orb one step per point of health lost so damage is readable in VR.
 func _apply_health_visuals() -> void:
@@ -96,6 +139,9 @@ func _physics_process(delta: float) -> void:
 	velocity.y = 0.0
 	var col := move_and_collide(velocity * delta)
 	if col:
+		# Any wall/paddle contact expires the Reflect Boost — the orb returns
+		# to its pre-boost speed before bouncing.
+		remove_reflect_boost()
 		var reflect_dir := velocity.bounce(col.get_normal())
 		velocity = Vector3(reflect_dir.x, 0.0, reflect_dir.z).normalized() * velocity.length()
 	global_position.y = ORB_HEIGHT
@@ -122,6 +168,9 @@ func _tick_timers(delta: float) -> void:
 func launch(direction: Vector3, speed: float) -> void:
 	velocity = direction.normalized() * speed
 	global_position.y = ORB_HEIGHT
+	# Fresh launch always starts unboosted; boosts never carry over to new orbs.
+	_is_boosted = false
+	_base_speed = speed
 
 func resolve() -> void:
 	if _resolved:
