@@ -25,8 +25,10 @@ one round of watching.
    orbs, paddles, player zones, lives, the core, and the VR defender at center.
 2. **Asymmetric tension** — Mobile players choose when to attack but risk getting
    hit by their own reflected orb. The VR player reacts to pressure from all sides.
-3. **Escalating chaos** — Orb speed rises only when the VR player actively swings
-   the shield into a block, making the arena progressively harder for everyone.
+3. **Burst chaos** — Active shield blocks **overcharge** the reflected orb with a
+   temporary speed boost, creating intense but contained moments of danger. The
+   boost expires when the orb hits something, so skilled VR players create more
+   spikes of chaos without permanently overwhelming the arena.
 
 ## Arena
 
@@ -87,21 +89,22 @@ When the shield crosses an orb's trajectory, the orb is **always reflected** in 
 direction the shield's front face points at impact — no minimum speed required.
 
 - **Block radius:** 0.35m around the shield's blocking surface (horizontal only)
-- **Reflect speed:** Incoming speed + 1.5m/s when the shield is swung at or above
-  0.3m/s (active block); unchanged at current speed when held still or moving
-  slower (passive block); capped at 10.0m/s
+- **Reflect speed:** Unchanged at current speed on any block (active or passive)
+- **Reflect Boost:** Active blocks (shield moving ≥0.3m/s at impact) apply a
+  **temporary +2.0m/s boost** to the reflected orb (see Reflect Boost below)
 - **Block cooldown:** 0.2s per shield
 - **Reflect angle:** Shield's horizontal facing direction at impact
 
 An **active block** — shield moving at or above 0.3m/s at impact — reflects at
-+1.5m/s and triggers global escalation. A **passive block** — shield held still
-or moving slower — still reflects, but at current speed with no escalation. This
-prevents parking the shield in one spot to farm speed.
+current speed and applies a **Reflect Boost** to the orb. A **passive block** —
+shield held still or moving slower — still reflects at current speed with no boost.
+This prevents parking the shield in one spot to farm boosts.
 
 **Design intent:** Blocking should feel like driving a heavy shield into a fast ball.
 The gesture is broad and readable, but reflect direction requires aim, letting
-skilled VR players target specific mobile zones. A held-still shield can deflect an
-orb; only an active swing adds speed and raises the pressure.
+skilled VR players target specific mobile zones. An active swing doesn't add permanent
+speed — instead, it **overcharges** the orb with a temporary boost that expires on
+contact, creating a burst of danger rather than a permanent escalation.
 
 ### Saber — Slice
 
@@ -111,24 +114,30 @@ swing speed required.
 
 - Orbs start with **2 health**; every slice reduces both resulting halves by 1.
   An orb splits once, then the next slice destroys it.
-- Both orbs continue at the orb's current speed (no halving, no reflect boost).
-- The two orbs diverge ±20° from the slice direction.
+- Both orbs continue at the orb's current speed (no halving, no speed change).
+- If the sliced orb had a **Reflect Boost**, both halves **inherit the boost** —
+  slicing a fast orb creates two fast orbs.
+- The two orbs diverge ±20° from the orb's velocity vector.
 - Split orbs can hit **any** mobile player in their path, not just the launcher.
-- Slicing does **not** trigger speed escalation — only active shield blocks do.
+- Slicing does **not** apply a Reflect Boost — only active shield blocks do.
 - An orb shrinks one step after each slice. At **0 health** it is destroyed instead
   of splitting again.
 - **Slice cooldown:** 0.3s per saber.
 
 **Design intent:** The shield is the "speed" tool and the saber is the "spread"
-tool. Choosing between them is the VR player's core decision: concentrate pressure
-(reflect) or multiply it (slice). Repeated slices flood the arena with smaller,
-weaker orbs until the family is worn down and destroyed.
+tool. Choosing between them is the VR player's core decision: overcharge an orb
+with a temporary boost (reflect) or multiply it (slice). Slicing a boosted orb
+creates two fast orbs — a delicious risk/reward: do you slice the glowing orb and
+multiply the threat, or let it bounce and lose the boost? Repeated slices flood
+the arena with smaller, weaker orbs until the family is worn down and destroyed.
 
 ### Feedback
 
 | Event | Visual | Audio | Haptic |
 |-------|--------|-------|--------|
 | Successful block | Orb flash + shield trail burst | Sharp impact crack | Short pulse (0.1s) |
+| Reflect Boost applied | Orb ignites white-hot, afterimage trail appears | Rising pitch sweep | Medium pulse (0.15s) |
+| Reflect Boost expires | Afterimage fades, glow returns to normal | Descending tone | None |
 | Missed orb (hits center) | Red pulse on arena floor | Low thud | Long rumble (0.3s) |
 | Player eliminated | Zone shatters visually | Glass break sound | Double pulse |
 | Orb sliced | Orb shrinks and splits with spark burst | Quick slice whoosh | Sharp pulse (0.1s) |
@@ -181,7 +190,8 @@ state is displayed on the shared desktop screen.
 - Each mobile player **always has exactly one ready orb** hovering in front of their
   paddle. There is no orb supply or ammo count. The ready orb is visual only until
   launched: it cannot hit the core, paddles, or players.
-- Pressing A or B launches the ready orb from its current position at **5.0m/s**.
+- Pressing A or B launches the ready orb from its current position at **5.0m/s**
+  (always base speed — boosts do not carry over to new orbs).
 - A stationary paddle fires straight at the center. A moving paddle fires up to
   **30°** toward its direction of travel.
 - The orb travels in a straight line from the paddle toward the center platform.
@@ -194,50 +204,88 @@ state is displayed on the shared desktop screen.
 
 | Value | Amount |
 |-------|--------|
-| Launch speed | 5.0m/s |
-| Reflect speed | Incoming + 1.5m/s on an active block; unchanged on a passive block |
-| Maximum orb speed | 10.0m/s |
-| Speed increase per active shield block | +0.5m/s to other active orbs |
-| Minimum shield swing speed for boost | 0.3m/s |
+| Launch speed | 5.0m/s (always — boosts do not carry over to new orbs) |
+| Reflect speed | Unchanged on any block (active or passive) |
+| Reflect Boost (active block) | +2.0m/s temporary; expires on contact with wall, paddle, core, or saber |
+| Maximum orb speed | 10.0m/s (12.0m/s while boosted by Reflect Boost or Turbo) |
+| Minimum shield swing speed for Reflect Boost | 0.3m/s |
 | Orb health | 2 |
 | Health removed per saber slice | 1 |
 | Ready orb per mobile player | 1 (always, while alive) |
 | Respawn delay after orb leaves arena | 1.5s |
+| Orb ownership | Never transfers — always the mobile player who launched it |
 
 ### Collision and Life Loss
 
 Orbs behave like Pong balls: they **bounce and keep playing** on every contact
-except leaving through a player area.
+except leaving through a player area. **Orbs do not collide with each other** —
+they pass through one another.
 
 | Contact | Result |
 |---------|--------|
-| Core | Core loses 1 health; orb is destroyed |
-| Mobile paddle | Orb bounces and continues |
-| Arena wall | Orb bounces and continues |
-| Power-up | Pickup activates; orb continues |
-| VR shield | Orb reflects and continues |
-| VR saber | Orb loses 1 health; splits and continues if health remains |
+| Core | Core loses 1 health; orb is destroyed (boost irrelevant) |
+| Mobile paddle | Orb bounces at **normal speed** (boost removed if active) |
+| Arena wall | Orb bounces at **normal speed** (boost removed if active) |
+| Power-up | Pickup activates; orb continues (boost unchanged) |
+| VR shield | Orb reflects at current speed; active block applies Reflect Boost |
+| VR saber | Orb loses 1 health; splits and continues if health remains (both halves keep any active boost) |
 | Player area (missed paddle) | Orb is lost — see below |
 
 **Reflected orbs can threaten ANY mobile player**, not just the launcher. A player
 loses **1 life** only when an orb **exits the arena through their player area** —
-i.e. it got past their paddle and out of bounds. That orb is then destroyed and the
-launcher gets a replacement (see Launching).
+the full width of their assigned side behind the paddle. That orb is then destroyed
+and the launcher gets a replacement (see Launching).
 
 **Design intent:** The VR player is a strategic pinball flipper. Mobiles are at risk
 from their own reflected orbs and from other players' orbs redirected into their
 zone, creating cross-player tension and emergent betrayal moments.
 
-### Escalation
+### Reflect Boost
 
-Every **active** shield block increases the speed of the other active orbs by
-0.5m/s, up to the 10.0m/s cap. The reflected orb instead ends at its incoming speed
-+1.5m/s. Passive blocks and saber slices do not escalate. Speed resets to base
-(5.0m/s) only when a new round starts.
+An **active shield block** (shield moving ≥0.3m/s at impact) applies a **Reflect
+Boost** to the reflected orb: **+2.0m/s temporary speed**, up to the 12.0m/s cap.
+The boost is **visual and immediate** — the orb glows intensely with an afterimage
+trail, making it instantly readable as dangerous.
 
-- **Early round:** Orbs are slow, easy to dodge, VR player comfortable.
-- **Mid round:** Orbs are noticeably faster, mobile players must dodge quicker.
-- **Late round:** Orbs scream across the arena — chaos, laughter, mistakes.
+**The boost expires when the orb hits something:**
+
+| Event | Result |
+|-------|--------|
+| Hits arena wall | Bounces at normal speed (boost removed) |
+| Hits mobile paddle | Bounces at normal speed (boost removed) |
+| Hits core | Orb destroyed (boost irrelevant) |
+| Is sliced by saber | Both halves **keep the boost** |
+| Exits through player area | Orb destroyed (boost irrelevant) |
+
+**Key properties:**
+
+- **Temporary, not permanent** — The boost doesn't accumulate. A new orb always
+  launches at 5.0m/s, and a boosted orb returns to its pre-boost speed on contact.
+- **No global escalation** — Only the reflected orb is boosted; other orbs in
+  play are unaffected.
+- **Passive blocks don't boost** — Shield held still or moving <0.3m/s reflects
+  at current speed with no boost, preventing shield-parking to farm boosts.
+- **Slicing multiplies the boost** — If a boosted orb is sliced, both halves
+  inherit the boost, creating two fast orbs. This is a deliberate risk/reward:
+  the VR player chooses whether to slice a glowing orb (multiply the threat) or
+  let it bounce (lose the boost).
+- **Boosts don't stack** — A boosted orb that is reflected again gets a fresh
+  +2.0m/s boost (replacing, not adding to, the previous boost). The orb returns
+  to its pre-boost speed before the new boost is applied.
+
+**Design intent:** Reflect Boost creates **burst moments** of intense danger rather
+than gradual escalation. A skilled VR player creates more glowing, screaming orbs,
+but the chaos is always contained — each boost expires on contact. Mobile players
+can see which orbs are dangerous (glowing, trailing) and know the threat is
+temporary. This keeps the arena readable and prevents the "everything is too fast"
+death spiral of permanent escalation.
+
+- **Early round:** Orbs are slow, easy to dodge, VR player comfortable. Occasional
+  boosts create excitement without overwhelming.
+- **Mid round:** More boosted orbs in flight, mobile players must track which
+  orbs are glowing and dodge accordingly.
+- **Late round:** A skilled VR player can keep multiple orbs boosted simultaneously,
+  creating a symphony of glowing, screaming orbs — chaos, laughter, mistakes.
 
 ### Lifecycle
 
@@ -271,9 +319,9 @@ Power-ups add a second decision layer beyond launch-and-dodge. They are picked u
 
 | Power-up | Effect | Duration |
 |----------|--------|----------|
-| Duplicate | Splits the orb that picked it up into two in place; both continue at current speed, clone diverging **20°** | Instant |
-| Turbo | +2.0m/s to all of the player's active orbs (capped at 10.0m/s) | Instant |
-| Paddle Boost | Paddle movement speed ×1.5 | 10s |
+| Duplicate | Splits the orb that picked it up into two in place; both continue at current speed, clone diverging **20°** from the orb's velocity vector | Instant |
+| Turbo | +2.0m/s to the orb that picked it up only; can exceed the normal cap up to **12.0m/s**; does not stack. **Permanent** until the orb is lost (unlike Reflect Boost, which expires on contact). Visually distinct: golden shimmer, keeps orb color (see Visual States) | Instant |
+| Paddle Boost | Paddle movement speed set to fixed boosted value (×1.5); does not stack — re-pickup refreshes the timer only | 10s |
 
 ### Spawning
 
@@ -302,13 +350,19 @@ the diverted orb stays live and can be blocked or lost.
 - Timer begins. All living mobile players have orbs ready.
 - Mobile players launch orbs at the center.
 - The VR player blocks and reflects with the shield, and can slice with the saber.
+- Active shield blocks apply a **Reflect Boost** — the reflected orb glows and
+  screams across the arena until it hits something.
 - Reflected orbs return to the outer wall — players dodge or lose lives.
-- Orb speed escalates with each active shield block; passive blocks do not escalate.
+- Boosted orbs are visually distinct (extreme glow, afterimage trail) so players
+  can see which orbs are dangerous.
 
 ### 3. Elimination
 
 - A mobile player is eliminated at 0 lives.
-- Their paddle disappears and all of their orbs are removed permanently.
+- Their paddle disappears. Their in-flight orbs **continue flying** — they can still
+  damage the core, be reflected or sliced, and exit through player areas. However,
+  they cannot pick up power-ups, and when they exit the arena they are destroyed
+  permanently with no respawn.
 - Their phone shows only the joystick and buttons (no launch input); they watch the
   rest of the match on the shared screen.
 - The round continues until the timer expires, the core is destroyed, or all mobile
@@ -342,19 +396,28 @@ The shared desktop view shows the 3D arena and a lightweight HUD.
 
 ## Presentation
 
-### Visual Escalation
+### Visual States
 
-| Orb Speed | Visual State |
-|-----------|-------------|
-| 5.0–6.5m/s | Soft glow, short trail |
-| 6.5–8.0m/s | Bright glow, long trail, slight screen shake on VR block |
-| 8.0–10.0m/s | Intense glow, particle trail, arena edge pulse on block |
+| State | Visual |
+|-------|--------|
+| Normal (5.0–6.5m/s) | Soft glow, short trail |
+| Fast (6.5–8.0m/s) | Bright glow, long trail, slight screen shake on VR block |
+| Very fast (8.0–10.0m/s) | Intense glow, particle trail, arena edge pulse on block |
+| **Reflect Boost** (any speed +2.0m/s, up to 12.0m/s) | **White-hot core with colored afterimage trail**, pulsing glow, heavy screen shake, audio pitch shift up |
+| **Turbo Power-up** (+2.0m/s, up to 12.0m/s) | Original orb color with golden shimmer, particle trail, steady bright glow |
+
+**Distinguishing Reflect Boost from Turbo:** Reflect Boost orbs have a white-hot
+core with an afterimage trail (fading copies of the orb), while Turbo orbs keep
+their original color with a golden shimmer. This lets players instantly tell whether
+an orb was overcharged by the VR player or picked up a power-up.
 
 ### Audio Layers
 
 - **Base:** Ambient vortex hum, constant.
 - **Per orb:** Whoosh on launch, impact crack on VR block, shatter on life lost.
-- **Escalation:** Music tempo increases with orb speed. At 8.0m/s+, add a bass layer.
+- **Reflect Boost:** Pitch shift up while boosted; descending tone when boost expires.
+- **Music:** Tempo increases with the number of boosted orbs in play. At 3+
+  boosted orbs, add a bass layer.
 - **Crowd reactive:** Cheers on elimination, gasps on close dodges, roar at 60+
   seconds if 3+ players are still alive.
 
