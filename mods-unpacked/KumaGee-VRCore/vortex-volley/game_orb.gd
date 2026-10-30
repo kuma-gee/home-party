@@ -41,6 +41,12 @@ var _ignore_time: float = 0.0
 var _is_boosted: bool = false
 ## Orb speed before the Reflect Boost was applied. Restored when the boost expires.
 var _base_speed: float = 0.0
+## True while this orb carries a permanent Turbo power-up boost. Turbo does not
+## stack (re-pickup is a no-op) and lasts until the orb is lost.
+var _is_turbo: bool = false
+## True for orbs created by the Duplicate power-up: they play like normal orbs
+## but are lost permanently when they leave the arena (no launcher respawn).
+var is_duplicate: bool = false
 
 @onready var hitbox: HitBox = $HitBox
 @onready var _sphere: CSGSphere3D = $CSGSphere3D
@@ -102,6 +108,23 @@ func restore_reflect_boost(base_speed: float) -> void:
 		return
 	_base_speed = base_speed
 	_is_boosted = true
+
+## Applies the Turbo power-up: +[param amount] to this orb only, capped at
+## [param max_speed]. Permanent until the orb is lost; never stacks.
+func apply_turbo(amount: float, max_speed: float = MAX_BOOSTED_SPEED) -> void:
+	if _resolved or _is_turbo or velocity.length_squared() < 0.0001:
+		return
+	_is_turbo = true
+	velocity = velocity.normalized() * minf(velocity.length() + amount, max_speed)
+
+## True while this orb carries a Turbo power-up boost.
+func has_turbo() -> bool:
+	return _is_turbo
+
+## Marks this orb as turbo without changing its speed, so both halves of a
+## sliced or duplicated turbo orb keep the permanent boost.
+func grant_turbo() -> void:
+	_is_turbo = true
 
 ## Shrinks the orb one step per point of health lost so damage is readable in VR.
 func _apply_health_visuals() -> void:

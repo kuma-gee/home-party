@@ -37,7 +37,6 @@ An **octagonal** vortex arena with eight equal sides.
 | Element | Value |
 |---------|-------|
 | Arena shape | Regular octagon, 8 equal sides |
-| Arena radius (apothem) | 4.5m to each side midpoint (vertices at ~4.87m) |
 | Wall height | 2.5m |
 | Orb height | 1.3m (fixed) |
 | Center platform radius | 1.2m |
@@ -133,14 +132,14 @@ the arena with smaller, weaker orbs until the family is worn down and destroyed.
 
 ### Feedback
 
-| Event | Visual | Audio | Haptic |
-|-------|--------|-------|--------|
-| Successful block | Orb flash + shield trail burst | Sharp impact crack | Short pulse (0.1s) |
-| Reflect Boost applied | Orb ignites white-hot, afterimage trail appears | Rising pitch sweep | Medium pulse (0.15s) |
-| Reflect Boost expires | Afterimage fades, glow returns to normal | Descending tone | None |
-| Missed orb (hits center) | Red pulse on arena floor | Low thud | Long rumble (0.3s) |
-| Player eliminated | Zone shatters visually | Glass break sound | Double pulse |
-| Orb sliced | Orb shrinks and splits with spark burst | Quick slice whoosh | Sharp pulse (0.1s) |
+| Event | Visual | Audio |
+|-------|--------|-------|
+| Successful block | Orb flash + shield trail burst | Sharp impact crack |
+| Reflect Boost applied | Orb ignites white-hot, afterimage trail appears | Rising pitch sweep |
+| Reflect Boost expires | Afterimage fades, glow returns to normal | Descending tone |
+| Missed orb (hits center) | Red pulse on arena floor | Low thud |
+| Player eliminated | Zone shatters visually | Glass break sound |
+| Orb sliced | Orb shrinks and splits with spark burst | Quick slice whoosh |
 
 ### Core Damage
 
@@ -177,7 +176,6 @@ state is displayed on the shared desktop screen.
   player's side tangent, so the paddle moves in the direction the player pushes as
   they see it.
 - Movement speed: **1.8m/s** along the side.
-- Width: **1.3m**.
 - Travel is clamped to ±80% of the side's half-length from its center, leaving gaps
   near the octagon corners.
 - Shows the ready orb hovering just in front of it, toward the arena center, while
@@ -359,10 +357,7 @@ the diverted orb stays live and can be blocked or lost.
 ### 3. Elimination
 
 - A mobile player is eliminated at 0 lives.
-- Their paddle disappears. Their in-flight orbs **continue flying** — they can still
-  damage the core, be reflected or sliced, and exit through player areas. However,
-  they cannot pick up power-ups, and when they exit the arena they are destroyed
-  permanently with no respawn.
+- Their paddle disappears and their in-flight orbs are destroyed immediately.
 - Their phone shows only the joystick and buttons (no launch input); they watch the
   rest of the match on the shared screen.
 - The round continues until the timer expires, the core is destroyed, or all mobile

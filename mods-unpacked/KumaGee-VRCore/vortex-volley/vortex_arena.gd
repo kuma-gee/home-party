@@ -172,14 +172,15 @@ func on_orb_sliced(orb: GameOrb, _slice_dir: Vector3) -> void:
 		orb.restore_reflect_boost(base_speed)
 	_spawn_split_orb(orb, forward.rotated(Vector3.UP, -angle), speed, was_boosted, base_speed)
 
-## Creates the second orb from a saber slice. It keeps the same owner, speed, and
-## remaining health so both halves can still hit any mobile player.
-func _spawn_split_orb(source: GameOrb, direction: Vector3, speed: float, was_boosted: bool = false, base_speed: float = 0.0) -> void:
+## Creates the second orb from a saber slice or Duplicate. It keeps the same
+## owner, speed, and remaining health so both halves can still hit any mobile
+## player. Returns the new orb, or null when the scene is missing.
+func _spawn_split_orb(source: GameOrb, direction: Vector3, speed: float, was_boosted: bool = false, base_speed: float = 0.0) -> GameOrb:
 	if not orb_scene:
-		return
+		return null
 	var clone := orb_scene.instantiate() as GameOrb
 	if not clone:
-		return
+		return null
 	add_child(clone)
 	clone.global_position = source.global_position
 	clone.owner_player = source.owner_player
@@ -189,10 +190,13 @@ func _spawn_split_orb(source: GameOrb, direction: Vector3, speed: float, was_boo
 	clone.core_hit.connect(_on_orb_core_hit)
 	clone.launch(direction, speed)
 	# Both halves inherit any active Reflect Boost so slicing a fast orb
-	# creates two fast orbs.
+	# creates two fast orbs, and a permanent Turbo boost as well.
+	if source.has_turbo():
+		clone.grant_turbo()
 	if was_boosted:
 		clone.restore_reflect_boost(base_speed)
 	active_orbs.append(clone)
+	return clone
 
 # ── Power-ups ─────────────────────────────────────────────────────────────────
 
@@ -273,7 +277,7 @@ func _grant_power_up(type: VortexPowerUp.Type, orb: GameOrb) -> void:
 		VortexPowerUp.Type.DUPLICATE:
 			_duplicate_orb(orb)
 		VortexPowerUp.Type.TURBO:
-			_boost_owner_orbs(orb)
+			_turbo_orb(orb)
 		VortexPowerUp.Type.PADDLE_BOOST:
 			_boost_owner_paddle(orb)
 
@@ -290,22 +294,18 @@ func _duplicate_orb(orb: GameOrb) -> void:
 	var angle := deg_to_rad(SABER_SPLIT_ANGLE_DEG)
 	var was_boosted := orb.is_boosted()
 	var base_speed := orb.get_base_speed() if was_boosted else speed
-	_spawn_split_orb(orb, forward.rotated(Vector3.UP, angle), speed, was_boosted, base_speed)
+	var clone := _spawn_split_orb(orb, forward.rotated(Vector3.UP, angle), speed, was_boosted, base_speed)
+	if clone:
+		# Duplicate orbs are lost permanently when they leave the arena —
+		# they never trigger a replacement orb for the launcher.
+		clone.is_duplicate = true
 
-## Turbo: +2.0 m/s to every active orb owned by the collecting player, capped at
-## ORB_SPEED_MAX_BOOSTED (Turbo is permanent until the orb is lost, unlike Reflect
-## Boost which expires on contact). Other players' orbs are untouched.
-func _boost_owner_orbs(orb: GameOrb) -> void:
-	if not is_instance_valid(orb.owner_player):
-		return
-	var owner := orb.owner_player
-	for o in active_orbs:
-		if not is_instance_valid(o) or o.is_resolved() or o.owner_player != owner:
-			continue
-		if o.velocity.length_squared() < 0.0001:
-			continue
-		var speed := minf(o.velocity.length() + POWERUP_TURBO_SPEED, ORB_SPEED_MAX_BOOSTED)
-		o.velocity = o.velocity.normalized() * speed
+## Turbo: +2.0 m/s to the collecting orb only, capped at ORB_SPEED_MAX_BOOSTED.
+## Permanent until the orb is lost (unlike Reflect Boost, which expires on
+## contact) and never stacks — re-pickup on the same orb is a no-op.
+func _turbo_orb(orb: GameOrb) -> void:
+	if is_instance_valid(orb) and not orb.is_resolved():
+		orb.apply_turbo(POWERUP_TURBO_SPEED, ORB_SPEED_MAX_BOOSTED)
 
 ## Paddle Boost: the collecting player's paddle moves faster for a short window.
 func _boost_owner_paddle(orb: GameOrb) -> void:
@@ -369,9 +369,12 @@ func on_orb_passed(player: PlayerSpawn, orb: GameOrb) -> void:
 	lives_updated.emit(_build_lives_data())
 	if player.lives <= 0:
 		_eliminate_player(player)
+	var was_duplicate := orb.is_duplicate
 	orb.resolve()
 	active_orbs.erase(orb)
-	_schedule_respawn(launcher)
+	# Duplicate power-up orbs never return to a paddle — no replacement orb.
+	if not was_duplicate:
+		_schedule_respawn(launcher)
 	if _get_alive_count() == 0:
 		_end_round()
 
