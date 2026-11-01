@@ -1,7 +1,7 @@
 ---
 description: QA tester for game features. Use this when you want to test and verify features or fixes in this game
 mode: subagent
-model: mistral/mistral-small-4
+model: mistral/mistral-small-2603
 permission:
   "*": deny
   godot*: allow
