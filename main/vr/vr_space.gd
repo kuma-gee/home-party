@@ -1,7 +1,7 @@
 class_name VRSpace
 extends Node
 
-signal center_player(offset: Vector3)
+signal center_player(offset: Vector3, keep_rotation: bool)
 signal restart_game()
 signal back_to_home()
 
@@ -55,7 +55,7 @@ func _ready() -> void:
 	_pause_canvas = _get_pause_canvas()
 	menu_function.menu_opened.connect(_connect_menu)
 	menu_function.menu_closed.connect(_on_menu_closed)
-	reset_area.body_entered.connect(func(_b): reset_space())
+	reset_area.body_entered.connect(func(_b): reset_space(Vector3.ZERO, true))
 	pause_menu.hide()
 	if initial_transform:
 		origin.transform = initial_transform.transform
@@ -209,9 +209,9 @@ func _show_pause_menu() -> void:
 		pause_menu.show()
 		get_tree().paused = true
 
-func reset_space(offset: Vector3 = Vector3.ZERO):
+func reset_space(offset: Vector3 = Vector3.ZERO, keep_rotation := false):
 	offset.y = 0
-	center_player.emit(offset)
+	center_player.emit(offset, keep_rotation)
 
 func _on_menu_closed(from_settings := false):
 	if settings_viewport.visible and not from_settings:

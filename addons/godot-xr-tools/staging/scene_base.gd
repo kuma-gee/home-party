@@ -25,38 +25,53 @@ func _ready() -> void:
 	if xr_player == null:
 		xr_player = get_node("VRSpace")
 
-func reset_player_space(offset: Vector3 = Vector3.ZERO):
+func reset_player_space(offset: Vector3 = Vector3.ZERO, keep_rotation := false):
 	var origin = spawn_transform
 	origin.origin += offset
-	center_player_on(origin)
+	center_player_on(origin, keep_rotation)
 
 ## This method center the player on the [param p_transform] transform.
-func center_player_on(p_transform : Transform3D):
+## When [param keep_rotation] is true the player keeps its current rotation
+## and is only moved to the target position, so a fall reset does not
+## disorient the player.
+func center_player_on(p_transform : Transform3D, keep_rotation := false):
 	# In order to center our player so the players feet are at the location
 	# indicated by p_transform, and having our player looking in the required
 	# direction, we must offset this transform using the cameras transform.
 	# So we get our current camera transform in local space
 	xr_player.camera.transform.origin.x = 0
 	xr_player.camera.transform.origin.z = 0
-	var camera_transform = xr_player.camera.transform
 
-	# We obtain our view direction and zero out our height
-	var view_direction = camera_transform.basis.z
-	view_direction.y = 0
+	if keep_rotation:
+		# Only move the origin to the target position, keep its current rotation
+		var kept_transform := xr_player.origin.global_transform
+		kept_transform.origin = p_transform.origin
+		xr_player.origin.global_transform = kept_transform
+	else:
+		var camera_transform = xr_player.camera.transform
 
-	# Now create the transform that we will use to offset our input with
-	var transform : Transform3D
-	transform = transform.looking_at(-view_direction, Vector3.UP)
-	transform.origin = camera_transform.origin
-	transform.origin.y = 0
+		# We obtain our view direction and zero out our height
+		var view_direction = camera_transform.basis.z
+		view_direction.y = 0
 
-	# And now update our origin point
-	xr_player.origin.global_transform = (p_transform * transform.inverse()).orthonormalized()
+		# Now create the transform that we will use to offset our input with
+		var transform : Transform3D
+		transform = transform.looking_at(-view_direction, Vector3.UP)
+		transform.origin = camera_transform.origin
+		transform.origin.y = 0
+
+		# And now update our origin point
+		xr_player.origin.global_transform = (p_transform * transform.inverse()).orthonormalized()
 
 	# If we have a player body, we need to set its starting position too.
 	var player_body : XRToolsPlayerBody = XRToolsPlayerBody.find_instance(xr_player.origin)
 	if player_body:
-		player_body.global_transform = p_transform
+		if keep_rotation:
+			var body_transform := player_body.global_transform
+			body_transform.origin = p_transform.origin
+			player_body.global_transform = body_transform
+		else:
+			player_body.global_transform = p_transform
 
 
 func scene_loaded(user_data = null):
