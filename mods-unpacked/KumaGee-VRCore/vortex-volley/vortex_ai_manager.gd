@@ -70,6 +70,9 @@ func _set_ai_count(count: int) -> void:
 		_add_ai()
 	if player_list:
 		player_list.extra_player_count = _ai_players.size()
+		# extra_player_count changed after the per-bot ready_changed signals, so
+		# re-emit to refresh ready displays and re-check the start condition.
+		player_list.ready_changed.emit()
 	if arena:
 		arena.set_ai_controllers(_controllers)
 

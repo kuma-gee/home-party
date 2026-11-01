@@ -169,14 +169,13 @@ power_up_scene = ExtResource("10_powerup")
 unique_name_in_owner = true
 script = ExtResource("9_aiman")
 
-[node name="Viewport2Din3D2" parent="." index="9" unique_id=1231438571 node_paths=PackedStringArray("ready_button") instance=ExtResource("15_k1jr6")]
+[node name="Viewport2Din3D2" parent="." index="9" unique_id=1231438571 instance=ExtResource("15_k1jr6")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 2.8944702, 3.447174)
 screen_size = Vector2(4, 3)
 scene = ExtResource("16_jdii5")
 viewport_size = Vector2(720, 560)
 unshaded = true
-scene_properties_keys = PackedStringArray("vortex_tutorial.gd", "vr_tutorial.gd", "ready_button", "ready_text", "waiting_text")
-ready_button = NodePath("Viewport/VRTutorial/MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer2/ReadyButton")
+scene_properties_keys = PackedStringArray("vortex_tutorial.gd", "vr_tutorial.gd", "ready_text", "waiting_text")
 ready_text = "Ready"
 waiting_text = "Ready (%s/%s)"
 
