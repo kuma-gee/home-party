@@ -16,6 +16,7 @@
 [ext_resource type="Script" uid="uid://eav2x8m5qaim" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_ai_manager.gd" id="9_aiman"]
 [ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="15_k1jr6"]
 [ext_resource type="PackedScene" uid="uid://d0luc626pggth" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/ui/vortex_tutorial.tscn" id="16_jdii5"]
+[ext_resource type="PackedScene" uid="uid://7u1ummur7qa5t" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/ui/bot_count_control.tscn" id="17_bctrl"]
 
 [sub_resource type="Environment" id="Environment_lpitp"]
 
@@ -41,9 +42,10 @@ size = Vector3(1.5, 1, 0.02)
 height = 0.16003418
 radius = 1.9208984
 
-[node name="VortexVolley" unique_id=459618458 node_paths=PackedStringArray("vr_screen") instance=ExtResource("1_base")]
+[node name="VortexVolley" unique_id=459618458 node_paths=PackedStringArray("vr_screen", "bot_count_viewport") instance=ExtResource("1_base")]
 script = ExtResource("2_game")
 vr_screen = NodePath("Viewport2Din3D2")
+bot_count_viewport = NodePath("BaseSceneContent/BotCountViewport")
 
 [node name="WorldEnvironment" parent="." index="0" unique_id=10000001]
 environment = SubResource("Environment_lpitp")
@@ -147,6 +149,15 @@ transform = Transform3D(0.7071064, 0, 0.7071064, 0, 1, 0, -0.7071064, 0, 0.70710
 
 [node name="Platform" parent="BaseSceneContent/arena" index="9" unique_id=1124976171]
 material_override = ExtResource("8_h3hju")
+
+[node name="BotCountViewport" type="Node3D" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="3" unique_id=1649809610]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -2.8, 2.7, 3.447174)
+
+[node name="Viewport2Din3D" parent="BaseSceneContent/BotCountViewport" index="0" unique_id=1649809611 instance=ExtResource("15_k1jr6")]
+screen_size = Vector2(1.2, 1)
+scene = ExtResource("17_bctrl")
+unshaded = true
+scene_properties_keys = PackedStringArray("bot_count_control.gd")
 
 [node name="VortexArena" type="Node3D" parent="." index="7" unique_id=50000001]
 unique_name_in_owner = true

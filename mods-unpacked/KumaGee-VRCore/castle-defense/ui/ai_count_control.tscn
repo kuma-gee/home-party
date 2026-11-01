@@ -19,7 +19,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1417250220]
 layout_mode = 2
 text = "No players
-Spawning AI"
+Spawning bots"
 horizontal_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1000000003]

@@ -5,6 +5,7 @@ extends BaseGame
 @onready var core: VortexCore = %VortexCore
 @onready var game_manager: VortexArena = %VortexArena
 @onready var ai_manager: VortexAIManager = %AIManager
+@export var bot_count_viewport: Node3D
 
 const SHIELD_SCENE: PackedScene = preload("res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_shield.tscn")
 const SABER_SCENE: PackedScene = preload("res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_saber.tscn")
@@ -29,10 +30,18 @@ func _ready() -> void:
 	prepare_phase.connect(_on_prepare_phase)
 	game_phase.connect(_on_game_phase)
 	player_list.ready_changed.connect(_on_ready_changed)
+	PlayerManager.clients_changed.connect(_update_bot_count_visibility)
 	_setup_game_manager()
 	_setup_vr_weapons()
 	ai_manager.setup(player_list, game_manager)
 	LobbyServer.send_layout("joystick")
+	_update_bot_count_visibility()
+
+## The bot count panel is a solo-mode affordance: it only makes sense during
+## the prepare phase with no mobile players connected (same as castle defense).
+func _update_bot_count_visibility() -> void:
+	if bot_count_viewport:
+		bot_count_viewport.visible = not is_game_phase and PlayerManager.playing_clients.is_empty()
 
 func _setup_game_manager() -> void:
 	game_manager.core = core
@@ -139,6 +148,7 @@ func _on_prepare_phase() -> void:
 		game_manager.reset()
 	if ai_manager:
 		ai_manager.on_prepare_phase_entered()
+	_update_bot_count_visibility()
 	_on_ready_changed()
 
 func _show_tutorial() -> void:
@@ -179,6 +189,7 @@ func _on_ready_changed() -> void:
 func _on_game_phase() -> void:
 	if vr_screen:
 		vr_screen.hide()
+	_update_bot_count_visibility()
 	_apply_weapon_selection()
 	if ai_manager:
 		ai_manager.on_game_phase_entered()
