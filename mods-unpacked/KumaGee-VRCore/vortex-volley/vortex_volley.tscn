@@ -170,7 +170,7 @@ unique_name_in_owner = true
 script = ExtResource("9_aiman")
 
 [node name="Viewport2Din3D2" parent="." index="9" unique_id=1231438571 instance=ExtResource("15_k1jr6")]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 2.8944702, 3.447174)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8944702, -3.447174)
 screen_size = Vector2(4, 3)
 scene = ExtResource("16_jdii5")
 viewport_size = Vector2(720, 560)
