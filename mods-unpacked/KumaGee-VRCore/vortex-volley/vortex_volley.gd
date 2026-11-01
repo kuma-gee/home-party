@@ -10,9 +10,11 @@ extends BaseGame
 const SHIELD_SCENE: PackedScene = preload("res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_shield.tscn")
 const SABER_SCENE: PackedScene = preload("res://mods-unpacked/KumaGee-VRCore/vortex-volley/vortex_saber.tscn")
 
-## Distance from the VR player beyond which a dropped weapon respawns next to
-## the player on its assigned side.
+## Distance from the VR player beyond which a dropped weapon respawns at the
+## arena center.
 const WEAPON_RESPAWN_DISTANCE: float = 3.0
+## Height of the arena-center respawn point for a dropped weapon.
+const WEAPON_RESPAWN_HEIGHT: float = 1.2
 
 ## True once the VR player confirms readiness. Mobile players ready from their
 ## phones (A/B); the round starts when everyone is ready.
@@ -121,13 +123,13 @@ func _spawn_weapon(controller: XRController3D, kind: VortexWeapon.Weapon) -> Vor
 	return weapon
 
 func _physics_process(_delta: float) -> void:
-	_check_weapon_respawn(_left_controller, _left_weapon)
-	_check_weapon_respawn(_right_controller, _right_weapon)
+	_check_weapon_respawn(_left_weapon)
+	_check_weapon_respawn(_right_weapon)
 
-## Respawns a dropped [param weapon] next to [param controller] once it is too
-## far from the VR player to grab again.
-func _check_weapon_respawn(controller: XRController3D, weapon: VortexWeapon) -> void:
-	if not is_instance_valid(weapon) or not controller:
+## Respawns a dropped [param weapon] at the arena center once it is too far
+## from the VR player to grab again.
+func _check_weapon_respawn(weapon: VortexWeapon) -> void:
+	if not is_instance_valid(weapon):
 		return
 	if weapon.is_picked_up():
 		return
@@ -137,7 +139,8 @@ func _check_weapon_respawn(controller: XRController3D, weapon: VortexWeapon) -> 
 		return
 	weapon.linear_velocity = Vector3.ZERO
 	weapon.angular_velocity = Vector3.ZERO
-	weapon.global_position = controller.global_position
+	var center := game_manager.global_position if game_manager else Vector3.ZERO
+	weapon.global_position = Vector3(center.x, WEAPON_RESPAWN_HEIGHT, center.z)
 
 func _on_prepare_phase() -> void:
 	_vr_ready = false
