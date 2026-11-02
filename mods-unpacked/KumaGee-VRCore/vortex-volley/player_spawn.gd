@@ -10,10 +10,13 @@ const SPAWN_GROUP: StringName = &"vortex_player_spawn"
 const START_LIVES: int = 3
 const FLASH_DURATION: float = 0.2
 
+@export var health: Label
+
 @onready var marker: Marker3D = $Marker3D
 @onready var deflector: DeflectorPlayer = $Marker3D/DeflectorPlayer
 @onready var player_area: CSGBox3D = $Marker3D/PlayerArea
 @onready var animator: AnimationPlayer = $AnimationPlayer
+@onready var health_sprite: Sprite3D = $Health3D
 
 ## Slot position around the ring, derived from this node's transform so paddles
 ## do not need the arena to compute their angle/radius.
@@ -22,7 +25,10 @@ var arena_radius: float = 0.0
 
 var controller: ClientController = null
 var player_name: String = ""
-var lives: int = START_LIVES
+var lives: int = START_LIVES:
+	set(value):
+		lives = clampi(value, 0, START_LIVES)
+		_update_health_label()
 ## True while a launchable orb rests on this player's paddle. A player always has
 ## exactly one once it respawns; launching consumes it until the orb leaves the arena.
 var has_orb: bool = false:
@@ -45,6 +51,7 @@ func _ready() -> void:
 	deflector.bind(self)
 	add_to_group(SPAWN_GROUP)
 	release()
+	_update_health_label()
 
 # ── Assignment ────────────────────────────────────────────────────────────────
 
@@ -139,15 +146,25 @@ func _update_held_orb() -> void:
 	if is_instance_valid(deflector):
 		deflector.set_held_orb_visible(has_orb and not eliminated)
 
+## Mirrors `lives` onto the in-world health label, same hearts format as the
+## phone player UI.
+func _update_health_label() -> void:
+	if not health:
+		return
+	health.text = "♥".repeat(lives) + "♡".repeat(START_LIVES - lives)
+	health.modulate = Color(0.4, 0.4, 0.4) if lives <= 0 else Color.WHITE
+
 func _connect_controller(player: ClientController) -> void:
 	controller = player
 	deflector.set_controller(player)
+	health_sprite.visible = true
 
 func _disconnect_controller() -> void:
 	if controller is VortexAIController:
 		(controller as VortexAIController).unbind_spawn()
 	deflector.set_controller(null)
 	controller = null
+	health_sprite.visible = false
 
 func _deactivate_paddle() -> void:
 	_set_paddle_visible(false)

@@ -153,14 +153,13 @@ material_override = ExtResource("8_h3hju")
 [node name="BotCountViewport" type="Node3D" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="3" unique_id=1649809610]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8, 2.4034913, -4.8572235)
 
-[node name="Guide" parent="BaseSceneContent/BotCountViewport" index="0" unique_id=1231438571 node_paths=PackedStringArray("ready_button") instance=ExtResource("15_k1jr6")]
+[node name="Guide" parent="BaseSceneContent/BotCountViewport" index="0" unique_id=1231438571 instance=ExtResource("15_k1jr6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, -0.2816651, 0)
 screen_size = Vector2(4, 3)
 scene = ExtResource("16_jdii5")
 viewport_size = Vector2(720, 560)
 unshaded = true
 scene_properties_keys = PackedStringArray("vortex_tutorial.gd", "vr_tutorial.gd", "ready_button", "ready_text", "waiting_text")
-ready_button = NodePath("Viewport/VRTutorial/MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer2/ReadyButton")
 ready_text = "Ready"
 waiting_text = "Ready (%s/%s)"
 

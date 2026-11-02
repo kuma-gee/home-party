@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://x3el435n0ir6" path="res://assets/particles/T_basic1_vfx.PNG" id="5_wvhn3"]
 
 [sub_resource type="Gradient" id="Gradient_f6h0o"]
-offsets = PackedFloat32Array(0, 0.49190938)
+offsets = PackedFloat32Array(0, 0.72168285)
 colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_hmfqu"]
@@ -108,7 +108,6 @@ rings = 12
 material = SubResource("ShaderMaterial_hmfqu")
 
 [node name="CSGSphere3D2" type="CSGSphere3D" parent="." unique_id=2095110814]
-visible = false
 radius = 0.25
 radial_segments = 64
 rings = 32

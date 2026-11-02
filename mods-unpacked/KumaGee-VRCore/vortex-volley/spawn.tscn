@@ -5,6 +5,7 @@
 [ext_resource type="Shader" uid="uid://yiqj3rfn2g7s" path="res://shader/gradient_box.gdshader" id="3_a1b2f"]
 [ext_resource type="Material" uid="uid://1qnqr5rsknpy" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/material/arena.tres" id="4_iub2k"]
 [ext_resource type="Script" uid="uid://bvx5n2m8k3q4" path="res://mods-unpacked/KumaGee-VRCore/vortex-volley/player_spawn.gd" id="4_pspawn"]
+[ext_resource type="Theme" uid="uid://525nwsh3xdex" path="res://theme/theme.css" id="6_8jws8"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iub2k"]
 resource_local_to_scene = true
@@ -120,8 +121,12 @@ _data = {
 &"open": SubResource("Animation_lpitp")
 }
 
-[node name="PlayerSpawn" type="Node3D" unique_id=1846504611]
+[sub_resource type="ViewportTexture" id="ViewportTexture_iub2k"]
+viewport_path = NodePath("Health3D/SubViewport")
+
+[node name="PlayerSpawn" type="Node3D" unique_id=1846504611 node_paths=PackedStringArray("health")]
 script = ExtResource("4_pspawn")
+health = NodePath("Health3D/SubViewport/CenterContainer/Health")
 
 [node name="Marker3D" type="Marker3D" parent="." unique_id=610641721]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7.8322234)
@@ -173,5 +178,30 @@ shape = SubResource("BoxShape3D_lpitp")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1830338316]
 libraries/ = SubResource("AnimationLibrary_a1b2f")
+
+[node name="Health3D" type="Sprite3D" parent="." unique_id=391927685]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.765471, -7.9118795)
+layers = 262144
+texture = SubResource("ViewportTexture_iub2k")
+
+[node name="SubViewport" type="SubViewport" parent="Health3D" unique_id=1600758482]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(256, 128)
+
+[node name="CenterContainer" type="CenterContainer" parent="Health3D/SubViewport" unique_id=848636493]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Health" type="Label" parent="Health3D/SubViewport/CenterContainer" unique_id=1418710667]
+layout_mode = 2
+theme = ExtResource("6_8jws8")
+theme_override_font_sizes/font_size = 36
+text = "♥♥♥"
 
 [editable path="Marker3D/wall"]
