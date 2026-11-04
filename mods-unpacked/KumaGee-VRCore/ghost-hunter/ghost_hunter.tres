@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="GameResource" format=3]
+
+[ext_resource type="Script" path="res://main/game_resource.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://ce7xjf64g1vxi" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/ghost_hunter.tscn" id="2_scene"]
+[ext_resource type="PackedScene" uid="uid://e1e3wujqoxa7" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/ghost_hunter_icon.tscn" id="3_icon"]
+
+[resource]
+script = ExtResource("1_script")
+name = "Ghost Hunter"
+description = "There is no hard cap in the player count, it's playable with at least 2 players. The game scales based on the player count.
+
+Everyone is playing together in the same room."
+scene = ExtResource("2_scene")
+icon = ExtResource("3_icon")
+min_recommended_players = 2
+max_recommended_players = -1

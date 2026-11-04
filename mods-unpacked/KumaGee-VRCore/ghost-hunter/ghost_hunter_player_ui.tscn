@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://bfcobqvl6m5ty"]
+
+[ext_resource type="PackedScene" uid="uid://f8e1u58jvfd1" path="res://main/ui/joined_player.tscn" id="1_base"]
+[ext_resource type="Script" uid="uid://deon7wwfnjk21" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/ghost_hunter_player_ui.gd" id="2_script"]
+
+[node name="GhostHunterPlayerUI" instance=ExtResource("1_base")]
+script = ExtResource("2_script")
