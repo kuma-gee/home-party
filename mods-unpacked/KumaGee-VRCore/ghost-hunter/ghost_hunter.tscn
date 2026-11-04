@@ -6,13 +6,17 @@
 [ext_resource type="PackedScene" uid="uid://uf7iid7kvvos" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/house/house_variant_a.tscn" id="4_house_a"]
 [ext_resource type="PackedScene" uid="uid://ckwm3a72rlvd5" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/house/house_variant_b.tscn" id="5_house_b"]
 [ext_resource type="PackedScene" uid="uid://busjg5urteokp" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/house/house_variant_c.tscn" id="6_house_c"]
+[ext_resource type="PackedScene" uid="uid://cn2wds6uhs4wn" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/ghost_player.tscn" id="7_ghost"]
+[ext_resource type="Script" uid="uid://dnl81gct0ofuc" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/ui/ghost_hunter_map.gd" id="8_map"]
 
 [sub_resource type="Environment" id="Environment_wmjjc"]
 
-[node name="GhostHunter" unique_id=2043053925 node_paths=PackedStringArray("house_container") instance=ExtResource("1_base")]
+[node name="GhostHunter" unique_id=2043053925 node_paths=PackedStringArray("house_container", "map_layer") instance=ExtResource("1_base")]
 script = ExtResource("2_game")
 house_variants = Array[PackedScene]([ExtResource("4_house_a"), ExtResource("5_house_b"), ExtResource("6_house_c")])
 house_container = NodePath("BaseSceneContent/HouseContainer")
+ghost_scene = ExtResource("7_ghost")
+map_layer = NodePath("CanvasLayer/Control/GameUI/MapLayer")
 
 [node name="WorldEnvironment" parent="." index="0" unique_id=10000001]
 environment = SubResource("Environment_wmjjc")
@@ -23,5 +27,15 @@ fov = 55.0
 
 [node name="PlayerList" parent="CanvasLayer/Control/MarginContainer" parent_id_path=PackedInt32Array(10000008) index="0" unique_id=10000009]
 player_scene = ExtResource("3_plui")
+
+[node name="MapLayer" type="Control" parent="CanvasLayer/Control/GameUI" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("8_map")
 
 [node name="HouseContainer" type="Node3D" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="0" unique_id=1370650917]
