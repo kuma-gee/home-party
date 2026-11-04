@@ -16,10 +16,9 @@ Everyone is playing together in the same room.
 ### For the VR Player (Ghost Hunter)
 - First-person view inside a handcrafted haunted house (2–3 layout variants, selected randomly each round).
 - **Movement: Smooth locomotion** (thumbstick). No teleport. Ghosts see the Hunter on their shared screen when within 10m — teleport would let the Hunter bypass this warning range instantly, breaking the cat-and-mouse tension.
-- **Flash Device** – Emits a bright pulse that briefly reveals ghosts (recharge time of 3s). Targets the area in front in a 45° cone, range of 2m, and reveals the player's location to ghosts. Also purges haunted objects within range, forcing possessing ghosts out.
-  - Shows visuals when ghosts are nearby
-- **Ecto-Vacuum** – Capture tool. Sucks in a fully visible ghost over ~3 seconds (range 3m, requires line-of-sight). While actively sucking, the Hunter moves at 50% speed (cannot sprint or cancel into sprint).
-- **Wrist Tablet** – Shows house map with last known ghost interaction pings, task locations (ghost objectives are visible to Hunter as map markers — the Hunter knows what they're trying to do), and charge count for Flash Device.
+- **Flash Device** – Emits a bright pulse that briefly reveals ghosts (recharge time of 3s). Targets the area in front in a 45° cone, range of 2m, and reveals the player's location to ghosts. Also purges haunted objects within range, forcing possessing ghosts out. A ghost hit by the flash is shown with a visible highlight for the reveal duration.
+- **Ecto-Vacuum** – Capture tool. Sucks in a fully visible ghost over ~3 seconds (range 3m, requires line-of-sight). While actively sucking, the Hunter moves at 50% speed.
+- **Wrist Tablet** – Shows house map with last known ghost interaction pings and charge count for Flash Device.
 
 **Visibility Rule:** Hunter cannot see ghosts unless revealed by the Flash Device. Ghosts that are phasing, haunting objects, or moving normally are completely invisible to the naked eye. The Flash reveal lasts ~4 seconds.
 
@@ -27,8 +26,8 @@ Everyone is playing together in the same room.
 - **Left thumbstick** – Smooth locomotion (move).
 - **Right thumbstick** – Snap-turn (rotate view).
 - **Right trigger** – Flash Device (pulse).
-- **Left grip + trigger** – Activate/deactivate Ecto-Vacuum (hold to aim and suck).
-- **Wrist Tablet** – Toggle map on non-dominant wrist (glance down or press button).
+- **Left grip + trigger (hold)** – Aim and suck with the Ecto-Vacuum.
+- **Wrist Tablet** – Glance down at the non-dominant wrist (hand held at the right angle) to show the map.
 
 **VR Comfort Settings (player-configurable in menu):**
 - **Vignette intensity** — Off / Low / Default / High. Higher values darken peripheral vision more during movement.
@@ -37,26 +36,27 @@ Everyone is playing together in the same room.
 
 ### For the Ghost Players (Shared Screen)
 - **Single top-down view** of the haunted house in 3D on a shared TV/monitor.
-  - Each player appears as a colored ghosts. The Hunter appears on the shared-screen map only when within ~10 meters of any ghost. The Hunter disappears when he moves out of range. This gives ghosts directional warning that the Hunter is near, without perfect omniscience.
+  - Each player appears as a colored ghost. The Hunter appears on the shared-screen map only when within ~10 meters of any ghost. The Hunter disappears when he moves out of range. This gives ghosts directional warning that the Hunter is near, without perfect omniscience.
   - Ghosts can see each other's positions on the shared screen at all times.
 - **Abilities** (no cooldowns — usage is limited by context and opportunity):
-  - **Phase Walk** – Move through walls. Ghost is slowed to 50% speed while inside walls and leaves a faint shimmer trail the Hunter can spot if looking closely. Passing through a wall creates a brief visual ripple on the shared screen visible to other ghosts.
+  - **Phase Walk** – Move through walls. Activate by pressing **B** while against a wall. Ghost is slowed to 50% speed while inside walls and leaves a faint shimmer trail the Hunter can spot if looking closely. Passing through a wall creates a brief visual ripple on the shared screen visible to other ghosts.
   - **Haunt** – Flicker lights, creak doors, or possess an object (doll, mannequin, furniture). While haunting, the ghost is hidden inside the object. The object may twitch or emit subtle audio.
      - **Initiation:** Walk close to an object and press **A** to enter it.
      - **Trigger effect:** Press **A** again to trigger the object's effect (flicker, creak, etc.).
      - **Exit:** Press **B** to leave the object voluntarily.
-      - **Rescue:** Haunting the Ecto-Vacuum (same proximity as object haunt) and press **A** to release the captured ghost one by one.
-- **Mischief Tasks** – Each round, ghosts must complete hidden objectives. Tasks scale with ghost count: 2 tasks for 1 ghost, 3 for 2 ghosts, 4 for 3 ghosts, 5 for 4 ghosts. Tasks appear as highlighted markers on the shared-screen map. A task is completed by a ghost standing near its marker for ~3 uninterrupted seconds.
+      - **Rescue:** Walk close to the Ecto-Vacuum, press **A** to haunt it, then **hold A for 2 seconds** to release one captured ghost.
+- **Mischief Tasks** – Each round, ghosts must complete objectives. Tasks scale with ghost count: **ghost count + 1** (2 tasks for 1 ghost, 3 for 2, 4 for 3, 5 for 4, and so on for more ghosts). Only ghosts see the objectives — they appear as highlighted markers on the shared-screen map. A task is completed by a ghost standing near its marker for ~3 uninterrupted seconds.
 - **Control Scheme** – Phone touch controls (joystick + action buttons). The phone screen shows no game data — it acts only as a controller. All info (map, task markers, ghost positions) is displayed on the shared desktop screen.
   - **Left joystick** – Movement.
-  - **A button** – Haunt (enter object), trigger object effect, or interact.
-  - **B button** – Leave haunted object / cancel.
+  - **A button** – Haunt (enter object), trigger object effect, or interact. While haunting the Ecto-Vacuum, hold **A** for 2s to release one captured ghost.
+  - **B button** – Leave haunted object / cancel; press against a wall to Phase Walk.
 
 ## Game Loop for one game
 
 ### 1. Setup Phase (20 seconds)
-- Ghosts receive their mischief tasks (markers appear on the shared-screen map).
-- VR player sees the house layout on their Wrist Tablet with task markers (so they know what ghosts are trying to do).
+- Ghosts receive their mischief tasks (markers appear on the shared-screen map, visible only to ghosts).
+- The VR player spawns outside the front door; ghosts spawn at random spots inside the house.
+- The VR player can glance at the Wrist Tablet to see the house layout.
 
 ### 2. Hunt Phase (5 minutes)
 - **Ghosts** move around the house, complete Mischief Tasks, and avoid the Hunter.
@@ -65,25 +65,27 @@ Everyone is playing together in the same room.
   1. Hunter uses Flash → ghost becomes visible for ~4 seconds (if in range and line-of-sight).
   2. Hunter aims Ecto-Vacuum at the revealed ghost and holds the trigger. After ~3 seconds of continuous suction, the ghost is captured.
   3. While the Hunter is sucking, they move at reduced speed.
-  4. Any other ghost can **Haunt the vacuum** (must be near it) → trigger effect to release captured ghost.
+  4. Any other ghost can **Haunt the vacuum** (must be near it) and hold **A** for 2s → releases one captured ghost. A captured ghost is out of the house but can still see the shared-screen map.
   5. The Hunter can **Flash a haunted vacuum** to purge the haunting ghost, forcing them out and resetting the rescue attempt.
 
 ### 3. Haunt Surge (triggers when all tasks have been completed)
 - All remaining ghosts become fully visible and slowed by 30%.
 - Flashes now only stun the ghost (brief immobilize) — capturing is not possible anymore.
 - In this phase ghosts cannot possess anything → ghosts cannot be rescued anymore.
-- Hunter must reach the exit within 30 seconds without being touched by a ghost.
+- Hunter must reach the exit — the front door the Hunter came in through — within 30 seconds without being touched by a ghost.
 - **Touching** = any collision between a ghost's body and the Hunter (proximity is not enough — actual contact required).
 - If a ghost touches the Hunter or 30s passes → Ghosts win instantly.
 - If the Hunter gets to the exit → draw (no one scores).
 
 ### 4. Win Conditions
-- **Ghosts win** – Complete all Mischief Tasks (scaled to ghost count) before all ghosts are captured.
-- **Hunter wins** – Capture all ghosts before tasks are completed, or survive Haunt Surge without being touched.
+- **Ghosts win** – Complete all Mischief Tasks (scaled to ghost count) before all ghosts are captured, or touch the Hunter / let the 30s timer run out during Haunt Surge.
+- **Hunter wins** – Capture all ghosts before tasks are completed.
+- **Draw** – The Hunter reaches the exit during Haunt Surge.
 
 ### 5. Scoring
 - **Hunter win** → VR player gets **10 points**.
 - **Ghosts win** → Each surviving ghost gets **5 points**. Additionally, **2 points per completed mischief task** are added to the team pool and split equally among surviving ghosts.
+- **Draw** (Hunter reaches the exit during Haunt Surge) → no one scores.
 - **Bonuses:**
   - **"Rescue"** (+3 points) – A ghost successfully rescues a captured teammate.
   - **"Clutch Capture"** (+3 points) – Final ghost caught in the last 10 seconds of the Hunt Phase.
