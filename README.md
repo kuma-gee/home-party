@@ -17,6 +17,7 @@ All chords use `Ctrl+Alt` with `Shift` **not** held.
 
 ### Menu / game shelve (`main/game_shelve.gd`)
 
+- `1..9` / `KP_1..9` — start the visible game at that index (1 = Castle Defense, 2 = Ghost Hunter, 3 = Vortex Volley)
 - `Ctrl+Alt+1..9` — toggle-select game by index (press again to deselect)
 - `Ctrl+Alt+Enter` / `Ctrl+Alt+KP_Enter` — start the selected game
 

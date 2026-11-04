@@ -19,6 +19,7 @@ signal started_game(game: GameResource)
 
 var selected_game: GameResource
 var games = []
+var visible_games: Array[GameResource] = []
 var logger := KumaLog.new("GameShelve")
 
 func _ready() -> void:
@@ -33,20 +34,22 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.is_pressed() and not event.echo:
 		var key = event as InputEventKey
-		if key.ctrl_pressed and key.alt_pressed and not key.shift_pressed:
-			var code = key.keycode
-			if code >= KEY_1 and code <= KEY_9:
-				var idx = code - KEY_1
-				if idx < games.size():
-					var g = games[idx]
-					if g:
-						if selected_game == g:
-							_on_game_selected(null)
-						else:
-							_on_game_selected(g)
-			elif code == KEY_ENTER or code == KEY_KP_ENTER:
-				if selected_game:
-					started_game.emit(selected_game)
+		var idx := -1
+		if key.keycode >= KEY_1 and key.keycode <= KEY_9:
+			idx = key.keycode - KEY_1
+		elif key.keycode >= KEY_KP_1 and key.keycode <= KEY_KP_9:
+			idx = key.keycode - KEY_KP_1
+		if idx >= 0 and idx < visible_games.size():
+			if key.ctrl_pressed and key.alt_pressed and not key.shift_pressed:
+				var g = visible_games[idx]
+				if selected_game == g:
+					_on_game_selected(null)
+				else:
+					_on_game_selected(g)
+			elif not key.ctrl_pressed and not key.alt_pressed and not key.meta_pressed and not key.shift_pressed:
+				_start_game(visible_games[idx])
+		elif key.ctrl_pressed and key.alt_pressed and not key.shift_pressed and (key.keycode == KEY_ENTER or key.keycode == KEY_KP_ENTER):
+			_try_start_selected_game()
 
 func _populate() -> void:
 	for child in games_root.get_children():
@@ -57,10 +60,11 @@ func _populate() -> void:
 	if game_loader:
 		games = game_loader.list_games()
 
-	var visible_games: Array[GameResource] = []
+	visible_games = []
 	for g in games:
 		if g and not Env.is_game_hidden(g):
 			visible_games.append(g)
+	visible_games.sort_custom(func(a, b): return Env.visible_game_index(a) < Env.visible_game_index(b))
 
 	var n: int = visible_games.size()
 	if n == 0:
@@ -86,7 +90,7 @@ func _place(inst: Node3D, i: int, n: int) -> void:
 
 
 func reset_objects() -> void:
-	var n: int = games.size()
+	var n: int = visible_games.size()
 	for child in games_root.get_children():
 		if not (typeof(child) == TYPE_OBJECT and child.name.begins_with("game_icon_")):
 			continue
@@ -120,5 +124,9 @@ func start_selected_game() -> void:
 
 
 func _try_start_selected_game() -> void:
-	if selected_game and Env.is_game_available(selected_game):
-		started_game.emit(selected_game)
+	_start_game(selected_game)
+
+
+func _start_game(game: GameResource) -> void:
+	if game and Env.is_game_available(game):
+		started_game.emit(game)
