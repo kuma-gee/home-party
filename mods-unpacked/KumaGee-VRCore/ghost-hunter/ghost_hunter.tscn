@@ -3,9 +3,25 @@
 [ext_resource type="PackedScene" uid="uid://bisl1jfnf3opn" path="res://main/base_scene.tscn" id="1_base"]
 [ext_resource type="Script" uid="uid://owbdrjlxlqa6" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/ghost_hunter.gd" id="2_game"]
 [ext_resource type="PackedScene" uid="uid://bfcobqvl6m5ty" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/ghost_hunter_player_ui.tscn" id="3_plui"]
+[ext_resource type="PackedScene" uid="uid://uf7iid7kvvos" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/house/house_variant_a.tscn" id="4_house_a"]
+[ext_resource type="PackedScene" uid="uid://ckwm3a72rlvd5" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/house/house_variant_b.tscn" id="5_house_b"]
+[ext_resource type="PackedScene" uid="uid://busjg5urteokp" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/house/house_variant_c.tscn" id="6_house_c"]
 
-[node name="GhostHunter" instance=ExtResource("1_base")]
+[sub_resource type="Environment" id="Environment_wmjjc"]
+
+[node name="GhostHunter" unique_id=2043053925 node_paths=PackedStringArray("house_container") instance=ExtResource("1_base")]
 script = ExtResource("2_game")
+house_variants = Array[PackedScene]([ExtResource("4_house_a"), ExtResource("5_house_b"), ExtResource("6_house_c")])
+house_container = NodePath("BaseSceneContent/HouseContainer")
+
+[node name="WorldEnvironment" parent="." index="0" unique_id=10000001]
+environment = SubResource("Environment_wmjjc")
+
+[node name="Camera3D" parent="." index="3" unique_id=10000003]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 30, 0)
+fov = 55.0
 
 [node name="PlayerList" parent="CanvasLayer/Control/MarginContainer" parent_id_path=PackedInt32Array(10000008) index="0" unique_id=10000009]
 player_scene = ExtResource("3_plui")
+
+[node name="HouseContainer" type="Node3D" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="0" unique_id=1370650917]
