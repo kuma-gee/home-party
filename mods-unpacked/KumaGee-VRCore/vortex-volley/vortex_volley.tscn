@@ -40,7 +40,7 @@ size = Vector3(1.5, 1, 0.02)
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_k1jr6"]
 height = 0.16003418
-radius = 1.9208984
+radius = 2.0014648
 
 [node name="VortexVolley" unique_id=459618458 node_paths=PackedStringArray("bot_count_viewport", "vr_screen") instance=ExtResource("1_base")]
 script = ExtResource("2_game")
@@ -105,23 +105,16 @@ unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2754123, 0)
 
 [node name="arena2" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="1" unique_id=92398370 instance=ExtResource("8_ymkxq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.4775333, 0)
-visible = false
+transform = Transform3D(1, 0, 0, 0, -1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 3.5956144, 0)
 
-[node name="Arena" parent="BaseSceneContent/arena2" index="0" unique_id=1521166362]
+[node name="Arena" parent="BaseSceneContent/arena2" index="0" unique_id=896159933]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.019744873, 0)
-layers = 262144
-material_override = ExtResource("8_h3hju")
-
-[node name="Platform" parent="BaseSceneContent/arena2" index="1" unique_id=1124976171]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.019744873, 0)
-visible = false
 layers = 262144
 material_override = ExtResource("8_h3hju")
 
 [node name="arena" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="2" unique_id=39630964 instance=ExtResource("8_ymkxq")]
 
-[node name="Arena" parent="BaseSceneContent/arena" index="0" unique_id=1521166362]
+[node name="Arena" parent="BaseSceneContent/arena" index="0" unique_id=896159933]
 material_override = ExtResource("8_h3hju")
 
 [node name="Spawn" parent="BaseSceneContent/arena" index="1" unique_id=1846504611 instance=ExtResource("8_u27j1")]
@@ -147,19 +140,17 @@ transform = Transform3D(0, 0, 0.9999995, 0, 1, 0, -0.9999995, 0, 0, 0, 0, 0)
 [node name="Spawn8" parent="BaseSceneContent/arena" index="8" unique_id=316271000 instance=ExtResource("8_u27j1")]
 transform = Transform3D(0.7071064, 0, 0.7071064, 0, 1, 0, -0.7071064, 0, 0.7071064, 0, 0, 0)
 
-[node name="Platform" parent="BaseSceneContent/arena" index="9" unique_id=1124976171]
-material_override = ExtResource("8_h3hju")
-
 [node name="BotCountViewport" type="Node3D" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="3" unique_id=1649809610]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8, 2.4034913, -4.8572235)
 
-[node name="Guide" parent="BaseSceneContent/BotCountViewport" index="0" unique_id=1231438571 instance=ExtResource("15_k1jr6")]
+[node name="Guide" parent="BaseSceneContent/BotCountViewport" index="0" unique_id=1231438571 node_paths=PackedStringArray("ready_button") instance=ExtResource("15_k1jr6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, -0.2816651, 0)
 screen_size = Vector2(4, 3)
 scene = ExtResource("16_jdii5")
 viewport_size = Vector2(720, 560)
 unshaded = true
 scene_properties_keys = PackedStringArray("vortex_tutorial.gd", "vr_tutorial.gd", "ready_button", "ready_text", "waiting_text")
+ready_button = NodePath("Viewport/VRTutorial/MarginContainer/VBoxContainer/Pages/Page2_Prepare/WeaponSelect/MarginContainer/VBoxContainer2/VBoxContainer2/ReadyButton")
 ready_text = "Ready"
 waiting_text = "Ready (%s/%s)"
 
