@@ -16,6 +16,12 @@ func get_front_door() -> Marker3D:
 	return _first_marker_in_group(GROUP_FRONT_DOOR)
 
 
+func get_camera() -> Camera3D:
+	for node in find_children("*", "Camera3D", true, false):
+		return node
+	return null
+
+
 func get_ghost_spawn_points() -> Array[Marker3D]:
 	return _markers_in_group(GROUP_GHOST_SPAWN)
 

@@ -11,7 +11,7 @@ ambient_light_energy = 0.6
 tonemap_mode = 3
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
-size = Vector3(24, 0.2, 18)
+size = Vector3(36.743164, 0.2, 35.01953)
 
 [sub_resource type="StandardMaterial3D" id="floor_mat"]
 albedo_color = Color(0.23, 0.18, 0.15, 1)
@@ -430,3 +430,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 0, 8)
 
 [node name="TaskSpot4" type="Marker3D" parent="TaskSpots" unique_id=2017023317 groups=["gh_task_spot"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, -8)
+
+[node name="Camera3D2" type="Camera3D" parent="." unique_id=1420281014]
+transform = Transform3D(1, 0, 0, 0, 0.26263756, 0.9648946, 0, -0.9648946, 0.26263756, 0, 22.536499, 6.5183716)
+cull_mask = 786431
+fov = 55.0

@@ -35,6 +35,18 @@ func _load_random_house() -> void:
 	house = variant.instantiate() as HouseLayout
 	house_container.add_child(house)
 	logger.info("Loaded haunted house layout: %s" % house.name)
+	_activate_house_camera()
+
+
+func _activate_house_camera() -> void:
+	var house_cam := house.get_camera() if house else null
+	if not house_cam:
+		logger.warn("House layout has no camera, keeping current camera")
+		return
+	var active_cam := get_viewport().get_camera_3d()
+	if active_cam and active_cam != house_cam:
+		active_cam.current = false
+	house_cam.current = true
 
 
 func _on_prepare_phase() -> void:

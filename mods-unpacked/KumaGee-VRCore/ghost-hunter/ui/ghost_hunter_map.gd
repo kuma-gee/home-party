@@ -2,9 +2,9 @@ class_name GhostHunterMap
 extends Control
 
 ## GH-4 shared-screen map layer on the desktop canvas: draws every ghost as a
-## colored marker at its position projected through the top-down camera, and
-## draws the Hunter marker only while the Hunter is within
-## HUNTER_REVEAL_RANGE of any ghost.
+## colored marker at its position projected through the active camera (the
+## house scene camera), and draws the Hunter marker only while the Hunter is
+## within HUNTER_REVEAL_RANGE of any ghost.
 
 const HUNTER_REVEAL_RANGE := 10.0
 const GHOST_MARKER_RADIUS := 9.0

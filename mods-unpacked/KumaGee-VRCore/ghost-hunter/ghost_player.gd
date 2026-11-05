@@ -2,9 +2,11 @@ class_name GhostPlayer
 extends CharacterBody3D
 
 ## GH-4: a phone-controlled ghost inside the haunted house. Moves with the
-## phone joystick relative to the top-down shared-screen camera (screen up =
-## world -Z, same mapping as the hide-and-seek hiders) and re-emits A/B as
-## primary/secondary action signals for the GH-8/GH-10 slices.
+## phone joystick (screen up = world -Z, same mapping as the hide-and-seek
+## hiders) and re-emits A/B as primary/secondary action signals for the
+## GH-8/GH-10 slices. Visual meshes are on render layer 20, which only the
+## desktop shared-screen cameras render, so the Hunter's VR camera cannot
+## see ghosts with the naked eye (the GH-8 flash reveal will show them).
 
 signal primary_action_pressed()
 signal secondary_action_pressed()
