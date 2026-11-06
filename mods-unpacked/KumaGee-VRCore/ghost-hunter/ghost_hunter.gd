@@ -1,6 +1,8 @@
 class_name GhostHunter
 extends BaseGame
 
+const HUNTER_SPAWN_DOOR_DISTANCE := 2.0
+
 @export var house_variants: Array[PackedScene] = []
 @export var house_container: Node3D
 @export var ghost_scene: PackedScene
@@ -19,6 +21,7 @@ func _ready() -> void:
 	game_phase.connect(_on_game_phase)
 	PlayerManager.clients_changed.connect(_on_clients_changed)
 	_load_random_house()
+	_spawn_hunter_at_front_door()
 	_setup_map_layer()
 
 
@@ -50,7 +53,21 @@ func _activate_house_camera() -> void:
 
 
 func _on_prepare_phase() -> void:
-	pass
+	_spawn_hunter_at_front_door()
+
+
+## GH-3: spawn the hunter outside the front door, facing it. Also updates
+## spawn_transform so fall/menu resets return to the door instead of the house center.
+func _spawn_hunter_at_front_door() -> void:
+	var door := house.get_front_door() if house else null
+	if door == null or not xr_player:
+		logger.warn("Cannot spawn hunter outside front door: house/door/xr_player missing")
+		return
+	var spawn_t := door.global_transform
+	spawn_t.origin += spawn_t.basis.z * HUNTER_SPAWN_DOOR_DISTANCE
+	spawn_transform = spawn_t
+	center_player_on(spawn_t)
+	logger.info("Spawned hunter outside front door at %s" % spawn_t.origin)
 
 
 func _on_game_phase() -> void:
