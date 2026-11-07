@@ -177,7 +177,7 @@ func _apply_hunter_visibility() -> void:
 		var mat := _body_mesh.material_override as StandardMaterial3D
 		if mat:
 			if visible:
-				mat.emission = Color.WHITE
+				mat.emission = color
 				mat.emission_energy_multiplier = REVEAL_EMISSION_ENERGY
 			else:
 				_apply_color()
