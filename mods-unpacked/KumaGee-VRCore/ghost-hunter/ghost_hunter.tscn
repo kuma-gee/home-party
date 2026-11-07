@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://busjg5urteokp" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/house/house_variant_c.tscn" id="6_house_c"]
 [ext_resource type="PackedScene" uid="uid://cn2wds6uhs4wn" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/ghost_player.tscn" id="7_ghost"]
 [ext_resource type="Script" uid="uid://dnl81gct0ofuc" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/ui/ghost_hunter_map.gd" id="8_map"]
+[ext_resource type="PackedScene" uid="uid://d2hk6yhk327fp" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/flash_device.tscn" id="9_flash"]
 
 [node name="GhostHunter" unique_id=2043053925 node_paths=PackedStringArray("house_container", "map_layer") instance=ExtResource("1_base")]
 script = ExtResource("2_game")
@@ -15,6 +16,7 @@ house_variants = Array[PackedScene]([ExtResource("4_house_a"), ExtResource("5_ho
 house_container = NodePath("BaseSceneContent/HouseContainer")
 ghost_scene = ExtResource("7_ghost")
 map_layer = NodePath("CanvasLayer/Control/GameUI/MapLayer")
+flash_device_scene = ExtResource("9_flash")
 
 [node name="MapLayer" type="Control" parent="CanvasLayer/Control/GameUI" parent_id_path=PackedInt32Array(10000007) index="0" unique_id=22565456]
 layout_mode = 1
