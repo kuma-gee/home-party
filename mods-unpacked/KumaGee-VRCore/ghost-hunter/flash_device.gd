@@ -14,7 +14,15 @@ extends XRToolsPickable
 ## revealed), a ghost haunting an object in range is purged (GH-8 hook), and
 ## every flash pings the Hunter's location to the shared screen (GH-4)
 ## through [signal flash_fired]. Refiring is blocked for the 3 s recharge;
-## [signal recharge_changed] feeds the GH-5 tablet charge.
+## [signal recharge_changed] feeds the GH-5 device-display charge bar.
+##
+## GH-5 (device-display variant): the device carries a small screen (the
+## [Sprite3D] showing the [DisplayViewport] SubViewport whose [%UI] draws
+## the content) that the Hunter reads while holding the device — house map,
+## last-known ghost interaction pings ([method add_interaction_ping]), his
+## own position, and the flash charge. The sprite sits on render layer 19
+## (VR-only UI layer) so the display's own map camera (cull_mask=1) never
+## renders it — that would be a viewport sampling its own output texture.
 ##
 ## Deliberately no XRToolsGrabPointHand child: without a grab point the grab
 ## is "precise" (Grab captures the relative transform at pickup), so the
@@ -36,6 +44,10 @@ const FLASH_VISUAL_DURATION := 0.4
 @export_flags_3d_physics var line_of_sight_mask: int = 1
 
 var ghosts_getter: Callable
+var house_camera_getter: Callable
+var hunter_position_getter: Callable
+
+@onready var _display: FlashDeviceDisplay = %UI
 
 var _cooldown := 0.0
 
@@ -45,6 +57,49 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 	action_pressed.connect(_on_action_pressed)
+	recharge_changed.connect(_on_recharge_changed)
+	_on_recharge_changed(_cooldown, recharge_duration)
+	if house_camera_getter.is_valid():
+		_display.set_house_camera_getter(house_camera_getter)
+	if hunter_position_getter.is_valid():
+		_display.set_hunter_position_getter(hunter_position_getter)
+
+
+func set_house_camera_getter(getter: Callable) -> void:
+	house_camera_getter = getter
+	if _display:
+		_display.set_house_camera_getter(getter)
+
+
+func set_hunter_position_getter(getter: Callable) -> void:
+	hunter_position_getter = getter
+	if _display:
+		_display.set_hunter_position_getter(getter)
+
+
+## GH-5: a ghost interaction (haunt trigger, phase ripple, purge) pings the
+## device display at the ghost's last known position.
+func add_interaction_ping(pos: Vector3, kind: String = "") -> void:
+	if _display:
+		_display.add_ping(pos, kind)
+
+
+func _on_recharge_changed(remaining: float, total: float) -> void:
+	if _display:
+		_display.set_charge(remaining, total)
+
+
+## Debug/E2E helpers (the MCP bridge cannot pass Vector3 arguments).
+func debug_add_ping(x: float, y: float, z: float, kind: String = "") -> void:
+	add_interaction_ping(Vector3(x, y, z), kind)
+
+
+func debug_display_ping_count() -> int:
+	return _display.get_ping_count() if _display else -1
+
+
+func debug_display_charge() -> float:
+	return _display.get_charge() if _display else -1.0
 
 
 func _process(delta: float) -> void:

@@ -2,7 +2,7 @@ class_name GhostHunter
 extends BaseGame
 
 ## GH-6: re-emitted whenever the Hunter fires the Flash Device; the GH-5
-## wrist tablet listens to this to decrement the flash charge count.
+## device display also reads the recharge directly off the Flash Device.
 signal hunter_flash_fired(origin: Vector3)
 
 const HUNTER_SPAWN_DOOR_DISTANCE := 2.0
@@ -183,7 +183,7 @@ func _make_hip_snap_zone(side: String, pos: Vector3, snap_group: String) -> void
 ## GH-6: spawn the pickable Flash Device next to the front door (where the
 ## Hunter spawns), holster it into the right hip snap zone, and wire it to
 ## the ghost list, the shared-screen Hunter-location ping, and the GH-5
-## tablet charge hook.
+## device-display hooks (house map camera, hunter position, charge, pings).
 func _spawn_flash_device() -> void:
 	if flash_device and is_instance_valid(flash_device):
 		var home: XRToolsSnapZone = _item_home.get(flash_device, null)
@@ -220,8 +220,21 @@ func _setup_flash_device() -> void:
 	if not flash_device:
 		return
 	flash_device.set_ghosts_getter(get_ghosts)
+	flash_device.set_house_camera_getter(_get_house_camera)
+	flash_device.set_hunter_position_getter(_get_hunter_position)
 	flash_device.flash_fired.connect(_on_flash_fired)
 	flash_device.dropped.connect(_on_item_dropped, CONNECT_DEFERRED)
+
+
+func _get_house_camera() -> Camera3D:
+	return house.get_camera() if house else null
+
+
+## GH-5: ghost actions (haunt trigger, phase-walk, haunt purge) ping the
+## Flash Device display at the ghost's last known position.
+func _ping_ghost_interaction(ghost: GhostPlayer, kind: String) -> void:
+	if flash_device and is_instance_valid(flash_device) and is_instance_valid(ghost):
+		flash_device.add_interaction_ping(ghost.global_position, kind)
 
 
 ## Snap an item into its side's hip holster if it is not held.
@@ -403,6 +416,9 @@ func _spawn_ghost(controller: ClientController) -> void:
 		color_idx = ghosts.size()
 	house_container.add_child(ghost)
 	ghost.setup(controller, PlayerList.get_color(color_idx), _next_spawn_point())
+	ghost.primary_action_pressed.connect(func() -> void: _ping_ghost_interaction(ghost, "haunt"))
+	ghost.secondary_action_pressed.connect(func() -> void: _ping_ghost_interaction(ghost, "phase"))
+	ghost.haunt_purged.connect(func(_g: GhostPlayer) -> void: _ping_ghost_interaction(ghost, "purge"))
 	if controller is GhostHunterAIController:
 		(controller as GhostHunterAIController).bind_ghost(ghost)
 	ghosts.append(ghost)

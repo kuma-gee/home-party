@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://cdl5kcr2wvnav" path="res://addons/godot-xr-tools/objects/highlight/highlight_material.gd" id="3_hl"]
 [ext_resource type="Material" uid="uid://dyuaw57o8y3i" path="res://addons/godot-xr-tools/materials/highlight.tres" id="4_high"]
 [ext_resource type="PackedScene" uid="uid://dh8grd7s3n8kg" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_snap.tscn" id="5_snap"]
+[ext_resource type="Script" uid="uid://dncpg3youc4ip" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/ui/flash_device_display.gd" id="6_ui"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_body"]
 size = Vector3(0.08, 0.08, 0.24)
@@ -31,6 +32,9 @@ emission_energy_multiplier = 1.5
 radius = 0.03
 height = 0.06
 radial_segments = 12
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_yh3ig"]
+viewport_path = NodePath("DisplayViewport")
 
 [node name="FlashDevice" unique_id=1904211337 groups=["gh_flash_device"] instance=ExtResource("1_pickable")]
 freeze = true
@@ -64,3 +68,36 @@ visible = true
 script = ExtResource("3_hl")
 highlight_mesh_instance = NodePath("../Body")
 highlight_material = ExtResource("4_high")
+
+[node name="DisplayViewport" type="SubViewport" parent="." index="5" unique_id=1904211401]
+handle_input_locally = false
+gui_disable_input = true
+size = Vector2i(320, 240)
+render_target_update_mode = 3
+
+[node name="MapCamera" type="Camera3D" parent="DisplayViewport" index="0" unique_id=1904211402]
+unique_name_in_owner = true
+cull_mask = 1
+projection = 1
+current = true
+size = 26.0
+far = 80.0
+
+[node name="Canvas" type="CanvasLayer" parent="DisplayViewport" index="1" unique_id=1904211403]
+
+[node name="UI" type="Control" parent="DisplayViewport/Canvas" index="0" unique_id=1904211404]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("6_ui")
+
+[node name="Sprite3D" type="Sprite3D" parent="." index="6" unique_id=500001072]
+transform = Transform3D(0.05, 0, 0, 0, 0.049999997, 0, 0, 0, 0.049999997, 0, 0.14202881, -0.005554199)
+layers = 262144
+cast_shadow = 0
+texture = SubResource("ViewportTexture_yh3ig")

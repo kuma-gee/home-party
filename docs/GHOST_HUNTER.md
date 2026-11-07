@@ -18,7 +18,7 @@ Everyone is playing together in the same room.
 - **Movement: Smooth locomotion** (thumbstick). No teleport. Ghosts see the Hunter on their shared screen when within 10m — teleport would let the Hunter bypass this warning range instantly, breaking the cat-and-mouse tension.
 - **Flash Device** – Emits a bright pulse that briefly reveals ghosts (recharge time of 3s). Targets the area in front in a 45° cone, range of 2m, and reveals the player's location to ghosts. Also purges haunted objects within range, forcing possessing ghosts out. A ghost hit by the flash is shown with a visible highlight for the reveal duration.
 - **Ecto-Vacuum** – Capture tool. Sucks in a fully visible ghost over ~3 seconds (range 3m, requires line-of-sight). While actively sucking, the Hunter moves at 50% speed.
-- **Wrist Tablet** – Shows house map with last known ghost interaction pings and charge count for Flash Device.
+- **Flash Device Display** – The screen on the back of the Flash Device (read it while holding the device) shows the house map with last known ghost interaction pings and the flash charge.
 
 **Visibility Rule:** Hunter cannot see ghosts unless revealed by the Flash Device. Ghosts that are phasing, haunting objects, or moving normally are completely invisible to the naked eye. The Flash reveal lasts ~4 seconds.
 
@@ -27,7 +27,7 @@ Everyone is playing together in the same room.
 - **Right thumbstick** – Snap-turn (rotate view).
 - **Right trigger** – Flash Device (pulse).
 - **Left grip + trigger (hold)** – Aim and suck with the Ecto-Vacuum.
-- **Wrist Tablet** – Glance down at the non-dominant wrist (hand held at the right angle) to show the map.
+- **Flash Device Display** – Hold the Flash Device and look at its screen to see the house map, ghost interaction pings, and flash charge.
 
 **VR Comfort Settings (player-configurable in menu):**
 - **Vignette intensity** — Off / Low / Default / High. Higher values darken peripheral vision more during movement.
@@ -56,7 +56,7 @@ Everyone is playing together in the same room.
 ### 1. Setup Phase (20 seconds)
 - Ghosts receive their mischief tasks (markers appear on the shared-screen map, visible only to ghosts).
 - The VR player spawns outside the front door; ghosts spawn at random spots inside the house.
-- The VR player can glance at the Wrist Tablet to see the house layout.
+- The VR player can look at the Flash Device's screen to see the house layout.
 
 ### 2. Hunt Phase (5 minutes)
 - **Ghosts** move around the house, complete Mischief Tasks, and avoid the Hunter.
