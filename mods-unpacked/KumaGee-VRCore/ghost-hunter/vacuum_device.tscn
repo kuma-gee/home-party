@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://c4vb2s46cdy5u"]
+
+[ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_pickable"]
+[ext_resource type="Script" uid="uid://97om3vpsklpys" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/vacuum_device.gd" id="2_script"]
+[ext_resource type="Script" uid="uid://cdl5kcr2wvnav" path="res://addons/godot-xr-tools/objects/highlight/highlight_material.gd" id="3_hl"]
+[ext_resource type="Material" uid="uid://dyuaw57o8y3i" path="res://addons/godot-xr-tools/materials/highlight.tres" id="4_high"]
+[ext_resource type="PackedScene" uid="uid://dh8grd7s3n8kg" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_snap.tscn" id="5_snap"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_body"]
+size = Vector3(0.12, 0.12, 0.34)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_body"]
+albedo_color = Color(0.1, 0.12, 0.18, 1)
+emission_enabled = true
+emission = Color(0.25, 0.9, 0.65, 1)
+emission_energy_multiplier = 0.3
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_body"]
+top_radius = 0.055
+bottom_radius = 0.055
+height = 0.24
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nozzle"]
+albedo_color = Color(0.18, 0.2, 0.26, 1)
+emission_enabled = true
+emission = Color(0.25, 0.9, 0.65, 1)
+emission_energy_multiplier = 0.6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_nozzle"]
+top_radius = 0.05
+bottom_radius = 0.025
+height = 0.12
+radial_segments = 12
+
+[node name="VacuumDevice" unique_id=4688553032 groups=["gh_left_item"] instance=ExtResource("1_pickable")]
+freeze = true
+script = ExtResource("2_script")
+cone_angle_deg = 40.0
+range = 3.0
+suck_duration = 3.0
+line_of_sight_mask = 1
+release_mode = 1
+
+[node name="CollisionShape3D" parent="." index="0" unique_id=5852168131]
+shape = SubResource("BoxShape3D_body")
+
+[node name="Body" type="MeshInstance3D" parent="." index="1" unique_id=2047487889]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_body")
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_body")
+
+[node name="Nozzle" type="MeshInstance3D" parent="." index="2" unique_id=5813393253]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, -0.17)
+material_override = SubResource("StandardMaterial3D_nozzle")
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_nozzle")
+
+[node name="GrabPointSnap" parent="." index="3" unique_id=4359463626 instance=ExtResource("5_snap")]
+visible = true
+
+[node name="XRToolsHighlightMaterial" type="Node" parent="." index="4" unique_id=3063781578]
+script = ExtResource("3_hl")
+highlight_mesh_instance = NodePath("../Body")
+highlight_material = ExtResource("4_high")

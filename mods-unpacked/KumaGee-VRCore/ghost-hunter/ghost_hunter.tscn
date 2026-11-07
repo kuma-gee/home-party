@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://cn2wds6uhs4wn" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/ghost_player.tscn" id="7_ghost"]
 [ext_resource type="Script" uid="uid://dnl81gct0ofuc" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/ui/ghost_hunter_map.gd" id="8_map"]
 [ext_resource type="PackedScene" uid="uid://d2hk6yhk327fp" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/flash_device.tscn" id="9_flash"]
+[ext_resource type="PackedScene" uid="uid://46qe67kxar4g7" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/vacuum_device.tscn" id="13_vac"]
 [ext_resource type="Script" uid="uid://87e8c6ucp4925" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/ghost_hunter_ai_manager.gd" id="10_aiman"]
 [ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="11_v2d"]
 [ext_resource type="PackedScene" uid="uid://cfxkzmnio8956" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/ui/bot_count_control.tscn" id="12_bctrl"]
@@ -20,6 +21,7 @@ house_container = NodePath("BaseSceneContent/HouseContainer")
 ghost_scene = ExtResource("7_ghost")
 map_layer = NodePath("CanvasLayer/Control/GameUI/MapLayer")
 flash_device_scene = ExtResource("9_flash")
+vacuum_device_scene = ExtResource("13_vac")
 bot_count_viewport = NodePath("BaseSceneContent/BotCountViewport")
 
 [node name="MapLayer" type="Control" parent="CanvasLayer/Control/GameUI" parent_id_path=PackedInt32Array(10000007) index="0" unique_id=22565456]

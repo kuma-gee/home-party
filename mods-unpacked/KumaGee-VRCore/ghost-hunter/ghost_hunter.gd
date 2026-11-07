@@ -7,14 +7,15 @@ signal hunter_flash_fired(origin: Vector3)
 
 const HUNTER_SPAWN_DOOR_DISTANCE := 2.0
 const FLASH_DEVICE_DOOR_OFFSET := 1.0
-const FLASH_DEVICE_HEIGHT := 1.2
+const VACUUM_DEVICE_DOOR_OFFSET := 1.6
+const ITEM_SPAWN_HEIGHT := 1.2
 ## Belt-holster snap zones on the player body, left and right at hip height.
 const HIP_SNAP_ZONE_PATH := "res://addons/godot-xr-tools/objects/snap_zone.tscn"
 const LEFT_HIP_SNAP_ZONE_POS := Vector3(-0.22, 0.98, 0.02)
 const RIGHT_HIP_SNAP_ZONE_POS := Vector3(0.22, 0.98, 0.02)
 const HIP_SNAP_ZONE_GRAB_DISTANCE := 0.35
 const FLASH_DEVICE_GROUP := "gh_flash_device"
-const LEFT_ITEM_GROUP := "gh_left_item" # GH-7 Ecto-Vacuum will holster here
+const LEFT_ITEM_GROUP := "gh_left_item" # GH-7 Ecto-Vacuum holsters here
 ## Desktop fallback: Q/E release the holstered item and spawn it at the
 ## simulated hand so the player can hold-grab it; if it is not picked up
 ## within this time it is moved back to the holster.
@@ -27,11 +28,13 @@ const KEY_RIGHT_ITEM := KEY_E
 @export var ghost_scene: PackedScene
 @export var map_layer: GhostHunterMap
 @export var flash_device_scene: PackedScene
+@export var vacuum_device_scene: PackedScene
 @export var bot_count_viewport: Node3D
 
 @onready var ai_manager: GhostHunterAIManager = %AIManager
 
 var flash_device: FlashDevice = null
+var vacuum_device: VacuumDevice = null
 ## side ("left"/"right") -> holster snap zone on the player body
 var holster_zones := {}
 ## pickable item -> the holster zone it belongs to
@@ -56,6 +59,7 @@ func _ready() -> void:
 	_spawn_hunter_at_front_door()
 	_setup_hip_snap_zones()
 	_spawn_flash_device()
+	_spawn_vacuum_device()
 	_setup_map_layer()
 	ai_manager.setup(player_list, _get_hunter_position)
 	_update_bot_count_visibility()
@@ -91,6 +95,7 @@ func _activate_house_camera() -> void:
 func _on_prepare_phase() -> void:
 	_spawn_hunter_at_front_door()
 	_spawn_flash_device()
+	_spawn_vacuum_device()
 	ai_manager.on_prepare_phase_entered()
 	_update_bot_count_visibility()
 
@@ -185,17 +190,8 @@ func _make_hip_snap_zone(side: String, pos: Vector3, snap_group: String) -> void
 ## the ghost list, the shared-screen Hunter-location ping, and the GH-5
 ## device-display hooks (house map camera, hunter position, charge, pings).
 func _spawn_flash_device() -> void:
-	if flash_device and is_instance_valid(flash_device):
-		var home: XRToolsSnapZone = _item_home.get(flash_device, null)
-		if is_instance_valid(home) and home.picked_up_object == flash_device:
-			home.picked_up_object = null
-		_item_home.erase(flash_device)
-		_loose_items.erase(flash_device)
-		_loose_timers.erase(flash_device)
-		for zone in holster_zones.values():
-			if is_instance_valid(zone):
-				zone.enabled = true
-		flash_device.queue_free()
+	if is_instance_valid(flash_device):
+		_despawn_item(flash_device)
 		flash_device = null
 	if not flash_device_scene:
 		logger.warn("No flash device scene configured")
@@ -208,12 +204,61 @@ func _spawn_flash_device() -> void:
 	var door := house.get_front_door() if house else null
 	if door:
 		flash_device.global_position = door.global_position + door.global_transform.basis.z * FLASH_DEVICE_DOOR_OFFSET
-		flash_device.global_position.y = FLASH_DEVICE_HEIGHT
+		flash_device.global_position.y = ITEM_SPAWN_HEIGHT
 	else:
-		flash_device.global_position = Vector3(0.0, FLASH_DEVICE_HEIGHT, 0.0)
+		flash_device.global_position = Vector3(0.0, ITEM_SPAWN_HEIGHT, 0.0)
 	_setup_flash_device()
 	_holster_item(flash_device, "right")
 	logger.info("Spawned flash device at %s" % flash_device.global_position)
+
+
+## Free a holstered item and clear its holster bookkeeping (used when
+## respawning items on prepare phase).
+func _despawn_item(item: Node3D) -> void:
+	if not is_instance_valid(item):
+		return
+	var home: XRToolsSnapZone = _item_home.get(item, null)
+	if is_instance_valid(home) and home.picked_up_object == item:
+		home.picked_up_object = null
+	_item_home.erase(item)
+	_loose_items.erase(item)
+	_loose_timers.erase(item)
+	for zone in holster_zones.values():
+		if is_instance_valid(zone):
+			zone.enabled = true
+	item.queue_free()
+
+
+## GH-7: spawn the pickable Ecto-Vacuum next to the front door and holster it
+## into the left hip snap zone at waist level; wire it to the ghost list.
+func _spawn_vacuum_device() -> void:
+	if is_instance_valid(vacuum_device):
+		_despawn_item(vacuum_device)
+		vacuum_device = null
+	if not vacuum_device_scene:
+		logger.warn("No vacuum device scene configured")
+		return
+	vacuum_device = vacuum_device_scene.instantiate() as VacuumDevice
+	if not vacuum_device:
+		return
+	var parent := house_container if house_container else self
+	parent.add_child(vacuum_device)
+	var door := house.get_front_door() if house else null
+	if door:
+		vacuum_device.global_position = door.global_position + door.global_transform.basis.z * VACUUM_DEVICE_DOOR_OFFSET
+		vacuum_device.global_position.y = ITEM_SPAWN_HEIGHT
+	else:
+		vacuum_device.global_position = Vector3(0.0, ITEM_SPAWN_HEIGHT, 0.0)
+	_setup_vacuum_device()
+	_holster_item(vacuum_device, "left")
+	logger.info("Spawned vacuum device at %s" % vacuum_device.global_position)
+
+
+func _setup_vacuum_device() -> void:
+	if not vacuum_device:
+		return
+	vacuum_device.set_ghosts_getter(get_ghosts)
+	vacuum_device.dropped.connect(_on_item_dropped, CONNECT_DEFERRED)
 
 
 func _setup_flash_device() -> void:
