@@ -9,14 +9,18 @@
 [ext_resource type="PackedScene" uid="uid://cn2wds6uhs4wn" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/ghost_player.tscn" id="7_ghost"]
 [ext_resource type="Script" uid="uid://dnl81gct0ofuc" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/ui/ghost_hunter_map.gd" id="8_map"]
 [ext_resource type="PackedScene" uid="uid://d2hk6yhk327fp" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/flash_device.tscn" id="9_flash"]
+[ext_resource type="Script" uid="uid://87e8c6ucp4925" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/ghost_hunter_ai_manager.gd" id="10_aiman"]
+[ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="11_v2d"]
+[ext_resource type="PackedScene" uid="uid://cfxkzmnio8956" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/ui/bot_count_control.tscn" id="12_bctrl"]
 
-[node name="GhostHunter" unique_id=2043053925 node_paths=PackedStringArray("house_container", "map_layer") instance=ExtResource("1_base")]
+[node name="GhostHunter" unique_id=2043053925 node_paths=PackedStringArray("house_container", "map_layer", "bot_count_viewport") instance=ExtResource("1_base")]
 script = ExtResource("2_game")
 house_variants = Array[PackedScene]([ExtResource("4_house_a"), ExtResource("5_house_b"), ExtResource("6_house_c")])
 house_container = NodePath("BaseSceneContent/HouseContainer")
 ghost_scene = ExtResource("7_ghost")
 map_layer = NodePath("CanvasLayer/Control/GameUI/MapLayer")
 flash_device_scene = ExtResource("9_flash")
+bot_count_viewport = NodePath("BaseSceneContent/BotCountViewport")
 
 [node name="MapLayer" type="Control" parent="CanvasLayer/Control/GameUI" parent_id_path=PackedInt32Array(10000007) index="0" unique_id=22565456]
 layout_mode = 1
@@ -32,3 +36,16 @@ script = ExtResource("8_map")
 player_scene = ExtResource("3_plui")
 
 [node name="HouseContainer" type="Node3D" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="0" unique_id=1370650917]
+
+[node name="BotCountViewport" type="Node3D" parent="BaseSceneContent" parent_id_path=PackedInt32Array(10000012) index="1" unique_id=50000011]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 1.5, 11.4)
+
+[node name="Bots" parent="BaseSceneContent/BotCountViewport" index="0" unique_id=50000012 instance=ExtResource("11_v2d")]
+screen_size = Vector2(1.2, 1)
+scene = ExtResource("12_bctrl")
+unshaded = true
+scene_properties_keys = PackedStringArray("bot_count_control.gd")
+
+[node name="AIManager" type="Node" parent="." index="7" unique_id=50000010]
+unique_name_in_owner = true
+script = ExtResource("10_aiman")

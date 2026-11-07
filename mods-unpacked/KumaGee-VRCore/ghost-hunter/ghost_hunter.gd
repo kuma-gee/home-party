@@ -27,6 +27,9 @@ const KEY_RIGHT_ITEM := KEY_E
 @export var ghost_scene: PackedScene
 @export var map_layer: GhostHunterMap
 @export var flash_device_scene: PackedScene
+@export var bot_count_viewport: Node3D
+
+@onready var ai_manager: GhostHunterAIManager = %AIManager
 
 var flash_device: FlashDevice = null
 ## side ("left"/"right") -> holster snap zone on the player body
@@ -54,6 +57,8 @@ func _ready() -> void:
 	_setup_hip_snap_zones()
 	_spawn_flash_device()
 	_setup_map_layer()
+	ai_manager.setup(player_list, _get_hunter_position)
+	_update_bot_count_visibility()
 
 
 func get_ghosts() -> Array[GhostPlayer]:
@@ -86,6 +91,8 @@ func _activate_house_camera() -> void:
 func _on_prepare_phase() -> void:
 	_spawn_hunter_at_front_door()
 	_spawn_flash_device()
+	ai_manager.on_prepare_phase_entered()
+	_update_bot_count_visibility()
 
 
 ## GH-3: spawn the hunter outside the front door, facing it. Also updates
@@ -99,16 +106,38 @@ func _spawn_hunter_at_front_door() -> void:
 	spawn_t.origin += spawn_t.basis.z * HUNTER_SPAWN_DOOR_DISTANCE
 	spawn_transform = spawn_t
 	center_player_on(spawn_t)
+	_position_bot_count_viewport(door)
 	logger.info("Spawned hunter outside front door at %s" % spawn_t.origin)
+
+
+## Place the bot count panel next to the front door, facing the hunter spawn,
+## so it works for every house variant.
+func _position_bot_count_viewport(door: Marker3D) -> void:
+	if not bot_count_viewport or not door:
+		return
+	var t := door.global_transform
+	t.origin += t.basis.z * (HUNTER_SPAWN_DOOR_DISTANCE + 0.4) + t.basis.x * 2.2
+	t.origin.y = 1.5
+	bot_count_viewport.global_transform = t
 
 
 func _on_game_phase() -> void:
 	_spawn_ghosts()
+	ai_manager.on_game_phase_entered()
+	_update_bot_count_visibility()
 
 
 func _on_clients_changed() -> void:
+	_update_bot_count_visibility()
 	if is_game_phase:
 		_sync_ghosts()
+
+
+## The bot count panel is a solo-mode affordance: it only makes sense during
+## the prepare phase with no mobile players connected (same as vortex-volley).
+func _update_bot_count_visibility() -> void:
+	if bot_count_viewport:
+		bot_count_viewport.visible = not is_game_phase and PlayerManager.playing_clients.is_empty()
 
 
 func _setup_map_layer() -> void:
@@ -319,13 +348,21 @@ func _spawn_ghosts() -> void:
 	_clear_ghosts()
 	_spawn_points = house.get_ghost_spawn_points() if house else []
 	_spawn_points.shuffle()
-	for player in PlayerManager.get_active_players():
+	var controllers := PlayerManager.get_active_players()
+	controllers.append_array(ai_manager.get_ai_controllers())
+	if house:
+		var targets: Array[Vector3] = []
+		for marker in house.get_task_spots() + house.get_hauntable_spots():
+			targets.append(marker.global_position)
+		ai_manager.set_wander_targets(targets)
+	for player in controllers:
 		_spawn_ghost(player)
 	logger.info("Spawned %d ghost(s) at game start" % ghosts.size())
 
 
 func _sync_ghosts() -> void:
 	var active := PlayerManager.get_active_players()
+	active.append_array(ai_manager.get_ai_controllers())
 	for i in range(ghosts.size() - 1, -1, -1):
 		var ghost := ghosts[i]
 		if not is_instance_valid(ghost) or not active.has(ghost.controller):
@@ -347,6 +384,8 @@ func _has_ghost(controller: ClientController) -> bool:
 func _clear_ghosts() -> void:
 	for ghost in ghosts:
 		if is_instance_valid(ghost):
+			if ghost.controller is GhostHunterAIController:
+				(ghost.controller as GhostHunterAIController).unbind_ghost()
 			ghost.queue_free()
 	ghosts.clear()
 	_spawn_points.clear()
@@ -364,6 +403,8 @@ func _spawn_ghost(controller: ClientController) -> void:
 		color_idx = ghosts.size()
 	house_container.add_child(ghost)
 	ghost.setup(controller, PlayerList.get_color(color_idx), _next_spawn_point())
+	if controller is GhostHunterAIController:
+		(controller as GhostHunterAIController).bind_ghost(ghost)
 	ghosts.append(ghost)
 	logger.info("Spawned ghost for player %s" % controller.uuid)
 
