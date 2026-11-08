@@ -464,6 +464,11 @@ func _spawn_ghost(controller: ClientController) -> void:
 	ghost.primary_action_pressed.connect(func() -> void: _ping_ghost_interaction(ghost, "haunt"))
 	ghost.secondary_action_pressed.connect(func() -> void: _ping_ghost_interaction(ghost, "phase"))
 	ghost.haunt_purged.connect(func(_g: GhostPlayer) -> void: _ping_ghost_interaction(ghost, "purge"))
+	# GH-8: a phasing ghost passing through a wall ripples the shared screen.
+	ghost.phase_rippled.connect(func(pos: Vector3) -> void:
+		if map_layer:
+			map_layer.ping_ripple(pos)
+	)
 	if controller is GhostHunterAIController:
 		(controller as GhostHunterAIController).bind_ghost(ghost)
 	ghosts.append(ghost)
