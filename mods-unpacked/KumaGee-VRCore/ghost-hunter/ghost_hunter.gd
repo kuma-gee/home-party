@@ -96,6 +96,9 @@ func _ready() -> void:
 	_spawn_vacuum_device()
 	_setup_map_layer()
 	ai_manager.setup(player_list, _get_hunter_position)
+	# get_tasks returns the live array that _setup_tasks refills in place, so
+	# AI ghosts see task activation/completion without re-wiring.
+	ai_manager.set_tasks_getter(get_tasks)
 	_update_bot_count_visibility()
 
 

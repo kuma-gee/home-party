@@ -14,12 +14,17 @@ const MAX_AI_COUNT := 8
 var player_list: PlayerList = null
 ## Returns the Hunter's world position (AI ghosts steer away from it).
 var hunter_position_getter: Callable = Callable()
+## Returns the game's task array (AI ghosts occasionally channel these).
+var tasks_getter: Callable = Callable()
 ## Interior wander targets handed to every AI controller (house task/haunt spots).
 var wander_targets: Array[Vector3] = []
 
 var _ai_players: Array[GhostHunterAIPlayer] = []
 ## Typed as the base class so it can be handed straight to the game scene.
 var _controllers: Array[ClientController] = []
+## Task dicts claimed by any AI ghost; shared with every controller so
+## multiple ghosts pick different task markers.
+var _claimed_tasks: Array = []
 var _is_prepare_phase := false
 var _game_settings_ai_prev := 0
 
@@ -76,6 +81,11 @@ func set_wander_targets(targets: Array[Vector3]) -> void:
 	for c in _controllers:
 		(c as GhostHunterAIController).set_wander_targets(targets)
 
+func set_tasks_getter(getter: Callable) -> void:
+	tasks_getter = getter
+	for c in _controllers:
+		(c as GhostHunterAIController).tasks_getter = getter
+
 func _set_ai_count(count: int) -> void:
 	var new_count := clampi(count, 0, MAX_AI_COUNT)
 	while _ai_players.size() > new_count:
@@ -98,6 +108,8 @@ func _add_ai() -> void:
 	controller.uuid = uuid
 	controller.color_idx = ai_idx
 	controller.hunter_position_getter = hunter_position_getter
+	controller.tasks_getter = tasks_getter
+	controller.claimed_tasks = _claimed_tasks
 	controller.set_wander_targets(wander_targets)
 	add_child(controller)
 

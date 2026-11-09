@@ -19,6 +19,9 @@ const FLEE_RANGE := 6.0
 ## Interior fallback (x/z) when the house exposes no wander markers.
 const FALLBACK_MIN := Vector2(-10.0, -7.0)
 const FALLBACK_MAX := Vector2(10.0, 7.0)
+## Chance per retarget that the ghost heads to an active mischief task instead
+## of a random wander spot; standing at the marker channels it to completion.
+const TASK_PICK_CHANCE := 0.05
 
 ## Index used for the ghost/player-list color (PlayerManager has no entry for AI).
 var color_idx: int = 0
@@ -27,12 +30,19 @@ var ghost: GhostPlayer = null
 var wander_targets: Array[Vector3] = []
 ## Returns the Hunter's world position, used for flee steering.
 var hunter_position_getter: Callable = Callable()
+## Returns the game's task array ([{pos, progress, duration, completed, active}]).
+var tasks_getter: Callable = Callable()
+## Task dicts already claimed by other AI ghosts (shared array owned by the
+## AIManager) so several ghosts don't pile onto the same marker.
+var claimed_tasks: Array = []
 
 var _gameplay_active := false
 var _target := Vector3.ZERO
 var _retarget_timer := 0.0
 var _stuck_time := 0.0
 var _last_pos := Vector3.ZERO
+## The task dict currently being channeled (empty when wandering).
+var _task_target: Dictionary = {}
 
 var logger := KumaLog.new("GhostHunterAIController")
 
@@ -46,6 +56,7 @@ func bind_ghost(g: GhostPlayer) -> void:
 ## Called when the ghost is freed; get_move() guards on validity regardless.
 func unbind_ghost() -> void:
 	ghost = null
+	release_task_claim()
 
 func set_wander_targets(targets: Array[Vector3]) -> void:
 	wander_targets = targets
@@ -59,6 +70,7 @@ func start_gameplay() -> void:
 ## Disables AI movement (prepare phase, round over).
 func stop_gameplay() -> void:
 	_gameplay_active = false
+	release_task_claim()
 
 func get_color_idx() -> int:
 	return color_idx
@@ -76,15 +88,21 @@ func get_move() -> Vector2:
 func _process(delta: float) -> void:
 	if not _gameplay_active or not is_instance_valid(ghost):
 		return
+	# While channeling a task the ghost deliberately stands still at the
+	# marker, so neither the retarget timer nor the stuck detector may move it.
 	_retarget_timer -= delta
-	if _retarget_timer <= 0.0:
-		_pick_new_target()
+	if not _is_channelling_task():
+		# Task completed or never picked: free the marker for other ghosts.
+		release_task_claim()
+		if _retarget_timer <= 0.0:
+			_pick_new_target()
 	var pos := ghost.global_position
 	if pos.distance_squared_to(_last_pos) < STUCK_MOVE_EPS_SQ:
-		_stuck_time += delta
-		if _stuck_time > STUCK_TIME_LIMIT:
-			_pick_new_target()
-			_stuck_time = 0.0
+		if not _is_channelling_task():
+			_stuck_time += delta
+			if _stuck_time > STUCK_TIME_LIMIT:
+				_pick_new_target()
+				_stuck_time = 0.0
 	else:
 		_stuck_time = 0.0
 	_last_pos = pos
@@ -111,8 +129,39 @@ func _flee_direction() -> Vector3:
 	return diff.normalized()
 
 func _pick_new_target() -> void:
+	release_task_claim()
 	_retarget_timer = randf_range(RETARGET_MIN, RETARGET_MAX)
+	if randf() < TASK_PICK_CHANCE:
+		var task := _random_active_task()
+		if not task.is_empty():
+			_task_target = task
+			claimed_tasks.append(task)
+			_target = task.pos
+			return
 	if not wander_targets.is_empty():
 		_target = wander_targets[randi() % wander_targets.size()]
 	else:
 		_target = Vector3(randf_range(FALLBACK_MIN.x, FALLBACK_MAX.x), 0.0, randf_range(FALLBACK_MIN.y, FALLBACK_MAX.y))
+
+## Random active, uncompleted, unclaimed mischief task; empty dict when none
+## is available (every open marker is already claimed or none is active).
+func _random_active_task() -> Dictionary:
+	if not tasks_getter.is_valid():
+		return {}
+	var candidates: Array = []
+	for task in tasks_getter.call():
+		if task.get("active", false) and not task.get("completed", false) and not claimed_tasks.has(task):
+			candidates.append(task)
+	if candidates.is_empty():
+		return {}
+	return candidates[randi() % candidates.size()]
+
+## Frees the currently claimed task marker, if any.
+func release_task_claim() -> void:
+	if not _task_target.is_empty():
+		claimed_tasks.erase(_task_target)
+		_task_target = {}
+
+## True while the ghost is heading to / standing at a still-open task marker.
+func _is_channelling_task() -> bool:
+	return not _task_target.is_empty() and _task_target.get("active", false) and not _task_target.get("completed", false)
