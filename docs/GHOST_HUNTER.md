@@ -10,6 +10,7 @@ Everyone is playing together in the same room.
 1. **Cat-and-mouse tension** — Both sides are blind to each other by default. Every reveal is earned, every escape is clever.
 2. **Asymmetric rescue economy** — Capturing a ghost isn't the end; teammates can intervene. The round stays alive until the last ghost is secured.
 3. **Party-friendly elimination** — No one sits out. Captured ghosts can be rescued, and eliminated ghosts stay engaged through the rescue dynamic.
+4. **Escalating sabotage** — Ghosts fight back by glitching the Hunter's devices as they complete tasks. The round itself never changes shape: same roles, same win conditions, all the way to the clock.
 
 ## Core Features
 
@@ -45,7 +46,7 @@ Everyone is playing together in the same room.
      - **Trigger effect:** Press **A** again to trigger the object's effect (flicker, creak, etc.).
      - **Exit:** Press **B** to leave the object voluntarily.
       - **Rescue:** Walk close to the Ecto-Vacuum, press **A** to haunt it, then **hold A for 2 seconds** to release one captured ghost.
-- **Mischief Tasks** – Each round, ghosts must complete objectives. Tasks scale with ghost count: **ghost count + 1** (2 tasks for 1 ghost, 3 for 2, 4 for 3, 5 for 4, and so on for more ghosts). Only ghosts see the objectives — they appear as highlighted markers on the shared-screen map. A task is completed by a ghost standing near its marker for ~6 uninterrupted seconds.
+- **Mischief Tasks** – Each round, ghosts must complete objectives. Tasks scale with ghost count: **ghost count + 1** (2 tasks for 1 ghost, 3 for 2, 4 for 3, 5 for 4, and so on for more ghosts). Only ghosts see the objectives — they appear as highlighted markers on the shared-screen map. A task is completed by a ghost standing near its marker for ~6 uninterrupted seconds. Each completed task triggers a **Haunt Glitch** on the Hunter's devices (see Game Loop §3) — tasks are how ghosts hinder the Hunter, not how they end the round.
 - **Control Scheme** – Phone touch controls (joystick + action buttons). The phone screen shows no game data — it acts only as a controller. All info (map, task markers, ghost positions) is displayed on the shared desktop screen.
   - **Left joystick** – Movement.
   - **A button** – Haunt (enter object), trigger object effect, or interact. While haunting the Ecto-Vacuum, hold **A** for 2s to release one captured ghost.
@@ -59,7 +60,7 @@ Everyone is playing together in the same room.
 - The VR player can look at the Flash Device's screen to see the house layout.
 
 ### 2. Hunt Phase (5 minutes)
-- **Ghosts** move around the house, complete Mischief Tasks, and avoid the Hunter.
+- **Ghosts** move around the house, complete Mischief Tasks (each completed task glitches the Hunter's gear — §3), and avoid the Hunter.
 - **VR player** navigates rooms, uses Flash to reveal ghosts, and captures them with the Ecto-Vacuum.
 - **Capture sequence:**
   1. Hunter uses Flash → ghost becomes visible for ~4 seconds (if in range and line-of-sight).
@@ -68,24 +69,23 @@ Everyone is playing together in the same room.
   4. Any other ghost can **Haunt the vacuum** (must be near it) and hold **A** for 2s → releases one captured ghost. A captured ghost is out of the house but can still see the shared-screen map.
   5. The Hunter can **Flash a haunted vacuum** to purge the haunting ghost, forcing them out and resetting the rescue attempt.
 
-### 3. Haunt Surge (triggers when all tasks have been completed)
-- All remaining ghosts become fully visible and slowed by 30%.
-- Flashes now only stun the ghost (brief immobilize) — capturing is not possible anymore.
-- In this phase ghosts cannot possess anything → ghosts cannot be rescued anymore.
-- Hunter must reach the exit — the front door the Hunter came in through — within 30 seconds without being touched by a ghost.
-- **Touching** = any collision between a ghost's body and the Hunter (proximity is not enough — actual contact required).
-- If a ghost touches the Hunter or 30s passes → Ghosts win instantly.
-- If the Hunter gets to the exit → draw (no one scores).
+### 3. Haunt Glitches (triggered by each completed task)
+- Every completed Mischief Task glitches the Hunter's gear. The round never changes phase, roles never flip, and the 5-minute clock keeps running.
+- **Glitch level = number of completed tasks.** Effects stack up to their caps:
+  - **Flash Device** – recharge grows (3s + 1s per level, max 6s) and the reveal shrinks (4s − 0.5s per level, min 2s). At level 3+ the device display flickers: house map and interaction pings drop out briefly.
+  - **Ecto-Vacuum** – suction takes longer (3s + 0.5s per level, max 5s) and range shrinks (3m − 0.25m per level, min 1.5m).
+  - **Hunter's view** – from level 2, short static-interference pulses hit the headset; at Full Haunt the interference is persistent.
+- **Full Haunt** (all tasks completed) – both devices stay at max glitch and the view interference is persistent for the rest of the round. The round still resolves only by capture or by the clock.
+- The shared-screen "Hunter nearby" ping (10m rule) is never glitched — the ghosts' warning system stays reliable.
 
 ### 4. Win Conditions
-- **Ghosts win** – Complete all Mischief Tasks (scaled to ghost count) before all ghosts are captured, or touch the Hunter / let the 30s timer run out during Haunt Surge.
-- **Hunter wins** – Capture all ghosts before tasks are completed.
-- **Draw** – The Hunter reaches the exit during Haunt Surge.
+- **Hunter wins** – Capture **all** ghosts before the 5-minute Hunt Phase timer ends.
+- **Ghosts win** – At least one ghost is still free (not captured) when the timer ends.
+- No draw, no early end — the round always resolves by capture-all or by the clock.
 
 ### 5. Scoring
 - **Hunter win** → VR player gets **10 points**.
 - **Ghosts win** → Each surviving ghost gets **5 points**. Additionally, **2 points per completed mischief task** are added to the team pool and split equally among surviving ghosts.
-- **Draw** (Hunter reaches the exit during Haunt Surge) → no one scores.
 - **Bonuses:**
   - **"Rescue"** (+3 points) – A ghost successfully rescues a captured teammate.
   - **"Clutch Capture"** (+3 points) – Final ghost caught in the last 10 seconds of the Hunt Phase.

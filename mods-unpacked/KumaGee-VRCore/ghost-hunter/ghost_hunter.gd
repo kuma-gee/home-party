@@ -5,9 +5,10 @@ extends BaseGame
 ## device display also reads the recharge directly off the Flash Device.
 signal hunter_flash_fired(origin: Vector3)
 ## GH-9: emitted when a mischief task completes (its marker clears on the
-## shared screen); the Haunt Surge trigger input for GH-11.
+## shared screen); each completion raises the Haunt Glitch level for GH-11.
 signal task_completed(pos: Vector3)
-## GH-9: fired once when every mischief task of the round is completed.
+## GH-9: fired once when every mischief task of the round is completed
+## (Full Haunt — max glitch for the rest of the round, GH-11).
 signal all_tasks_completed()
 
 const HUNTER_SPAWN_DOOR_DISTANCE := 2.0
@@ -586,7 +587,7 @@ func _complete_task(index: int) -> void:
 		all_tasks_completed.emit()
 
 
-## GH-9 state for GH-11 (surge trigger) and GH-12 (2 pts per completed task).
+## GH-9 state for GH-11 (glitch level / Full Haunt) and GH-12 (2 pts per completed task).
 func is_all_tasks_completed() -> bool:
 	if tasks.is_empty():
 		return false

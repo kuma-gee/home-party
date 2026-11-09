@@ -5,7 +5,7 @@ extends Node3D
 ## getters below (and via the gh_* groups) for the other Ghost Hunter slices:
 ## GH-3 hunter spawn outside the front door, GH-4 ghost spawns, GH-8
 ## hauntable-object spots (props are spawned here in _ready), GH-9 task
-## markers, GH-11 haunt-surge exit.
+## markers.
 
 const GROUP_FRONT_DOOR := "gh_front_door"
 const GROUP_GHOST_SPAWN := "gh_ghost_spawn"
