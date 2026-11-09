@@ -46,6 +46,9 @@ var controller: ClientController
 ## an object) stay invisible to the Hunter even while flash-revealed.
 var is_phasing := false
 var haunted_object: Node3D = null
+## GH-7 capture mark (set by GhostHunter when the Ecto-Vacuum captures this
+## ghost; GH-10 rescue clears it). A captured ghost is out of the house.
+var is_captured := false
 
 var _was_inside_wall := false
 var _shimmer_timer := 0.0
@@ -153,6 +156,12 @@ func is_revealed() -> bool:
 
 func is_haunting() -> bool:
 	return haunted_object != null
+
+
+## GH-9: a ghost can channel a mischief task while free — not captured and
+## not possessing an object.
+func is_free() -> bool:
+	return not is_captured and not is_haunting()
 
 
 ## Center of the ghost body in world space. Flash line-of-sight rays target
@@ -373,6 +382,7 @@ func debug_state() -> Dictionary:
 	return {
 		"phasing": is_phasing,
 		"haunting": is_haunting(),
+		"captured": is_captured,
 		"haunted_path": haunted_object.get_path() if is_instance_valid(haunted_object) else "",
 		"revealed": is_revealed(),
 		"reveal_until_ms": _reveal_until_ms,

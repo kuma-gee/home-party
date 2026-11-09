@@ -45,7 +45,7 @@ Everyone is playing together in the same room.
      - **Trigger effect:** Press **A** again to trigger the object's effect (flicker, creak, etc.).
      - **Exit:** Press **B** to leave the object voluntarily.
       - **Rescue:** Walk close to the Ecto-Vacuum, press **A** to haunt it, then **hold A for 2 seconds** to release one captured ghost.
-- **Mischief Tasks** – Each round, ghosts must complete objectives. Tasks scale with ghost count: **ghost count + 1** (2 tasks for 1 ghost, 3 for 2, 4 for 3, 5 for 4, and so on for more ghosts). Only ghosts see the objectives — they appear as highlighted markers on the shared-screen map. A task is completed by a ghost standing near its marker for ~3 uninterrupted seconds.
+- **Mischief Tasks** – Each round, ghosts must complete objectives. Tasks scale with ghost count: **ghost count + 1** (2 tasks for 1 ghost, 3 for 2, 4 for 3, 5 for 4, and so on for more ghosts). Only ghosts see the objectives — they appear as highlighted markers on the shared-screen map. A task is completed by a ghost standing near its marker for ~6 uninterrupted seconds.
 - **Control Scheme** – Phone touch controls (joystick + action buttons). The phone screen shows no game data — it acts only as a controller. All info (map, task markers, ghost positions) is displayed on the shared desktop screen.
   - **Left joystick** – Movement.
   - **A button** – Haunt (enter object), trigger object effect, or interact. While haunting the Ecto-Vacuum, hold **A** for 2s to release one captured ghost.

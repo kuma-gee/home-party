@@ -4,6 +4,11 @@ extends BaseGame
 ## GH-6: re-emitted whenever the Hunter fires the Flash Device; the GH-5
 ## device display also reads the recharge directly off the Flash Device.
 signal hunter_flash_fired(origin: Vector3)
+## GH-9: emitted when a mischief task completes (its marker clears on the
+## shared screen); the Haunt Surge trigger input for GH-11.
+signal task_completed(pos: Vector3)
+## GH-9: fired once when every mischief task of the round is completed.
+signal all_tasks_completed()
 
 const HUNTER_SPAWN_DOOR_DISTANCE := 2.0
 const FLASH_DEVICE_DOOR_OFFSET := 1.0
@@ -22,6 +27,10 @@ const LEFT_ITEM_GROUP := "gh_left_item" # GH-7 Ecto-Vacuum holsters here
 const DESKTOP_ITEM_SPAWN_TIMEOUT := 3.0
 const KEY_LEFT_ITEM := KEY_Q
 const KEY_RIGHT_ITEM := KEY_E
+## GH-9 mischief tasks: each round has ghost_count + 1 markers; a task
+## completes after ~6s of an uninterrupted free ghost standing at its marker.
+const TASK_CHANNEL_DURATION := 6.0
+const TASK_RADIUS := 1.5
 
 @export var house_variants: Array[PackedScene] = []
 @export var house_container: Node3D
@@ -48,6 +57,9 @@ var house: HouseLayout = null
 var ghosts: Array[GhostPlayer] = []
 
 var _spawn_points: Array[Marker3D] = []
+## GH-9 active mischief tasks: [{pos: Vector3, progress: float, duration: float, completed: bool}]
+var tasks: Array = []
+var _all_tasks_emitted := false
 
 
 func _ready() -> void:
@@ -55,6 +67,8 @@ func _ready() -> void:
 	prepare_phase.connect(_on_prepare_phase)
 	game_phase.connect(_on_game_phase)
 	PlayerManager.clients_changed.connect(_on_clients_changed)
+	# Deferred so the AIManager has applied the new count before we re-pick.
+	GameSettings.ai_count_changed.connect(_on_ai_count_changed, CONNECT_DEFERRED)
 	_load_random_house()
 	_spawn_hunter_at_front_door()
 	_setup_hip_snap_zones()
@@ -97,6 +111,7 @@ func _on_prepare_phase() -> void:
 	_spawn_flash_device()
 	_spawn_vacuum_device()
 	ai_manager.on_prepare_phase_entered()
+	_setup_tasks(_expected_ghost_count())
 	_update_bot_count_visibility()
 
 
@@ -128,6 +143,7 @@ func _position_bot_count_viewport(door: Marker3D) -> void:
 
 func _on_game_phase() -> void:
 	_spawn_ghosts()
+	_setup_tasks(ghosts.size())
 	ai_manager.on_game_phase_entered()
 	_update_bot_count_visibility()
 
@@ -136,6 +152,12 @@ func _on_clients_changed() -> void:
 	_update_bot_count_visibility()
 	if is_game_phase:
 		_sync_ghosts()
+	_sync_task_count()
+
+
+## GH-9: re-pick the task markers when the AI ghost count changes mid-setup.
+func _on_ai_count_changed(_new_count: int) -> void:
+	_sync_task_count()
 
 
 ## The bot count panel is a solo-mode affordance: it only makes sense during
@@ -150,6 +172,7 @@ func _setup_map_layer() -> void:
 		return
 	map_layer.set_ghosts_getter(get_ghosts)
 	map_layer.set_hunter_position_getter(_get_hunter_position)
+	map_layer.set_tasks_getter(get_tasks)
 
 
 ## GH-6: belt holsters — one snap zone per side on the player body at hip
@@ -258,6 +281,7 @@ func _setup_vacuum_device() -> void:
 	if not vacuum_device:
 		return
 	vacuum_device.set_ghosts_getter(get_ghosts)
+	vacuum_device.ghost_captured.connect(_on_ghost_captured)
 	vacuum_device.dropped.connect(_on_item_dropped, CONNECT_DEFERRED)
 
 
@@ -325,6 +349,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _process(delta: float) -> void:
+	_update_tasks(delta)
 	for item in _loose_items.duplicate():
 		if not is_instance_valid(item):
 			_resolve_loose_item(item)
@@ -480,3 +505,130 @@ func _next_spawn_point() -> Vector3:
 		return _spawn_points.pop_back().global_position
 	# Fallback: random spot inside the house floor (24 x 18 centered at origin).
 	return Vector3(randf_range(-8.0, 8.0), 0.0, randf_range(-6.0, 6.0))
+
+
+# ── GH-9 mischief tasks ────────────────────────────────────────────────────────
+
+## Picks ghost_count + 1 distinct marker positions from the house's GH-2 task
+## spots and resets all channel progress. Called at setup (prepare phase) and
+## whenever the ghost count changes.
+func _setup_tasks(ghost_count: int) -> void:
+	tasks.clear()
+	_all_tasks_emitted = false
+	if not house:
+		return
+	var spots := house.get_task_spots()
+	spots.shuffle()
+	var needed := ghost_count + 1
+	for i in range(mini(needed, spots.size())):
+		tasks.append(_new_task(spots[i].global_position))
+	# House variants have 5 task spots; when ghost_count + 1 exceeds that, pad
+	# with distinct jittered positions so the marker count stays exactly N + 1.
+	while tasks.size() < needed:
+		var base: Vector3 = spots[randi() % spots.size()].global_position if not spots.is_empty() else Vector3.ZERO
+		tasks.append(_new_task(base + Vector3(randf_range(-1.5, 1.5), 0.0, randf_range(-1.5, 1.5))))
+	logger.info("GH-9: %d mischief task(s) for %d ghost(s)" % [tasks.size(), ghost_count])
+
+
+func _new_task(pos: Vector3) -> Dictionary:
+	return {"pos": pos, "progress": 0.0, "duration": TASK_CHANNEL_DURATION, "completed": false}
+
+
+## Re-picks the markers only when the required count (ghost count + 1) changed.
+func _sync_task_count() -> void:
+	var count := ghosts.size() if is_game_phase else _expected_ghost_count()
+	if tasks.size() != count + 1:
+		_setup_tasks(count)
+
+
+func _expected_ghost_count() -> int:
+	return PlayerManager.get_active_players().size() + ai_manager.get_ai_count()
+
+
+## GH-9: per-frame task channeling — a task completes after ~6s of an
+## uninterrupted free (non-captured, non-haunting) ghost standing at its
+## marker; leaving the radius resets the channel.
+func _update_tasks(delta: float) -> void:
+	if not is_game_phase:
+		return
+	for i in range(tasks.size()):
+		var task: Dictionary = tasks[i]
+		if task.completed:
+			continue
+		if _free_ghost_at(task.pos):
+			task.progress = minf(task.progress + delta, task.duration)
+			if task.progress >= task.duration:
+				_complete_task(i)
+		else:
+			task.progress = 0.0
+
+
+func _free_ghost_at(pos: Vector3) -> bool:
+	var pos_xz := Vector2(pos.x, pos.z)
+	for ghost in ghosts:
+		if not is_instance_valid(ghost) or not ghost.is_free():
+			continue
+		var ghost_xz := Vector2(ghost.global_position.x, ghost.global_position.z)
+		if pos_xz.distance_to(ghost_xz) <= TASK_RADIUS:
+			return true
+	return false
+
+
+func _complete_task(index: int) -> void:
+	var task: Dictionary = tasks[index]
+	task.completed = true
+	if map_layer:
+		map_layer.ping_task_completed(task.pos)
+	task_completed.emit(task.pos)
+	logger.info("GH-9: task %d/%d completed at %s" % [get_completed_task_count(), tasks.size(), task.pos])
+	if not _all_tasks_emitted and is_all_tasks_completed():
+		_all_tasks_emitted = true
+		all_tasks_completed.emit()
+
+
+## GH-9 state for GH-11 (surge trigger) and GH-12 (2 pts per completed task).
+func is_all_tasks_completed() -> bool:
+	if tasks.is_empty():
+		return false
+	for task in tasks:
+		if not task.completed:
+			return false
+	return true
+
+
+func get_completed_task_count() -> int:
+	var count := 0
+	for task in tasks:
+		if task.completed:
+			count += 1
+	return count
+
+
+func get_tasks() -> Array:
+	return tasks
+
+
+## GH-7 capture mark: the Ecto-Vacuum's ghost_captured marks the ghost so
+## GH-9 channeling stops treating it as free (GH-10 rescue clears the mark).
+func _on_ghost_captured(ghost: GhostPlayer) -> void:
+	if is_instance_valid(ghost):
+		ghost.is_captured = true
+		logger.info("Captured ghost is no longer free for GH-9 task channeling")
+
+
+## Debug/E2E helper: task state as plain data for the MCP bridge.
+func debug_task_state() -> Dictionary:
+	var out: Array = []
+	for task in tasks:
+		out.append({
+			"pos": [task.pos.x, task.pos.y, task.pos.z],
+			"progress": task.progress,
+			"duration": task.duration,
+			"completed": task.completed,
+		})
+	return {
+		"required": tasks.size(),
+		"completed_count": get_completed_task_count(),
+		"all_completed": is_all_tasks_completed(),
+		"tasks": out,
+	}

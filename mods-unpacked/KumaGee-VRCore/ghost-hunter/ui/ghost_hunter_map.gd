@@ -8,7 +8,11 @@ extends Control
 ## Flash Device, [method ping_hunter] forces the Hunter marker visible for
 ## FLASH_PING_DURATION in a bright color, revealing his location to ghosts.
 ## GH-8: [method ping_ripple] draws a brief expanding ripple when a ghost
-## phases through a wall.
+## phases through a wall. GH-9: draws the mischief-task markers (ring plus
+## channel-progress arc, fed through [method set_tasks_getter]) and a brief
+## burst on task completion ([method ping_task_completed]). Task markers are
+## ghost-only info: this layer lives on the shared desktop screen and the
+## Flash Device display never draws them.
 
 const HUNTER_REVEAL_RANGE := 10.0
 const GHOST_MARKER_RADIUS := 9.0
@@ -22,14 +26,25 @@ const RIPPLE_DURATION := 1.5
 const RIPPLE_START_RADIUS := 6.0
 const RIPPLE_MAX_RADIUS := 30.0
 const RIPPLE_COLOR := Color(0.45, 0.8, 1.0)
+## GH-9 mischief-task markers.
+const TASK_MARKER_RADIUS := 10.0
+const TASK_MARKER_COLOR := Color(1.0, 0.55, 0.15)
+const TASK_PROGRESS_COLOR := Color(1.0, 0.9, 0.35)
+const TASK_BURST_DURATION := 1.5
+const TASK_BURST_START_RADIUS := 8.0
+const TASK_BURST_MAX_RADIUS := 34.0
+const TASK_BURST_COLOR := Color(1.0, 0.85, 0.3)
 
 var ghosts_getter: Callable
 var hunter_position_getter: Callable
+var tasks_getter: Callable
 
 var _ping_position := Vector3.ZERO
 var _ping_timer := 0.0
 var _ripples: Array = [] ## [{pos: Vector3, age: float, duration: float}]
 var _ripple_total := 0
+var _task_bursts: Array = [] ## [{pos: Vector3, age: float, duration: float}]
+var _task_burst_total := 0
 
 
 func _ready() -> void:
@@ -60,6 +75,29 @@ func debug_ripple_total() -> int:
 	return _ripple_total
 
 
+## GH-9: mischief-task markers are drawn from this getter (ghost-only info —
+## the Flash Device display deliberately never draws them).
+func set_tasks_getter(getter: Callable) -> void:
+	tasks_getter = getter
+
+
+## GH-9: brief burst on the shared screen when a mischief task completes.
+func ping_task_completed(pos: Vector3, duration: float = TASK_BURST_DURATION) -> void:
+	_task_burst_total += 1
+	_task_bursts.append({"pos": pos, "age": 0.0, "duration": duration})
+	queue_redraw()
+
+
+## Debug/E2E helper.
+func get_task_burst_count() -> int:
+	return _task_bursts.size()
+
+
+## Debug/E2E helper: total task-completion bursts ever pinged (survives TTL expiry).
+func debug_task_burst_total() -> int:
+	return _task_burst_total
+
+
 func is_ping_active() -> bool:
 	return _ping_timer > 0.0
 
@@ -79,6 +117,10 @@ func _process(delta: float) -> void:
 		ripple.age += delta
 	while not _ripples.is_empty() and _ripples[0].age > _ripples[0].duration:
 		_ripples.pop_front()
+	for burst in _task_bursts:
+		burst.age += delta
+	while not _task_bursts.is_empty() and _task_bursts[0].age > _task_bursts[0].duration:
+		_task_bursts.pop_front()
 	queue_redraw()
 
 
@@ -102,6 +144,28 @@ func _draw() -> void:
 		var sp := cam.unproject_position(ripple.pos)
 		draw_arc(sp, lerpf(RIPPLE_START_RADIUS, RIPPLE_MAX_RADIUS, t), 0.0, TAU, 32,
 			Color(RIPPLE_COLOR.r, RIPPLE_COLOR.g, RIPPLE_COLOR.b, alpha * 0.9), 2.0)
+
+	# GH-9: mischief-task markers with channel progress; completed tasks clear.
+	var tasks: Array = tasks_getter.call() if tasks_getter.is_valid() else []
+	for task in tasks:
+		if task.completed:
+			continue
+		var sp := cam.unproject_position(task.pos)
+		draw_arc(sp, TASK_MARKER_RADIUS, 0.0, TAU, 32, TASK_MARKER_COLOR, 2.5)
+		var frac: float = clampf(task.progress / maxf(task.duration, 0.001), 0.0, 1.0)
+		if frac > 0.0:
+			draw_arc(sp, TASK_MARKER_RADIUS, -PI / 2.0, -PI / 2.0 + TAU * frac, 32, TASK_PROGRESS_COLOR, 4.0)
+		draw_circle(sp, 3.0, TASK_MARKER_COLOR)
+
+	# GH-9: task-completion bursts.
+	for burst in _task_bursts:
+		var t: float = clampf(burst.age / burst.duration, 0.0, 1.0)
+		var alpha := 1.0 - t
+		var sp := cam.unproject_position(burst.pos)
+		draw_arc(sp, lerpf(TASK_BURST_START_RADIUS, TASK_BURST_MAX_RADIUS, t), 0.0, TAU, 32,
+			Color(TASK_BURST_COLOR.r, TASK_BURST_COLOR.g, TASK_BURST_COLOR.b, alpha * 0.9), 2.5)
+		draw_circle(sp, TASK_BURST_START_RADIUS * alpha + 3.0,
+			Color(TASK_BURST_COLOR.r, TASK_BURST_COLOR.g, TASK_BURST_COLOR.b, alpha))
 
 	if not hunter_position_getter.is_valid():
 		return
