@@ -59,7 +59,10 @@ var color: Color = Color.WHITE:
 
 @onready var _body_mesh: MeshInstance3D = %BodyMesh
 
-var _reveal_timer := 0.0
+## Reveal expiry as an absolute tick count (not a delta countdown) so a
+## single long frame (headless runs, hitches) cannot eat the whole reveal.
+var _reveal_until_ms := 0
+var _reveal_active := false
 var _meshes: Array[MeshInstance3D] = []
 
 
@@ -74,11 +77,10 @@ func _ready() -> void:
 	_apply_hunter_visibility()
 
 
-func _process(delta: float) -> void:
-	if _reveal_timer > 0.0:
-		_reveal_timer = maxf(0.0, _reveal_timer - delta)
-		if _reveal_timer == 0.0:
-			_apply_hunter_visibility()
+func _process(_delta: float) -> void:
+	if _reveal_active and not is_revealed():
+		_reveal_active = false
+		_apply_hunter_visibility()
 
 
 ## Wires the owning phone/gamepad controller, assigns the player color, and
@@ -138,13 +140,15 @@ func _current_move_input() -> Vector2:
 
 ## GH-6: marks the ghost revealed to the Hunter for [duration] seconds.
 func set_revealed(duration: float) -> void:
-	_reveal_timer = maxf(_reveal_timer, duration)
+	var until := Time.get_ticks_msec() + int(duration * 1000.0)
+	_reveal_until_ms = maxi(_reveal_until_ms, until)
+	_reveal_active = true
 	_apply_hunter_visibility()
 	revealed.emit(self)
 
 
 func is_revealed() -> bool:
-	return _reveal_timer > 0.0
+	return Time.get_ticks_msec() < _reveal_until_ms
 
 
 func is_haunting() -> bool:
@@ -370,6 +374,9 @@ func debug_state() -> Dictionary:
 		"phasing": is_phasing,
 		"haunting": is_haunting(),
 		"haunted_path": haunted_object.get_path() if is_instance_valid(haunted_object) else "",
+		"revealed": is_revealed(),
+		"reveal_until_ms": _reveal_until_ms,
+		"now_ms": Time.get_ticks_msec(),
 		"pos": [global_position.x, global_position.y, global_position.z],
 		"collision_mask": collision_mask,
 		"speed": speed,

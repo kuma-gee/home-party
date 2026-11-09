@@ -11,8 +11,9 @@ extends XRToolsPickable
 ## back into the holster. The pulse is a 45 deg cone with a 2 m range and a
 ## line-of-sight check. Ghosts inside the cone get a revealed highlight for
 ## ~4 s (GhostPlayer adds the Hunter's render layer to its meshes while
-## revealed), a ghost haunting an object in range is purged (GH-8 hook), and
-## every flash pings the Hunter's location to the shared screen (GH-4)
+## revealed), a ghost haunting an object in range is purged out of it and
+## then revealed (GH-8 hook), and every flash pings the Hunter's location to
+## the shared screen (GH-4)
 ## through [signal flash_fired]. Refiring is blocked for the 3 s recharge;
 ## [signal recharge_changed] feeds the GH-5 device-display charge bar.
 ##
@@ -207,8 +208,13 @@ func _perform_flash(origin: Vector3, forward: Vector3) -> void:
 		if not _has_line_of_sight(origin, gp.get_body_center()):
 			continue
 		if gp.is_haunting():
+			# Purge the haunting ghost out of the object, then reveal it:
+			# it is flung out into the open, so the Hunter sees it.
 			gp.purge_haunt()
 			haunt_purged.emit(gp)
+			gp.set_revealed(reveal_duration)
+			ghost_revealed.emit(gp)
+			continue
 		if gp.is_phasing:
 			continue
 		gp.set_revealed(reveal_duration)
