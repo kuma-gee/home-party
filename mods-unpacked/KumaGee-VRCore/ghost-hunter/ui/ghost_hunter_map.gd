@@ -8,8 +8,8 @@ extends Control
 ## Flash Device, [method ping_hunter] forces the Hunter marker visible for
 ## FLASH_PING_DURATION in a bright color, revealing his location to ghosts.
 ## GH-8: [method ping_ripple] draws a brief expanding ripple when a ghost
-## phases through a wall. GH-9: draws the mischief-task markers (ring plus
-## channel-progress arc, fed through [method set_tasks_getter]) and a brief
+## phases through a wall. GH-9: draws the active mischief-task markers (ring
+## plus channel-progress arc, fed through [method set_tasks_getter]) and a brief
 ## burst on task completion ([method ping_task_completed]). Task markers are
 ## ghost-only info: this layer lives on the shared desktop screen and the
 ## Flash Device display never draws them.
@@ -145,10 +145,11 @@ func _draw() -> void:
 		draw_arc(sp, lerpf(RIPPLE_START_RADIUS, RIPPLE_MAX_RADIUS, t), 0.0, TAU, 32,
 			Color(RIPPLE_COLOR.r, RIPPLE_COLOR.g, RIPPLE_COLOR.b, alpha * 0.9), 2.0)
 
-	# GH-9: mischief-task markers with channel progress; completed tasks clear.
+	# GH-9: mischief-task markers with channel progress; completed tasks clear
+	# and pending (not yet spawned) tasks stay hidden until they activate.
 	var tasks: Array = tasks_getter.call() if tasks_getter.is_valid() else []
 	for task in tasks:
-		if task.completed:
+		if task.completed or not task.active:
 			continue
 		var sp := cam.unproject_position(task.pos)
 		draw_arc(sp, TASK_MARKER_RADIUS, 0.0, TAU, 32, TASK_MARKER_COLOR, 2.5)

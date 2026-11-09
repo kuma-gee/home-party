@@ -32,6 +32,17 @@ const KEY_RIGHT_ITEM := KEY_E
 ## completes after ~6s of an uninterrupted free ghost standing at its marker.
 const TASK_CHANNEL_DURATION := 6.0
 const TASK_RADIUS := 1.5
+## GH-9: markers trickle in over the round instead of all appearing at once.
+## At most players - 1 (= ghost count - 1, minimum 1) tasks are active at the
+## same time; after an initial delay the first extra marker spawns, then one
+## more every random TASK_SPAWN_INTERVAL_MIN..MAX seconds. Each new marker is
+## picked far from the active ones and only spawns once it is at least
+## TASK_MIN_SPAWN_DISTANCE away, so tasks that are close to each other are
+## never active at the same time.
+const TASK_INITIAL_SPAWN_DELAY := 6.0
+const TASK_SPAWN_INTERVAL_MIN := 10.0
+const TASK_SPAWN_INTERVAL_MAX := 15.0
+const TASK_MIN_SPAWN_DISTANCE := 8.0
 
 @export var house_variants: Array[PackedScene] = []
 @export var house_container: Node3D
@@ -58,9 +69,17 @@ var house: HouseLayout = null
 var ghosts: Array[GhostPlayer] = []
 
 var _spawn_points: Array[Marker3D] = []
-## GH-9 active mischief tasks: [{pos: Vector3, progress: float, duration: float, completed: bool}]
+## GH-9 mischief tasks: [{pos: Vector3, progress: float, duration: float, completed: bool, active: bool}]
+## — a task is only shown on the shared screen and channellable once active.
 var tasks: Array = []
 var _all_tasks_emitted := false
+var _task_spawn_timer := 0.0
+## Countdown to the next pending-task spawn; reset to a random interval after
+## each spawn, and to the initial delay at setup.
+var _task_spawn_interval := TASK_INITIAL_SPAWN_DELAY
+## Max simultaneously active tasks = players - 1 (players = ghost players,
+## phones + AI; floored at 1 so a solo ghost still has a task).
+var _task_max_active := 0
 
 
 func _ready() -> void:
@@ -511,11 +530,16 @@ func _next_spawn_point() -> Vector3:
 # ── GH-9 mischief tasks ────────────────────────────────────────────────────────
 
 ## Picks ghost_count + 1 distinct marker positions from the house's GH-2 task
-## spots and resets all channel progress. Called at setup (prepare phase) and
-## whenever the ghost count changes.
+## spots and resets all channel progress. Only one marker is active at first;
+## the rest spawn over time via _spawn_next_task. Called at setup (prepare
+## phase) and whenever the ghost count changes.
 func _setup_tasks(ghost_count: int) -> void:
 	tasks.clear()
 	_all_tasks_emitted = false
+	_task_spawn_timer = 0.0
+	_task_spawn_interval = TASK_INITIAL_SPAWN_DELAY
+	# Players are the ghost players (phones + AI); cap = players - 1, min 1.
+	_task_max_active = maxi(1, ghost_count - 1)
 	if not house:
 		return
 	var spots := house.get_task_spots()
@@ -528,11 +552,73 @@ func _setup_tasks(ghost_count: int) -> void:
 	while tasks.size() < needed:
 		var base: Vector3 = spots[randi() % spots.size()].global_position if not spots.is_empty() else Vector3.ZERO
 		tasks.append(_new_task(base + Vector3(randf_range(-1.5, 1.5), 0.0, randf_range(-1.5, 1.5))))
-	logger.info("GH-9: %d mischief task(s) for %d ghost(s)" % [tasks.size(), ghost_count])
+	# Start with a single active marker; the rest trickle in during the round.
+	_activate_task(randi() % tasks.size())
+	logger.info("GH-9: %d mischief task(s) for %d ghost(s), max %d active at once" % [tasks.size(), ghost_count, _task_max_active])
 
 
 func _new_task(pos: Vector3) -> Dictionary:
-	return {"pos": pos, "progress": 0.0, "duration": TASK_CHANNEL_DURATION, "completed": false}
+	return {"pos": pos, "progress": 0.0, "duration": TASK_CHANNEL_DURATION, "completed": false, "active": false}
+
+
+func _activate_task(index: int) -> void:
+	tasks[index].active = true
+	logger.info("GH-9: task spawned at %s (%d/%d active)" % [tasks[index].pos, _active_task_count(), _task_max_active])
+
+
+## Activates one pending task per spawn tick while below the active cap. The
+## new marker is the pending one farthest from the active cluster, and only
+## spawns once it is at least TASK_MIN_SPAWN_DISTANCE away — tasks close to
+## each other are never active at the same time (a too-close marker waits
+## until a nearby active task completes and leaves the cluster).
+func _spawn_next_task() -> void:
+	if _active_task_count() >= _task_max_active:
+		return
+	var index := _farthest_pending_task_index()
+	if index < 0:
+		return
+	var dist := _distance_to_active_cluster(tasks[index].pos)
+	if dist != INF and dist < TASK_MIN_SPAWN_DISTANCE:
+		return
+	_activate_task(index)
+
+
+func _active_task_count() -> int:
+	var count := 0
+	for task in tasks:
+		if task.active and not task.completed:
+			count += 1
+	return count
+
+
+## Distance from pos (XZ) to the nearest active, uncompleted task; INF when
+## no task is active yet.
+func _distance_to_active_cluster(pos: Vector3) -> float:
+	var pos_xz := Vector2(pos.x, pos.z)
+	var best := INF
+	for task in tasks:
+		if not task.active or task.completed:
+			continue
+		var other := Vector2(task.pos.x, task.pos.z)
+		best = minf(best, pos_xz.distance_to(other))
+	return best
+
+
+## Index of the pending (not yet active, not completed) task farthest from
+## any active task; -1 when nothing is pending. With no active cluster yet
+## any pending marker is equally good.
+func _farthest_pending_task_index() -> int:
+	var best := -1
+	var best_dist := -INF
+	for i in range(tasks.size()):
+		var task: Dictionary = tasks[i]
+		if task.completed or task.active:
+			continue
+		var dist := _distance_to_active_cluster(task.pos)
+		if best == -1 or dist > best_dist:
+			best = i
+			best_dist = dist
+	return best
 
 
 ## Re-picks the markers only when the required count (ghost count + 1) changed.
@@ -546,15 +632,21 @@ func _expected_ghost_count() -> int:
 	return PlayerManager.get_active_players().size() + ai_manager.get_ai_count()
 
 
-## GH-9: per-frame task channeling — a task completes after ~6s of an
-## uninterrupted free (non-captured, non-haunting) ghost standing at its
-## marker; leaving the radius resets the channel.
+## GH-9: per-frame task updates — pending markers spawn one per timer tick
+## (capped at players - 1 active, spread apart), and an active task completes
+## after ~6s of an uninterrupted free (non-captured, non-haunting) ghost
+## standing at its marker; leaving the radius resets the channel.
 func _update_tasks(delta: float) -> void:
 	if not is_game_phase:
 		return
+	_task_spawn_timer += delta
+	if _task_spawn_timer >= _task_spawn_interval:
+		_task_spawn_timer = 0.0
+		_task_spawn_interval = randf_range(TASK_SPAWN_INTERVAL_MIN, TASK_SPAWN_INTERVAL_MAX)
+		_spawn_next_task()
 	for i in range(tasks.size()):
 		var task: Dictionary = tasks[i]
-		if task.completed:
+		if task.completed or not task.active:
 			continue
 		if _free_ghost_at(task.pos):
 			task.progress = minf(task.progress + delta, task.duration)
@@ -626,10 +718,13 @@ func debug_task_state() -> Dictionary:
 			"progress": task.progress,
 			"duration": task.duration,
 			"completed": task.completed,
+			"active": task.active,
 		})
 	return {
 		"required": tasks.size(),
 		"completed_count": get_completed_task_count(),
+		"active_count": _active_task_count(),
+		"max_active": _task_max_active,
 		"all_completed": is_all_tasks_completed(),
 		"tasks": out,
 	}
