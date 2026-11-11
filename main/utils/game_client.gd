@@ -19,8 +19,10 @@ func _ready():
 	initialize()
 	input_received.connect(func(input, value):
 		var pressed = value.to_float() == 1.0 if value is String else false 
-		if input == "action" and pressed:
-			primary_action_pressed.emit()
+		if input == "action":
+			_primary_held = pressed
+			if pressed:
+				primary_action_pressed.emit()
 		elif input == "secondary" and pressed:
 			secondary_action_pressed.emit()
 	)

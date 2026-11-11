@@ -10,6 +10,9 @@ signal task_completed(pos: Vector3)
 ## GH-9: fired once when every mischief task of the round is completed
 ## (Full Haunt — max glitch for the rest of the round, GH-11).
 signal all_tasks_completed()
+## GH-10: fired when a ghost haunting the Ecto-Vacuum held A long enough to
+## release [param ghost] — the scoring hook for the +3 "Rescue" bonus.
+signal ghost_rescued(ghost: GhostPlayer, rescuer: GhostPlayer)
 
 const HUNTER_SPAWN_DOOR_DISTANCE := 2.0
 const FLASH_DEVICE_DOOR_OFFSET := 1.0
@@ -517,6 +520,9 @@ func _spawn_ghost(controller: ClientController) -> void:
 		if map_layer:
 			map_layer.ping_ripple(pos)
 	)
+	# GH-10: ghosts haunting the vacuum rescue captured teammates from it.
+	ghost.set_captured_ghosts_getter(_get_captured_ghosts)
+	ghost.ghost_rescued.connect(_on_ghost_rescued)
 	if controller is GhostHunterAIController:
 		(controller as GhostHunterAIController).bind_ghost(ghost)
 	ghosts.append(ghost)
@@ -705,11 +711,31 @@ func get_tasks() -> Array:
 
 
 ## GH-7 capture mark: the Ecto-Vacuum's ghost_captured marks the ghost so
-## GH-9 channeling stops treating it as free (GH-10 rescue clears the mark).
+## GH-9 channeling stops treating it as free (the GH-10 rescue clears the mark).
 func _on_ghost_captured(ghost: GhostPlayer) -> void:
 	if is_instance_valid(ghost):
 		ghost.is_captured = true
 		logger.info("Captured ghost is no longer free for GH-9 task channeling")
+
+
+## GH-10: the captured ghosts a teammate haunting the vacuum can release.
+func _get_captured_ghosts() -> Array[GhostPlayer]:
+	var out: Array[GhostPlayer] = []
+	for ghost in ghosts:
+		if is_instance_valid(ghost) and ghost.is_captured:
+			out.append(ghost)
+	return out
+
+
+## GH-10: a ghost haunting the vacuum held A for 2s and released a captured
+## teammate — ping the Flash Device display and the shared screen, and re-emit
+## for scoring.
+func _on_ghost_rescued(captured: GhostPlayer, rescuer: GhostPlayer) -> void:
+	logger.info("GH-10: rescue at %s — captured ghost freed by a teammate" % captured.global_position)
+	_ping_ghost_interaction(captured, "rescue")
+	if map_layer:
+		map_layer.ping_rescue(captured.global_position)
+	ghost_rescued.emit(captured, rescuer)
 
 
 ## Debug/E2E helper: task state as plain data for the MCP bridge.

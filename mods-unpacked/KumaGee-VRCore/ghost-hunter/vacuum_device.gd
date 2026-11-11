@@ -14,6 +14,11 @@ extends XRToolsPickable
 ## ([signal ghost_captured]). Losing the target resets the progress. When
 ## released, the device snaps back into the holster (ghost_hunter.gd).
 ##
+## GH-10 rescue: a ghost can also possess the vacuum itself (it joins
+## [constant GROUP_VACUUM]) — A near it haunts it and holding A channels the
+## release of one captured ghost; the Flash Device purge forces the ghost
+## back out through GhostPlayer.purge_haunt.
+##
 ## Deliberately no XRToolsGrabPointHand child: without a grab point the grab
 ## is "precise" (Grab captures the relative transform at pickup), so the
 ## device can be picked up and held at any angle.
@@ -23,12 +28,19 @@ signal suction_stopped()
 signal ghost_captured(ghost: GhostPlayer)
 signal suction_progress_changed(progress: float, total: float)
 
+## GH-10: ghosts find the vacuum through this group to haunt it for a rescue.
+const GROUP_VACUUM := "gh_vacuum"
+
 @export var cone_angle_deg: float = 40.0
 @export var range: float = 3.0
 @export var suck_duration: float = 3.0
 @export_flags_3d_physics var line_of_sight_mask: int = 1
 
 var ghosts_getter: Callable
+
+## GH-10: the ghost currently possessing the vacuum for a rescue (one at a
+## time), mirroring HauntableObject.possessor.
+var haunted_by: GhostPlayer = null
 
 var _sucking := false
 var _progress := 0.0
@@ -44,8 +56,35 @@ func _ready() -> void:
 	super._ready()
 	if Engine.is_editor_hint():
 		return
+	add_to_group(GROUP_VACUUM)
 	action_pressed.connect(_on_action_pressed)
 	action_released.connect(_on_action_released)
+
+
+## GH-10: only one ghost can haunt the vacuum at a time.
+func can_be_haunted() -> bool:
+	return haunted_by == null
+
+
+## GH-10: GhostPlayer calls this when a ghost enters the vacuum.
+func possess(ghost: GhostPlayer) -> void:
+	if haunted_by != null:
+		return
+	haunted_by = ghost
+
+
+## GH-10: GhostPlayer calls this when the ghost leaves (B) or is purged (flash).
+func release() -> void:
+	haunted_by = null
+
+
+## Debug/E2E helpers (script vars are not visible to the MCP bridge).
+func debug_is_haunted() -> bool:
+	return haunted_by != null
+
+
+func debug_haunted_by_path() -> String:
+	return haunted_by.get_path() if is_instance_valid(haunted_by) else ""
 
 
 func _process(delta: float) -> void:

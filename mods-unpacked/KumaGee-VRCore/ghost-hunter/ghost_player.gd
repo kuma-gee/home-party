@@ -4,8 +4,10 @@ extends CharacterBody3D
 ## GH-4: a phone-controlled ghost inside the haunted house. Moves with the
 ## phone joystick (screen up = world -Z, same mapping as the hide-and-seek
 ## hiders). GH-8 abilities on A/B: Phase Walk (B against a wall) and Haunt
-## (A enter / A effect / B exit); A near the Hunter's vacuum is reserved for
-## the GH-10 rescue. Visual meshes live on render layer 20, which only the
+## (A enter / A effect / B exit). GH-10 rescue: A near the Hunter's vacuum
+## haunts it, and holding A for RESCUE_HOLD_DURATION releases one captured
+## ghost; the Flash Device purge forces the rescuer out and resets the
+## attempt. Visual meshes live on render layer 20, which only the
 ## desktop shared-screen cameras render, so the Hunter's VR camera cannot
 ## see ghosts with the naked eye. GH-6: the Flash Device briefly adds the
 ## Hunter's render layer (layer 1) plus a bright highlight while the ghost
@@ -18,6 +20,9 @@ signal haunt_purged(ghost: GhostPlayer)
 ## GH-8: emitted when a phasing ghost enters a wall, so the shared screen can
 ## draw a ripple at that spot.
 signal phase_rippled(pos: Vector3)
+## GH-10: emitted when a ghost haunting the vacuum held A long enough to
+## release [param captured] back into the house.
+signal ghost_rescued(captured: GhostPlayer, rescuer: GhostPlayer)
 
 const MOVE_DEADZONE: float = 0.15
 const LAYER_SHARED := 1 << 19 # layer 20: shared-screen cameras only
@@ -35,21 +40,31 @@ const WALL_RAY_COUNT := 8
 const SHIMMER_INTERVAL := 0.08
 const SHIMMER_LIFETIME := 0.6
 const SHIMMER_ALPHA := 0.3
+## GH-10 rescue tuning: how close a ghost must be to the vacuum to haunt it,
+## and how long A must be held while haunting it to release a captured ghost.
+const RESCUE_RANGE := 1.5
+const RESCUE_HOLD_DURATION := 2.0
 
 @export var speed: float = 2.5
 @export var acceleration: float = 10.0
 @export var turn_speed: float = 12.0
 
 var controller: ClientController
+## GH-10: returns the currently captured ghosts so a ghost haunting the
+## vacuum knows whom it can release (wired by GhostHunter).
+var captured_ghosts_getter: Callable
 
 ## GH-8 states: a phasing ghost (inside a wall) and a haunting ghost (inside
-## an object) stay invisible to the Hunter even while flash-revealed.
+## an object) stay invisible to the Hunter even while flash-revealed. The
+## vacuum counts as a haunted object too (GH-10 rescue).
 var is_phasing := false
 var haunted_object: Node3D = null
 ## GH-7 capture mark (set by GhostHunter when the Ecto-Vacuum captures this
-## ghost; GH-10 rescue clears it). A captured ghost is out of the house.
+## ghost; the GH-10 rescue clears it). A captured ghost is out of the house.
 var is_captured := false
 
+## GH-10: hold-A channel progress while haunting the vacuum.
+var _rescue_progress := 0.0
 var _was_inside_wall := false
 var _shimmer_timer := 0.0
 var _ripple_emissions := 0
@@ -80,10 +95,11 @@ func _ready() -> void:
 	_apply_hunter_visibility()
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if _reveal_active and not is_revealed():
 		_reveal_active = false
 		_apply_hunter_visibility()
+	_update_rescue(delta)
 
 
 ## Wires the owning phone/gamepad controller, assigns the player color, and
@@ -103,8 +119,7 @@ func _exit_tree() -> void:
 			controller.primary_action_pressed.disconnect(_on_primary_action)
 		if controller.secondary_action_pressed.is_connected(_on_secondary_action):
 			controller.secondary_action_pressed.disconnect(_on_secondary_action)
-	if is_instance_valid(haunted_object) and haunted_object is HauntableObject:
-		(haunted_object as HauntableObject).release()
+	_release_haunted_object()
 	haunted_object = null
 
 
@@ -158,6 +173,20 @@ func is_haunting() -> bool:
 	return haunted_object != null
 
 
+## GH-10: true while this ghost is possessing the Ecto-Vacuum to channel a
+## rescue.
+func is_haunting_vacuum() -> bool:
+	return haunted_object is VacuumDevice
+
+
+func get_rescue_progress() -> float:
+	return _rescue_progress
+
+
+func set_captured_ghosts_getter(getter: Callable) -> void:
+	captured_ghosts_getter = getter
+
+
 ## GH-9: a ghost can channel a mischief task while free — not captured and
 ## not possessing an object.
 func is_free() -> bool:
@@ -171,15 +200,16 @@ func get_body_center() -> Vector3:
 
 
 ## GH-6 purge hook: the Flash Device forces the ghost out of the object it
-## is possessing (GH-8) and places it at the object's position.
+## is possessing (GH-8) or out of the vacuum (GH-10, which also resets the
+## rescue attempt) and places it at the object's position.
 func purge_haunt() -> void:
 	if haunted_object == null:
 		return
 	if is_instance_valid(haunted_object):
 		global_position = haunted_object.global_position
-		if haunted_object is HauntableObject:
-			(haunted_object as HauntableObject).release()
+		_release_haunted_object()
 	haunted_object = null
+	_rescue_progress = 0.0
 	haunt_purged.emit(self)
 	_apply_hunter_visibility()
 
@@ -209,6 +239,60 @@ func stop_phase_walk() -> void:
 	_apply_hunter_visibility()
 
 
+## GH-10: A near the Hunter's Ecto-Vacuum possesses it for a rescue (takes
+## precedence over hauntable props). Returns true when the vacuum was haunted.
+func try_haunt_vacuum() -> bool:
+	if is_haunting() or is_phasing or is_captured:
+		return false
+	var vacuum := _get_vacuum()
+	if vacuum == null or not vacuum.can_be_haunted():
+		return false
+	if global_position.distance_to(vacuum.global_position) > RESCUE_RANGE:
+		return false
+	_haunt(vacuum)
+	return true
+
+
+func _get_vacuum() -> VacuumDevice:
+	var node := get_tree().get_first_node_in_group(VacuumDevice.GROUP_VACUUM)
+	return node as VacuumDevice if is_instance_valid(node) else null
+
+
+## GH-10: while haunting the vacuum, holding A channels the rescue; releasing
+## A (or leaving the vacuum) resets the channel. At RESCUE_HOLD_DURATION the
+## hold releases one captured ghost.
+func _update_rescue(delta: float) -> void:
+	if not is_haunting_vacuum():
+		_rescue_progress = 0.0
+		return
+	if controller == null or not controller.is_primary_action_held():
+		_rescue_progress = 0.0
+		return
+	_rescue_progress += delta
+	if _rescue_progress >= RESCUE_HOLD_DURATION:
+		_rescue_progress = 0.0
+		_perform_rescue()
+
+
+## GH-10: releases the first captured ghost back into the house at the
+## vacuum's position and clears its GH-7 capture mark.
+func _perform_rescue() -> void:
+	if not captured_ghosts_getter.is_valid():
+		return
+	for ghost in captured_ghosts_getter.call():
+		if not ghost is GhostPlayer or not is_instance_valid(ghost):
+			continue
+		var captured := ghost as GhostPlayer
+		if not captured.is_captured:
+			continue
+		captured.is_captured = false
+		captured.global_position = global_position
+		captured.velocity = Vector3.ZERO
+		captured._apply_hunter_visibility()
+		ghost_rescued.emit(captured, self)
+		return
+
+
 ## GH-8 Haunt: A near a hauntable object possesses it. Returns the possessed
 ## object, or null when nothing hauntable is in range.
 func try_haunt() -> HauntableObject:
@@ -228,23 +312,40 @@ func trigger_haunt_effect() -> void:
 
 
 ## GH-8: B while haunting leaves the object voluntarily (ghost stays at the
-## object's position).
+## object's position). Leaving the vacuum this way also resets the GH-10
+## rescue channel.
 func exit_haunt() -> void:
 	if not is_haunting():
 		return
 	var obj := haunted_object
 	haunted_object = null
-	if is_instance_valid(obj) and obj is HauntableObject:
-		(obj as HauntableObject).release()
+	if is_instance_valid(obj):
+		_release_haunted_object(obj)
+	_rescue_progress = 0.0
 	_apply_hunter_visibility()
 
 
-func _haunt(obj: HauntableObject) -> void:
+func _haunt(obj: Node3D) -> void:
 	haunted_object = obj
 	global_position = obj.global_position
 	velocity = Vector3.ZERO
-	obj.possess(self)
+	if obj is HauntableObject:
+		(obj as HauntableObject).possess(self)
+	elif obj is VacuumDevice:
+		(obj as VacuumDevice).possess(self)
 	_apply_hunter_visibility()
+
+
+## Releases a haunted object/vacuum if it supports it (HauntableObject and
+## VacuumDevice both expose release()).
+func _release_haunted_object(obj: Node3D = null) -> void:
+	var target := obj if obj != null else haunted_object
+	if not is_instance_valid(target):
+		return
+	if target is HauntableObject:
+		(target as HauntableObject).release()
+	elif target is VacuumDevice:
+		(target as VacuumDevice).release()
 
 
 func _nearest_hauntable() -> HauntableObject:
@@ -358,9 +459,22 @@ func debug_set_haunting(object_path: String) -> void:
 	var obj := get_node_or_null(object_path)
 	if obj is HauntableObject and (obj as HauntableObject).can_be_haunted():
 		_haunt(obj as HauntableObject)
+	elif obj is VacuumDevice and (obj as VacuumDevice).can_be_haunted():
+		_haunt(obj as VacuumDevice)
 	else:
 		haunted_object = obj
 		_apply_hunter_visibility()
+
+
+## Debug/E2E helper: full GH-10 vacuum-haunt path (possess + freeze) at the
+## vacuum at [vacuum_path]; bypasses the range check. Returns false when the
+## path is not a hauntable vacuum.
+func debug_haunt_vacuum(vacuum_path: String) -> bool:
+	var obj := get_node_or_null(vacuum_path)
+	if obj is VacuumDevice and (obj as VacuumDevice).can_be_haunted():
+		_haunt(obj as VacuumDevice)
+		return true
+	return false
 
 
 ## Debug/E2E helper: force the phase state without the wall check.
@@ -382,6 +496,8 @@ func debug_state() -> Dictionary:
 	return {
 		"phasing": is_phasing,
 		"haunting": is_haunting(),
+		"haunting_vacuum": is_haunting_vacuum(),
+		"rescue_progress": _rescue_progress,
 		"captured": is_captured,
 		"haunted_path": haunted_object.get_path() if is_instance_valid(haunted_object) else "",
 		"revealed": is_revealed(),
@@ -431,11 +547,13 @@ func _apply_hunter_visibility() -> void:
 
 func _on_primary_action() -> void:
 	# GH-8: A near a hauntable object possesses it; A while haunting triggers
-	# the object's effect. (A near the Hunter's vacuum is reserved for the
-	# GH-10 rescue.)
+	# the object's effect. GH-10: A near the Hunter's vacuum haunts it
+	# instead; while haunting the vacuum, A has no edge effect — the held
+	# state polled in _update_rescue channels the rescue.
 	if is_haunting():
-		trigger_haunt_effect()
-	else:
+		if not is_haunting_vacuum():
+			trigger_haunt_effect()
+	elif not try_haunt_vacuum():
 		try_haunt()
 	primary_action_pressed.emit()
 

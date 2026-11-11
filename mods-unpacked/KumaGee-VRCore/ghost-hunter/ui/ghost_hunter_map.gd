@@ -10,7 +10,9 @@ extends Control
 ## GH-8: [method ping_ripple] draws a brief expanding ripple when a ghost
 ## phases through a wall. GH-9: draws the active mischief-task markers (ring
 ## plus channel-progress arc, fed through [method set_tasks_getter]) and a brief
-## burst on task completion ([method ping_task_completed]). Task markers are
+## burst on task completion ([method ping_task_completed]). GH-10: a brief
+## green burst on the shared screen when a captured ghost is rescued from the
+## vacuum ([method ping_rescue]). Task markers are
 ## ghost-only info: this layer lives on the shared desktop screen and the
 ## Flash Device display never draws them.
 
@@ -34,6 +36,11 @@ const TASK_BURST_DURATION := 1.5
 const TASK_BURST_START_RADIUS := 8.0
 const TASK_BURST_MAX_RADIUS := 34.0
 const TASK_BURST_COLOR := Color(1.0, 0.85, 0.3)
+## GH-10 rescue burst.
+const RESCUE_PING_DURATION := 1.5
+const RESCUE_PING_START_RADIUS := 8.0
+const RESCUE_PING_MAX_RADIUS := 34.0
+const RESCUE_PING_COLOR := Color(0.4, 1.0, 0.5)
 
 var ghosts_getter: Callable
 var hunter_position_getter: Callable
@@ -45,6 +52,8 @@ var _ripples: Array = [] ## [{pos: Vector3, age: float, duration: float}]
 var _ripple_total := 0
 var _task_bursts: Array = [] ## [{pos: Vector3, age: float, duration: float}]
 var _task_burst_total := 0
+var _rescue_pings: Array = [] ## [{pos: Vector3, age: float, duration: float}]
+var _rescue_ping_total := 0
 
 
 func _ready() -> void:
@@ -98,6 +107,19 @@ func debug_task_burst_total() -> int:
 	return _task_burst_total
 
 
+## GH-10: brief green burst on the shared screen when a captured ghost is
+## rescued from the vacuum.
+func ping_rescue(pos: Vector3, duration: float = RESCUE_PING_DURATION) -> void:
+	_rescue_ping_total += 1
+	_rescue_pings.append({"pos": pos, "age": 0.0, "duration": duration})
+	queue_redraw()
+
+
+## Debug/E2E helper: total rescue pings ever drawn (survives TTL expiry).
+func debug_rescue_ping_total() -> int:
+	return _rescue_ping_total
+
+
 func is_ping_active() -> bool:
 	return _ping_timer > 0.0
 
@@ -121,6 +143,10 @@ func _process(delta: float) -> void:
 		burst.age += delta
 	while not _task_bursts.is_empty() and _task_bursts[0].age > _task_bursts[0].duration:
 		_task_bursts.pop_front()
+	for ping in _rescue_pings:
+		ping.age += delta
+	while not _rescue_pings.is_empty() and _rescue_pings[0].age > _rescue_pings[0].duration:
+		_rescue_pings.pop_front()
 	queue_redraw()
 
 
@@ -167,6 +193,16 @@ func _draw() -> void:
 			Color(TASK_BURST_COLOR.r, TASK_BURST_COLOR.g, TASK_BURST_COLOR.b, alpha * 0.9), 2.5)
 		draw_circle(sp, TASK_BURST_START_RADIUS * alpha + 3.0,
 			Color(TASK_BURST_COLOR.r, TASK_BURST_COLOR.g, TASK_BURST_COLOR.b, alpha))
+
+	# GH-10: rescue bursts.
+	for ping in _rescue_pings:
+		var t: float = clampf(ping.age / ping.duration, 0.0, 1.0)
+		var alpha := 1.0 - t
+		var sp := cam.unproject_position(ping.pos)
+		draw_arc(sp, lerpf(RESCUE_PING_START_RADIUS, RESCUE_PING_MAX_RADIUS, t), 0.0, TAU, 32,
+			Color(RESCUE_PING_COLOR.r, RESCUE_PING_COLOR.g, RESCUE_PING_COLOR.b, alpha * 0.9), 2.5)
+		draw_circle(sp, RESCUE_PING_START_RADIUS * alpha + 3.0,
+			Color(RESCUE_PING_COLOR.r, RESCUE_PING_COLOR.g, RESCUE_PING_COLOR.b, alpha))
 
 	if not hunter_position_getter.is_valid():
 		return

@@ -17,6 +17,7 @@ func _process(_delta: float) -> void:
 	if primary and not _prev_primary:
 		primary_action_pressed.emit()
 	_prev_primary = primary
+	_primary_held = primary
 
 	var secondary := Input.is_joy_button_pressed(device_id, JOY_BUTTON_B)
 	if secondary and not _prev_secondary:

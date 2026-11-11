@@ -12,8 +12,20 @@ var active := true:
 		active = v
 		active_changed.emit()
 
+## Held state of the primary (A) button, updated on every press/release
+## message. Games poll this for hold-to-activate interactions (GH-10 rescue).
+var _primary_held := false
+
 func get_move() -> Vector2:
 	return Vector2.ZERO
+
+func is_primary_action_held() -> bool:
+	return _primary_held
+
+## Debug/E2E helper: force the A-button held state (the MCP bridge cannot
+## press phone buttons).
+func debug_set_primary_held(v: bool) -> void:
+	_primary_held = v
 
 func get_display_data() -> Dictionary:
 	return {"client_id": uuid}
