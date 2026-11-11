@@ -31,12 +31,22 @@ signal suction_progress_changed(progress: float, total: float)
 ## GH-10: ghosts find the vacuum through this group to haunt it for a rescue.
 const GROUP_VACUUM := "gh_vacuum"
 
+## GH-11 Haunt Glitch tuning: per glitch level the suction takes
+## GLITCH_SUCK_PER_LEVEL longer (capped at GLITCH_SUCK_MAX) and the range
+## shrinks by GLITCH_RANGE_PER_LEVEL (floored at GLITCH_RANGE_MIN).
+const GLITCH_SUCK_PER_LEVEL := 0.5
+const GLITCH_SUCK_MAX := 5.0
+const GLITCH_RANGE_PER_LEVEL := 0.25
+const GLITCH_RANGE_MIN := 1.5
+
 @export var cone_angle_deg: float = 40.0
 @export var range: float = 3.0
 @export var suck_duration: float = 3.0
 @export_flags_3d_physics var line_of_sight_mask: int = 1
 
 var ghosts_getter: Callable
+## GH-11: Haunt Glitch level (= completed mischief tasks), pushed by GhostHunter.
+var glitch_level := 0
 
 ## GH-10: the ghost currently possessing the vacuum for a rescue (one at a
 ## time), mirroring HauntableObject.possessor.
@@ -102,11 +112,11 @@ func _process(delta: float) -> void:
 		_target = _find_target(origin, forward)
 		_progress = 0.0
 	if not is_instance_valid(_target):
-		suction_progress_changed.emit(0.0, suck_duration)
+		suction_progress_changed.emit(0.0, get_effective_suck_duration())
 		return
 	_progress += delta
-	suction_progress_changed.emit(_progress, suck_duration)
-	if _progress >= suck_duration:
+	suction_progress_changed.emit(_progress, get_effective_suck_duration())
+	if _progress >= get_effective_suck_duration():
 		var captured := _target
 		_reset_suction()
 		ghost_captured.emit(captured)
@@ -114,6 +124,31 @@ func _process(delta: float) -> void:
 
 func set_ghosts_getter(getter: Callable) -> void:
 	ghosts_getter = getter
+
+
+## GH-11: GhostHunter pushes the current Haunt Glitch level here whenever a
+## mischief task completes.
+func set_glitch_level(level: int) -> void:
+	glitch_level = maxi(0, level)
+
+
+## GH-11: suction takes 3s + 0.5s per glitch level, capped at 5s.
+func get_effective_suck_duration() -> float:
+	return minf(suck_duration + GLITCH_SUCK_PER_LEVEL * glitch_level, GLITCH_SUCK_MAX)
+
+
+## GH-11: range shrinks 3m - 0.25m per glitch level, floored at 1.5m.
+func get_effective_range() -> float:
+	return maxf(range - GLITCH_RANGE_PER_LEVEL * glitch_level, GLITCH_RANGE_MIN)
+
+
+## Debug/E2E helper (script vars are not visible to the MCP bridge).
+func debug_glitch() -> Dictionary:
+	return {
+		"level": glitch_level,
+		"suck_duration": get_effective_suck_duration(),
+		"range": get_effective_range(),
+	}
 
 
 func is_sucking() -> bool:
@@ -190,7 +225,7 @@ func debug_cone_report(ox: float, oy: float, oz: float, fx: float, fy: float, fz
 			"dist": dist,
 			"angle_deg": rad_to_deg(angle),
 			"half_cone_deg": rad_to_deg(half_cone),
-			"range": range,
+			"range": get_effective_range(),
 			"los": _has_line_of_sight(origin, gp.get_body_center()),
 			"visible_to_hunter": gp.is_visible_to_hunter(),
 		})
@@ -220,7 +255,7 @@ func _is_valid_target(gp: GhostPlayer, origin: Vector3, forward: Vector3) -> boo
 	var to_ghost: Vector3 = gp.global_position - origin
 	to_ghost.y = 0.0
 	var dist: float = to_ghost.length()
-	if dist > range or dist < 0.01:
+	if dist > get_effective_range() or dist < 0.01:
 		return false
 	var half_cone := deg_to_rad(cone_angle_deg * 0.5)
 	if _horizontal(forward).angle_to(to_ghost.normalized()) > half_cone:
@@ -232,7 +267,7 @@ func _find_target(origin: Vector3, forward: Vector3) -> GhostPlayer:
 	if not ghosts_getter.is_valid():
 		return null
 	var best: GhostPlayer = null
-	var best_dist := range
+	var best_dist := get_effective_range()
 	for ghost in ghosts_getter.call():
 		if not ghost is GhostPlayer or not is_instance_valid(ghost):
 			continue

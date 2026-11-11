@@ -13,8 +13,9 @@
 [ext_resource type="Script" uid="uid://87e8c6ucp4925" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/ghost_hunter_ai_manager.gd" id="10_aiman"]
 [ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="11_v2d"]
 [ext_resource type="PackedScene" uid="uid://cfxkzmnio8956" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/ui/bot_count_control.tscn" id="12_bctrl"]
+[ext_resource type="Script" uid="uid://b3k8m2q9r4t6c" path="res://mods-unpacked/KumaGee-VRCore/ghost-hunter/ui/static_interference.gd" id="14_static"]
 
-[node name="GhostHunter" unique_id=2043053925 node_paths=PackedStringArray("house_container", "map_layer", "bot_count_viewport") instance=ExtResource("1_base")]
+[node name="GhostHunter" unique_id=2043053925 node_paths=PackedStringArray("house_container", "map_layer", "bot_count_viewport", "static_interference") instance=ExtResource("1_base")]
 script = ExtResource("2_game")
 house_variants = Array[PackedScene]([ExtResource("4_house_a"), ExtResource("5_house_b"), ExtResource("6_house_c")])
 house_container = NodePath("BaseSceneContent/HouseContainer")
@@ -23,6 +24,10 @@ map_layer = NodePath("CanvasLayer/Control/GameUI/MapLayer")
 flash_device_scene = ExtResource("9_flash")
 vacuum_device_scene = ExtResource("13_vac")
 bot_count_viewport = NodePath("BaseSceneContent/BotCountViewport")
+static_interference = NodePath("XRPlayer/SubViewport/XRPlayer/XRCamera3D/StaticInterference")
+
+[node name="StaticInterference" type="Node3D" parent="XRPlayer/SubViewport/XRPlayer/XRCamera3D" parent_id_path=PackedInt32Array(10000004, 227782039) index="4" unique_id=50000013]
+script = ExtResource("14_static")
 
 [node name="MapLayer" type="Control" parent="CanvasLayer/Control/GameUI" parent_id_path=PackedInt32Array(10000007) index="0" unique_id=22565456]
 layout_mode = 1

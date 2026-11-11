@@ -46,6 +46,18 @@ const TASK_INITIAL_SPAWN_DELAY := 6.0
 const TASK_SPAWN_INTERVAL_MIN := 10.0
 const TASK_SPAWN_INTERVAL_MAX := 15.0
 const TASK_MIN_SPAWN_DISTANCE := 8.0
+## GH-11 Haunt Glitches: the glitch level equals the completed mischief tasks.
+## At Full Haunt (all tasks completed) the level is clamped to GLITCH_MAX_LEVEL
+## (the level at which every device cap is reached) for the rest of the round,
+## so both devices stay at max glitch and the view static is persistent. The
+## round shape never changes — no surge phase, ghosts win by survival only.
+const GLITCH_MAX_LEVEL := 6
+const VIEW_STATIC_MIN_LEVEL := 2
+const STATIC_PULSE_INTERVAL_MIN := 2.5
+const STATIC_PULSE_INTERVAL_MAX := 5.0
+const STATIC_PULSE_DURATION := 0.3
+const STATIC_PULSE_INTENSITY := 0.4
+const STATIC_FULL_HAUNT_INTENSITY := 0.6
 
 @export var house_variants: Array[PackedScene] = []
 @export var house_container: Node3D
@@ -54,6 +66,7 @@ const TASK_MIN_SPAWN_DISTANCE := 8.0
 @export var flash_device_scene: PackedScene
 @export var vacuum_device_scene: PackedScene
 @export var bot_count_viewport: Node3D
+@export var static_interference: StaticInterference
 
 @onready var ai_manager: GhostHunterAIManager = %AIManager
 
@@ -83,6 +96,13 @@ var _task_spawn_interval := TASK_INITIAL_SPAWN_DELAY
 ## Max simultaneously active tasks = players - 1 (players = ghost players,
 ## phones + AI; floored at 1 so a solo ghost still has a task).
 var _task_max_active := 0
+## GH-11 Haunt Glitch state (level / Full Haunt) and view-static pulse timing.
+var _glitch_level := 0
+var _full_haunt := false
+var _effective_glitch_level := 0
+var _static_pulse_timer := 0.0
+var _static_pulse_interval := STATIC_PULSE_INTERVAL_MIN
+var _static_pulse_remaining := 0.0
 
 
 func _ready() -> void:
@@ -376,6 +396,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _process(delta: float) -> void:
 	_update_tasks(delta)
+	_update_static_interference(delta)
 	for item in _loose_items.duplicate():
 		if not is_instance_valid(item):
 			_resolve_loose_item(item)
@@ -547,6 +568,7 @@ func _setup_tasks(ghost_count: int) -> void:
 	_all_tasks_emitted = false
 	_task_spawn_timer = 0.0
 	_task_spawn_interval = TASK_INITIAL_SPAWN_DELAY
+	_update_glitch() # GH-11: reset the glitches when the round (re)starts
 	# Players are the ghost players (phones + AI); cap = players - 1, min 1.
 	_task_max_active = maxi(1, ghost_count - 1)
 	if not house:
@@ -686,6 +708,7 @@ func _complete_task(index: int) -> void:
 	if not _all_tasks_emitted and is_all_tasks_completed():
 		_all_tasks_emitted = true
 		all_tasks_completed.emit()
+	_update_glitch() # GH-11: each completed task raises the Haunt Glitch level
 
 
 ## GH-9 state for GH-11 (glitch level / Full Haunt) and GH-12 (2 pts per completed task).
@@ -757,3 +780,81 @@ func debug_task_state() -> Dictionary:
 		"all_completed": is_all_tasks_completed(),
 		"tasks": out,
 	}
+
+
+# ── GH-11 Haunt Glitches ─────────────────────────────────────────────────────
+
+## GH-11: recompute the Haunt Glitch level from the completed mischief tasks
+## and push it to both devices. Full Haunt (all tasks completed) clamps the
+## level to GLITCH_MAX_LEVEL for the rest of the round. Called on every task
+## completion and whenever the tasks are re-picked.
+func _update_glitch() -> void:
+	_glitch_level = get_completed_task_count()
+	_full_haunt = not tasks.is_empty() and is_all_tasks_completed()
+	var effective := GLITCH_MAX_LEVEL if _full_haunt else _glitch_level
+	if is_instance_valid(flash_device):
+		flash_device.set_glitch_level(effective)
+	if is_instance_valid(vacuum_device):
+		vacuum_device.set_glitch_level(effective)
+	if effective != _effective_glitch_level:
+		_effective_glitch_level = effective
+		_static_pulse_timer = 0.0
+		_static_pulse_interval = randf_range(STATIC_PULSE_INTERVAL_MIN, STATIC_PULSE_INTERVAL_MAX)
+		_static_pulse_remaining = 0.0
+		if _full_haunt:
+			logger.info("GH-11: Full Haunt — both devices at max glitch, persistent view static for the rest of the round")
+		else:
+			logger.info("GH-11: glitch level %d" % _glitch_level)
+
+
+## GH-11: drive the Hunter's view static — short pulses from glitch level
+## VIEW_STATIC_MIN_LEVEL, persistent at Full Haunt. Only during the game
+## phase; the shared-screen "Hunter nearby" ping is never glitched.
+func _update_static_interference(delta: float) -> void:
+	if not is_instance_valid(static_interference):
+		return
+	if not is_game_phase:
+		static_interference.set_intensity(0.0)
+		return
+	if _full_haunt:
+		static_interference.set_intensity(STATIC_FULL_HAUNT_INTENSITY)
+		return
+	if _glitch_level < VIEW_STATIC_MIN_LEVEL:
+		static_interference.set_intensity(0.0)
+		return
+	if _static_pulse_remaining > 0.0:
+		_static_pulse_remaining -= delta
+		if _static_pulse_remaining <= 0.0:
+			_static_pulse_remaining = 0.0
+			static_interference.set_intensity(0.0)
+		return
+	_static_pulse_timer += delta
+	if _static_pulse_timer >= _static_pulse_interval:
+		_static_pulse_timer = 0.0
+		_static_pulse_interval = randf_range(STATIC_PULSE_INTERVAL_MIN, STATIC_PULSE_INTERVAL_MAX)
+		_static_pulse_remaining = STATIC_PULSE_DURATION
+		static_interference.set_intensity(STATIC_PULSE_INTENSITY)
+
+
+## Debug/E2E helper: GH-11 glitch state as plain data for the MCP bridge.
+func debug_glitch_state() -> Dictionary:
+	return {
+		"level": _glitch_level,
+		"effective_level": _effective_glitch_level,
+		"full_haunt": _full_haunt,
+		"completed_tasks": get_completed_task_count(),
+		"flash": flash_device.debug_glitch() if is_instance_valid(flash_device) else {},
+		"vacuum": vacuum_device.debug_glitch() if is_instance_valid(vacuum_device) else {},
+		"static_intensity": static_interference.get_intensity() if is_instance_valid(static_interference) else 0.0,
+	}
+
+
+## Debug/E2E helper: force a GH-11 glitch state without completing tasks.
+func debug_force_glitch(level: int, full_haunt: bool = false) -> void:
+	_glitch_level = maxi(0, level)
+	_full_haunt = full_haunt
+	_effective_glitch_level = GLITCH_MAX_LEVEL if full_haunt else _glitch_level
+	if is_instance_valid(flash_device):
+		flash_device.set_glitch_level(_effective_glitch_level)
+	if is_instance_valid(vacuum_device):
+		vacuum_device.set_glitch_level(_effective_glitch_level)

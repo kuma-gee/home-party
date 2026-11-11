@@ -32,6 +32,12 @@ const LABEL_FONT_SIZE := 12
 ## the house floor (variants are ~24 x 18 m centered at the origin).
 const FALLBACK_CAM_HEIGHT := 25.0
 const FALLBACK_CAM_SIZE := 26.0
+## GH-11: from this glitch level the screen flickers — the house map and the
+## interaction pings drop out for short windows (the charge bar stays readable).
+const GLITCH_FLICKER_LEVEL := 3
+const FLICKER_PERIOD_MIN := 2.0
+const FLICKER_PERIOD_MAX := 4.0
+const FLICKER_DURATION := 0.45
 
 var house_camera_getter: Callable
 var hunter_position_getter: Callable
@@ -40,6 +46,11 @@ var hunter_position_getter: Callable
 
 var _pings: Array = [] ## [{pos: Vector3, age: float, kind: String}]
 var _charge := 1.0 ## 1.0 = flash ready, 0.0 = just fired
+## GH-11 Haunt Glitch state (pushed by FlashDevice.set_glitch_level).
+var _glitch_level := 0
+var _flicker_timer := 0.0
+var _flicker_interval := FLICKER_PERIOD_MIN
+var _flicker_remaining := 0.0
 
 
 func _ready() -> void:
@@ -65,6 +76,28 @@ func add_ping(pos: Vector3, kind: String = "") -> void:
 	queue_redraw()
 
 
+## GH-11: FlashDevice pushes the Haunt Glitch level here; from
+## GLITCH_FLICKER_LEVEL the map and pings flicker (drop out briefly).
+func set_glitch_level(level: int) -> void:
+	_glitch_level = maxi(0, level)
+	if _glitch_level < GLITCH_FLICKER_LEVEL and _flicker_remaining > 0.0:
+		_flicker_remaining = 0.0
+		_flicker_timer = 0.0
+
+
+func is_flickering() -> bool:
+	return _flicker_remaining > 0.0
+
+
+## Debug/E2E helpers (script vars are not visible to the MCP bridge).
+func debug_is_flickering() -> bool:
+	return is_flickering()
+
+
+func debug_glitch_level() -> int:
+	return _glitch_level
+
+
 ## Debug/E2E helpers (script vars are not visible to the MCP bridge).
 func get_ping_count() -> int:
 	return _pings.size()
@@ -81,8 +114,26 @@ func _process(delta: float) -> void:
 		ping.age += delta
 	while not _pings.is_empty() and _pings[0].age > PING_TTL:
 		_pings.pop_front()
+	_update_flicker(delta)
 	_sync_map_camera()
 	queue_redraw()
+
+
+## GH-11: at glitch level >= GLITCH_FLICKER_LEVEL the screen drops the map and
+## pings for FLICKER_DURATION, repeating every random FLICKER_PERIOD_MIN..MAX s.
+func _update_flicker(delta: float) -> void:
+	if _glitch_level < GLITCH_FLICKER_LEVEL:
+		return
+	if _flicker_remaining > 0.0:
+		_flicker_remaining -= delta
+		if _flicker_remaining <= 0.0:
+			_flicker_remaining = 0.0
+			_flicker_interval = randf_range(FLICKER_PERIOD_MIN, FLICKER_PERIOD_MAX)
+		return
+	_flicker_timer += delta
+	if _flicker_timer >= _flicker_interval:
+		_flicker_timer = 0.0
+		_flicker_remaining = FLICKER_DURATION
 
 
 ## The map camera is a child of this SubViewport, which is a child of the
@@ -105,8 +156,13 @@ func _sync_map_camera() -> void:
 
 
 func _draw() -> void:
-	_draw_pings()
-	_draw_hunter()
+	if is_flickering():
+		# GH-11 flicker: the house map and the pings drop out; the charge bar
+		# stays on screen so the Hunter still reads the flash state.
+		draw_rect(Rect2(Vector2.ZERO, size), Color(0.02, 0.02, 0.03, 0.92))
+	else:
+		_draw_pings()
+		_draw_hunter()
 	_draw_charge_bar()
 
 

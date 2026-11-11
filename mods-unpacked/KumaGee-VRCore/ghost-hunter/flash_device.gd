@@ -38,6 +38,16 @@ const FLASH_LIGHT_ENERGY := 6.0
 const FLASH_LIGHT_RANGE := 3.0
 const FLASH_VISUAL_DURATION := 0.4
 
+## GH-11 Haunt Glitch tuning: per glitch level the recharge grows by
+## GLITCH_RECHARGE_PER_LEVEL (capped at GLITCH_RECHARGE_MAX) and the reveal
+## shrinks by GLITCH_REVEAL_PER_LEVEL (floored at GLITCH_REVEAL_MIN); from
+## GLITCH_FLICKER_LEVEL the device display flickers (map + pings drop out).
+const GLITCH_RECHARGE_PER_LEVEL := 1.0
+const GLITCH_RECHARGE_MAX := 6.0
+const GLITCH_REVEAL_PER_LEVEL := 0.5
+const GLITCH_REVEAL_MIN := 2.0
+const GLITCH_FLICKER_LEVEL := 3
+
 @export var cone_angle_deg: float = 45.0
 @export var range: float = 2.0
 @export var reveal_duration: float = 4.0
@@ -47,6 +57,8 @@ const FLASH_VISUAL_DURATION := 0.4
 var ghosts_getter: Callable
 var house_camera_getter: Callable
 var hunter_position_getter: Callable
+## GH-11: Haunt Glitch level (= completed mischief tasks), pushed by GhostHunter.
+var glitch_level := 0
 
 @onready var _display: FlashDeviceDisplay = %UI
 
@@ -59,7 +71,7 @@ func _ready() -> void:
 		return
 	action_pressed.connect(_on_action_pressed)
 	recharge_changed.connect(_on_recharge_changed)
-	_on_recharge_changed(_cooldown, recharge_duration)
+	_on_recharge_changed(_cooldown, get_effective_recharge())
 	if house_camera_getter.is_valid():
 		_display.set_house_camera_getter(house_camera_getter)
 	if hunter_position_getter.is_valid():
@@ -108,7 +120,35 @@ func _process(delta: float) -> void:
 		return
 	if _cooldown > 0.0:
 		_cooldown = maxf(0.0, _cooldown - delta)
-	recharge_changed.emit(_cooldown, recharge_duration)
+	recharge_changed.emit(_cooldown, get_effective_recharge())
+
+
+## GH-11: GhostHunter pushes the current Haunt Glitch level here whenever a
+## mischief task completes.
+func set_glitch_level(level: int) -> void:
+	glitch_level = maxi(0, level)
+	if _display:
+		_display.set_glitch_level(glitch_level)
+
+
+## GH-11: recharge grows 3s + 1s per glitch level, capped at 6s.
+func get_effective_recharge() -> float:
+	return minf(recharge_duration + GLITCH_RECHARGE_PER_LEVEL * glitch_level, GLITCH_RECHARGE_MAX)
+
+
+## GH-11: reveal shrinks 4s - 0.5s per glitch level, floored at 2s.
+func get_effective_reveal() -> float:
+	return maxf(reveal_duration - GLITCH_REVEAL_PER_LEVEL * glitch_level, GLITCH_REVEAL_MIN)
+
+
+## Debug/E2E helper (script vars are not visible to the MCP bridge).
+func debug_glitch() -> Dictionary:
+	return {
+		"level": glitch_level,
+		"recharge": get_effective_recharge(),
+		"reveal": get_effective_reveal(),
+		"flickering": _display.debug_is_flickering() if _display else false,
+	}
 
 
 func set_ghosts_getter(getter: Callable) -> void:
@@ -150,7 +190,7 @@ func debug_fire_at(ox: float, oy: float, oz: float, fx: float, fy: float, fz: fl
 
 func _fire_from(origin: Vector3, forward: Vector3) -> bool:
 	_perform_flash(origin, forward)
-	_cooldown = recharge_duration
+	_cooldown = get_effective_recharge()
 	flash_fired.emit(origin)
 	_spawn_flash_visual(origin, forward)
 	return true
@@ -212,12 +252,12 @@ func _perform_flash(origin: Vector3, forward: Vector3) -> void:
 			# it is flung out into the open, so the Hunter sees it.
 			gp.purge_haunt()
 			haunt_purged.emit(gp)
-			gp.set_revealed(reveal_duration)
+			gp.set_revealed(get_effective_reveal())
 			ghost_revealed.emit(gp)
 			continue
 		if gp.is_phasing:
 			continue
-		gp.set_revealed(reveal_duration)
+		gp.set_revealed(get_effective_reveal())
 		ghost_revealed.emit(gp)
 
 
