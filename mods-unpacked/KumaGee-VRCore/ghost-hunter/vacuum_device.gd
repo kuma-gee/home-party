@@ -119,6 +119,7 @@ func _process(delta: float) -> void:
 	if _progress >= get_effective_suck_duration():
 		var captured := _target
 		_reset_suction()
+		suction_stopped.emit()
 		ghost_captured.emit(captured)
 
 

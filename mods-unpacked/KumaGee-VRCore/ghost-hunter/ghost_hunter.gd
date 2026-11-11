@@ -18,6 +18,9 @@ const HUNTER_SPAWN_DOOR_DISTANCE := 2.0
 const FLASH_DEVICE_DOOR_OFFSET := 1.0
 const VACUUM_DEVICE_DOOR_OFFSET := 1.6
 const ITEM_SPAWN_HEIGHT := 1.2
+## GH-7 capture sequence: while the Ecto-Vacuum is actively sucking, the
+## Hunter moves at 50% speed.
+const SUCK_SPEED_MULT := 0.5
 ## Belt-holster snap zones on the player body, left and right at hip height.
 const HIP_SNAP_ZONE_PATH := "res://addons/godot-xr-tools/objects/snap_zone.tscn"
 const LEFT_HIP_SNAP_ZONE_POS := Vector3(-0.22, 0.98, 0.02)
@@ -90,6 +93,10 @@ var _item_home := {}
 ## items currently spawned loose in front of the player by Q/E, awaiting pickup
 var _loose_items: Array = []
 var _loose_timers := {}
+## Movement providers that drive the Hunter (direct movement + desktop
+## fallback) with their base max_speed, so suction can scale them (GH-7).
+var _move_speed_providers: Array = []
+var _move_speed_base := {}
 
 var logger := KumaLog.new("GHOST_HUNTER")
 var house: HouseLayout = null
@@ -132,6 +139,7 @@ func _ready() -> void:
 	_setup_hip_snap_zones()
 	_spawn_flash_device()
 	_spawn_vacuum_device()
+	_collect_move_speed_providers()
 	_setup_map_layer()
 	ai_manager.setup(player_list, _get_hunter_position)
 	# get_tasks returns the live array that _setup_tasks refills in place, so
@@ -211,11 +219,13 @@ func _on_game_phase() -> void:
 	_update_bot_count_visibility()
 
 
-## GH-12: fresh clock, no round-over latch, no rescue tallies.
+## GH-12: fresh clock, no round-over latch, no rescue tallies. Also restores
+## full Hunter speed in case the round (re)starts mid-suction (GH-7).
 func _reset_round() -> void:
 	_hunt_time_remaining = HUNT_DURATION
 	_round_over = false
 	_rescue_counts.clear()
+	_set_hunter_speed_mult(1.0)
 
 
 func _on_clients_changed() -> void:
@@ -353,6 +363,37 @@ func _setup_vacuum_device() -> void:
 	vacuum_device.set_ghosts_getter(get_ghosts)
 	vacuum_device.ghost_captured.connect(_on_ghost_captured)
 	vacuum_device.dropped.connect(_on_item_dropped, CONNECT_DEFERRED)
+	# GH-7: slow the Hunter to 50% while the vacuum is actively sucking.
+	vacuum_device.suction_started.connect(_on_vacuum_suction_started)
+	vacuum_device.suction_stopped.connect(_on_vacuum_suction_stopped)
+
+
+## Caches the Hunter's speed-bearing movement providers (direct movement and
+## the desktop fallback; the turn provider has no max_speed) together with
+## their base max_speed so suction can scale them and restore them exactly.
+func _collect_move_speed_providers() -> void:
+	_move_speed_providers.clear()
+	_move_speed_base.clear()
+	if not xr_player:
+		return
+	for node in xr_player.find_children("*", "XRToolsMovementProvider", true, false):
+		if "max_speed" in node:
+			_move_speed_providers.append(node)
+			_move_speed_base[node] = node.max_speed
+
+
+func _on_vacuum_suction_started(_origin: Vector3) -> void:
+	_set_hunter_speed_mult(SUCK_SPEED_MULT)
+
+
+func _on_vacuum_suction_stopped() -> void:
+	_set_hunter_speed_mult(1.0)
+
+
+func _set_hunter_speed_mult(mult: float) -> void:
+	for provider in _move_speed_providers:
+		if is_instance_valid(provider) and _move_speed_base.has(provider):
+			provider.max_speed = _move_speed_base[provider] * mult
 
 
 func _setup_flash_device() -> void:
