@@ -58,6 +58,17 @@ const STATIC_PULSE_INTERVAL_MAX := 5.0
 const STATIC_PULSE_DURATION := 0.3
 const STATIC_PULSE_INTENSITY := 0.4
 const STATIC_FULL_HAUNT_INTENSITY := 0.6
+## GH-12 round end + scoring: the Hunt Phase lasts HUNT_DURATION seconds and
+## resolves only by capturing every ghost or by the clock — there is no surge
+## phase, Haunt Glitches (GH-11) never end the round early.
+const HUNT_DURATION := 300.0
+const CLUTCH_CAPTURE_WINDOW := 10.0
+const HUNTER_WIN_POINTS := 10
+const GHOST_SURVIVE_POINTS := 5
+## GH-12: 2 points per completed mischief task go into the ghost team pool.
+const TASK_COMPLETED_POINTS := 2
+const RESCUE_BONUS_POINTS := 3
+const CLUTCH_BONUS_POINTS := 3
 
 @export var house_variants: Array[PackedScene] = []
 @export var house_container: Node3D
@@ -103,6 +114,10 @@ var _effective_glitch_level := 0
 var _static_pulse_timer := 0.0
 var _static_pulse_interval := STATIC_PULSE_INTERVAL_MIN
 var _static_pulse_remaining := 0.0
+## GH-12: hunt-phase clock, round-over latch, and per-ghost rescue bonus tally.
+var _hunt_time_remaining := HUNT_DURATION
+var _round_over := false
+var _rescue_counts := {}
 
 
 func _ready() -> void:
@@ -158,6 +173,7 @@ func _on_prepare_phase() -> void:
 	_spawn_vacuum_device()
 	ai_manager.on_prepare_phase_entered()
 	_setup_tasks(_expected_ghost_count())
+	_reset_round()
 	_update_bot_count_visibility()
 
 
@@ -191,7 +207,15 @@ func _on_game_phase() -> void:
 	_spawn_ghosts()
 	_setup_tasks(ghosts.size())
 	ai_manager.on_game_phase_entered()
+	_reset_round()
 	_update_bot_count_visibility()
+
+
+## GH-12: fresh clock, no round-over latch, no rescue tallies.
+func _reset_round() -> void:
+	_hunt_time_remaining = HUNT_DURATION
+	_round_over = false
+	_rescue_counts.clear()
 
 
 func _on_clients_changed() -> void:
@@ -395,6 +419,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _process(delta: float) -> void:
+	_update_hunt_timer(delta)
 	_update_tasks(delta)
 	_update_static_interference(delta)
 	for item in _loose_items.duplicate():
@@ -668,7 +693,7 @@ func _expected_ghost_count() -> int:
 ## after ~6s of an uninterrupted free (non-captured, non-haunting) ghost
 ## standing at its marker; leaving the radius resets the channel.
 func _update_tasks(delta: float) -> void:
-	if not is_game_phase:
+	if not is_game_phase or _round_over:
 		return
 	_task_spawn_timer += delta
 	if _task_spawn_timer >= _task_spawn_interval:
@@ -739,6 +764,9 @@ func _on_ghost_captured(ghost: GhostPlayer) -> void:
 	if is_instance_valid(ghost):
 		ghost.is_captured = true
 		logger.info("Captured ghost is no longer free for GH-9 task channeling")
+	# GH-12: capturing the last free ghost wins the round for the Hunter.
+	if is_game_phase and not _round_over and _all_ghosts_captured():
+		_end_round(true)
 
 
 ## GH-10: the captured ghosts a teammate haunting the vacuum can release.
@@ -758,6 +786,9 @@ func _on_ghost_rescued(captured: GhostPlayer, rescuer: GhostPlayer) -> void:
 	_ping_ghost_interaction(captured, "rescue")
 	if map_layer:
 		map_layer.ping_rescue(captured.global_position)
+	# GH-12: +3 "Rescue" bonus for the rescuer, counted at scoring time.
+	if is_instance_valid(rescuer):
+		_rescue_counts[rescuer] = int(_rescue_counts.get(rescuer, 0)) + 1
 	ghost_rescued.emit(captured, rescuer)
 
 
@@ -813,7 +844,7 @@ func _update_glitch() -> void:
 func _update_static_interference(delta: float) -> void:
 	if not is_instance_valid(static_interference):
 		return
-	if not is_game_phase:
+	if not is_game_phase or _round_over:
 		static_interference.set_intensity(0.0)
 		return
 	if _full_haunt:
@@ -858,3 +889,121 @@ func debug_force_glitch(level: int, full_haunt: bool = false) -> void:
 		flash_device.set_glitch_level(_effective_glitch_level)
 	if is_instance_valid(vacuum_device):
 		vacuum_device.set_glitch_level(_effective_glitch_level)
+
+
+# ── GH-12 round end + scoring ─────────────────────────────────────────────────
+
+## GH-12: the Hunt Phase clock. At zero the ghosts win by survival — the round
+## never ends early (no surge phase), only by capture-all or the clock.
+func _update_hunt_timer(delta: float) -> void:
+	if not is_game_phase or _round_over:
+		return
+	_hunt_time_remaining -= delta
+	if _hunt_time_remaining <= 0.0:
+		_hunt_time_remaining = 0.0
+		_end_round(false)
+
+
+func _all_ghosts_captured() -> bool:
+	if ghosts.is_empty():
+		return false
+	for ghost in ghosts:
+		if is_instance_valid(ghost) and not ghost.is_captured:
+			return false
+	return true
+
+
+func _surviving_ghosts() -> Array[GhostPlayer]:
+	var out: Array[GhostPlayer] = []
+	for ghost in ghosts:
+		if is_instance_valid(ghost) and not ghost.is_captured:
+			out.append(ghost)
+	return out
+
+
+## GH-12: resolves the round once — Hunter wins on capture-all, ghosts win on
+## the clock — and shows the gameover leaderboard with the final scores.
+func _end_round(hunter_wins: bool) -> void:
+	if _round_over:
+		return
+	_round_over = true
+	ai_manager.stop()
+	var entries := _build_score_entries(hunter_wins)
+	var title := "Hunter wins!" if hunter_wins else "Ghosts win!"
+	logger.info("GH-12: round over — %s (hunt time left %.1fs, %d/%d tasks completed)" % [title, _hunt_time_remaining, get_completed_task_count(), tasks.size()])
+	finish_game(title, func(lb): lb.set_entries(entries))
+
+
+## GH-12 scoring: Hunter win → 10 pts (+3 Clutch Capture when the last ghost is
+## caught in the final CLUTCH_CAPTURE_WINDOW seconds). Ghosts win → each
+## surviving ghost gets 5 pts plus an equal share of 2 pts per completed
+## mischief task. The +3 Rescue bonus goes to the rescuer in either outcome.
+func _build_score_entries(hunter_wins: bool) -> Array:
+	var hunter_score := 0
+	if hunter_wins:
+		hunter_score = HUNTER_WIN_POINTS
+		if _hunt_time_remaining <= CLUTCH_CAPTURE_WINDOW:
+			hunter_score += CLUTCH_BONUS_POINTS
+	var entries: Array = [{"name": "VR Hunter", "score": hunter_score}]
+	var survivors := _surviving_ghosts()
+	var task_share := 0
+	if hunter_wins == false and not survivors.is_empty():
+		task_share = TASK_COMPLETED_POINTS * get_completed_task_count() / survivors.size()
+	for ghost in ghosts:
+		if not is_instance_valid(ghost):
+			continue
+		var score := 0
+		if not hunter_wins and not ghost.is_captured:
+			score += GHOST_SURVIVE_POINTS + task_share
+		score += RESCUE_BONUS_POINTS * int(_rescue_counts.get(ghost, 0))
+		entries.append({"name": _ghost_display_name(ghost), "score": score})
+	return entries
+
+
+## `P#` from the controller's color index so real players and AI ghosts share
+## the palette naming (same scheme as vortex-volley).
+func _ghost_display_name(ghost: GhostPlayer) -> String:
+	if not is_instance_valid(ghost.controller):
+		return "P??"
+	var idx := ghost.controller.get_color_idx()
+	if idx < 0:
+		return "P??"
+	return "P%d" % (idx + 1)
+
+
+## Ctrl+Alt+Enter from the game phase ends the round early (ghosts win, as on
+## the clock expiring).
+func _debug_advance() -> void:
+	if is_game_phase and not _round_over:
+		_end_round(false)
+	else:
+		super._debug_advance()
+
+
+## Debug/E2E helper: GH-12 round/scoring state as plain data for the MCP bridge.
+func debug_round_state() -> Dictionary:
+	var rescues := {}
+	for ghost in _rescue_counts:
+		if is_instance_valid(ghost):
+			rescues[_ghost_display_name(ghost)] = int(_rescue_counts[ghost])
+	return {
+		"hunt_time_remaining": _hunt_time_remaining,
+		"hunt_duration": HUNT_DURATION,
+		"round_over": _round_over,
+		"completed_tasks": get_completed_task_count(),
+		"total_tasks": tasks.size(),
+		"surviving_ghosts": _surviving_ghosts().size(),
+		"total_ghosts": ghosts.size(),
+		"rescue_counts": rescues,
+	}
+
+
+## Debug/E2E helper: set the hunt clock (e.g. to test the clock win or the
+## clutch window).
+func debug_set_hunt_time(seconds: float) -> void:
+	_hunt_time_remaining = maxf(0.0, seconds)
+
+
+## Debug/E2E helper: force the round to resolve now with the given winner.
+func debug_end_round(hunter_wins: bool) -> void:
+	_end_round(hunter_wins)
